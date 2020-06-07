@@ -1,0 +1,14 @@
+<resources>
+    <!-- FAB -->
+    <dimen name="fab_margin">@dimen/margin_medium</dimen>
+
+    <!-- Card -->
+    <dimen name="card_elevation">4dp</dimen>
+
+    <!-- Margins -->
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_extra_large">32dp</dimen>
+</resources>

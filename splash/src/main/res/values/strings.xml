@@ -1,0 +1,7 @@
+<resources>
+    <!-- Destination -->
+    <string name="splash_name">Splash Screen</string>
+
+    <!-- Content Descriptions -->
+    <string name="logo">Logo</string>
+</resources>

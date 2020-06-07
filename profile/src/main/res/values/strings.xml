@@ -1,0 +1,19 @@
+<resources>
+    <!-- Destination -->
+    <string name="profile_name">Profile Screen</string>
+
+    <!-- Content Descriptions -->
+    <string name="profile_picture_content_description">Profile picture</string>
+    <string name="edit_name_content_description">Edit name</string>
+    <string name="name_icon_content_description">Name icon</string>
+    <string name="email_icon_content_description">Email icon</string>
+    <string name="expand_less_profile_info">Expand less profile info</string>
+
+    <!-- Toolbar Titles -->
+    <string name="edit_picture_menu_title">Edit Picture</string>
+
+    <!-- Views -->
+    <string name="input_dialog_name_hint">Name</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="change_button">Change</string>
+</resources>

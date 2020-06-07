@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Destination -->
+    <string name="login_name">Login Screen</string>
+
+    <!-- Firebase -->
+    <string name="oauth_id" tools:ignore="TypographyDashes">
+        707539382271-4m18b341g1lj1rmhsk0o4pnife6cs181.apps.googleusercontent.com
+    </string>
+
+    <!-- Content Descriptions -->
+    <string name="logo">Logo</string>
+</resources>

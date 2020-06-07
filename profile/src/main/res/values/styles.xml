@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ProfileBottomSheet">
+        <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
+        <item name="backgroundTint">?colorSurface</item>
+        <item name="android:elevation">@dimen/profile_elevation</item>
+        <item name="behavior_peekHeight">@dimen/profile_peek_height</item>
+        <item name="behavior_fitToContents">false</item>
+    </style>
+
+</resources>

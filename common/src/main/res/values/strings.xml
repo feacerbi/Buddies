@@ -1,0 +1,8 @@
+<resources>
+    <!-- Destination Titles -->
+    <string name="login_title">Login</string>
+    <string name="profile_title">Profile</string>
+
+    <!-- Args -->
+
+</resources>

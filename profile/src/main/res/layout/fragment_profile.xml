@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorOnSurface">
+
+    <ImageView
+        android:id="@+id/profile_picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/profile_picture_content_description" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar.Transparent"
+        android:layout_width="match_parent"
+        app:menu="@menu/toolbar"/>
+
+    <View
+        android:id="@+id/top_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/top_scrim"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/info_bottom_sheet"
+        style="@style/ProfileBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <ImageView
+            android:id="@+id/profile_name_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="@dimen/margin_extra_large"
+            android:contentDescription="@string/name_icon_content_description"
+            android:src="@drawable/ic_person" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_name"
+            style="@style/Headline6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_name_edit"
+            app:layout_constraintBottom_toBottomOf="@id/profile_name_edit"
+            app:layout_constraintStart_toEndOf="@id/profile_name_icon"
+            app:layout_constraintEnd_toStartOf="@id/profile_name_edit"
+            app:layout_constraintHorizontal_bias="0"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="Felipe Acerbi"/>
+
+        <ImageView
+            android:id="@+id/profile_name_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/margin_extra_large"
+            android:background="?selectableItemBackgroundBorderless"
+            android:tint="?attr/colorSecondary"
+            android:contentDescription="@string/edit_name_content_description"
+            android:src="@drawable/ic_edit" />
+
+        <ImageView
+            android:id="@+id/profile_email_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/profile_name_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="@dimen/margin_extra_large"
+            android:contentDescription="@string/email_icon_content_description"
+            android:src="@drawable/ic_email" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_email"
+            style="@style/Headline6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_email_edit"
+            app:layout_constraintBottom_toBottomOf="@id/profile_email_edit"
+            app:layout_constraintStart_toEndOf="@id/profile_email_icon"
+            app:layout_constraintEnd_toStartOf="@id/profile_email_edit"
+            app:layout_constraintHorizontal_bias="0"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="feaacerbi@gmail.com"/>
+
+        <ImageView
+            android:id="@+id/profile_email_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/profile_name_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/margin_extra_large"
+            android:tint="?attr/colorSecondary"
+            android:contentDescription="@string/edit_name_content_description"
+            android:alpha="0"
+            android:src="@drawable/ic_edit" />
+
+        <ImageView
+            android:id="@+id/expand_icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/profile_email_edit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/margin_medium"
+            android:background="?selectableItemBackground"
+            android:tint="?attr/colorSecondary"
+            android:contentDescription="@string/expand_less_profile_info"
+            android:src="@drawable/ic_expand_less"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
