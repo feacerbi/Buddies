@@ -33,8 +33,8 @@ android {
         jvmTarget = "1.8"
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -44,8 +44,10 @@ dependencies {
     // Projects
     implementation project(":common")
     implementation project(":login")
+    implementation project(":mypets")
     implementation project(":navigation")
     implementation project(":profile")
+    implementation project(":server")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

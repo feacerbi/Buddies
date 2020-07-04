@@ -7,9 +7,9 @@ import com.buddies.common.navigation.Navigator
 import com.buddies.common.navigation.Navigator.NavDirection
 import com.buddies.common.navigation.Navigator.NavDirection.*
 import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmentToProfileFragment
+import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToLoginFragment
+import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToProfileFragment
 import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToLoginFragment
-import com.buddies.splash.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToLoginFragment
-import com.buddies.splash.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToProfileFragment
 
 class AppNavigator : Navigator {
 

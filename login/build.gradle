@@ -32,8 +32,8 @@ android {
         jvmTarget = "1.8"
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -42,6 +42,7 @@ dependencies {
 
     // Projects
     implementation project(":common")
+    implementation project(":server")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -59,6 +60,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-auth:$gms_playservices_version"
 
     // Jetpack Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
 
     // Koin

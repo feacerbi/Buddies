@@ -2,13 +2,11 @@ package com.buddies.profile.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.buddies.common.model.DefaultError
 import com.buddies.common.navigation.Navigator.NavDirection.PROFILE_TO_LOGIN
-import com.buddies.common.repository.UserRepository
-import com.buddies.common.repository.UserRepository.RequestResult
-import com.buddies.common.repository.UserRepository.RequestResult.Fail
-import com.buddies.common.repository.UserRepository.RequestResult.Success
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
+import com.buddies.profile.usecase.ProfileUseCases
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.*
 import com.buddies.profile.viewstate.ProfileViewEffect
 import com.buddies.profile.viewstate.ProfileViewEffect.Navigate
@@ -19,42 +17,46 @@ import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
 
 class ProfileViewModel(
-    private val userRepository: UserRepository
+    private val profileUseCases: ProfileUseCases
 ) : StateViewModel<ProfileViewState, ProfileViewEffect>(ProfileViewState()), CoroutineScope {
 
     fun getStateStream() = viewState
     fun getEffectStream() = viewEffect
 
     init {
-        updateState(ShowInfo(userRepository.getCurrentUser()))
+        refreshUser()
     }
 
     fun perform(action: Action) {
         when (action) {
             is ChangeName -> updateName(action.name)
             is ChangePhoto -> updatePhoto(action.photo)
-            is SignOut -> signOut()
+            is SignOut -> logout()
         }
     }
 
-    private fun updateName(name: String) = safeLaunch {
-        val result = userRepository.updateName(name)
-        handleResult(result)
+    private fun updateName(name: String) = safeLaunch(::showError) {
+        profileUseCases.updateName(name)
+        refreshUser()
     }
 
-    private fun updatePhoto(photo: Uri) = safeLaunch {
-        val result = userRepository.updatePhoto(photo)
-        handleResult(result)
+    private fun updatePhoto(photo: Uri) = safeLaunch(::showError) {
+        profileUseCases.updatePhoto(photo)
+        refreshUser()
     }
 
-    private fun signOut() {
+    private fun refreshUser() = safeLaunch(::showError) {
+        val currentUser = profileUseCases.getCurrentUser()
+        updateState(ShowInfo(currentUser))
+    }
+
+    private fun logout() {
         updateEffect(Navigate(PROFILE_TO_LOGIN))
-        userRepository.signOut()
+        profileUseCases.logout()
     }
 
-    private fun handleResult(result: RequestResult) = when (result) {
-        is Success -> updateState(ShowInfo(userRepository.getCurrentUser()))
-        is Fail -> updateEffect(ShowError(result.error))
+    private fun showError(error: DefaultError) {
+        updateEffect(ShowError(error.code.message))
     }
 
     sealed class Action {

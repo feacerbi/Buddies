@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Destination -->
+    <string name="splash_name">Splash Screen</string>
     <string name="login_name">Login Screen</string>
 
     <!-- Firebase -->

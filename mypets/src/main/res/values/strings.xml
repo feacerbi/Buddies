@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Views -->
+    <string name="my_pets_title">My Pets</string>
+    <string name="add_new_pet">Add new pet</string>
+</resources>

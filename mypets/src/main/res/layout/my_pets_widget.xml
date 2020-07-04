@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/my_pets_widget_transition">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/pets_sheet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardBackgroundColor="@color/colorSecondary"
+        app:cardElevation="@dimen/bottom_pets_elevation"
+        app:shapeAppearance="?attr/shapeAppearanceLargeComponent" />
+
+    <ImageView
+        android:id="@+id/static_pet_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/bottom_pets_elevation"
+        android:paddingEnd="@dimen/margin_small"
+        android:paddingStart="@dimen/margin_large"
+        android:paddingTop="@dimen/margin_large"
+        android:paddingBottom="@dimen/margin_large"
+        android:src="@drawable/ic_baseline_pets" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pets_list"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:paddingStart="@dimen/margin_tiny"
+        android:paddingEnd="@dimen/margin_tiny"
+        android:clipToPadding="false"
+        android:elevation="@dimen/bottom_pets_elevation"
+        android:orientation="horizontal"
+        tools:listitem="@layout/pet_list_item" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/pets_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?colorSecondary"
+        android:elevation="@dimen/bottom_pets_elevation"
+        app:navigationIcon="@drawable/ic_expand_more"
+        app:titleTextColor="?colorOnSecondary" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

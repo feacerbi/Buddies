@@ -41,7 +41,6 @@ dependencies {
     implementation project(":common")
     implementation project(":login")
     implementation project(":profile")
-    implementation project(":splash")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -49,6 +48,9 @@ dependencies {
     // AndroidX Core
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$corektx_version"
+
+    // Firebase
+    implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
 
     // Jetpack Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"

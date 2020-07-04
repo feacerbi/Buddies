@@ -21,13 +21,8 @@ import com.buddies.profile.viewmodel.ProfileViewModel.Action
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.*
 import com.buddies.profile.viewstate.ProfileViewEffect.Navigate
 import com.buddies.profile.viewstate.ProfileViewEffect.ShowError
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HALF_EXPANDED
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
@@ -74,7 +69,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             }
         }
 
-        setUpBottomSheet()
+        myPetsWidget.addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
     }
 
     private fun bindViews() = with (binding) {
@@ -126,42 +121,8 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         inputView.inputEditText.requestFocus()
     }
 
-    private fun setUpBottomSheet() = with (binding) {
-        val behavior = BottomSheetBehavior.from(infoBottomSheet)
-
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                profilePicture.alpha = 1 - slideOffset
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    STATE_COLLAPSED -> expandIcon.setImageResource(R.drawable.ic_expand_less)
-                    else -> expandIcon.setImageResource(R.drawable.ic_expand_more)
-                }
-            }
-        })
-
-        infoBottomSheet.setOnClickListener {
-            when (behavior.state) {
-                STATE_COLLAPSED -> behavior.state = STATE_HALF_EXPANDED
-            }
-        }
-
-        expandIcon.setOnClickListener {
-            behavior.state = STATE_COLLAPSED
-        }
-
-        launch {
-            behavior.state = STATE_HALF_EXPANDED
-            delay(250)
-            behavior.state = STATE_COLLAPSED
-        }
-    }
-
-    private fun showMessage(text: String?) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    private fun showMessage(text: Int) {
+        Toast.makeText(requireContext(), getString(text), Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {

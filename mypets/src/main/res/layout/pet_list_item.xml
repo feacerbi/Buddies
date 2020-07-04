@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_tiny"
+    android:layout_marginEnd="@dimen/margin_tiny"
+    android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin_small"
+    android:background="?selectableItemBackground">
+
+    <View
+        android:id="@+id/space_1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/margin_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pet_icon"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/pet_icon"
+        android:layout_width="@dimen/pet_icon_size_small"
+        android:layout_height="@dimen/pet_icon_size_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/space_1"
+        app:layout_constraintBottom_toTopOf="@id/pet_name"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:background="@drawable/circular_background"
+        android:padding="@dimen/icon_border"
+        android:src="@drawable/cat1"/>
+
+    <TextView
+        android:id="@+id/pet_name"
+        style="@style/Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_icon"
+        app:layout_constraintBottom_toTopOf="@id/space_2"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textSize="18sp"
+        android:textColor="@color/colorOnSecondary"
+        android:visibility="gone"/>
+
+    <View
+        android:id="@+id/space_2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/margin_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_name"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

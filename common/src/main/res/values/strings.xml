@@ -2,7 +2,14 @@
     <!-- Destination Titles -->
     <string name="login_title">Login</string>
     <string name="profile_title">Profile</string>
+    <string name="owner_category_description">Owner</string>
+    <string name="family_category_description">Family</string>
+    <string name="friend_category_description">Friend</string>
+    <string name="caretaker_category_description">Care Taker</string>
 
-    <!-- Args -->
+    <!-- Error Messages -->
+    <string name="unknown_error_message">Unknown error</string>
+    <string name="null_task">Task is null</string>
+    <string name="null_result">Result is null</string>
 
 </resources>

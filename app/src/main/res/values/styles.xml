@@ -19,9 +19,16 @@
 
         <item name="android:textColorPrimary">@color/textColorHigh</item>
 
+        <item name="shapeAppearanceLargeComponent">@style/PetsLargeComponent</item>
+
         <!-- Legacy -->
         <item name="colorPrimaryDark">@color/colorPrimaryVariant</item>
         <item name="colorAccent">@color/colorSecondary</item>
+    </style>
+
+    <style name="PetsLargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/large_component_top_left_corner_size</item>
     </style>
 
 </resources>

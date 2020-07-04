@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_pets_elevation">8dp</dimen>
+    <dimen name="icon_border">2dp</dimen>
+    <dimen name="pet_icon_size_small">56dp</dimen>
+    <dimen name="pet_icon_size_big">112dp</dimen>
+</resources>

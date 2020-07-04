@@ -12,8 +12,8 @@ import com.buddies.common.util.observe
 import com.buddies.login.databinding.FragmentLoginBinding
 import com.buddies.login.viewmodel.LoginViewModel
 import com.buddies.login.viewmodel.LoginViewModel.Action
-import com.buddies.login.viewmodel.LoginViewModel.Action.SignIn
-import com.buddies.login.viewmodel.LoginViewModel.Action.SignInResult
+import com.buddies.login.viewmodel.LoginViewModel.Action.Login
+import com.buddies.login.viewmodel.LoginViewModel.Action.LoginRequest
 import com.buddies.login.viewstate.LoginViewEffect.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,7 +38,7 @@ class LoginFragment : NavigationFragment() {
 
     private fun setUpViews() {
         with (binding) {
-            signInButton.setOnClickListener { perform(SignIn(requireActivity())) }
+            signInButton.setOnClickListener { perform(LoginRequest(requireActivity())) }
         }
     }
 
@@ -64,12 +64,12 @@ class LoginFragment : NavigationFragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == SIGN_IN) {
-            perform(SignInResult(requireActivity(), data))
+            perform(Login(data))
         }
     }
 
-    private fun showMessage(text: String?) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    private fun showMessage(text: Int) {
+        Toast.makeText(requireContext(), getString(text), Toast.LENGTH_SHORT).show()
     }
 
     private fun perform(action: Action) {

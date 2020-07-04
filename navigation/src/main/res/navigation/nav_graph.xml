@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="com.buddies.splash.ui.SplashScreenFragment"
+        android:name="com.buddies.login.ui.SplashScreenFragment"
         android:label="@string/splash_name" >
         <action
             android:id="@+id/action_splashScreenFragment_to_profileFragment"
