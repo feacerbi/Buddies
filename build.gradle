@@ -19,6 +19,7 @@ buildscript {
     ext.firebase_analytics_version = '17.4.3'
     ext.firebase_auth_version = '19.3.1'
     ext.firebase_firestore_ktx = '21.4.3'
+    ext.firebase_storage_ktx = '19.1.1'
     ext.ml_barcode_version = '16.1.1'
     ext.camerax_version = '1.0.0-beta06'
     ext.cameraview_version = '1.0.0-alpha13'

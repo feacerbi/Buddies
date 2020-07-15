@@ -9,7 +9,9 @@ import com.buddies.common.navigation.Navigator.NavDirection.*
 import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmentToProfileFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToLoginFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToProfileFragment
+import com.buddies.mypets.ui.PetProfileFragmentArgs
 import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToLoginFragment
+import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToPetProfileFragment
 
 class AppNavigator : Navigator {
 
@@ -19,14 +21,16 @@ class AppNavigator : Navigator {
 
     override fun back(currentFragment: Fragment) {
         currentFragment.findNavController().popBackStack()
+        PetProfileFragmentArgs
     }
 
     private fun NavDirection.action(): NavDirections = when (this) {
-        SPLASH_TO_LOGIN -> actionSplashScreenFragmentToLoginFragment()
-        SPLASH_TO_PROFILE -> actionSplashScreenFragmentToProfileFragment()
+        is SplashToLogin -> actionSplashScreenFragmentToLoginFragment()
+        is SplashToProfile -> actionSplashScreenFragmentToProfileFragment()
 
-        LOGIN_TO_PROFILE -> actionLoginFragmentToProfileFragment()
+        is LoginToProfile -> actionLoginFragmentToProfileFragment()
 
-        PROFILE_TO_LOGIN -> actionProfileFragmentToLoginFragment()
+        is ProfileToLogin -> actionProfileFragmentToLoginFragment()
+        is ProfileToPetProfile -> actionProfileFragmentToPetProfileFragment(petId)
     }
 }

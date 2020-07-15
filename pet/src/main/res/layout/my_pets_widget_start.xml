@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="com.buddies.mypets.ui.MyPetsWidget">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/pets_sheet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/static_pet_icon"
+        app:layout_constraintTop_toTopOf="@id/static_pet_icon"/>
+
+    <ImageView
+        android:id="@+id/static_pet_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/pets_count"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:alpha="1"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/pets_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/pets_sheet"
+        app:layout_constraintBottom_toBottomOf="@id/pets_sheet"
+        app:layout_constraintEnd_toStartOf="@id/pets_list"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:alpha="1"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pets_list"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/pets_sheet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pets_sheet"/>
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/pets_toolbar"
+        style="@style/Toolbar"
+        android:layout_width="0dp"
+        app:layout_constraintTop_toTopOf="@id/pets_sheet"
+        app:layout_constraintStart_toStartOf="@id/pets_sheet"
+        app:layout_constraintEnd_toEndOf="@id/pets_sheet"
+        android:elevation="@dimen/bottom_pets_elevation"
+        android:alpha="0"/>
+
+</merge>

@@ -17,6 +17,15 @@
         android:scaleType="centerCrop"
         android:contentDescription="@string/profile_picture_content_description" />
 
+    <View
+        android:id="@+id/top_scrim"
+        android:layout_width="0dp"
+        android:layout_height="?android:actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/top_scrim" />
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         style="@style/Toolbar.Transparent"
@@ -26,28 +35,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/toolbar"/>
 
-    <View
-        android:id="@+id/top_scrim"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/profile_info_title"
+        style="@style/Body1"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_picture"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/top_scrim" />
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:textColor="@color/colorSecondary"
+        android:text="@string/info"/>
 
     <ImageView
         android:id="@+id/profile_name_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/profile_picture"
+        app:layout_constraintTop_toBottomOf="@id/profile_info_title"
         app:layout_constraintStart_toStartOf="parent"
-        android:padding="@dimen/margin_extra_large"
+        android:padding="@dimen/margin_large"
         android:contentDescription="@string/name_icon_content_description"
         android:src="@drawable/ic_person" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/profile_name"
-        style="@style/Headline6"
+        style="@style/Body1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/profile_name_edit"
@@ -55,7 +67,7 @@
         app:layout_constraintStart_toEndOf="@id/profile_name_icon"
         app:layout_constraintEnd_toStartOf="@id/profile_name_edit"
         app:layout_constraintHorizontal_bias="0"
-        android:maxLines="1"
+        android:maxLines="2"
         android:ellipsize="end"
         tools:text="Felipe Acerbi"/>
 
@@ -63,9 +75,9 @@
         android:id="@+id/profile_name_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/profile_picture"
+        app:layout_constraintTop_toTopOf="@id/profile_name_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="@dimen/margin_extra_large"
+        android:padding="@dimen/margin_large"
         android:background="?selectableItemBackgroundBorderless"
         android:tint="?attr/colorSecondary"
         android:contentDescription="@string/edit_name_content_description"
@@ -77,13 +89,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/profile_name_icon"
         app:layout_constraintStart_toStartOf="parent"
-        android:padding="@dimen/margin_extra_large"
+        android:padding="@dimen/margin_large"
         android:contentDescription="@string/email_icon_content_description"
         android:src="@drawable/ic_email" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/profile_email"
-        style="@style/Headline6"
+        style="@style/Body1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/profile_email_edit"
@@ -101,7 +113,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/profile_name_edit"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="@dimen/margin_extra_large"
+        android:padding="@dimen/margin_large"
         android:tint="?attr/colorSecondary"
         android:contentDescription="@string/edit_name_content_description"
         android:alpha="0"

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             }
         }
 
+        myPetsWidget.addOnPetClickListener { perform(OpenPetProfile(it.id)) }
         myPetsWidget.addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
     }
 
@@ -106,10 +108,11 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
         inputView.inputLayout.hint = hint
         inputView.inputEditText.setText(text)
+        inputView.inputEditText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
 
         MaterialAlertDialogBuilder(requireContext())
             .setView(inputView.root)
-            .setNeutralButton(getString(R.string.cancel_button)) { dialog, _ ->
+            .setNegativeButton(getString(R.string.cancel_button)) { dialog, _ ->
                 dialog.dismiss()
             }
             .setPositiveButton(getString(R.string.change_button)) { dialog, _ ->

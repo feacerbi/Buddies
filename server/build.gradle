@@ -47,6 +47,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
     implementation "com.google.android.gms:play-services-auth:$gms_playservices_version"
     implementation "com.google.firebase:firebase-firestore-ktx:$firebase_firestore_ktx"
+    implementation "com.google.firebase:firebase-storage-ktx:$firebase_storage_ktx"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"

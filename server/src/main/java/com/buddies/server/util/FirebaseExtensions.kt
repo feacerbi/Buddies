@@ -3,6 +3,7 @@ package com.buddies.server.util
 import com.buddies.common.model.*
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.UploadTask
 import kotlin.reflect.KClass
 
 fun <T : Any> DocumentSnapshot.to(clazz: KClass<T>) =
@@ -17,3 +18,5 @@ fun DocumentSnapshot.toPet() =
 fun QuerySnapshot.toOwnerships() = documents.map { doc ->
     Ownership(doc.id, doc.to(OwnershipInfo::class))
 }
+
+fun UploadTask.TaskSnapshot.getDownloadUrl() = storage.downloadUrl

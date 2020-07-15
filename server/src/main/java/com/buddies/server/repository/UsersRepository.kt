@@ -9,11 +9,14 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Transaction
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 
 class UsersRepository {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = Firebase.firestore
+    private val storage = Firebase.storage
 
     private val userAuth = auth.currentUser
 
@@ -59,7 +62,7 @@ class UsersRepository {
     }
 
     fun updatePhoto(
-        photo: Uri
+        photo: String
     ): Transaction.() -> Unit = {
         update(
             db.collection(USERS_COLLECTION).document(getCurrentUserId()),
@@ -67,9 +70,22 @@ class UsersRepository {
             photo)
     }
 
+    fun uploadImage(
+        photoUri: Uri
+    ): UploadTask =
+        storage.getReference(USERS_PATH)
+            .child(getCurrentUserId())
+            .child(PROFILE_PATH)
+            .child(PROFILE_PICTURE_NAME)
+            .putFile(photoUri)
+
     companion object {
         private const val USERS_COLLECTION = "users"
         private const val NAME_FIELD = "name"
         private const val PHOTO_FIELD = "photo"
+
+        private const val USERS_PATH = "users"
+        private const val PROFILE_PATH = "profile"
+        private const val PROFILE_PICTURE_NAME = "profile_picture"
     }
 }

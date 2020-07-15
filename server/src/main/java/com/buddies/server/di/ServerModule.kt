@@ -1,7 +1,7 @@
 package com.buddies.server.di
 
 import com.buddies.server.api.LoginApi
-import com.buddies.server.api.MyPetsApi
+import com.buddies.server.api.PetApi
 import com.buddies.server.api.ProfileApi
 import com.buddies.server.repository.OwnershipsRepository
 import com.buddies.server.repository.PetsRepository
@@ -15,5 +15,5 @@ val serverModule = module {
 
     single { LoginApi(get()) }
     single { ProfileApi(get()) }
-    single { MyPetsApi(get(), get(), get()) }
+    single { PetApi(get(), get(), get()) }
 }

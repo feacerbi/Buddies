@@ -3,7 +3,8 @@ package com.buddies.profile.viewmodel
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
-import com.buddies.common.navigation.Navigator.NavDirection.PROFILE_TO_LOGIN
+import com.buddies.common.navigation.Navigator.NavDirection.ProfileToLogin
+import com.buddies.common.navigation.Navigator.NavDirection.ProfileToPetProfile
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.profile.usecase.ProfileUseCases
@@ -29,10 +30,15 @@ class ProfileViewModel(
 
     fun perform(action: Action) {
         when (action) {
+            is OpenPetProfile -> openPetProfile(action.petId)
             is ChangeName -> updateName(action.name)
             is ChangePhoto -> updatePhoto(action.photo)
             is SignOut -> logout()
         }
+    }
+
+    private fun openPetProfile(petId: String) {
+        updateEffect(Navigate(ProfileToPetProfile(petId)))
     }
 
     private fun updateName(name: String) = safeLaunch(::showError) {
@@ -51,7 +57,7 @@ class ProfileViewModel(
     }
 
     private fun logout() {
-        updateEffect(Navigate(PROFILE_TO_LOGIN))
+        updateEffect(Navigate(ProfileToLogin))
         profileUseCases.logout()
     }
 
@@ -63,6 +69,7 @@ class ProfileViewModel(
         object SignOut : Action()
         data class ChangeName(val name: String) : Action()
         data class ChangePhoto(val photo: Uri) : Action()
+        data class OpenPetProfile(val petId: String) : Action()
     }
 
     override val coroutineContext: CoroutineContext

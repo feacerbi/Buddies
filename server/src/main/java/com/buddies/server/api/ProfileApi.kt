@@ -2,6 +2,7 @@ package com.buddies.server.api
 
 import android.net.Uri
 import com.buddies.server.repository.UsersRepository
+import com.buddies.server.util.getDownloadUrl
 import com.buddies.server.util.toUser
 
 class ProfileApi(
@@ -22,10 +23,19 @@ class ProfileApi(
     )
 
     suspend fun updatePhoto(
-        photo: Uri
-    ) = runTransactionsWithResult(
-        usersRepository.updatePhoto(photo)
-    )
+        photoUri: Uri
+    ) = runWithResult {
+
+        val uploadResult = usersRepository.uploadImage(photoUri)
+            .handleTaskResult()
+
+        val downloadUri = uploadResult.getDownloadUrl()
+            .handleTaskResult()
+
+        runTransactionsWithResult(
+            usersRepository.updatePhoto(downloadUri.toString())
+        )
+    }
 
     fun logout() = usersRepository.logout()
 }

@@ -2,6 +2,12 @@
     <!-- Destination Titles -->
     <string name="login_title">Login</string>
     <string name="profile_title">Profile</string>
+    <string name="pet_profile_title">Pet Profile</string>
+
+    <!-- Args -->
+    <string name="pet_id_arg">petId</string>
+
+    <!-- Ownership Descriptions -->
     <string name="owner_category_description">Owner</string>
     <string name="family_category_description">Family</string>
     <string name="friend_category_description">Friend</string>

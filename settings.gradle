@@ -1,6 +1,6 @@
 rootProject.name='Buddies'
 include ':server'
-include ':mypets'
+include ':pet'
 include ':app'
 include ':common'
 include ':navigation'

@@ -51,6 +51,23 @@
             app:exitAnim="@anim/slide_out_bottom"
             app:launchSingleTop="true"
             app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_profileFragment_to_petProfileFragment"
+            app:destination="@id/petProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/petProfileFragment"
+        android:name="com.buddies.mypets.ui.PetProfileFragment"
+        android:label="@string/pet_profile_title" >
+        <argument
+            android:name="petId"
+            app:argType="string"/>
     </fragment>
 
 </navigation>
