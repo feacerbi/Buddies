@@ -1,12 +1,14 @@
 package com.buddies.common.util
 
 import android.content.res.Resources
+import android.text.InputType
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.annotation.DrawableRes
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -14,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.request.LoadRequestBuilder
 import coil.transform.CircleCropTransformation
 import com.buddies.common.R
+import com.buddies.common.databinding.InputTextLayoutBinding
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.ErrorCode.UNKNOWN
+import com.buddies.common.model.OwnershipCategory.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -89,3 +94,36 @@ fun Float.toDp(res: Resources) = TypedValue.applyDimension(
     this,
     res.displayMetrics
 )
+
+fun Fragment.openEditDialog(
+    hint: String = "",
+    text: String = "",
+    positiveAction: (String) -> Unit
+) {
+    val inputView = InputTextLayoutBinding.inflate(layoutInflater)
+
+    inputView.inputLayout.hint = hint
+    inputView.inputEditText.setText(text)
+    inputView.inputEditText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
+
+    MaterialAlertDialogBuilder(requireContext())
+        .setView(inputView.root)
+        .setNegativeButton(getString(R.string.cancel_button)) { dialog, _ ->
+            dialog.dismiss()
+        }
+        .setPositiveButton(getString(R.string.change_button)) { dialog, _ ->
+            positiveAction.invoke(inputView.inputEditText.text.toString())
+            dialog.dismiss()
+        }
+        .show()
+
+    inputView.inputEditText.requestFocus()
+}
+
+fun String.toOwnershipCategory() = when (this) {
+    OWNER.name -> OWNER
+    FAMILY.name -> FAMILY
+    FRIEND.name -> FRIEND
+    CARE_TAKER.name -> CARE_TAKER
+    else -> VISITOR
+}

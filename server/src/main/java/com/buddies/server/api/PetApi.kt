@@ -2,13 +2,14 @@ package com.buddies.server.api
 
 import android.net.Uri
 import com.buddies.common.model.*
+import com.buddies.common.model.OwnershipCategory.VISITOR
 import com.buddies.common.util.generateNewId
 import com.buddies.server.repository.OwnershipsRepository
 import com.buddies.server.repository.PetsRepository
 import com.buddies.server.repository.UsersRepository
+import com.buddies.server.util.toOwner
 import com.buddies.server.util.toOwnerships
 import com.buddies.server.util.toPet
-import com.buddies.server.util.toUser
 
 class PetApi(
     private val usersRepository: UsersRepository,
@@ -95,6 +96,24 @@ class PetApi(
         )
     }
 
+    suspend fun updatePetOwnership(
+        petId: String,
+        userId: String,
+        category: String
+    ) = runWithResult {
+        val ownership = ownershipsRepository.getOwnership(petId, userId)
+            .handleTaskResult()
+            .toOwnerships()
+            .first()
+
+        runTransactionsWithResult(
+            when (category) {
+                VISITOR.name -> ownershipsRepository.removeOwnership(ownership.id)
+                else -> ownershipsRepository.updateOwnership(ownership.id, category)
+            }
+        )
+    }
+
     suspend fun addNewPetOwnership(
         pet: Pet,
         user: User,
@@ -109,23 +128,38 @@ class PetApi(
         )
     )
 
-    suspend fun removePetOwnership(
-        ownership: Ownership
-    ) = runTransactionsWithResult(
-        ownershipsRepository.removeOwnership(ownership.id)
-    )
-
     suspend fun getPetOwners(
-        pet: Pet
+        petId: String
     ) = runWithResult {
-        val ownerships = ownershipsRepository.getPetOwnerships(pet.id)
+        val ownerships = ownershipsRepository.getPetOwnerships(petId)
             .handleTaskResult()
             .toOwnerships()
 
         ownerships.map { ownership ->
             usersRepository.getUser(ownership.info.userId)
                 .handleTaskResult()
-                .toUser()
+                .toOwner(ownership)
+        }
+    }
+
+    suspend fun getCurrentUserPetOwnership(
+        petId: String
+    ) = getUserPetOwnership(usersRepository.getCurrentUserId(), petId)
+
+    suspend fun getUserPetOwnership(
+        userId: String,
+        petId: String
+    ) = runWithResult {
+        val ownerships = ownershipsRepository.getPetOwnerships(petId)
+            .handleTaskResult()
+            .toOwnerships()
+
+        val ownership = ownerships.filter { it.info.userId == userId }
+
+        if (ownership.isNotEmpty()) {
+            ownership[0].info
+        } else {
+            OwnershipInfo(petId, userId, VISITOR.name)
         }
     }
 

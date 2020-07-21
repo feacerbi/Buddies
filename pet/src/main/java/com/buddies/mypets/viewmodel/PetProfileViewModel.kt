@@ -2,9 +2,7 @@ package com.buddies.mypets.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.buddies.common.model.Animal
-import com.buddies.common.model.Breed
-import com.buddies.common.model.DefaultError
+import com.buddies.common.model.*
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.mypets.usecase.PetUseCases
@@ -13,12 +11,14 @@ import com.buddies.mypets.viewstate.PetProfileViewEffect
 import com.buddies.mypets.viewstate.PetProfileViewEffect.ShowError
 import com.buddies.mypets.viewstate.PetProfileViewState
 import com.buddies.mypets.viewstate.PetProfileViewStateReducer.ShowInfo
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
 
 class PetProfileViewModel(
     private val petId: String,
-    private val petUseCases: PetUseCases
+    private val petUseCases: PetUseCases,
+    private val dispatcher: CoroutineDispatcher
 ) : StateViewModel<PetProfileViewState, PetProfileViewEffect>(PetProfileViewState()), CoroutineScope {
 
     fun getStateStream() = viewState
@@ -34,6 +34,8 @@ class PetProfileViewModel(
             is ChangeTag -> updateTag(action.tag)
             is ChangeAnimal -> updateAnimal(action.animal, action.breed)
             is ChangePhoto -> updatePhoto(action.photo)
+            is ChangeOwnership -> changeOwnership(action.owner, action.ownership)
+            is OpenOwnerProfile -> openOwnerProfile(action.owner)
         }
     }
 
@@ -57,9 +59,20 @@ class PetProfileViewModel(
         refreshPet()
     }
 
+    private fun changeOwnership(owner: Owner, ownership: OwnershipCategory) = safeLaunch(::showError) {
+        petUseCases.updateOwnership(petId, owner.user.id, ownership)
+        refreshPet()
+    }
+
     private fun refreshPet() = safeLaunch(::showError) {
         val pet = petUseCases.getPet(petId)
-        updateState(ShowInfo(pet))
+        val owners = petUseCases.getOwnersFromPet(petId)
+        val currentOwnership = petUseCases.getCurrentUserPetOwnership(petId)
+        updateState(ShowInfo(pet, owners, currentOwnership))
+    }
+
+    private fun openOwnerProfile(owner: Owner) {
+        // TODO
     }
 
     private fun showError(error: DefaultError) {
@@ -71,8 +84,10 @@ class PetProfileViewModel(
         data class ChangeTag(val tag: String) : Action()
         data class ChangeAnimal(val animal: Animal, val breed: Breed) : Action()
         data class ChangePhoto(val photo: Uri) : Action()
+        data class ChangeOwnership(val owner: Owner, val ownership: OwnershipCategory) : Action()
+        data class OpenOwnerProfile(val owner: Owner) : Action()
     }
 
     override val coroutineContext: CoroutineContext
-        get() = viewModelScope.coroutineContext
+        get() = viewModelScope.coroutineContext + dispatcher
 }

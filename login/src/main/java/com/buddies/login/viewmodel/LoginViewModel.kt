@@ -42,6 +42,7 @@ class LoginViewModel(
 
     private fun handleSplashScreen(context: Context) = safeLaunch(::showError) {
         if (useCases.isUserLoggedIn(context)) {
+            useCases.checkNewUser()
             updateEffect(Navigate(SplashToProfile))
         } else {
             delay(SPLASH_TIME)

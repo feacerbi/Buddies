@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +13,14 @@ import coil.api.load
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.observe
+import com.buddies.common.util.openEditDialog
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
-import com.buddies.profile.databinding.InputTextLayoutBinding
 import com.buddies.profile.viewmodel.ProfileViewModel
 import com.buddies.profile.viewmodel.ProfileViewModel.Action
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.*
 import com.buddies.profile.viewstate.ProfileViewEffect.Navigate
 import com.buddies.profile.viewstate.ProfileViewEffect.ShowError
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
@@ -51,15 +49,6 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         toolbar.setNavigationOnClickListener {
             perform(SignOut)
         }
-
-        profileNameEdit.setOnClickListener {
-            openEditDialog(
-                hint = getString(R.string.input_dialog_name_hint),
-                text = profileName.text.toString(),
-                positiveAction = { perform(ChangeName(it) )}
-            )
-        }
-
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.edit_picture_menu_action -> {
@@ -68,6 +57,14 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
                 }
                 else -> false
             }
+        }
+
+        profileNameEdit.setOnClickListener {
+            openEditDialog(
+                hint = getString(R.string.input_dialog_name_hint),
+                text = profileName.text.toString(),
+                positiveAction = { perform(ChangeName(it) )}
+            )
         }
 
         myPetsWidget.addOnPetClickListener { perform(OpenPetProfile(it.id)) }
@@ -97,31 +94,6 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         startActivityForResult(pickerIntent,
             GALLERY_IMAGE_PICKER
         )
-    }
-
-    private fun openEditDialog(
-        hint: String = "",
-        text: String = "",
-        positiveAction: (String) -> Unit
-    ) {
-        val inputView = InputTextLayoutBinding.inflate(layoutInflater)
-
-        inputView.inputLayout.hint = hint
-        inputView.inputEditText.setText(text)
-        inputView.inputEditText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setView(inputView.root)
-            .setNegativeButton(getString(R.string.cancel_button)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setPositiveButton(getString(R.string.change_button)) { dialog, _ ->
-                positiveAction.invoke(inputView.inputEditText.text.toString())
-                dialog.dismiss()
-            }
-            .show()
-
-        inputView.inputEditText.requestFocus()
     }
 
     private fun showMessage(text: Int) {

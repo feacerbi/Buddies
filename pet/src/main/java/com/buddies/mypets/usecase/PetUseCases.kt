@@ -17,6 +17,14 @@ class PetUseCases(
         petApi.getPetsFromUser(user.id)
     }
 
+    suspend fun getOwnersFromPet(petId: String) = request {
+        petApi.getPetOwners(petId)
+    }
+
+    suspend fun getCurrentUserPetOwnership(petId: String) = request {
+        petApi.getCurrentUserPetOwnership(petId)
+    }
+
     suspend fun addNewPet(
         petInfo: PetInfo,
         category: OwnershipCategory
@@ -57,5 +65,13 @@ class PetUseCases(
         photo: Uri
     ) = request {
         petApi.updatePhoto(petId, photo)
+    }
+
+    suspend fun updateOwnership(
+        petId: String,
+        userId: String,
+        ownershipCategory: OwnershipCategory
+    ) = request {
+        petApi.updatePetOwnership(petId, userId, ownershipCategory.name)
     }
 }

@@ -8,10 +8,15 @@
     <string name="pet_id_arg">petId</string>
 
     <!-- Ownership Descriptions -->
-    <string name="owner_category_description">Owner</string>
-    <string name="family_category_description">Family</string>
-    <string name="friend_category_description">Friend</string>
-    <string name="caretaker_category_description">Care Taker</string>
+    <string name="owner_category_description">This ownership can edit all attributes of the owned pet.</string>
+    <string name="family_category_description">Custom family owner</string>
+    <string name="friend_category_description">Custom friend owner</string>
+    <string name="caretaker_category_description">Custom care taker owner</string>
+    <string name="visitor_category_description">This is not considered an ownership, can only visit the pet.</string>
+
+    <!-- View -->
+    <string name="cancel_button">Cancel</string>
+    <string name="change_button">Change</string>
 
     <!-- Error Messages -->
     <string name="unknown_error_message">Unknown error</string>

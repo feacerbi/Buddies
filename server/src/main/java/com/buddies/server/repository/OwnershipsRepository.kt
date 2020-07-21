@@ -28,6 +28,17 @@ class OwnershipsRepository {
         )
     }
 
+    fun updateOwnership(
+        ownershipId: String,
+        category: String
+    ): Transaction.() -> Unit = {
+        update(
+            db.collection(OWNERSHIPS_COLLECTION).document(ownershipId),
+            OWNERSHIP_CATEGORY_FIELD,
+            category
+        )
+    }
+
     fun getUserOwnerships(
         userId: String
     ): Task<QuerySnapshot> =
@@ -42,9 +53,19 @@ class OwnershipsRepository {
             .whereEqualTo(OWNERSHIP_PETID_FIELD, petId)
             .get()
 
+    fun getOwnership(
+        petId: String,
+        userId: String
+    ): Task<QuerySnapshot> =
+        db.collection(OWNERSHIPS_COLLECTION)
+            .whereEqualTo(OWNERSHIP_PETID_FIELD, petId)
+            .whereEqualTo(OWNERSHIP_USERID_FIELD, userId)
+            .get()
+
     companion object {
         private const val OWNERSHIPS_COLLECTION = "ownerships"
         private const val OWNERSHIP_USERID_FIELD = "userId"
         private const val OWNERSHIP_PETID_FIELD = "petId"
+        private const val OWNERSHIP_CATEGORY_FIELD = "category"
     }
 }

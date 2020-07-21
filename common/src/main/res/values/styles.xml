@@ -27,9 +27,8 @@
     </style>
 
     <!-- Button -->
-    <style name="Button" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">?attr/colorSecondary</item>
-    </style>
+    <style name="Button" parent="Widget.MaterialComponents.Button.TextButton"/>
+    <style name="Button.Filled" parent="Widget.MaterialComponents.Button"/>
 
     <!-- Toolbar -->
     <style name="Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">

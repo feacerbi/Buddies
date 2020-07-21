@@ -1,6 +1,7 @@
 package com.buddies.server.util
 
 import com.buddies.common.model.*
+import com.buddies.common.util.toOwnershipCategory
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.UploadTask
@@ -14,6 +15,9 @@ fun DocumentSnapshot.toUser() =
 
 fun DocumentSnapshot.toPet() =
     Pet(id, to(PetInfo::class))
+
+fun DocumentSnapshot.toOwner(ownership: Ownership) =
+    Owner(toUser(), ownership.info.category.toOwnershipCategory())
 
 fun QuerySnapshot.toOwnerships() = documents.map { doc ->
     Ownership(doc.id, doc.to(OwnershipInfo::class))

@@ -7,7 +7,11 @@
     <string name="my_pets_title">My Pets</string>
     <string name="add_new_pet">Add new pet</string>
     <string name="info">Info</string>
+    <string name="owners">Owners</string>
     <string name="animal_field">%s | %s</string>
+    <string name="input_dialog_pet_name_hint">Pet name</string>
+    <string name="edit_ownsership_sheet_title">Change Ownership</string>
+    <string name="apply_button">Apply</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>

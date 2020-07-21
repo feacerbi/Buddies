@@ -14,7 +14,5 @@
 
     <!-- Views -->
     <string name="input_dialog_name_hint">Name</string>
-    <string name="cancel_button">Cancel</string>
-    <string name="change_button">Change</string>
     <string name="info">Info</string>
 </resources>

@@ -134,7 +134,7 @@ class MyPetsWidget @JvmOverloads constructor(
     private fun calculateSpanCount(): Int {
         val maxSpan = context.resources.getInteger(R.integer.mypets_widget_small_span_count)
 
-        return if (adapter.itemCount < maxSpan) {
+        return if (adapter.itemCount in 1 until maxSpan) {
             adapter.itemCount
         } else {
             maxSpan
