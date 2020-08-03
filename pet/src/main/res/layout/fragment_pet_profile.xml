@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="@dimen/margin_large"
         android:elevation="@dimen/bottom_pets_elevation"
-        android:background="?selectableItemBackgroundBorderless"
+        android:background="?selectableItemBackground"
         android:contentDescription="@string/profile_name_edit_icon_content_description"
         android:src="@drawable/ic_edit" />
 

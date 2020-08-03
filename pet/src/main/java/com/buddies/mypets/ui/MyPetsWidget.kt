@@ -34,10 +34,8 @@ class MyPetsWidget @JvmOverloads constructor(
 
     private val petUseCases by inject(PetUseCases::class.java)
 
-    private lateinit var adapter: MyPetsAdapter
+    private val adapter = MyPetsAdapter()
     private val job = SupervisorJob()
-
-    private var onPetClicked: ((Pet) -> Unit)? = null
 
     private val backPressedCallback by lazy {
         object : OnBackPressedCallback(false) {
@@ -63,11 +61,15 @@ class MyPetsWidget @JvmOverloads constructor(
     }
 
     fun addOnPetClickListener(onClick: (Pet) -> Unit) {
-        onPetClicked = onClick
+        adapter.onPetClick = onClick
     }
 
     fun addBackPressedHandler(owner: LifecycleOwner, dispatcher: OnBackPressedDispatcher) {
         dispatcher.addCallback(owner, backPressedCallback)
+    }
+
+    fun setExpanded(expanded: Boolean) = with (binding) {
+        motion.progress = if (expanded) 1F else 0F
     }
 
     private fun setup(attrs: TypedArray) = with (binding) {
@@ -109,13 +111,11 @@ class MyPetsWidget @JvmOverloads constructor(
         })
     }
 
-    private fun addPets(
-        lifecycleOwner: LifecycleOwner? = null
-    ) = getScope().safeLaunch(::showError) {
+    private fun addPets() = getScope().safeLaunch(::showError) {
         val pets = petUseCases.getPetsFromCurrentUser()
 
         if (isAttachedToWindow) {
-            adapter = MyPetsAdapter(pets, owner = lifecycleOwner, onClick = onPetClicked)
+            adapter.setItems(pets)
 
             binding.petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
             binding.petsList.adapter = adapter

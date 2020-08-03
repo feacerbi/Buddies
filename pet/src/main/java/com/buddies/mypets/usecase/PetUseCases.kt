@@ -1,7 +1,9 @@
 package com.buddies.mypets.usecase
 
 import android.net.Uri
-import com.buddies.common.model.*
+import com.buddies.common.model.OwnershipCategory
+import com.buddies.common.model.PetInfo
+import com.buddies.common.model.User
 import com.buddies.common.usecase.BaseUseCases
 import com.buddies.server.api.PetApi
 
@@ -38,6 +40,13 @@ class PetUseCases(
         petApi.getPet(petId)
     }
 
+    suspend fun getAnimalAndBreed(
+        animalId: String,
+        breedId: String
+    ) = request {
+        petApi.getAnimalAndBreed(animalId, breedId)
+    }
+
     suspend fun updatePetName(
         petId: String,
         name: String
@@ -54,10 +63,10 @@ class PetUseCases(
 
     suspend fun updatePetAnimal(
         petId: String,
-        animal: Animal,
-        breed: Breed
+        animalId: String,
+        breedId: String
     ) = request {
-        petApi.updateAnimal(petId, animal.name, breed.name)
+        petApi.updateAnimal(petId, animalId, breedId)
     }
 
     suspend fun updatePetPhoto(

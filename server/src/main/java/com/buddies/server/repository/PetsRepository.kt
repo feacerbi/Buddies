@@ -17,7 +17,8 @@ class PetsRepository {
     ): Transaction.() -> Unit = {
         set(
             db.collection(PETS_COLLECTION).document(newPetId),
-            info)
+            info
+        )
     }
 
     fun deletePet(

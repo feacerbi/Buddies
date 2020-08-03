@@ -6,5 +6,6 @@ import com.buddies.common.viewstate.ViewState
 class ProfileViewState(
     var name: String = "",
     var email: String = "",
-    var photo: Uri = Uri.EMPTY
+    var photo: Uri = Uri.EMPTY,
+    var myPetsWidgetExpanded: Boolean = false
 ) : ViewState

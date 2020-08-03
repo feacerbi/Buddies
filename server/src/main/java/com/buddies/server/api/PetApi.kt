@@ -4,16 +4,14 @@ import android.net.Uri
 import com.buddies.common.model.*
 import com.buddies.common.model.OwnershipCategory.VISITOR
 import com.buddies.common.util.generateNewId
-import com.buddies.server.repository.OwnershipsRepository
-import com.buddies.server.repository.PetsRepository
-import com.buddies.server.repository.UsersRepository
-import com.buddies.server.util.toOwner
-import com.buddies.server.util.toOwnerships
-import com.buddies.server.util.toPet
+import com.buddies.server.repository.*
+import com.buddies.server.util.*
 
 class PetApi(
     private val usersRepository: UsersRepository,
     private val petsRepository: PetsRepository,
+    private val animalsRepository: AnimalsRepository,
+    private val breedsRepository: BreedsRepository,
     private val ownershipsRepository: OwnershipsRepository
 ): BaseApi() {
 
@@ -42,6 +40,20 @@ class PetApi(
             .toPet()
     }
 
+    suspend fun getAnimalAndBreed(
+        animalId: String,
+        breedId: String
+    ) = runWithResult {
+        Pair(
+            animalsRepository.getAnimal(animalId)
+                .handleTaskResult()
+                .toAnimal(),
+            breedsRepository.getBreed(breedId)
+                .handleTaskResult()
+                .toBreed()
+        )
+    }
+
     suspend fun updateName(
         petId: String,
         name: String
@@ -58,11 +70,11 @@ class PetApi(
 
     suspend fun updateAnimal(
         petId: String,
-        animal: String,
-        breed: String
+        animalId: String,
+        breedId: String
     ) = runTransactionsWithResult(
-        petsRepository.updateAnimal(petId, animal),
-        petsRepository.updateBreed(petId, breed)
+        petsRepository.updateAnimal(petId, animalId),
+        petsRepository.updateBreed(petId, breedId)
     )
 
     suspend fun updatePhoto(

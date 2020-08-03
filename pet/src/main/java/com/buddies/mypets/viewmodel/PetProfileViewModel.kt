@@ -50,7 +50,7 @@ class PetProfileViewModel(
     }
 
     private fun updateAnimal(animal: Animal, breed: Breed) = safeLaunch(::showError) {
-        petUseCases.updatePetAnimal(petId, animal, breed)
+        petUseCases.updatePetAnimal(petId, animal.id, breed.id)
         refreshPet()
     }
 
@@ -66,9 +66,13 @@ class PetProfileViewModel(
 
     private fun refreshPet() = safeLaunch(::showError) {
         val pet = petUseCases.getPet(petId)
+        val animalAndBreed = petUseCases.getAnimalAndBreed(
+            pet?.info?.animal ?: "",
+            pet?.info?.breed ?: ""
+        )
         val owners = petUseCases.getOwnersFromPet(petId)
         val currentOwnership = petUseCases.getCurrentUserPetOwnership(petId)
-        updateState(ShowInfo(pet, owners, currentOwnership))
+        updateState(ShowInfo(pet, animalAndBreed, owners, currentOwnership))
     }
 
     private fun openOwnerProfile(owner: Owner) {

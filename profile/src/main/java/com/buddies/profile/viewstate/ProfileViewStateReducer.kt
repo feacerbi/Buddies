@@ -7,12 +7,20 @@ import com.buddies.common.viewstate.ViewStateReducer
 
 sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
 
-    data class ShowInfo(val user: User?) : ProfileViewStateReducer() {
+    data class ShowInfo(
+        val user: User?
+    ) : ProfileViewStateReducer() {
         override val reduce: ProfileViewState.() -> Unit = {
             name = user?.info?.name ?: ""
             email = user?.info?.email ?: ""
             photo = user?.info?.photo?.toUri() ?: Uri.EMPTY
+            myPetsWidgetExpanded = false
         }
     }
 
+    object ExpandedWidget : ProfileViewStateReducer() {
+        override val reduce: ProfileViewState.() -> Unit = {
+            myPetsWidgetExpanded = true
+        }
+    }
 }

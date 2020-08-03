@@ -13,6 +13,7 @@ import com.buddies.profile.viewstate.ProfileViewEffect
 import com.buddies.profile.viewstate.ProfileViewEffect.Navigate
 import com.buddies.profile.viewstate.ProfileViewEffect.ShowError
 import com.buddies.profile.viewstate.ProfileViewState
+import com.buddies.profile.viewstate.ProfileViewStateReducer.ExpandedWidget
 import com.buddies.profile.viewstate.ProfileViewStateReducer.ShowInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
@@ -38,6 +39,7 @@ class ProfileViewModel(
     }
 
     private fun openPetProfile(petId: String) {
+        updateState(ExpandedWidget)
         updateEffect(Navigate(ProfileToPetProfile(petId)))
     }
 

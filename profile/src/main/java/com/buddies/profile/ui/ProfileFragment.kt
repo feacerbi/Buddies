@@ -76,6 +76,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             profilePicture.load(it.photo.toString()) { createLoadRequest(this@ProfileFragment) }
             profileName.text = it.name
             profileEmail.text = it.email
+            myPetsWidget.setExpanded(it.myPetsWidgetExpanded)
         }
 
         observe(viewModel.getEffectStream()) {

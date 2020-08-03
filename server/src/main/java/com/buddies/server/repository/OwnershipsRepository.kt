@@ -17,7 +17,8 @@ class OwnershipsRepository {
     ): Transaction.() -> Unit = {
         set(
             db.collection(OWNERSHIPS_COLLECTION).document(generateNewId()),
-            info)
+            info
+        )
     }
 
     fun removeOwnership(

@@ -16,6 +16,12 @@ fun DocumentSnapshot.toUser() =
 fun DocumentSnapshot.toPet() =
     Pet(id, to(PetInfo::class))
 
+fun DocumentSnapshot.toAnimal() =
+    Animal(id, to(AnimalInfo::class))
+
+fun DocumentSnapshot.toBreed() =
+    Breed(id, to(BreedInfo::class))
+
 fun DocumentSnapshot.toOwner(ownership: Ownership) =
     Owner(toUser(), ownership.info.category.toOwnershipCategory())
 

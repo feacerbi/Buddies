@@ -17,8 +17,8 @@ import com.buddies.mypets.ui.MyPetsAdapter.MyPetsViewHolder
 class MyPetsAdapter(
     pets: List<Pet>? = null,
     var isBig: Boolean = false,
-    private val owner: LifecycleOwner? = null,
-    private val onClick: ((Pet) -> Unit)?
+    var onPetClick: ((Pet) -> Unit)? = null,
+    private val owner: LifecycleOwner? = null
 ) : RecyclerView.Adapter<MyPetsViewHolder>() {
 
     private val petsList = mutableListOf<Pet>()
@@ -27,16 +27,24 @@ class MyPetsAdapter(
         if (pets != null) petsList.addAll(pets)
     }
 
+    fun setItems(pets: List<Pet>?) {
+        if (pets != null) {
+            petsList.clear()
+            petsList.addAll(pets)
+            notifyItemRangeChanged(0, itemCount)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPetsViewHolder =
         MyPetsViewHolder(
             PetListItemBinding.inflate(parent.inflater(), parent, false),
-            onClick
+            onPetClick
         )
 
     override fun getItemCount(): Int = petsList.size
 
     override fun onBindViewHolder(holder: MyPetsViewHolder, position: Int) {
-        holder.bind(owner, petsList, position, isBig)
+        holder.bind(petsList[position], isBig, owner)
     }
 
     class MyPetsViewHolder(
@@ -45,12 +53,10 @@ class MyPetsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            owner: LifecycleOwner?,
-            list: List<Pet>,
-            position: Int,
-            isBig: Boolean
+            pet: Pet,
+            isBig: Boolean,
+            owner: LifecycleOwner?
         ) = with (binding) {
-            val pet = list[position]
 
             root.layoutParams.width = if (isBig) MATCH_PARENT else WRAP_CONTENT
             root.setOnClickListener { onClick?.invoke(pet) }
