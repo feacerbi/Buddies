@@ -18,7 +18,7 @@ class MyPetsAdapter(
     pets: List<Pet>? = null,
     var isBig: Boolean = false,
     var onPetClick: ((Pet) -> Unit)? = null,
-    private val owner: LifecycleOwner? = null
+    var owner: LifecycleOwner? = null
 ) : RecyclerView.Adapter<MyPetsViewHolder>() {
 
     private val petsList = mutableListOf<Pet>()
@@ -44,18 +44,17 @@ class MyPetsAdapter(
     override fun getItemCount(): Int = petsList.size
 
     override fun onBindViewHolder(holder: MyPetsViewHolder, position: Int) {
-        holder.bind(petsList[position], isBig, owner)
+        holder.bind(petsList[position], isBig)
     }
 
-    class MyPetsViewHolder(
+    inner class MyPetsViewHolder(
         private val binding: PetListItemBinding,
         private val onClick: ((Pet) -> Unit)?
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
             pet: Pet,
-            isBig: Boolean,
-            owner: LifecycleOwner?
+            isBig: Boolean
         ) = with (binding) {
 
             root.layoutParams.width = if (isBig) MATCH_PARENT else WRAP_CONTENT

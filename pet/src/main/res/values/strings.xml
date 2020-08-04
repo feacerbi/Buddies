@@ -12,6 +12,8 @@
     <string name="input_dialog_pet_name_hint">Pet name</string>
     <string name="edit_ownsership_sheet_title">Change Ownership</string>
     <string name="apply_button">Apply</string>
+    <string name="select_animal_title">Select Animal</string>
+    <string name="select_breed_title">Select Breed</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>

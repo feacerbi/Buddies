@@ -60,7 +60,7 @@ class OwnersAdapter(
             }
 
             ownerName.text = owner.user.info.name
-            ownerOwnership.text = owner.category.name
+            ownerOwnership.text = root.context.resources.getString(owner.category.title)
 
             editOwnership.isVisible =
                 owner.user.id != currentOwnership.userId

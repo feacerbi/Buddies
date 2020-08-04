@@ -60,8 +60,9 @@ class MyPetsWidget @JvmOverloads constructor(
         styleAttrs.recycle()
     }
 
-    fun addOnPetClickListener(onClick: (Pet) -> Unit) {
+    fun addOnPetClickListener(lifecycleOwner: LifecycleOwner? = null, onClick: (Pet) -> Unit) {
         adapter.onPetClick = onClick
+        adapter.owner = lifecycleOwner
     }
 
     fun addBackPressedHandler(owner: LifecycleOwner, dispatcher: OnBackPressedDispatcher) {
@@ -70,6 +71,7 @@ class MyPetsWidget @JvmOverloads constructor(
 
     fun setExpanded(expanded: Boolean) = with (binding) {
         motion.progress = if (expanded) 1F else 0F
+        if (expanded) finalStateSetup(false) else initialStateSetup()
     }
 
     private fun setup(attrs: TypedArray) = with (binding) {
@@ -95,20 +97,40 @@ class MyPetsWidget @JvmOverloads constructor(
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {}
             override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
             override fun onTransitionCompleted(motionLayout: MotionLayout, p1: Int) {
-                motionLayout.isInteractionEnabled = motionLayout.progress != 1f
-                motionLayout.enableTransition(R.id.my_pets_transition, motionLayout.progress != 1f)
-                backPressedCallback.isEnabled = motionLayout.progress == 1f
-                petsToolbar.isEnabled = motionLayout.progress == 1f
-
                 if (motionLayout.progress == 1f) {
-                    TransitionManager.beginDelayedTransition(motion)
-                    petsList.layoutManager = GridLayoutManager(context,
-                        context.resources.getInteger(R.integer.mypets_widget_big_span_count))
-                    adapter.isBig = true
-                    adapter.notifyItemRangeChanged(0, adapter.itemCount)
+                    finalStateSetup()
+                } else {
+                    initialStateSetup()
                 }
             }
         })
+    }
+
+    private fun transitionBack() {
+        binding.petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
+        adapter.isBig = false
+        adapter.notifyItemRangeChanged(0, adapter.itemCount)
+        binding.motion.transitionToStart()
+    }
+
+    private fun initialStateSetup() = with (binding) {
+        motion.isInteractionEnabled = true
+        motion.enableTransition(R.id.my_pets_transition, true)
+        backPressedCallback.isEnabled = false
+        petsToolbar.isEnabled = false
+    }
+
+    private fun finalStateSetup(animate: Boolean = true) = with (binding) {
+        motion.isInteractionEnabled = false
+        motion.enableTransition(R.id.my_pets_transition, false)
+        backPressedCallback.isEnabled = true
+        petsToolbar.isEnabled = true
+
+        if (animate) TransitionManager.beginDelayedTransition(motion)
+        petsList.layoutManager = GridLayoutManager(context,
+            context.resources.getInteger(R.integer.mypets_widget_big_span_count))
+        adapter.isBig = true
+        adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
 
     private fun addPets() = getScope().safeLaunch(::showError) {
@@ -122,13 +144,6 @@ class MyPetsWidget @JvmOverloads constructor(
 
             updatePetsCount(adapter.itemCount)
         }
-    }
-
-    private fun transitionBack() {
-        binding.petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
-        adapter.isBig = false
-        adapter.notifyItemRangeChanged(0, adapter.itemCount)
-        binding.motion.transitionToStart()
     }
 
     private fun calculateSpanCount(): Int {

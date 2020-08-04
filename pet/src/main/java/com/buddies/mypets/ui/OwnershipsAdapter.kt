@@ -46,7 +46,7 @@ class OwnershipsAdapter(
             checkIcon.isInvisible = ownership.second.not()
             checkedBackground.isVisible = ownership.second
 
-            ownershipTitle.text = ownership.first.name
+            ownershipTitle.text = root.context.resources.getString(ownership.first.title)
             ownershipDescription.text = root.context.resources.getString(ownership.first.description)
 
             root.setOnClickListener {

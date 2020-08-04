@@ -13,15 +13,18 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import coil.request.CachePolicy
 import coil.request.LoadRequestBuilder
 import coil.transform.CircleCropTransformation
 import com.buddies.common.R
 import com.buddies.common.databinding.InputTextLayoutBinding
+import com.buddies.common.databinding.SelectableListLayoutBinding
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.ErrorCode.UNKNOWN
 import com.buddies.common.model.OwnershipCategory.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.buddies.common.ui.SelectableAdapter
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -54,6 +57,8 @@ fun LoadRequestBuilder.createLoadRequest(
     circleTransform: Boolean = false,
     @DrawableRes error: Int = -1
 ) {
+    memoryCachePolicy(CachePolicy.ENABLED)
+    networkCachePolicy(CachePolicy.ENABLED)
     crossfade(true)
     lifecycle(lifecycleOwner)
     if (error != -1) error(error)
@@ -95,29 +100,71 @@ fun Float.toDp(res: Resources) = TypedValue.applyDimension(
     res.displayMetrics
 )
 
-fun Fragment.openEditDialog(
+fun Fragment.openBottomEditDialog(
     hint: String = "",
     text: String = "",
-    positiveAction: (String) -> Unit
+    positiveAction: (String) -> Unit,
+    dismissAction: (() -> Unit)? = null
 ) {
     val inputView = InputTextLayoutBinding.inflate(layoutInflater)
+    val bottomSheet = BottomSheetDialog(inputView.root.context).apply {
+        setContentView(inputView.root)
+        dismissWithAnimation = true
+        setCanceledOnTouchOutside(true)
+    }
 
-    inputView.inputLayout.hint = hint
-    inputView.inputEditText.setText(text)
-    inputView.inputEditText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
+    with (inputView) {
+        inputLayout.hint = hint
+        inputEditText.setText(text)
+        inputEditText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
 
-    MaterialAlertDialogBuilder(requireContext())
-        .setView(inputView.root)
-        .setNegativeButton(getString(R.string.cancel_button)) { dialog, _ ->
-            dialog.dismiss()
+        cancelButton.setOnClickListener {
+            dismissAction?.invoke()
+            bottomSheet.cancel()
         }
-        .setPositiveButton(getString(R.string.change_button)) { dialog, _ ->
-            positiveAction.invoke(inputView.inputEditText.text.toString())
-            dialog.dismiss()
+        changeButton.setOnClickListener {
+            positiveAction.invoke(inputEditText.text.toString())
+            bottomSheet.cancel()
         }
-        .show()
+    }
 
-    inputView.inputEditText.requestFocus()
+    bottomSheet.show()
+}
+
+fun <T : RecyclerView.ViewHolder, R> Fragment.openBottomSelectableDialog(
+    title: String,
+    adapter: SelectableAdapter<T, R>,
+    onSelectedChanged: (() -> Unit)? = null,
+    onSelectedButton: String = getString(com.buddies.common.R.string.change_button),
+    dismissAction: (() -> Unit)? = null
+) {
+    val selectableView = SelectableListLayoutBinding.inflate(layoutInflater)
+    val bottomSheet = BottomSheetDialog(selectableView.root.context).apply {
+        setContentView(selectableView.root)
+        dismissWithAnimation = true
+        setCanceledOnTouchOutside(true)
+    }
+
+    with (selectableView) {
+        adapter.addOnSelectedListener {
+            changeButton.isEnabled = true
+        }
+
+        listTitle.text = title
+        list.adapter = adapter
+
+        cancelButton.setOnClickListener {
+            dismissAction?.invoke()
+            bottomSheet.cancel()
+        }
+        changeButton.text = onSelectedButton
+        changeButton.setOnClickListener {
+            onSelectedChanged?.invoke()
+            bottomSheet.cancel()
+        }
+    }
+
+    bottomSheet.show()
 }
 
 fun String.toOwnershipCategory() = when (this) {

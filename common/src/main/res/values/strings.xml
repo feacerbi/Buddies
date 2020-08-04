@@ -7,6 +7,13 @@
     <!-- Args -->
     <string name="pet_id_arg">petId</string>
 
+    <!-- Ownership Titles -->
+    <string name="owner_title">Owner</string>
+    <string name="family_title">Family</string>
+    <string name="friend_title">Friend</string>
+    <string name="caretaker_title">Care Taker</string>
+    <string name="visitor_title">Visitor</string>
+
     <!-- Ownership Descriptions -->
     <string name="owner_category_description">This ownership can edit all attributes of the owned pet.</string>
     <string name="family_category_description">Custom family owner</string>
@@ -17,6 +24,7 @@
     <!-- View -->
     <string name="cancel_button">Cancel</string>
     <string name="change_button">Change</string>
+    <string name="next_button">Next</string>
 
     <!-- Error Messages -->
     <string name="unknown_error_message">Unknown error</string>

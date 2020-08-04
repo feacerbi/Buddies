@@ -8,7 +8,7 @@ import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.mypets.usecase.PetUseCases
 import com.buddies.mypets.viewmodel.PetProfileViewModel.Action.*
 import com.buddies.mypets.viewstate.PetProfileViewEffect
-import com.buddies.mypets.viewstate.PetProfileViewEffect.ShowError
+import com.buddies.mypets.viewstate.PetProfileViewEffect.*
 import com.buddies.mypets.viewstate.PetProfileViewState
 import com.buddies.mypets.viewstate.PetProfileViewStateReducer.ShowInfo
 import kotlinx.coroutines.CoroutineDispatcher
@@ -36,6 +36,8 @@ class PetProfileViewModel(
             is ChangePhoto -> updatePhoto(action.photo)
             is ChangeOwnership -> changeOwnership(action.owner, action.ownership)
             is OpenOwnerProfile -> openOwnerProfile(action.owner)
+            is RequestBreeds -> requestBreeds(action.animal)
+            is RequestAnimals -> requestAnimals()
         }
     }
 
@@ -79,6 +81,16 @@ class PetProfileViewModel(
         // TODO
     }
 
+    private fun requestAnimals() = safeLaunch(::showError) {
+        val animals = petUseCases.getAllAnimals()
+        updateEffect(ShowAnimalsList(animals))
+    }
+
+    private fun requestBreeds(animal: Animal) = safeLaunch(::showError) {
+        val breeds = petUseCases.getBreedsFromAnimal(animal.id)
+        updateEffect(ShowBreedsList(breeds, animal))
+    }
+
     private fun showError(error: DefaultError) {
         updateEffect(ShowError(error.code.message))
     }
@@ -90,6 +102,8 @@ class PetProfileViewModel(
         data class ChangePhoto(val photo: Uri) : Action()
         data class ChangeOwnership(val owner: Owner, val ownership: OwnershipCategory) : Action()
         data class OpenOwnerProfile(val owner: Owner) : Action()
+        data class RequestBreeds(val animal: Animal) : Action()
+        object RequestAnimals : Action()
     }
 
     override val coroutineContext: CoroutineContext

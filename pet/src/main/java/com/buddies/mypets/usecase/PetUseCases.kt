@@ -5,10 +5,12 @@ import com.buddies.common.model.OwnershipCategory
 import com.buddies.common.model.PetInfo
 import com.buddies.common.model.User
 import com.buddies.common.usecase.BaseUseCases
+import com.buddies.server.api.AnimalAPI
 import com.buddies.server.api.PetApi
 
 class PetUseCases(
-    private val petApi: PetApi
+    private val petApi: PetApi,
+    private val animalAPI: AnimalAPI
 ) : BaseUseCases() {
 
     suspend fun getPetsFromCurrentUser() = request {
@@ -82,5 +84,15 @@ class PetUseCases(
         ownershipCategory: OwnershipCategory
     ) = request {
         petApi.updatePetOwnership(petId, userId, ownershipCategory.name)
+    }
+
+    suspend fun getAllAnimals() = request {
+        animalAPI.getAllAnimals()
+    }
+
+    suspend fun getBreedsFromAnimal(
+        animalId: String
+    ) = request {
+        animalAPI.getAllAnimalBreeds(animalId)
     }
 }

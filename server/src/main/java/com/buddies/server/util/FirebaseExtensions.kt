@@ -29,4 +29,12 @@ fun QuerySnapshot.toOwnerships() = documents.map { doc ->
     Ownership(doc.id, doc.to(OwnershipInfo::class))
 }
 
+fun QuerySnapshot.toAnimals() = documents.map { doc ->
+    Animal(doc.id, doc.to(AnimalInfo::class))
+}
+
+fun QuerySnapshot.toBreeds() = documents.map { doc ->
+    Breed(doc.id, doc.to(BreedInfo::class))
+}
+
 fun UploadTask.TaskSnapshot.getDownloadUrl() = storage.downloadUrl

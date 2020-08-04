@@ -2,11 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/ownerships_bottom_sheet_title"
+        android:id="@+id/list_title"
         style="@style/Headline6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -15,40 +16,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_large"
-        android:layout_marginEnd="@dimen/margin_large"
-        android:text="@string/edit_ownsership_sheet_title"/>
+        android:layout_marginEnd="@dimen/margin_medium"
+        tools:text="Title"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/edit_ownership_actions"
+        android:id="@+id/list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ownerships_bottom_sheet_title"
-        app:layout_constraintBottom_toTopOf="@id/apply_button"
+        app:layout_constraintTop_toBottomOf="@id/list_title"
         android:layout_marginTop="@dimen/margin_large"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/apply_button"
+        android:id="@+id/change_button"
         style="@style/Button.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_ownership_actions"
+        app:layout_constraintTop_toBottomOf="@id/list"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginBottom="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
-        android:text="@string/apply_button"/>
+        android:enabled="false"
+        android:text="@string/change_button"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/cancel_button"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/apply_button"
-        app:layout_constraintTop_toBottomOf="@id/edit_ownership_actions"
+        app:layout_constraintEnd_toStartOf="@id/change_button"
+        app:layout_constraintTop_toBottomOf="@id/list"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_medium"

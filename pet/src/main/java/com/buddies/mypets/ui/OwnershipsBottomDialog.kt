@@ -37,6 +37,10 @@ class OwnershipsBottomDialog(
                 dismiss()
             }
 
+            cancelButton.setOnClickListener {
+                dismiss()
+            }
+
             editOwnershipActions.adapter = ownershipsAdapter
         }
     }

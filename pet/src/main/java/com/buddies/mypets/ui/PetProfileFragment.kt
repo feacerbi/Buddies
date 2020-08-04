@@ -11,18 +11,20 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import coil.api.load
+import com.buddies.common.model.Animal
+import com.buddies.common.model.Breed
 import com.buddies.common.model.Owner
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.observe
-import com.buddies.common.util.openEditDialog
+import com.buddies.common.util.openBottomEditDialog
+import com.buddies.common.util.openBottomSelectableDialog
 import com.buddies.mypets.R
 import com.buddies.mypets.databinding.FragmentPetProfileBinding
 import com.buddies.mypets.viewmodel.PetProfileViewModel
 import com.buddies.mypets.viewmodel.PetProfileViewModel.Action
 import com.buddies.mypets.viewmodel.PetProfileViewModel.Action.*
-import com.buddies.mypets.viewstate.PetProfileViewEffect.Navigate
-import com.buddies.mypets.viewstate.PetProfileViewEffect.ShowError
+import com.buddies.mypets.viewstate.PetProfileViewEffect.*
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -72,7 +74,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         }
 
         profileNameEdit.setOnClickListener {
-            openEditDialog(
+            openBottomEditDialog(
                 hint = getString(R.string.input_dialog_pet_name_hint),
                 text = profileName.text.toString(),
                 positiveAction = { perform(ChangeName(it) )}
@@ -80,12 +82,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         }
 
         profileAnimalEdit.setOnClickListener {
-            // TODO
-//            openEditDialog(
-//                hint = getString(R.string.input_dialog_pet_name_hint),
-//                text = profileName.text.toString(),
-//                positiveAction = { perform(ChangeAnimal(it.toAnimal()) )}
-//            )
+            perform(RequestAnimals)
         }
     }
 
@@ -103,13 +100,15 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
                 it.owners,
                 it.ownershipInfo,
                 this@PetProfileFragment,
-                { owner -> perform(OpenOwnerProfile(owner)) },
-                { owner -> showEditOwnershipBottomSheet(owner) }
+                onClick = { owner -> perform(OpenOwnerProfile(owner)) },
+                onOwnershipClick = { owner -> showEditOwnershipBottomSheet(owner) }
             )
         }
 
         observe(viewModel.getEffectStream()) {
             when (it) {
+                is ShowAnimalsList -> openAnimalsList(it.list)
+                is ShowBreedsList -> openBreedsList(it.list, it.animal)
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
@@ -130,6 +129,28 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         ownershipsBottomSheet.show(owner.category) {
             perform(ChangeOwnership(owner, it))
         }
+    }
+
+    private fun openAnimalsList(list: List<Animal>?) {
+        val animalsAdapter = AnimalsAdapter(list, this)
+
+        openBottomSelectableDialog(
+            getString(R.string.select_animal_title),
+            animalsAdapter,
+            { perform(RequestBreeds(animalsAdapter.getSelected())) },
+            getString(R.string.next_button)
+        )
+    }
+
+    private fun openBreedsList(list: List<Breed>?, animal: Animal) {
+        val breedsAdapter = BreedsAdapter(list, this)
+
+        openBottomSelectableDialog(
+            getString(R.string.select_breed_title),
+            breedsAdapter,
+            { perform(ChangeAnimal(animal, breedsAdapter.getSelected())) },
+            getString(R.string.change_button)
+        )
     }
 
     private fun showMessage(text: Int) {

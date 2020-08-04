@@ -7,6 +7,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val myPetsModule = module {
-    factory { PetUseCases(get()) }
+    factory { PetUseCases(get(), get()) }
     viewModel { params -> PetProfileViewModel(params[0], get(), Dispatchers.Main) }
 }

@@ -13,7 +13,7 @@ import coil.api.load
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.observe
-import com.buddies.common.util.openEditDialog
+import com.buddies.common.util.openBottomEditDialog
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
 import com.buddies.profile.viewmodel.ProfileViewModel
@@ -60,14 +60,14 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         }
 
         profileNameEdit.setOnClickListener {
-            openEditDialog(
+            openBottomEditDialog(
                 hint = getString(R.string.input_dialog_name_hint),
                 text = profileName.text.toString(),
                 positiveAction = { perform(ChangeName(it) )}
             )
         }
 
-        myPetsWidget.addOnPetClickListener { perform(OpenPetProfile(it.id)) }
+        myPetsWidget.addOnPetClickListener(this@ProfileFragment) { perform(OpenPetProfile(it.id)) }
         myPetsWidget.addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
     }
 

@@ -6,10 +6,10 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin_tiny"
-    android:layout_marginEnd="@dimen/margin_tiny"
-    android:layout_marginTop="@dimen/margin_small"
-    android:layout_marginBottom="@dimen/margin_small"
+    android:paddingStart="@dimen/margin_tiny"
+    android:paddingEnd="@dimen/margin_tiny"
+    android:paddingTop="@dimen/margin_small"
+    android:paddingBottom="@dimen/margin_small"
     android:background="?selectableItemBackground">
 
     <ImageView
