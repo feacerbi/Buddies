@@ -7,5 +7,6 @@ class ProfileViewState(
     var name: String = "",
     var email: String = "",
     var photo: Uri = Uri.EMPTY,
-    var myPetsWidgetExpanded: Boolean = false
+    var myPetsWidgetExpanded: Boolean = false,
+    var loading: Boolean = false
 ) : ViewState

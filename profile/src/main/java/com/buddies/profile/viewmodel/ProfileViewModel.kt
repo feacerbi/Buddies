@@ -13,8 +13,7 @@ import com.buddies.profile.viewstate.ProfileViewEffect
 import com.buddies.profile.viewstate.ProfileViewEffect.Navigate
 import com.buddies.profile.viewstate.ProfileViewEffect.ShowError
 import com.buddies.profile.viewstate.ProfileViewState
-import com.buddies.profile.viewstate.ProfileViewStateReducer.ExpandedWidget
-import com.buddies.profile.viewstate.ProfileViewStateReducer.ShowInfo
+import com.buddies.profile.viewstate.ProfileViewStateReducer.*
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
 
@@ -31,6 +30,7 @@ class ProfileViewModel(
 
     fun perform(action: Action) {
         when (action) {
+            is Refresh -> refreshUser()
             is OpenPetProfile -> openPetProfile(action.petId)
             is ChangeName -> updateName(action.name)
             is ChangePhoto -> updatePhoto(action.photo)
@@ -44,16 +44,19 @@ class ProfileViewModel(
     }
 
     private fun updateName(name: String) = safeLaunch(::showError) {
+        updateState(Loading)
         profileUseCases.updateName(name)
         refreshUser()
     }
 
     private fun updatePhoto(photo: Uri) = safeLaunch(::showError) {
+        updateState(Loading)
         profileUseCases.updatePhoto(photo)
         refreshUser()
     }
 
     private fun refreshUser() = safeLaunch(::showError) {
+        updateState(Loading)
         val currentUser = profileUseCases.getCurrentUser()
         updateState(ShowInfo(currentUser))
     }
@@ -68,6 +71,7 @@ class ProfileViewModel(
     }
 
     sealed class Action {
+        object Refresh : Action()
         object SignOut : Action()
         data class ChangeName(val name: String) : Action()
         data class ChangePhoto(val photo: Uri) : Action()

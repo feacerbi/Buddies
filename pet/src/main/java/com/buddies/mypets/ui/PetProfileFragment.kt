@@ -83,6 +83,11 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             }
         }
 
+        refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
+        refresh.setOnRefreshListener {
+            perform(Refresh)
+        }
+
         profileNameEdit.setOnClickListener {
             openBottomEditDialog(
                 hint = getString(R.string.input_dialog_pet_name_hint),
@@ -115,6 +120,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
                 onOwnershipClick = { owner -> showEditOwnershipBottomSheet(owner) }
             )
             ownersPagingAdapter.submitData(lifecycle, it.pagingData)
+            refresh.isRefreshing = it.loading
         }
 
         observe(viewModel.getEffectStream()) {

@@ -33,6 +33,7 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
             }
             ownershipInfo = currentOwnership ?: OwnershipInfo()
             owners = ownersList ?: emptyList()
+            loading = false
         }
     }
 
@@ -41,6 +42,14 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
     ) : PetProfileViewStateReducer() {
         override val reduce: PetProfileViewState.() -> Unit = {
             pagingData = data
+        }
+    }
+
+    data class Loading(
+        val show: Boolean = true
+    ) : PetProfileViewStateReducer() {
+        override val reduce: PetProfileViewState.() -> Unit = {
+            loading = show
         }
     }
 }

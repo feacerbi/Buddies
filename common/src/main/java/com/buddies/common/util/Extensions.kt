@@ -1,5 +1,6 @@
 package com.buddies.common.util
 
+import android.content.Context
 import android.content.res.Resources
 import android.text.InputType
 import android.util.TypedValue
@@ -7,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -181,4 +184,11 @@ fun String.toOwnershipCategory() = when (this) {
     FRIEND.name -> FRIEND
     CARE_TAKER.name -> CARE_TAKER
     else -> VISITOR
+}
+
+@ColorRes
+@AttrRes fun Int.toColorId(context: Context): Int {
+    val typedValue = TypedValue()
+    context.theme.resolveAttribute(this, typedValue, false)
+    return typedValue.data
 }

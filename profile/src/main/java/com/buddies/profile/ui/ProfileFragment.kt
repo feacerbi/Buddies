@@ -14,6 +14,7 @@ import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.observe
 import com.buddies.common.util.openBottomEditDialog
+import com.buddies.common.util.toColorId
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
 import com.buddies.profile.viewmodel.ProfileViewModel
@@ -59,6 +60,11 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             }
         }
 
+        refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
+        refresh.setOnRefreshListener {
+            perform(Refresh)
+        }
+
         profileNameEdit.setOnClickListener {
             openBottomEditDialog(
                 hint = getString(R.string.input_dialog_name_hint),
@@ -77,6 +83,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             profileName.text = it.name
             profileEmail.text = it.email
             myPetsWidget.setExpanded(it.myPetsWidgetExpanded)
+            refresh.isRefreshing = it.loading
         }
 
         observe(viewModel.getEffectStream()) {

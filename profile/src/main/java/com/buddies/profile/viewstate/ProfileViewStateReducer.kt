@@ -15,12 +15,19 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
             email = user?.info?.email ?: ""
             photo = user?.info?.photo?.toUri() ?: Uri.EMPTY
             myPetsWidgetExpanded = false
+            loading = false
         }
     }
 
     object ExpandedWidget : ProfileViewStateReducer() {
         override val reduce: ProfileViewState.() -> Unit = {
             myPetsWidgetExpanded = true
+        }
+    }
+
+    object Loading : ProfileViewStateReducer() {
+        override val reduce: ProfileViewState.() -> Unit = {
+            loading = true
         }
     }
 }

@@ -34,6 +34,7 @@
         android:textAppearance="@style/Body1"
         android:hint="@string/invite_owners_hint"
         android:drawableEnd="@drawable/ic_baseline_search"
+        android:inputType="textCapWords|textPersonName"
         android:maxLines="1"/>
 
     <androidx.recyclerview.widget.RecyclerView

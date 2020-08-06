@@ -20,5 +20,6 @@ class PetProfileViewState(
     @MenuRes var toolbarMenu: Int = R.menu.empty_menu,
     var ownershipInfo: OwnershipInfo = OwnershipInfo(),
     var owners: List<Owner> = emptyList(),
-    var pagingData: PagingData<Owner> = PagingData.empty()
+    var pagingData: PagingData<Owner> = PagingData.empty(),
+    var loading: Boolean = false
 ) : ViewState

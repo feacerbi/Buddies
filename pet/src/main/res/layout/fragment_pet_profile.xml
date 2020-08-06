@@ -86,7 +86,8 @@
         android:contentDescription="@string/profile_name_edit_icon_content_description"
         android:src="@drawable/ic_edit" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/profile_name_icon"
@@ -94,123 +95,128 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/profile_info_title"
-                style="@style/Overline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                android:textColor="?attr/colorSecondary"
-                android:text="@string/info"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/profile_animal_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/profile_info_title"
-                app:layout_constraintStart_toStartOf="parent"
-                android:padding="@dimen/margin_large"
-                android:tint="@color/iconColorNormal"
-                android:contentDescription="@string/pet_animal_icon_content_description"
-                android:src="@drawable/ic_baseline_pets" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_info_title"
+                    style="@style/Overline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:textColor="?attr/colorSecondary"
+                    android:text="@string/info"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/profile_animal"
-                style="@style/Body1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/profile_animal_icon"
-                app:layout_constraintBottom_toBottomOf="@id/profile_animal_icon"
-                app:layout_constraintStart_toEndOf="@id/profile_animal_icon"
-                app:layout_constraintEnd_toStartOf="@id/profile_animal_edit"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_goneMarginEnd="@dimen/margin_medium"
-                android:maxLines="1"
-                android:ellipsize="end"
-                tools:text="Cat"/>
+                <ImageView
+                    android:id="@+id/profile_animal_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/profile_info_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:padding="@dimen/margin_large"
+                    android:tint="@color/iconColorNormal"
+                    android:contentDescription="@string/pet_animal_icon_content_description"
+                    android:src="@drawable/ic_baseline_pets" />
 
-            <ImageView
-                android:id="@+id/profile_animal_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/profile_animal_icon"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:padding="@dimen/margin_large"
-                android:background="?selectableItemBackgroundBorderless"
-                android:tint="?attr/colorSecondary"
-                android:contentDescription="@string/pet_animal_edit_icon_content_description"
-                android:src="@drawable/ic_edit" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_animal"
+                    style="@style/Body1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_animal_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_animal_icon"
+                    app:layout_constraintStart_toEndOf="@id/profile_animal_icon"
+                    app:layout_constraintEnd_toStartOf="@id/profile_animal_edit"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_goneMarginEnd="@dimen/margin_medium"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Cat"/>
 
-            <ImageView
-                android:id="@+id/profile_tag_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/profile_animal_icon"
-                app:layout_constraintStart_toStartOf="parent"
-                android:padding="@dimen/margin_large"
-                android:contentDescription="@string/pet_tag_icon_content_description"
-                android:src="@drawable/ic_baseline_local_offer" />
+                <ImageView
+                    android:id="@+id/profile_animal_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_animal_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="@dimen/margin_large"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:tint="?attr/colorSecondary"
+                    android:contentDescription="@string/pet_animal_edit_icon_content_description"
+                    android:src="@drawable/ic_edit" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/profile_tag_number"
-                style="@style/Body1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/profile_tag_edit"
-                app:layout_constraintBottom_toBottomOf="@id/profile_tag_edit"
-                app:layout_constraintStart_toEndOf="@id/profile_tag_icon"
-                app:layout_constraintEnd_toStartOf="@id/profile_tag_edit"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_goneMarginEnd="@dimen/margin_medium"
-                android:maxLines="1"
-                android:ellipsize="end"
-                tools:text="SKLJGK653756735DFBK"/>
+                <ImageView
+                    android:id="@+id/profile_tag_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/profile_animal_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:padding="@dimen/margin_large"
+                    android:contentDescription="@string/pet_tag_icon_content_description"
+                    android:src="@drawable/ic_baseline_local_offer" />
 
-            <ImageView
-                android:id="@+id/profile_tag_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/profile_tag_icon"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:padding="@dimen/margin_large"
-                android:tint="?attr/colorSecondary"
-                android:contentDescription="@string/pet_tag_edit_icon_content_description"
-                android:src="@drawable/ic_edit" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_tag_number"
+                    style="@style/Body1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_tag_edit"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_tag_edit"
+                    app:layout_constraintStart_toEndOf="@id/profile_tag_icon"
+                    app:layout_constraintEnd_toStartOf="@id/profile_tag_edit"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_goneMarginEnd="@dimen/margin_medium"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="SKLJGK653756735DFBK"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/profile_owners_title"
-                style="@style/Overline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/profile_tag_icon"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                android:textColor="?attr/colorSecondary"
-                android:text="@string/owners"/>
+                <ImageView
+                    android:id="@+id/profile_tag_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_tag_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="@dimen/margin_large"
+                    android:tint="?attr/colorSecondary"
+                    android:contentDescription="@string/pet_tag_edit_icon_content_description"
+                    android:src="@drawable/ic_edit" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/owners_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/profile_owners_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:padding="@dimen/margin_medium"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/owner_list_item"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_owners_title"
+                    style="@style/Overline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/profile_tag_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:textColor="?attr/colorSecondary"
+                    android:text="@string/owners"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/owners_list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/profile_owners_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="@dimen/margin_medium"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/owner_list_item"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
