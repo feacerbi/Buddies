@@ -19,7 +19,7 @@
     <string name="send_button">Send</string>
     <string name="invite_owners_title">Invite Owners</string>
     <string name="invite_owners_hint">Search names</string>
-    <string name="invite_owners_empty_list">No owners to display</string>
+    <string name="invite_owners_empty_list">No search results</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>

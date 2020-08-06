@@ -121,7 +121,9 @@ class PetProfileViewModel(
         if (checkNotValidQuery(query)) return@restart
 
         safeLaunch(::showError) {
-            petUseCases.getOwnersToInvite(petId, query).cachedIn(this).collectLatest {
+            petUseCases.getOwnersToInvite(petId, query)
+                .cachedIn(this)
+                .collectLatest {
                 updateState(ShowOwnersToInvite(it))
             }
         }
@@ -152,6 +154,6 @@ class PetProfileViewModel(
 
     companion object {
         private const val MIN_QUERY = 2
-        private const val QUERY_DEBOUNCE_TIME = 500L
+        private const val QUERY_DEBOUNCE_TIME = 200L
     }
 }

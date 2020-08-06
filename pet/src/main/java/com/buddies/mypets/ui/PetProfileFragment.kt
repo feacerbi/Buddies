@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.ExperimentalPagingApi
 import coil.api.load
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
@@ -31,6 +32,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
@@ -146,6 +148,10 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     private fun showInviteOwnerBottomSheet() {
         val customView = OwnerInviteListBinding.inflate(layoutInflater)
         val dialog = openCustomBottomSheet(customView.root)
+
+        ownersPagingAdapter.addDataRefreshListener {
+            customView.ownersListEmpty.isVisible = ownersPagingAdapter.itemCount == 0
+        }
 
         customView.searchBox.addTextChangedListener {
             perform(RequestInviteOwners(it.toString()))
