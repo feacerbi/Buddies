@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager
 import com.buddies.common.model.OwnershipCategory
 import com.buddies.common.model.OwnershipCategory.VISITOR
+import com.buddies.mypets.R
 import com.buddies.mypets.databinding.EditOwnershipListBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -19,6 +21,7 @@ class OwnershipsBottomDialog(
     private var ownershipsAdapter = OwnershipsAdapter()
     private var currentSelectedOwnership = VISITOR
     private var onOwnershipChangedListener: ((OwnershipCategory) -> Unit)? = null
+    @StringRes private var applyButtonText = R.string.apply_button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +35,7 @@ class OwnershipsBottomDialog(
         super.onViewCreated(view, savedInstanceState)
 
         with (binding) {
+            applyButton.text = getString(applyButtonText)
             applyButton.setOnClickListener {
                 onOwnershipChangedListener?.invoke(currentSelectedOwnership)
                 dismiss()
@@ -47,6 +51,7 @@ class OwnershipsBottomDialog(
 
     fun show(
         selected: OwnershipCategory,
+        @StringRes positiveButtonText: Int = applyButtonText,
         onOwnershipChanged: ((OwnershipCategory) -> Unit)? = null
     ) {
         ownershipsAdapter = OwnershipsAdapter(selected) {
@@ -57,6 +62,8 @@ class OwnershipsBottomDialog(
                 null
             }
         }
+
+        applyButtonText = positiveButtonText
 
         show(manager, null)
     }

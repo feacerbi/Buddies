@@ -9,27 +9,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import coil.api.load
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.Owner
 import com.buddies.common.ui.NavigationFragment
-import com.buddies.common.util.createLoadRequest
-import com.buddies.common.util.observe
-import com.buddies.common.util.openBottomEditDialog
-import com.buddies.common.util.openBottomSelectableDialog
+import com.buddies.common.util.*
 import com.buddies.mypets.R
 import com.buddies.mypets.databinding.FragmentPetProfileBinding
+import com.buddies.mypets.databinding.OwnerInviteListBinding
+import com.buddies.mypets.model.OwnersComparator
 import com.buddies.mypets.viewmodel.PetProfileViewModel
 import com.buddies.mypets.viewmodel.PetProfileViewModel.Action
 import com.buddies.mypets.viewmodel.PetProfileViewModel.Action.*
 import com.buddies.mypets.viewstate.PetProfileViewEffect.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalCoroutinesApi
 class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
     private lateinit var binding: FragmentPetProfileBinding
@@ -40,6 +42,10 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
     private val ownershipsBottomSheet: OwnershipsBottomDialog by lazy {
         OwnershipsBottomDialog(parentFragmentManager)
+    }
+
+    private val ownersPagingAdapter by lazy {
+        OwnersPagingAdapter(OwnersComparator, this@PetProfileFragment)
     }
 
     override fun onCreateView(
@@ -69,6 +75,10 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
                     pickGalleryPicture()
                     true
                 }
+                R.id.add_owner_menu_action -> {
+                    showInviteOwnerBottomSheet()
+                    true
+                }
                 else -> false
             }
         }
@@ -95,6 +105,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             profileNameEdit.isVisible = it.nameEdit
             profileAnimalEdit.isVisible = it.animalEdit
             profileTagEdit.isVisible = it.tagEdit
+            toolbar.menu.clear()
             toolbar.inflateMenu(it.toolbarMenu)
             ownersList.adapter = OwnersAdapter(
                 it.owners,
@@ -103,6 +114,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
                 onClick = { owner -> perform(OpenOwnerProfile(owner)) },
                 onOwnershipClick = { owner -> showEditOwnershipBottomSheet(owner) }
             )
+            ownersPagingAdapter.submitData(lifecycle, it.pagingData)
         }
 
         observe(viewModel.getEffectStream()) {
@@ -123,6 +135,30 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         startActivityForResult(pickerIntent,
             GALLERY_IMAGE_PICKER
         )
+    }
+
+    private fun showInviteOwnerBottomSheet() {
+        val customView = OwnerInviteListBinding.inflate(layoutInflater)
+        val dialog = openCustomBottomSheet(customView.root)
+
+        customView.searchBox.addTextChangedListener {
+            perform(RequestInviteOwners(it.toString()))
+        }
+
+        customView.ownersList.adapter = ownersPagingAdapter.apply {
+            onClick = { owner ->
+                dialog.setOnDismissListener { showInviteOwnershipBottomSheet(owner) }
+                dialog.cancel()
+            }
+        }
+    }
+
+    private fun showInviteOwnershipBottomSheet(owner: Owner) {
+        ownershipsBottomSheet.show(owner.category, R.string.send_button) {
+            perform(InviteOwner(Owner(owner.user, it)))
+            // TODO Move message to ViewModel
+            showMessage("${getString(it.title)} ownership invitation sent to ${owner.user.info.name}!")
+        }
     }
 
     private fun showEditOwnershipBottomSheet(owner: Owner) {
@@ -155,6 +191,10 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
     private fun showMessage(text: Int) {
         Toast.makeText(requireContext(), getString(text), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showMessage(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {

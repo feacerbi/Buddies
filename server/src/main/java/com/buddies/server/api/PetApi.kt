@@ -1,11 +1,16 @@
 package com.buddies.server.api
 
 import android.net.Uri
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.buddies.common.model.*
 import com.buddies.common.model.OwnershipCategory.VISITOR
 import com.buddies.common.util.generateNewId
 import com.buddies.server.repository.*
 import com.buddies.server.util.*
+import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.coroutines.flow.Flow
 
 class PetApi(
     private val usersRepository: UsersRepository,
@@ -20,7 +25,6 @@ class PetApi(
     suspend fun getPetsFromUser(
         userId: String
     ) = runWithResult {
-
         val ownerships = ownershipsRepository.getUserOwnerships(userId)
             .handleTaskResult()
             .toOwnerships()
@@ -190,5 +194,34 @@ class PetApi(
             petsRepository.deletePet(pet.id),
             *deleteOwnerships
         )
+    }
+
+    suspend fun getOwnersFlowWithPaging(
+        petId: String,
+        query: String,
+        pageSize: Int = -1
+    ): Flow<PagingData<Owner>> {
+        val ownerships = ownershipsRepository.getPetOwnerships(petId)
+            .handleTaskResult()
+            .toOwnerships()
+
+        val ownersDataSource = OwnersDataSource(ownerships, query, ::getAllUsersWithPaging)
+
+        return Pager(PagingConfig(if (pageSize != -1) pageSize else DEFAULT_PAGE_SIZE)) {
+            ownersDataSource
+        }.flow
+    }
+
+    private suspend fun getAllUsersWithPaging(
+        pageSize: Int,
+        query: String,
+        start: DocumentSnapshot? = null
+    ) = runWithResult {
+        usersRepository.getAllUsers(pageSize, query, start)
+            .handleTaskResult()
+    }
+
+    companion object {
+        private const val DEFAULT_PAGE_SIZE = 10
     }
 }

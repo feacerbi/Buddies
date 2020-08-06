@@ -2,6 +2,7 @@
 <resources>
     <!-- Toolbar Titles -->
     <string name="edit_picture_menu_title">Edit Picture</string>
+    <string name="add_owner_menu_title">Add Owner</string>
 
     <!-- Views -->
     <string name="my_pets_title">My Pets</string>
@@ -10,10 +11,15 @@
     <string name="owners">Owners</string>
     <string name="animal_field">%s | %s</string>
     <string name="input_dialog_pet_name_hint">Pet name</string>
-    <string name="edit_ownsership_sheet_title">Change Ownership</string>
+    <string name="edit_ownership_sheet_title">Select Ownership</string>
     <string name="apply_button">Apply</string>
     <string name="select_animal_title">Select Animal</string>
     <string name="select_breed_title">Select Breed</string>
+    <string name="invite_button">Invite</string>
+    <string name="send_button">Send</string>
+    <string name="invite_owners_title">Invite Owners</string>
+    <string name="invite_owners_hint">Search names</string>
+    <string name="invite_owners_empty_list">No owners to display</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>

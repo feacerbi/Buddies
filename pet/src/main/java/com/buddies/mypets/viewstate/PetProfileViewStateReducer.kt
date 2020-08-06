@@ -2,6 +2,7 @@ package com.buddies.mypets.viewstate
 
 import android.net.Uri
 import androidx.core.net.toUri
+import androidx.paging.PagingData
 import com.buddies.common.model.*
 import com.buddies.common.model.OwnershipAccess.EDIT_ALL
 import com.buddies.common.util.toOwnershipCategory
@@ -35,4 +36,11 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
         }
     }
 
+    data class ShowOwnersToInvite(
+        val data: PagingData<Owner>
+    ) : PetProfileViewStateReducer() {
+        override val reduce: PetProfileViewState.() -> Unit = {
+            pagingData = data
+        }
+    }
 }

@@ -37,4 +37,8 @@ fun QuerySnapshot.toBreeds() = documents.map { doc ->
     Breed(doc.id, doc.to(BreedInfo::class))
 }
 
+fun QuerySnapshot.toUsers() = documents.map { doc ->
+    User(doc.id, doc.to(UserInfo::class))
+}
+
 fun UploadTask.TaskSnapshot.getDownloadUrl() = storage.downloadUrl

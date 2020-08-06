@@ -167,6 +167,14 @@ fun <T : RecyclerView.ViewHolder, R> Fragment.openBottomSelectableDialog(
     bottomSheet.show()
 }
 
+fun Fragment.openCustomBottomSheet(
+    content: View
+) = BottomSheetDialog(content.context).apply {
+        setContentView(content)
+        dismissWithAnimation = true
+        setCanceledOnTouchOutside(true)
+    }.apply { show() }
+
 fun String.toOwnershipCategory() = when (this) {
     OWNER.name -> OWNER
     FAMILY.name -> FAMILY

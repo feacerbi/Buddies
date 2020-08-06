@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/add_owner_menu_action"
+        android:icon="@drawable/ic_baseline_person_add"
+        android:title="@string/add_owner_menu_title"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/edit_picture_menu_action"
         android:icon="@drawable/ic_edit"
         android:title="@string/edit_picture_menu_title"

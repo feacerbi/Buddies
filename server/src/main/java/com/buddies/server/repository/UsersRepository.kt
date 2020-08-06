@@ -6,6 +6,7 @@ import com.buddies.common.model.UserInfo
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Transaction
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -50,6 +51,22 @@ class UsersRepository {
         db.collection(USERS_COLLECTION).document(id)
             .get()
 
+    fun getAllUsers(
+        pageSize: Int,
+        query: String,
+        start: DocumentSnapshot? = null
+    ): Task<QuerySnapshot> {
+        val users = db.collection(USERS_COLLECTION)
+            .whereGreaterThanOrEqualTo(NAME_FIELD, query)
+            .whereLessThan(NAME_FIELD, generateEndQuery(query))
+            .orderBy(NAME_FIELD)
+            .limit(pageSize.toLong())
+
+        val pageQuery = if (start != null) users.startAfter(start) else users
+
+        return pageQuery.get()
+    }
+
     fun logout() = auth.signOut()
 
     fun updateName(
@@ -78,6 +95,15 @@ class UsersRepository {
             .child(PROFILE_PATH)
             .child(PROFILE_PICTURE_NAME)
             .putFile(photoUri)
+
+    private fun generateEndQuery(
+        startQuery: String
+    ): String {
+        var end = startQuery[startQuery.length - 1]
+        val newEnding = ++end
+
+        return startQuery.dropLast(1) + newEnding
+    }
 
     companion object {
         private const val USERS_COLLECTION = "users"

@@ -38,7 +38,7 @@ class OwnersAdapter(
     override fun getItemCount(): Int = ownersList.size
 
     override fun onBindViewHolder(holder: OwnersViewHolder, position: Int) {
-        holder.bind(position)
+        holder.bind(ownersList[position])
     }
 
     private fun sortCurrentOwnerFirst() =
@@ -49,10 +49,8 @@ class OwnersAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            position: Int
+            owner: Owner
         ) = with (binding) {
-            val owner = ownersList[position]
-
             root.setOnClickListener { onClick?.invoke(owner) }
 
             ownerIcon.load(owner.user.info.photo) {

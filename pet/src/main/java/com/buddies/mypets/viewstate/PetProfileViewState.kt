@@ -2,6 +2,7 @@ package com.buddies.mypets.viewstate
 
 import android.net.Uri
 import androidx.annotation.MenuRes
+import androidx.paging.PagingData
 import com.buddies.common.model.Owner
 import com.buddies.common.model.OwnershipInfo
 import com.buddies.common.viewstate.ViewState
@@ -18,5 +19,6 @@ class PetProfileViewState(
     var photo: Uri = Uri.EMPTY,
     @MenuRes var toolbarMenu: Int = R.menu.empty_menu,
     var ownershipInfo: OwnershipInfo = OwnershipInfo(),
-    var owners: List<Owner> = emptyList()
+    var owners: List<Owner> = emptyList(),
+    var pagingData: PagingData<Owner> = PagingData.empty()
 ) : ViewState

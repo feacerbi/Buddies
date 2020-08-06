@@ -28,6 +28,7 @@
 
     <!-- Error Messages -->
     <string name="unknown_error_message">Unknown error</string>
+    <string name="fail_task">Task failed</string>
     <string name="null_task">Task is null</string>
     <string name="null_result">Result is null</string>
 

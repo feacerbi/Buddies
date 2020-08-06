@@ -16,7 +16,7 @@
         android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="@dimen/margin_large"
-        android:text="@string/edit_ownsership_sheet_title"/>
+        android:text="@string/edit_ownership_sheet_title"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/edit_ownership_actions"

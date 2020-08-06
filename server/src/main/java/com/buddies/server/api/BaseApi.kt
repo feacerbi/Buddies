@@ -1,8 +1,7 @@
 package com.buddies.server.api
 
 import com.buddies.common.model.DefaultError
-import com.buddies.common.model.ErrorCode.RESULT_NULL
-import com.buddies.common.model.ErrorCode.TASK_NULL
+import com.buddies.common.model.ErrorCode.*
 import com.buddies.common.model.Result
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
@@ -46,10 +45,10 @@ abstract class BaseApi : CoroutineScope {
             addOnCompleteListener {
                 val result = it.result
 
-                if (isSuccessful && result != null) {
-                    cont.resume(result)
-                } else {
-                    cont.resumeWithException(DefaultError(RESULT_NULL).toException())
+                when {
+                    isSuccessful && result != null -> cont.resume(result)
+                    isSuccessful && result == null -> cont.resumeWithException(DefaultError(RESULT_NULL).toException())
+                    isSuccessful.not() -> cont.resumeWithException(DefaultError(TASK_FAIL).toException())
                 }
             }
         }

@@ -69,6 +69,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    // Jetpack Paging
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
     // Testing
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$android_junit_version"

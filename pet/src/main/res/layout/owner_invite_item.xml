@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/margin_tiny"
+    android:paddingEnd="@dimen/margin_tiny"
+    android:paddingTop="@dimen/margin_small"
+    android:paddingBottom="@dimen/margin_small"
+    android:background="?selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/owner_icon"
+        android:layout_width="@dimen/owner_icon_size"
+        android:layout_height="@dimen/owner_icon_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/circular_background"
+        android:padding="@dimen/icon_border"
+        tools:src="@drawable/ic_baseline_person"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/owner_name"
+        style="@style/Body1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/owner_icon"
+        app:layout_constraintEnd_toStartOf="@id/invite_button"
+        app:layout_constraintVertical_chainStyle="packed"
+       android:layout_marginEnd="@dimen/margin_medium"
+        android:includeFontPadding="false"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="Owner Name"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/invite_button"
+        style="@style/Button.Filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Invite"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

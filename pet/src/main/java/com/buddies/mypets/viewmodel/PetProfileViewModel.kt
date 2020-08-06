@@ -2,7 +2,9 @@ package com.buddies.mypets.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.buddies.common.model.*
+import com.buddies.common.util.ActionTimer
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.mypets.usecase.PetUseCases
@@ -11,10 +13,14 @@ import com.buddies.mypets.viewstate.PetProfileViewEffect
 import com.buddies.mypets.viewstate.PetProfileViewEffect.*
 import com.buddies.mypets.viewstate.PetProfileViewState
 import com.buddies.mypets.viewstate.PetProfileViewStateReducer.ShowInfo
+import com.buddies.mypets.viewstate.PetProfileViewStateReducer.ShowOwnersToInvite
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalCoroutinesApi
 class PetProfileViewModel(
     private val petId: String,
     private val petUseCases: PetUseCases,
@@ -23,6 +29,10 @@ class PetProfileViewModel(
 
     fun getStateStream() = viewState
     fun getEffectStream() = viewEffect
+
+    private val timer by lazy {
+        ActionTimer(this, QUERY_DEBOUNCE_TIME)
+    }
 
     init {
         refreshPet()
@@ -38,6 +48,8 @@ class PetProfileViewModel(
             is OpenOwnerProfile -> openOwnerProfile(action.owner)
             is RequestBreeds -> requestBreeds(action.animal)
             is RequestAnimals -> requestAnimals()
+            is RequestInviteOwners -> startPagingOwners(action.query)
+            is InviteOwner -> inviteOwner(action.owner)
         }
     }
 
@@ -91,6 +103,22 @@ class PetProfileViewModel(
         updateEffect(ShowBreedsList(breeds, animal))
     }
 
+    private fun inviteOwner(owner: Owner) {
+        // TODO Send invitation message/notification
+    }
+
+    private fun startPagingOwners(query: String) = safeLaunch(::showError) {
+        timer.restart {
+            if (checkNotValidQuery(query)) return@restart
+
+            petUseCases.getOwnersToInvite(petId, query).cachedIn(this).collectLatest {
+                updateState(ShowOwnersToInvite(it))
+            }
+        }
+    }
+
+    private fun checkNotValidQuery(query: String) = query.length < MIN_QUERY
+
     private fun showError(error: DefaultError) {
         updateEffect(ShowError(error.code.message))
     }
@@ -103,9 +131,16 @@ class PetProfileViewModel(
         data class ChangeOwnership(val owner: Owner, val ownership: OwnershipCategory) : Action()
         data class OpenOwnerProfile(val owner: Owner) : Action()
         data class RequestBreeds(val animal: Animal) : Action()
+        data class InviteOwner(val owner: Owner) : Action()
+        data class RequestInviteOwners(val query: String) : Action()
         object RequestAnimals : Action()
     }
 
     override val coroutineContext: CoroutineContext
         get() = viewModelScope.coroutineContext + dispatcher
+
+    companion object {
+        private const val MIN_QUERY = 2
+        private const val QUERY_DEBOUNCE_TIME = 500L
+    }
 }

@@ -5,12 +5,15 @@ import com.buddies.common.model.OwnershipCategory
 import com.buddies.common.model.PetInfo
 import com.buddies.common.model.User
 import com.buddies.common.usecase.BaseUseCases
-import com.buddies.server.api.AnimalAPI
+import com.buddies.server.api.AnimalApi
 import com.buddies.server.api.PetApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOn
 
 class PetUseCases(
     private val petApi: PetApi,
-    private val animalAPI: AnimalAPI
+    private val animalApi: AnimalApi
 ) : BaseUseCases() {
 
     suspend fun getPetsFromCurrentUser() = request {
@@ -87,12 +90,19 @@ class PetUseCases(
     }
 
     suspend fun getAllAnimals() = request {
-        animalAPI.getAllAnimals()
+        animalApi.getAllAnimals()
     }
 
     suspend fun getBreedsFromAnimal(
         animalId: String
     ) = request {
-        animalAPI.getAllAnimalBreeds(animalId)
+        animalApi.getAllAnimalBreeds(animalId)
     }
+
+    @ExperimentalCoroutinesApi
+    suspend fun getOwnersToInvite(
+        petId: String,
+        query: String
+    ) = petApi.getOwnersFlowWithPaging(petId, query)
+        .flowOn(Dispatchers.IO)
 }

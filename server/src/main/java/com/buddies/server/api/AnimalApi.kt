@@ -5,7 +5,7 @@ import com.buddies.server.repository.BreedsRepository
 import com.buddies.server.util.toAnimals
 import com.buddies.server.util.toBreeds
 
-class AnimalAPI(
+class AnimalApi(
     private val animalsRepository: AnimalsRepository,
     private val breedsRepository: BreedsRepository
 ) : BaseApi() {
