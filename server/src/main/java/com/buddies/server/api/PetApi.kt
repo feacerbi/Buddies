@@ -5,8 +5,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.buddies.common.model.*
+import com.buddies.common.model.ErrorCode.ACCESS_DENIED
+import com.buddies.common.model.OwnershipAccess.EDIT_ALL
 import com.buddies.common.model.OwnershipCategory.VISITOR
+import com.buddies.common.model.Result.Fail
+import com.buddies.common.model.Result.Success
 import com.buddies.common.util.generateNewId
+import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.repository.*
 import com.buddies.server.util.*
 import com.google.firebase.firestore.DocumentSnapshot
@@ -61,32 +66,48 @@ class PetApi(
     suspend fun updateName(
         petId: String,
         name: String
-    ) = runTransactionsWithResult(
-        petsRepository.updateName(petId, name)
-    )
+    ) = runWithResult {
+        checkAccess(petId)
+
+        runTransactionsWithResult(
+            petsRepository.updateName(petId, name)
+        )
+    }
 
     suspend fun updateTag(
         petId: String,
         tag: String
-    ) = runTransactionsWithResult(
-        petsRepository.updateTag(petId, tag)
-    )
+    ) = runWithResult {
+        checkAccess(petId)
+
+        runTransactionsWithResult(
+            petsRepository.updateTag(petId, tag)
+        )
+    }
 
     suspend fun updateAnimal(
         petId: String,
         animalId: String,
         breedId: String
-    ) = runTransactionsWithResult(
-        petsRepository.updateAnimal(petId, animalId),
-        petsRepository.updateBreed(petId, breedId)
-    )
+    ) = runWithResult {
+        checkAccess(petId)
+
+        runTransactionsWithResult(
+            petsRepository.updateAnimal(petId, animalId),
+            petsRepository.updateBreed(petId, breedId)
+        )
+    }
 
     suspend fun updatePhoto(
         petId: String,
         photo: Uri
-    ) = runTransactionsWithResult(
-        petsRepository.updatePhoto(petId, photo.toString())
-    )
+    ) = runWithResult {
+        checkAccess(petId)
+
+        runTransactionsWithResult(
+            petsRepository.updatePhoto(petId, photo.toString())
+        )
+    }
 
     suspend fun addNewPet(
         petInfo: PetInfo,
@@ -117,6 +138,8 @@ class PetApi(
         userId: String,
         category: String
     ) = runWithResult {
+        checkAccess(petId)
+
         val ownership = ownershipsRepository.getOwnership(petId, userId)
             .handleTaskResult()
             .toOwnerships()
@@ -180,9 +203,11 @@ class PetApi(
     }
 
     suspend fun deletePet(
-        pet: Pet
+        petId: String
     ) = runWithResult {
-        val ownerships = ownershipsRepository.getPetOwnerships(pet.id)
+        checkAccess(petId)
+
+        val ownerships = ownershipsRepository.getPetOwnerships(petId)
             .handleTaskResult()
             .toOwnerships()
 
@@ -191,7 +216,7 @@ class PetApi(
         }.toTypedArray()
 
         runTransactionsWithResult(
-            petsRepository.deletePet(pet.id),
+            petsRepository.deletePet(petId),
             *deleteOwnerships
         )
     }
@@ -201,6 +226,8 @@ class PetApi(
         query: String,
         pageSize: Int = -1
     ): Flow<PagingData<Owner>> {
+        checkAccess(petId)
+
         val ownerships = ownershipsRepository.getPetOwnerships(petId)
             .handleTaskResult()
             .toOwnerships()
@@ -219,6 +246,25 @@ class PetApi(
     ) = runWithResult {
         usersRepository.getAllUsers(pageSize, query, start)
             .handleTaskResult()
+    }
+
+    private suspend fun checkAccess(
+        petId: String
+    ) = runWithResult {
+        val ownership =
+            ownershipsRepository.getOwnership(petId, usersRepository.getCurrentUserId())
+                .handleTaskResult()
+                .toOwnerships()
+                .firstOrNull()
+
+        ownership?.info?.category?.toOwnershipCategory()?.access == EDIT_ALL
+    }.handleAccessResult()
+
+    private fun Result<Boolean>.handleAccessResult() {
+        when (this) {
+            is Success -> if (data == false) throw DefaultErrorException(DefaultError(ACCESS_DENIED))
+            is Fail -> throw DefaultErrorException(error)
+        }
     }
 
     companion object {
