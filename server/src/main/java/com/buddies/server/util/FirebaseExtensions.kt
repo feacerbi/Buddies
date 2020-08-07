@@ -22,6 +22,9 @@ fun DocumentSnapshot.toAnimal() =
 fun DocumentSnapshot.toBreed() =
     Breed(id, to(BreedInfo::class))
 
+fun DocumentSnapshot.toNotification() =
+    Notification(id, to(NotificationInfo::class))
+
 fun DocumentSnapshot.toOwner(ownership: Ownership) =
     Owner(toUser(), ownership.info.category.toOwnershipCategory())
 
@@ -39,6 +42,10 @@ fun QuerySnapshot.toBreeds() = documents.map { doc ->
 
 fun QuerySnapshot.toUsers() = documents.map { doc ->
     User(doc.id, doc.to(UserInfo::class))
+}
+
+fun QuerySnapshot.toNotifications() = documents.map { doc ->
+    Notification(doc.id, doc.to(NotificationInfo::class))
 }
 
 fun UploadTask.TaskSnapshot.getDownloadUrl() = storage.downloadUrl

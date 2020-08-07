@@ -13,24 +13,22 @@ import coil.api.load
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.observe
-import com.buddies.common.util.openBottomEditDialog
-import com.buddies.common.util.toColorId
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
+import com.buddies.profile.util.ProfileTabsMediator
 import com.buddies.profile.viewmodel.ProfileViewModel
 import com.buddies.profile.viewmodel.ProfileViewModel.Action
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.*
-import com.buddies.profile.viewstate.ProfileViewEffect.Navigate
-import com.buddies.profile.viewstate.ProfileViewEffect.ShowError
+import com.buddies.profile.viewstate.ProfileViewEffect.*
 import kotlinx.coroutines.CoroutineScope
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.coroutines.CoroutineContext
 
 class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private lateinit var binding: FragmentProfileBinding
 
-    private val viewModel: ProfileViewModel by viewModel()
+    private val viewModel: ProfileViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,34 +58,24 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             }
         }
 
-        refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
-        refresh.setOnRefreshListener {
-            perform(Refresh)
-        }
+        pager.adapter = ProfileTabsAdapter(this@ProfileFragment)
 
-        profileNameEdit.setOnClickListener {
-            openBottomEditDialog(
-                hint = getString(R.string.input_dialog_name_hint),
-                text = profileName.text.toString(),
-                positiveAction = { perform(ChangeName(it) )}
-            )
+        myPetsWidget.addOnPetClickListener(this@ProfileFragment) {
+            perform(OpenPetProfile(it.id))
         }
-
-        myPetsWidget.addOnPetClickListener(this@ProfileFragment) { perform(OpenPetProfile(it.id)) }
         myPetsWidget.addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
+            ProfileTabsMediator(requireContext(), tabs, pager, it.notifications.size).connect()
             profilePicture.load(it.photo.toString()) { createLoadRequest(this@ProfileFragment) }
-            profileName.text = it.name
-            profileEmail.text = it.email
             myPetsWidget.setExpanded(it.myPetsWidgetExpanded)
-            refresh.isRefreshing = it.loading
         }
 
         observe(viewModel.getEffectStream()) {
             when (it) {
+                is RefreshPets -> myPetsWidget.refresh()
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }

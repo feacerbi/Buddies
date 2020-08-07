@@ -1,15 +1,10 @@
 package com.buddies.common.util
 
-import android.content.Context
-import android.content.res.Resources
 import android.text.InputType
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -23,9 +18,6 @@ import com.buddies.common.R
 import com.buddies.common.databinding.InputTextLayoutBinding
 import com.buddies.common.databinding.SelectableListLayoutBinding
 import com.buddies.common.model.DefaultError
-import com.buddies.common.model.DefaultErrorException
-import com.buddies.common.model.ErrorCode.UNKNOWN
-import com.buddies.common.model.OwnershipCategory.*
 import com.buddies.common.ui.SelectableAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
@@ -80,28 +72,7 @@ fun CoroutineScope.safeLaunch(
     }
 }
 
-fun Exception.toDefaultError() =
-    when (this) {
-        is DefaultErrorException -> error
-        else -> DefaultError(UNKNOWN)
-    }
-
-fun DefaultError.toException() =
-    DefaultErrorException(this)
-
 fun generateNewId() = UUID.randomUUID().toString()
-
-fun Float.toPx(res: Resources) = TypedValue.applyDimension(
-    TypedValue.COMPLEX_UNIT_DIP,
-    this,
-    res.displayMetrics
-)
-
-fun Float.toDp(res: Resources) = TypedValue.applyDimension(
-    TypedValue.COMPLEX_UNIT_PX,
-    this,
-    res.displayMetrics
-)
 
 fun Fragment.openBottomEditDialog(
     hint: String = "",
@@ -170,25 +141,10 @@ fun <T : RecyclerView.ViewHolder, R> Fragment.openBottomSelectableDialog(
     bottomSheet.show()
 }
 
-fun Fragment.openCustomBottomSheet(
+fun openCustomBottomSheet(
     content: View
 ) = BottomSheetDialog(content.context).apply {
         setContentView(content)
         dismissWithAnimation = true
         setCanceledOnTouchOutside(true)
     }.apply { show() }
-
-fun String.toOwnershipCategory() = when (this) {
-    OWNER.name -> OWNER
-    FAMILY.name -> FAMILY
-    FRIEND.name -> FRIEND
-    CARE_TAKER.name -> CARE_TAKER
-    else -> VISITOR
-}
-
-@ColorRes
-@AttrRes fun Int.toColorId(context: Context): Int {
-    val typedValue = TypedValue()
-    context.theme.resolveAttribute(this, typedValue, false)
-    return typedValue.data
-}

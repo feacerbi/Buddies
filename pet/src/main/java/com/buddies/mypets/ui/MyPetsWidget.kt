@@ -74,6 +74,8 @@ class MyPetsWidget @JvmOverloads constructor(
         if (expanded) finalStateSetup(false) else initialStateSetup()
     }
 
+    fun refresh() = addPets()
+
     private fun setup(attrs: TypedArray) = with (binding) {
 
         petsToolbar.setNavigationOnClickListener {

@@ -86,7 +86,7 @@ class PetUseCases(
         userId: String,
         ownershipCategory: OwnershipCategory
     ) = request {
-        petApi.updatePetOwnership(petId, userId, ownershipCategory.name)
+        petApi.updatePetOwnership(petId, userId, ownershipCategory.id)
     }
 
     suspend fun getAllAnimals() = request {
@@ -105,4 +105,12 @@ class PetUseCases(
         query: String
     ) = petApi.getOwnersFlowWithPaging(petId, query)
         .flowOn(Dispatchers.IO)
+
+    suspend fun inviteOwner(
+        userId: String,
+        petId: String,
+        category: OwnershipCategory
+    ) = request {
+        petApi.inviteOwner(userId, petId, category.id)
+    }
 }

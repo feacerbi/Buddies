@@ -36,8 +36,8 @@ class LoginApi(
         if (userSnapshot.exists().not()) {
             runTransactionsWithResult(
                 usersRepository.setUser(UserInfo(
-                    currentUser?.displayName,
-                    currentUser?.email,
+                    currentUser?.displayName ?: "",
+                    currentUser?.email ?: "",
                     currentUser?.photoUrl.toString())
                 )
             )

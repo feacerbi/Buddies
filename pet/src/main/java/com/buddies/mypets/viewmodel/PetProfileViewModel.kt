@@ -7,6 +7,7 @@ import com.buddies.common.model.*
 import com.buddies.common.util.ActionTimer
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
+import com.buddies.mypets.R
 import com.buddies.mypets.usecase.PetUseCases
 import com.buddies.mypets.viewmodel.PetProfileViewModel.Action.*
 import com.buddies.mypets.viewstate.PetProfileViewEffect
@@ -54,37 +55,37 @@ class PetProfileViewModel(
     }
 
     private fun updateName(name: String) = safeLaunch(::showError) {
-        updateState(Loading())
+        updateState(ShowLoading())
         petUseCases.updatePetName(petId, name)
         refreshPet()
     }
 
     private fun updateTag(tag: String) = safeLaunch(::showError) {
-        updateState(Loading())
+        updateState(ShowLoading())
         petUseCases.updatePetTag(petId, tag)
         refreshPet()
     }
 
     private fun updateAnimal(animal: Animal, breed: Breed) = safeLaunch(::showError) {
-        updateState(Loading())
+        updateState(ShowLoading())
         petUseCases.updatePetAnimal(petId, animal.id, breed.id)
         refreshPet()
     }
 
     private fun updatePhoto(photo: Uri) = safeLaunch(::showError) {
-        updateState(Loading())
+        updateState(ShowLoading())
         petUseCases.updatePetPhoto(petId, photo)
         refreshPet()
     }
 
     private fun changeOwnership(owner: Owner, ownership: OwnershipCategory) = safeLaunch(::showError) {
-        updateState(Loading())
+        updateState(ShowLoading())
         petUseCases.updateOwnership(petId, owner.user.id, ownership)
         refreshPet()
     }
 
     private fun refreshPet() = safeLaunch(::showError) {
-        updateState(Loading())
+        updateState(ShowLoading())
         val pet = petUseCases.getPet(petId)
         val animalAndBreed = petUseCases.getAnimalAndBreed(
             pet?.info?.animal ?: "",
@@ -100,21 +101,22 @@ class PetProfileViewModel(
     }
 
     private fun requestAnimals() = safeLaunch(::showError) {
-        updateState(Loading())
+        updateState(ShowLoading())
         val animals = petUseCases.getAllAnimals()
-        updateState(Loading(false))
+        updateState(ShowLoading(false))
         updateEffect(ShowAnimalsList(animals))
     }
 
     private fun requestBreeds(animal: Animal) = safeLaunch(::showError) {
-        updateState(Loading())
+        updateState(ShowLoading())
         val breeds = petUseCases.getBreedsFromAnimal(animal.id)
-        updateState(Loading(false))
+        updateState(ShowLoading(false))
         updateEffect(ShowBreedsList(breeds, animal))
     }
 
-    private fun inviteOwner(owner: Owner) {
-        // TODO Send invitation message/notification
+    private fun inviteOwner(owner: Owner) = safeLaunch(::showError) {
+        petUseCases.inviteOwner(owner.user.id, petId, owner.category)
+        updateEffect(ShowBottomMessage(R.string.invite_message, arrayOf(owner.user.info.name)))
     }
 
     private fun startPagingOwners(query: String) = timer.restart {
@@ -132,6 +134,7 @@ class PetProfileViewModel(
     private fun checkNotValidQuery(query: String) = query.length < MIN_QUERY
 
     private fun showError(error: DefaultError) {
+        updateState(ShowLoading(false))
         updateEffect(ShowError(error.code.message))
     }
 

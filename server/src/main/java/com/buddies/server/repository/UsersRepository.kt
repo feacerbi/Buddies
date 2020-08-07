@@ -32,6 +32,8 @@ class UsersRepository {
         )
     }
 
+    fun deleteCurrentUser() = userAuth?.delete()
+
     fun deleteUser(
         user: User
     ): Transaction.() -> Unit = {
@@ -40,18 +42,15 @@ class UsersRepository {
         )
     }
 
-    fun deleteCurrentUser(
-    ): Task<Void>? = userAuth?.delete()
-
     fun getCurrentUser() = getUser(getCurrentUserId())
 
     fun getUser(
-        id: String
+        userId: String
     ): Task<DocumentSnapshot> =
-        db.collection(USERS_COLLECTION).document(id)
+        db.collection(USERS_COLLECTION).document(userId)
             .get()
 
-    fun getAllUsers(
+    fun getUsers(
         pageSize: Int,
         query: String,
         start: DocumentSnapshot? = null

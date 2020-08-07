@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.buddies.common.model.*
 import com.buddies.common.model.ErrorCode.ACCESS_DENIED
+import com.buddies.common.model.NotificationType.INVITE
 import com.buddies.common.model.OwnershipAccess.EDIT_ALL
 import com.buddies.common.model.OwnershipCategory.VISITOR
 import com.buddies.common.model.Result.Fail
@@ -22,7 +23,8 @@ class PetApi(
     private val petsRepository: PetsRepository,
     private val animalsRepository: AnimalsRepository,
     private val breedsRepository: BreedsRepository,
-    private val ownershipsRepository: OwnershipsRepository
+    private val ownershipsRepository: OwnershipsRepository,
+    private val notificationsRepository: NotificationsRepository
 ): BaseApi() {
 
     suspend fun getPetsFromCurrentUser() = getPetsFromUser(usersRepository.getCurrentUserId())
@@ -127,7 +129,7 @@ class PetApi(
                 OwnershipInfo(
                     newPetId,
                     userId,
-                    category.name
+                    category.id
                 )
             )
         )
@@ -136,7 +138,7 @@ class PetApi(
     suspend fun updatePetOwnership(
         petId: String,
         userId: String,
-        category: String
+        category: Int
     ) = runWithResult {
         checkAccess(petId)
 
@@ -147,7 +149,7 @@ class PetApi(
 
         runTransactionsWithResult(
             when (category) {
-                VISITOR.name -> ownershipsRepository.removeOwnership(ownership.id)
+                VISITOR.id -> ownershipsRepository.removeOwnership(ownership.id)
                 else -> ownershipsRepository.updateOwnership(ownership.id, category)
             }
         )
@@ -162,7 +164,7 @@ class PetApi(
             OwnershipInfo(
                 pet.id,
                 user.id,
-                category.name
+                category.id
             )
         )
     )
@@ -198,7 +200,7 @@ class PetApi(
         if (ownership.isNotEmpty()) {
             ownership[0].info
         } else {
-            OwnershipInfo(petId, userId, VISITOR.name)
+            OwnershipInfo(petId, userId, VISITOR.id)
         }
     }
 
@@ -220,6 +222,15 @@ class PetApi(
             *deleteOwnerships
         )
     }
+
+    suspend fun inviteOwner(
+        userId: String,
+        petId: String,
+        category: Int
+    ) = runTransactionsWithResult(
+        notificationsRepository.addNotification(
+            NotificationInfo(INVITE.id, userId, usersRepository.getCurrentUserId(), petId, category))
+    )
 
     suspend fun getOwnersFlowWithPaging(
         petId: String,
@@ -244,7 +255,7 @@ class PetApi(
         query: String,
         start: DocumentSnapshot? = null
     ) = runWithResult {
-        usersRepository.getAllUsers(pageSize, query, start)
+        usersRepository.getUsers(pageSize, query, start)
             .handleTaskResult()
     }
 

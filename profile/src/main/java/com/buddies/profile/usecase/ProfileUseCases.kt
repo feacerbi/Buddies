@@ -20,5 +20,17 @@ class ProfileUseCases(
         profileApi.getCurrentUser()
     }
 
+    suspend fun getNotifications() = request {
+        profileApi.getCurrentUserNotifications()
+    }
+
+    suspend fun ignoreInvitation(notificationId: String) = request {
+        profileApi.removeNotification(notificationId)
+    }
+
+    suspend fun acceptInvitation(notificationId: String) = request {
+        profileApi.acceptInvitation(notificationId)
+    }
+
     fun logout() = profileApi.logout()
 }

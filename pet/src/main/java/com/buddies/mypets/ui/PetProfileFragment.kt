@@ -129,6 +129,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             when (it) {
                 is ShowAnimalsList -> openAnimalsList(it.list)
                 is ShowBreedsList -> openBreedsList(it.list, it.animal)
+                is ShowBottomMessage -> showMessage(it.message, it.params)
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
@@ -168,8 +169,6 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     private fun showInviteOwnershipBottomSheet(owner: Owner) {
         ownershipsBottomSheet.show(owner.category, R.string.send_button) {
             perform(InviteOwner(Owner(owner.user, it)))
-            // TODO Move message to ViewModel
-            showMessage("${getString(it.title)} ownership invitation sent to ${owner.user.info.name}!")
         }
     }
 
@@ -201,8 +200,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         )
     }
 
-    private fun showMessage(text: Int) {
-        Toast.makeText(requireContext(), getString(text), Toast.LENGTH_SHORT).show()
+    private fun showMessage(text: Int, params: Array<String> = arrayOf()) {
+        Toast.makeText(requireContext(), getString(text, *params), Toast.LENGTH_SHORT).show()
     }
 
     private fun showMessage(text: String) {

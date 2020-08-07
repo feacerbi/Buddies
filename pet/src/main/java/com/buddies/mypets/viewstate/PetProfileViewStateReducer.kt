@@ -45,7 +45,7 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
         }
     }
 
-    data class Loading(
+    data class ShowLoading(
         val show: Boolean = true
     ) : PetProfileViewStateReducer() {
         override val reduce: PetProfileViewState.() -> Unit = {
