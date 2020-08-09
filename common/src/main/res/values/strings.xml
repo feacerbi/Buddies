@@ -21,6 +21,10 @@
     <string name="caretaker_category_description">Custom care taker owner</string>
     <string name="visitor_category_description">This is not considered an ownership, can only visit the pet.</string>
 
+    <!-- Notification Types Descriptions -->
+    <string name="invitation_description">Invitation</string>
+    <string name="unknown_description">Notification</string>
+
     <!-- View -->
     <string name="cancel_button">Cancel</string>
     <string name="change_button">Change</string>

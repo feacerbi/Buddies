@@ -5,6 +5,7 @@ import com.buddies.common.util.generateNewId
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Transaction
 import com.google.firebase.firestore.ktx.firestore
@@ -34,6 +35,15 @@ class NotificationsRepository {
             .whereEqualTo(USERID_FIELD, userId)
             .get()
 
+    fun queryCurrentUserNotifications(
+    ) = queryUserNotifications(getCurrentUserId())
+
+    fun queryUserNotifications(
+        userId: String
+    ): Query =
+        db.collection(NOTIFICATIONS_COLLECTION)
+            .whereEqualTo(USERID_FIELD, userId)
+
     fun addNotification(
         info: NotificationInfo
     ): Transaction.() -> Unit = {
@@ -51,8 +61,19 @@ class NotificationsRepository {
         )
     }
 
+    fun markAsRead(
+        notificationId: String
+    ): Transaction.() -> Unit = {
+        update(
+            db.collection(NOTIFICATIONS_COLLECTION).document(notificationId),
+            UNREAD_FIELD,
+            false
+        )
+    }
+
     companion object {
         private const val NOTIFICATIONS_COLLECTION = "notifications"
         private const val USERID_FIELD = "userId"
+        private const val UNREAD_FIELD = "unread"
     }
 }

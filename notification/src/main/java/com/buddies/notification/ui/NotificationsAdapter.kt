@@ -1,4 +1,4 @@
-package com.buddies.profile.ui
+package com.buddies.notification.ui
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -8,9 +8,9 @@ import com.buddies.common.model.NotificationType.INVITE
 import com.buddies.common.model.UserNotification
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.inflater
-import com.buddies.mypets.R
-import com.buddies.profile.databinding.InviteNotificationItemBinding
-import com.buddies.profile.ui.NotificationsAdapter.NotificationViewHolder
+import com.buddies.notification.R
+import com.buddies.notification.databinding.InviteNotificationItemBinding
+import com.buddies.notification.ui.NotificationsAdapter.NotificationViewHolder
 
 class NotificationsAdapter(
     items: List<UserNotification>? = null,
@@ -54,7 +54,7 @@ class NotificationsAdapter(
             }
 
             message.text = root.context.resources.getString(
-                com.buddies.profile.R.string.invite_notification_message,
+                R.string.invite_notification_message,
                 notification.userName,
                 root.context.resources.getString(notification.category.title),
                 notification.petInfo.name)

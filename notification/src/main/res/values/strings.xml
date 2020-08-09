@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_notifications_list">No notifications</string>
+    <string name="ignore_button">Ignore</string>
+    <string name="accept_button">Accept</string>
+    <string name="invite_notification_message">%s is inviting you to be %s of %s.</string>
+</resources>

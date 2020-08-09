@@ -5,5 +5,6 @@ data class NotificationInfo(
     val userId: String = "",
     val inviterId: String = "",
     val petId: String = "",
-    val category: Int = -1
+    val category: Int = -1,
+    val unread: Boolean = true
 )

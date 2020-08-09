@@ -18,6 +18,8 @@ import com.buddies.common.R
 import com.buddies.common.databinding.InputTextLayoutBinding
 import com.buddies.common.databinding.SelectableListLayoutBinding
 import com.buddies.common.model.DefaultError
+import com.buddies.common.model.DefaultErrorException
+import com.buddies.common.model.Result
 import com.buddies.common.ui.SelectableAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
@@ -144,7 +146,21 @@ fun <T : RecyclerView.ViewHolder, R> Fragment.openBottomSelectableDialog(
 fun openCustomBottomSheet(
     content: View
 ) = BottomSheetDialog(content.context).apply {
-        setContentView(content)
-        dismissWithAnimation = true
-        setCanceledOnTouchOutside(true)
-    }.apply { show() }
+    setContentView(content)
+    dismissWithAnimation = true
+    setCanceledOnTouchOutside(true)
+}.apply { show() }
+
+fun <T> Result<T>.handleResult(
+) = when (this) {
+    is Result.Success -> data
+    is Result.Fail -> throw DefaultErrorException(error)
+}
+
+suspend fun <T, R> Result<T>.mapResult(
+    transform: suspend (T?) -> R
+): Result<R> =
+    when (this) {
+        is Result.Success -> Result.Success(transform(data))
+        is Result.Fail -> Result.Fail(error)
+    }

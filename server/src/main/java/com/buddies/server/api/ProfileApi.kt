@@ -66,7 +66,8 @@ class ProfileApi(
                 usersRepository.getUser(it.info.inviterId).handleTaskResult().toUser().info.name,
                 petsRepository.getPet(it.info.petId).handleTaskResult().toPet().info,
                 it.info.category.toOwnershipCategory(),
-                it.info.type.toNotificationType()
+                it.info.type.toNotificationType(),
+                it.info.unread
             )
         }
     }

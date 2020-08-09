@@ -17,8 +17,4 @@
     <string name="info">Info</string>
     <string name="info_tab_title">PROFILE</string>
     <string name="notifications_tab_title">NOTIFICATIONS</string>
-    <string name="invite_notification_message">%s is inviting you to be %s of %s.</string>
-    <string name="empty_notifications_list">No notifications</string>
-    <string name="ignore_button">Ignore</string>
-    <string name="accept_button">Accept</string>
 </resources>

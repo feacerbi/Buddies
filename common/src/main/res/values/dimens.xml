@@ -11,4 +11,7 @@
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
     <dimen name="margin_extra_large">32dp</dimen>
+
+    <!-- Circular ImageView -->
+    <dimen name="icon_border">2dp</dimen>
 </resources>

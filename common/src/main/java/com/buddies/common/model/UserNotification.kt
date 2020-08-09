@@ -5,5 +5,6 @@ data class UserNotification(
     val userName: String,
     val petInfo: PetInfo,
     val category: OwnershipCategory,
-    val type: NotificationType
+    val type: NotificationType,
+    val unread: Boolean
 )

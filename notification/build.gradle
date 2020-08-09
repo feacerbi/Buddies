@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
 
     defaultConfig {
         minSdkVersion 21
@@ -13,7 +12,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -42,8 +41,6 @@ dependencies {
 
     // Projects
     implementation project(":common")
-    implementation project(":notification")
-    implementation project(":pet")
     implementation project(":server")
 
     // Kotlin
@@ -65,12 +62,6 @@ dependencies {
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-
-    // Jetpack Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Testing
     testImplementation "junit:junit:$junit_version"

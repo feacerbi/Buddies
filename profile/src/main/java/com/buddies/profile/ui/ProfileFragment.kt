@@ -13,6 +13,7 @@ import coil.api.load
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.observe
+import com.buddies.notification.service.CheckNotificationsService
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
 import com.buddies.profile.util.ProfileTabsMediator
@@ -29,6 +30,11 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
     private lateinit var binding: FragmentProfileBinding
 
     private val viewModel: ProfileViewModel by sharedViewModel()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().startService(Intent(requireContext(), CheckNotificationsService::class.java))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

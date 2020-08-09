@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
@@ -126,7 +125,7 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, true)
         backPressedCallback.isEnabled = false
         petsToolbar.isEnabled = false
-        petsListEmpty.isVisible = false
+        petsListEmpty.alpha = 0F
     }
 
     private fun finalStateSetup(animate: Boolean = true) = with (binding) {
@@ -134,7 +133,7 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, false)
         backPressedCallback.isEnabled = true
         petsToolbar.isEnabled = true
-        petsListEmpty.isVisible = adapter.itemCount == 0
+        petsListEmpty.alpha = if (adapter.itemCount == 0) 0.8F else 0F
 
         if (animate) TransitionManager.beginDelayedTransition(motion)
         petsList.layoutManager = GridLayoutManager(context,

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.observe
 import com.buddies.common.util.toColorId
+import com.buddies.notification.ui.NotificationsAdapter
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileNotificationsTabBinding
 import com.buddies.profile.viewmodel.ProfileViewModel

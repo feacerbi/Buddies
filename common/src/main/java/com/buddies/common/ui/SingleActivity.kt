@@ -1,8 +1,8 @@
-package com.buddies.ui
+package com.buddies.common.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.buddies.R
+import com.buddies.common.R
 
 class SingleActivity : AppCompatActivity() {
 
