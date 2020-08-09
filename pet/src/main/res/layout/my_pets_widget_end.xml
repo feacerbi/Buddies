@@ -37,6 +37,16 @@
         app:layout_constraintTop_toBottomOf="@id/pets_toolbar"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/pets_list_empty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/pets_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:alpha="0.8"/>
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/pets_toolbar"
         style="@style/Toolbar"

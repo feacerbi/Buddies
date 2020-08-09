@@ -31,7 +31,6 @@ class MyPetsAdapter(
         if (pets != null) {
             petsList.clear()
             petsList.addAll(pets)
-            notifyItemRangeChanged(0, itemCount)
         }
     }
 
@@ -41,7 +40,8 @@ class MyPetsAdapter(
             onPetClick
         )
 
-    override fun getItemCount(): Int = petsList.size
+    override fun getItemCount(): Int =
+        petsList.size
 
     override fun onBindViewHolder(holder: MyPetsViewHolder, position: Int) {
         holder.bind(petsList[position], isBig)

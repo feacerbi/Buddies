@@ -173,7 +173,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     }
 
     private fun showEditOwnershipBottomSheet(owner: Owner) {
-        ownershipsBottomSheet.show(owner.category) {
+        ownershipsBottomSheet.show(owner.category, R.string.change_button) {
             perform(ChangeOwnership(owner, it))
         }
     }

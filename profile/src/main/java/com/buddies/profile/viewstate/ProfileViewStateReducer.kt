@@ -31,7 +31,7 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
     ) : ProfileViewStateReducer() {
         override val reduce: ProfileViewState.() -> Unit = {
             notifications = list ?: listOf()
-            emptyNotifications = list?.isEmpty() ?: false
+            emptyNotifications = notifications.isEmpty()
             loadingNotifications = false
         }
     }
@@ -41,6 +41,7 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
     ) : ProfileViewStateReducer() {
         override val reduce: ProfileViewState.() -> Unit = {
             notifications = notifications.minus(notification)
+            emptyNotifications = notifications.isEmpty()
             myPetsWidgetExpanded = false
         }
     }

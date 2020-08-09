@@ -39,6 +39,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/pets_sheet"/>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/pets_list_empty"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/pets_toolbar"
         style="@style/Toolbar"
@@ -46,7 +51,6 @@
         app:layout_constraintTop_toTopOf="@id/pets_sheet"
         app:layout_constraintStart_toStartOf="@id/pets_sheet"
         app:layout_constraintEnd_toEndOf="@id/pets_sheet"
-        android:elevation="@dimen/bottom_pets_elevation"
         android:alpha="0"/>
 
 </merge>

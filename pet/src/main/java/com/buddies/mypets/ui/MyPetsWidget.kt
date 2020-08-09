@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
@@ -22,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import org.koin.java.KoinJavaComponent.inject
-import kotlin.coroutines.CoroutineContext
 
 class MyPetsWidget @JvmOverloads constructor(
     context: Context,
@@ -34,8 +34,10 @@ class MyPetsWidget @JvmOverloads constructor(
 
     private val petUseCases by inject(PetUseCases::class.java)
 
-    private val adapter = MyPetsAdapter()
     private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Main + job)
+
+    private val adapter = MyPetsAdapter()
 
     private val backPressedCallback by lazy {
         object : OnBackPressedCallback(false) {
@@ -106,6 +108,10 @@ class MyPetsWidget @JvmOverloads constructor(
                 }
             }
         })
+
+        petsList.adapter = adapter
+
+        initialStateSetup()
     }
 
     private fun transitionBack() {
@@ -120,6 +126,7 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, true)
         backPressedCallback.isEnabled = false
         petsToolbar.isEnabled = false
+        petsListEmpty.isVisible = false
     }
 
     private fun finalStateSetup(animate: Boolean = true) = with (binding) {
@@ -127,6 +134,7 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, false)
         backPressedCallback.isEnabled = true
         petsToolbar.isEnabled = true
+        petsListEmpty.isVisible = adapter.itemCount == 0
 
         if (animate) TransitionManager.beginDelayedTransition(motion)
         petsList.layoutManager = GridLayoutManager(context,
@@ -135,17 +143,14 @@ class MyPetsWidget @JvmOverloads constructor(
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
 
-    private fun addPets() = getScope().safeLaunch(::showError) {
+    private fun addPets() = scope.safeLaunch(::showError) {
         val pets = petUseCases.getPetsFromCurrentUser()
 
-        if (isAttachedToWindow) {
-            adapter.setItems(pets)
+        adapter.setItems(pets)
+        binding.petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
+        adapter.notifyItemRangeChanged(0, adapter.itemCount)
 
-            binding.petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
-            binding.petsList.adapter = adapter
-
-            updatePetsCount(adapter.itemCount)
-        }
+        updatePetsCount(adapter.itemCount)
     }
 
     private fun calculateSpanCount(): Int {
@@ -195,14 +200,11 @@ class MyPetsWidget @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        getScope().safeLaunch(::showError) { addPets() }
+        scope.safeLaunch(::showError) { addPets() }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         job.cancelChildren()
     }
-
-    private fun getScope(coroutineContext: CoroutineContext = Dispatchers.Main) =
-        CoroutineScope(coroutineContext + job)
 }

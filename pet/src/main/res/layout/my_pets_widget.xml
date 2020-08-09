@@ -47,6 +47,17 @@
         android:orientation="horizontal"
         tools:listitem="@layout/pet_list_item" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/pets_list_empty"
+        style="@style/Body2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_extra_large"
+        android:gravity="center"
+        android:elevation="@dimen/bottom_pets_elevation"
+        android:textColor="?attr/colorOnSecondary"
+        android:text="@string/pets_empty_message"/>
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/pets_toolbar"
         android:layout_width="wrap_content"

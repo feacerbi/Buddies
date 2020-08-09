@@ -21,6 +21,7 @@
     <string name="invite_owners_hint">Search names</string>
     <string name="invite_owners_empty_list">No search results</string>
     <string name="invite_message">Invitation sent to %s!</string>
+    <string name="pets_empty_message">You don\'t have any pets yet.\n Try adding a new one on the + above.</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>

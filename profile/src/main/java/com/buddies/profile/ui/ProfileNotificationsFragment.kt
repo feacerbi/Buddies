@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.observe
 import com.buddies.common.util.toColorId
@@ -45,7 +46,7 @@ class ProfileNotificationsFragment : NavigationFragment(), CoroutineScope {
             perform(RefreshNotifications)
         }
 
-        list.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
+        list.addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
     }
 
     private fun bindViews() = with (binding) {

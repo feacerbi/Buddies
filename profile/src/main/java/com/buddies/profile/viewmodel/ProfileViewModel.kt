@@ -65,24 +65,24 @@ class ProfileViewModel(
         updateState(InfoLoading)
         val currentUser = profileUseCases.getCurrentUser()
         updateState(ShowInfo(currentUser))
+        updateEffect(RefreshPets)
     }
 
     private fun refreshNotifications() = safeLaunch(::showError) {
         updateState(NotificationsLoading)
         val notifications = profileUseCases.getNotifications()
         updateState(ShowNotifications(notifications))
+        updateEffect(RefreshPets)
     }
 
     private fun ignoreNotification(notification: UserNotification) = safeLaunch(::showError) {
         updateState(NotificationRemoved(notification))
         profileUseCases.ignoreInvitation(notification.id)
-        refreshNotifications()
     }
 
     private fun acceptNotification(notification: UserNotification) = safeLaunch(::showError) {
         updateState(NotificationRemoved(notification))
         profileUseCases.acceptInvitation(notification.id)
-        refreshNotifications()
         updateEffect(RefreshPets)
     }
 

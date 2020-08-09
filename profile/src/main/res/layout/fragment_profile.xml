@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profile_picture"
-        android:layout_marginTop="@dimen/margin_tiny"/>
+        android:paddingTop="@dimen/margin_tiny"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
