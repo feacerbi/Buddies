@@ -1,5 +1,6 @@
 package com.buddies.mypets.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
@@ -125,7 +126,6 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, true)
         backPressedCallback.isEnabled = false
         petsToolbar.isEnabled = false
-        petsListEmpty.alpha = 0F
     }
 
     private fun finalStateSetup(animate: Boolean = true) = with (binding) {
@@ -133,7 +133,6 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, false)
         backPressedCallback.isEnabled = true
         petsToolbar.isEnabled = true
-        petsListEmpty.alpha = if (adapter.itemCount == 0) 0.8F else 0F
 
         if (animate) TransitionManager.beginDelayedTransition(motion)
         petsList.layoutManager = GridLayoutManager(context,
@@ -166,6 +165,7 @@ class MyPetsWidget @JvmOverloads constructor(
         count: Int
     ) = with (binding) {
         petsCount.text = count.toString()
+        petsListEmpty.alpha = if (adapter.itemCount == 0) 0.8F else 0F
     }
 
     private fun showError(error: DefaultError) {
@@ -193,6 +193,7 @@ class MyPetsWidget @JvmOverloads constructor(
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return false
     }
