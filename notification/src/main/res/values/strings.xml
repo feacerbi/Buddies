@@ -4,4 +4,6 @@
     <string name="ignore_button">Ignore</string>
     <string name="accept_button">Accept</string>
     <string name="invite_notification_message">%s is inviting you to be %s of %s.</string>
+    <string name="invitation_notification_channel_name">Invitation</string>
+    <string name="invitation_notification_channel_description">Used for inviting other owners.</string>
 </resources>

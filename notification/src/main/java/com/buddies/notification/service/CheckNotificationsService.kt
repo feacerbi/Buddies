@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.buddies.common.model.DefaultError
+import com.buddies.common.model.NotificationType.INVITE
 import com.buddies.common.model.UserNotification
 import com.buddies.common.ui.SingleActivity
 import com.buddies.common.util.handleResult
@@ -41,7 +42,11 @@ class CheckNotificationsService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        createNotificationChannel()
+        createNotificationChannel(
+            INVITATION_NOTIFICATION_CHANNEL_ID,
+            getString(R.string.invitation_notification_channel_name),
+            getString(R.string.invitation_notification_channel_description)
+        )
 
         scope.safeLaunch(::handleError) {
             notificationsApi.listenToCurrentUserNotifications().collect { result ->
@@ -63,29 +68,37 @@ class CheckNotificationsService : Service() {
         notificationsApi.markNotificationAsRead(notification.id)
     }
 
-    private fun showNotification(notification: UserNotification) {
-        // TODO Use real ids
-        val builder = NotificationCompat.Builder(this, "buddies")
-            .setSmallIcon(R.drawable.ic_baseline_pets)
-            .setContentTitle(getString(notification.type.description))
-            .setContentText(getString(R.string.invite_notification_message,
-                notification.userName,
-                getString(notification.category.title),
-                notification.petInfo.name))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+    private fun showNotification(userNotification: UserNotification) {
+        val notification = when (userNotification.type) {
+            INVITE -> buildInviteNotification(userNotification)
+            else -> buildInviteNotification(userNotification)
+        }
 
-        NotificationManagerCompat.from(this).notify(1, builder.build())
+        NotificationManagerCompat.from(this).notify(userNotification.id.hashCode(), notification)
     }
 
-    private fun createNotificationChannel() {
+    private fun buildInviteNotification(notification: UserNotification
+    ) = NotificationCompat.Builder(this, INVITATION_NOTIFICATION_CHANNEL_ID)
+        .setSmallIcon(R.drawable.buddies_logo_white)
+        .setContentTitle(getString(notification.type.description))
+        .setContentText(getString(R.string.invite_notification_message,
+            notification.userName,
+            getString(notification.category.title),
+            notification.petInfo.name))
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
+        .build()
+
+    private fun createNotificationChannel(
+        id: String,
+        name: String,
+        descriptionText: String = ""
+    ) {
         // TODO Create real channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Buddies"
-            val descriptionText = "Test description"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("buddies", name, importance).apply {
+            val channel = NotificationChannel(id, name, importance).apply {
                 description = descriptionText
             }
             val notificationManager: NotificationManager? =
@@ -109,4 +122,7 @@ class CheckNotificationsService : Service() {
         return START_STICKY
     }
 
+    companion object {
+        private val INVITATION_NOTIFICATION_CHANNEL_ID = "invitation"
+    }
 }

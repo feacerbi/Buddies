@@ -57,7 +57,8 @@ class NotificationsApi(
                     pet.info,
                     it.info.category.toOwnershipCategory(),
                     it.info.type.toNotificationType(),
-                    it.info.unread
+                    it.info.unread,
+                    it.info.timestamp.toDate()
                 )
             }
         }

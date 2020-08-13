@@ -8,6 +8,7 @@ import com.buddies.common.model.NotificationType.INVITE
 import com.buddies.common.model.UserNotification
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.inflater
+import com.buddies.common.util.toFormatted
 import com.buddies.notification.R
 import com.buddies.notification.databinding.InviteNotificationItemBinding
 import com.buddies.notification.ui.NotificationsAdapter.NotificationViewHolder
@@ -69,6 +70,8 @@ class NotificationsAdapter(
                 ignoreButton.isEnabled = false
                 acceptAction.invoke(notification)
             }
+
+            timestamp.text = notification.timestamp.toFormatted(binding.root.context)
         }
 
     }

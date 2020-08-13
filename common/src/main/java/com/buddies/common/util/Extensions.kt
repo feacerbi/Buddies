@@ -1,6 +1,8 @@
 package com.buddies.common.util
 
+import android.content.Context
 import android.text.InputType
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -164,3 +166,33 @@ suspend fun <T, R> Result<T>.mapResult(
         is Result.Success -> Result.Success(transform(data))
         is Result.Fail -> Result.Fail(error)
     }
+
+fun Date.toFormatted(context: Context) = this.time.toFormattedDate(context)
+
+fun String.toFormattedDate(context: Context) = this.toLong().toFormattedDate(context)
+
+fun Long.toFormattedDate(context: Context): String {
+    val currentTime = Calendar.getInstance()
+    val reqTime = Calendar.getInstance()
+    reqTime.timeInMillis = this
+
+    if(reqTime[Calendar.YEAR] != currentTime[Calendar.YEAR]) {
+        return DateFormat.format("MMM dd, yyyy", reqTime).toString()
+    }
+
+    if(reqTime[Calendar.DAY_OF_MONTH] != currentTime[Calendar.DAY_OF_MONTH]) {
+        return DateFormat.format("MMM dd', 'h:mm a", reqTime).toString()
+    }
+
+    if(reqTime[Calendar.HOUR_OF_DAY] != currentTime[Calendar.HOUR_OF_DAY]) {
+        val hoursPassed = currentTime[Calendar.HOUR_OF_DAY] - reqTime[Calendar.HOUR_OF_DAY]
+        return "${hoursPassed}h"
+    }
+
+    if(reqTime[Calendar.MINUTE] != currentTime[Calendar.MINUTE]) {
+        val minutesPassed = currentTime[Calendar.MINUTE] - reqTime[Calendar.MINUTE]
+        return "${minutesPassed}min"
+    }
+
+    return context.getString(R.string.just_now_timestamp)
+}

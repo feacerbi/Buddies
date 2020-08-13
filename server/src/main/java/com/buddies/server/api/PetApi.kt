@@ -15,6 +15,7 @@ import com.buddies.common.util.generateNewId
 import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.repository.*
 import com.buddies.server.util.*
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.flow.Flow
 
@@ -229,7 +230,14 @@ class PetApi(
         category: Int
     ) = runTransactionsWithResult(
         notificationsRepository.addNotification(
-            NotificationInfo(INVITE.id, userId, usersRepository.getCurrentUserId(), petId, category))
+            NotificationInfo(
+                INVITE.id,
+                userId,
+                usersRepository.getCurrentUserId(),
+                petId,
+                category,
+                true,
+                Timestamp.now()))
     )
 
     suspend fun getOwnersFlowWithPaging(

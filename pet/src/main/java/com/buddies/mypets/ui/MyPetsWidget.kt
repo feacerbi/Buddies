@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.MotionEvent.ACTION_UP
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.constraintlayout.motion.widget.MotionLayout
@@ -114,11 +115,11 @@ class MyPetsWidget @JvmOverloads constructor(
         initialStateSetup()
     }
 
-    private fun transitionBack() {
-        binding.petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
+    private fun transitionBack() = with (binding) {
+        petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
         adapter.isBig = false
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
-        binding.motion.transitionToStart()
+        motion.transitionToStart()
     }
 
     private fun initialStateSetup() = with (binding) {
@@ -126,6 +127,7 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, true)
         backPressedCallback.isEnabled = false
         petsToolbar.isEnabled = false
+        motion.setOnClickListener { transitionToEnd() }
     }
 
     private fun finalStateSetup(animate: Boolean = true) = with (binding) {
@@ -133,6 +135,7 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, false)
         backPressedCallback.isEnabled = true
         petsToolbar.isEnabled = true
+        motion.setOnClickListener(null)
 
         if (animate) TransitionManager.beginDelayedTransition(motion)
         petsList.layoutManager = GridLayoutManager(context,
@@ -183,13 +186,18 @@ class MyPetsWidget @JvmOverloads constructor(
         return false
     }
 
+    private fun isAClick(event: MotionEvent) =
+        event.action == ACTION_UP && event.eventTime - event.downTime < CLICK_THRESHOLD
+
+    private fun clickAction() = binding.motion.transitionToEnd()
+
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         val isInTarget = touchEventInsideTargetView(event)
 
-        return if (isInTarget) {
-            super.onInterceptTouchEvent(event)
-        } else {
-            true
+        return when {
+            isInTarget && isAClick(event) -> false.also { clickAction() }
+            isInTarget -> super.onInterceptTouchEvent(event)
+            else -> true
         }
     }
 
@@ -206,5 +214,9 @@ class MyPetsWidget @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         job.cancelChildren()
+    }
+
+    companion object {
+        private const val CLICK_THRESHOLD = 100
     }
 }
