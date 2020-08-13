@@ -5,7 +5,7 @@ import java.util.*
 data class UserNotification(
     val id: String,
     val userName: String,
-    val petInfo: PetInfo,
+    val pet: Pet,
     val category: OwnershipCategory,
     val type: NotificationType,
     val unread: Boolean,

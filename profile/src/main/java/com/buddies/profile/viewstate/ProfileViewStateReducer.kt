@@ -20,9 +20,11 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
         }
     }
 
-    object ExpandedWidget : ProfileViewStateReducer() {
+    data class ExpandedWidget(
+        val expanded: Boolean
+    ) : ProfileViewStateReducer() {
         override val reduce: ProfileViewState.() -> Unit = {
-            myPetsWidgetExpanded = true
+            myPetsWidgetExpanded = expanded
         }
     }
 

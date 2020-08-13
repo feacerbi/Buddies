@@ -26,6 +26,8 @@ class ProfileViewModel(
     fun getStateStream() = viewState
     fun getEffectStream() = viewEffect
 
+    var expandedState: Boolean = false
+
     init {
         refreshUser()
         refreshNotifications()
@@ -40,12 +42,13 @@ class ProfileViewModel(
             is ChangePhoto -> updatePhoto(action.photo)
             is IgnoreNotification -> ignoreNotification(action.notification)
             is AcceptNotification -> acceptNotification(action.notification)
+            is SaveExpandedState -> saveExpandedState(action.expanded)
             is SignOut -> logout()
         }
     }
 
     private fun openPetProfile(petId: String) {
-        updateState(ExpandedWidget)
+        updateState(ExpandedWidget(expandedState))
         updateEffect(Navigate(ProfileToPetProfile(petId)))
     }
 
@@ -86,6 +89,10 @@ class ProfileViewModel(
         updateEffect(RefreshPets)
     }
 
+    private fun saveExpandedState(state: Boolean) {
+        expandedState = state
+    }
+
     private fun logout() {
         updateEffect(Navigate(ProfileToLogin))
         profileUseCases.logout()
@@ -105,6 +112,7 @@ class ProfileViewModel(
         data class OpenPetProfile(val petId: String) : Action()
         data class IgnoreNotification(val notification: UserNotification) : Action()
         data class AcceptNotification(val notification: UserNotification) : Action()
+        data class SaveExpandedState(val expanded: Boolean) : Action()
     }
 
     override val coroutineContext: CoroutineContext

@@ -40,6 +40,8 @@ class MyPetsWidget @JvmOverloads constructor(
 
     private val adapter = MyPetsAdapter()
 
+    private var onExpandedListener: ((Boolean) -> Unit)? = null
+
     private val backPressedCallback by lazy {
         object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
@@ -52,8 +54,6 @@ class MyPetsWidget @JvmOverloads constructor(
         MyPetsWidgetBinding.inflate(inflater(), this, true).apply {
             binding = this
         }
-
-        elevation = context.resources.getDimension(R.dimen.bottom_pets_elevation)
 
         val styleAttrs = context.obtainStyledAttributes(
             attrs, R.styleable.MyPetsWidget, defStyle, 0
@@ -77,9 +77,15 @@ class MyPetsWidget @JvmOverloads constructor(
         if (expanded) finalStateSetup(false) else initialStateSetup()
     }
 
+    fun setExpandedListener(listener: (Boolean) -> Unit) {
+        onExpandedListener = listener
+    }
+
     fun refresh() = addPets()
 
     private fun setup(attrs: TypedArray) = with (binding) {
+
+        elevation = context.resources.getDimension(R.dimen.bottom_pets_elevation)
 
         petsToolbar.setNavigationOnClickListener {
             transitionBack()
@@ -102,15 +108,20 @@ class MyPetsWidget @JvmOverloads constructor(
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {}
             override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
             override fun onTransitionCompleted(motionLayout: MotionLayout, p1: Int) {
-                if (motionLayout.progress == 1f) {
+                val isEnd = motionLayout.progress == 1f
+
+                if (isEnd) {
                     finalStateSetup()
                 } else {
                     initialStateSetup()
                 }
+
+                onExpandedListener?.invoke(isEnd)
             }
         })
 
         petsList.adapter = adapter
+        petsListEmpty.alpha = 0F
 
         initialStateSetup()
     }
@@ -127,7 +138,6 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, true)
         backPressedCallback.isEnabled = false
         petsToolbar.isEnabled = false
-        motion.setOnClickListener { transitionToEnd() }
     }
 
     private fun finalStateSetup(animate: Boolean = true) = with (binding) {
@@ -135,7 +145,6 @@ class MyPetsWidget @JvmOverloads constructor(
         motion.enableTransition(R.id.my_pets_transition, false)
         backPressedCallback.isEnabled = true
         petsToolbar.isEnabled = true
-        motion.setOnClickListener(null)
 
         if (animate) TransitionManager.beginDelayedTransition(motion)
         petsList.layoutManager = GridLayoutManager(context,

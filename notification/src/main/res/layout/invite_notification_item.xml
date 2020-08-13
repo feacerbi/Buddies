@@ -18,12 +18,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/circular_background"
+        android:foreground="?selectableItemBackgroundBorderless"
         android:padding="@dimen/icon_border"
-        tools:src="@drawable/ic_baseline_person"/>
+        tools:src="@drawable/ic_baseline_person"
+        tools:ignore="UnusedAttribute" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/message"
-        style="@style/Body2"
+        style="@style/NotificationMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/pet_icon"
@@ -32,11 +34,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginEnd="@dimen/margin_medium"
-        android:includeFontPadding="false"
         android:layout_marginStart="@dimen/margin_medium"
+        android:includeFontPadding="false"
         android:maxLines="2"
         android:ellipsize="end"
-        android:textColor="?attr/colorOnSurface"
         tools:text="Owner Name"/>
 
     <com.google.android.material.textview.MaterialTextView

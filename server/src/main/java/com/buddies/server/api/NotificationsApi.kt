@@ -1,6 +1,5 @@
 package com.buddies.server.api
 
-import com.buddies.common.model.Notification
 import com.buddies.common.model.Result
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
@@ -9,6 +8,7 @@ import com.buddies.common.util.mapResult
 import com.buddies.common.util.toDefaultError
 import com.buddies.common.util.toNotificationType
 import com.buddies.common.util.toOwnershipCategory
+import com.buddies.server.model.Notification
 import com.buddies.server.repository.NotificationsRepository
 import com.buddies.server.repository.PetsRepository
 import com.buddies.server.repository.UsersRepository
@@ -54,7 +54,7 @@ class NotificationsApi(
                 UserNotification(
                     it.id,
                     inviter.info.name,
-                    pet.info,
+                    pet,
                     it.info.category.toOwnershipCategory(),
                     it.info.type.toNotificationType(),
                     it.info.unread,

@@ -1,4 +1,4 @@
-package com.buddies.common.model
+package com.buddies.server.model
 
 data class Notification(
     val id: String,

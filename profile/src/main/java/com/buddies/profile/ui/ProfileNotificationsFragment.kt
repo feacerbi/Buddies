@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.observe
 import com.buddies.common.util.toColorId
+import com.buddies.notification.ui.NotificationListDecoration
 import com.buddies.notification.ui.NotificationsAdapter
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileNotificationsTabBinding
@@ -47,7 +46,7 @@ class ProfileNotificationsFragment : NavigationFragment(), CoroutineScope {
             perform(RefreshNotifications)
         }
 
-        list.addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
+        list.addItemDecoration(NotificationListDecoration(requireContext()))
     }
 
     private fun bindViews() = with (binding) {
@@ -56,7 +55,8 @@ class ProfileNotificationsFragment : NavigationFragment(), CoroutineScope {
                 it.notifications,
                 owner = this@ProfileNotificationsFragment,
                 ignoreAction = { notification -> perform(IgnoreNotification(notification)) },
-                acceptAction = { notification -> perform(AcceptNotification(notification)) }
+                acceptAction = { notification -> perform(AcceptNotification(notification)) },
+                clickAction = { pet -> perform(OpenPetProfile(pet.id)) }
             )
             notificationsListEmpty.isVisible = it.emptyNotifications
             refresh.isRefreshing = it.loadingNotifications

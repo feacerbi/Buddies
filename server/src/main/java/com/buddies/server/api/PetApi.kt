@@ -13,6 +13,7 @@ import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
 import com.buddies.common.util.generateNewId
 import com.buddies.common.util.toOwnershipCategory
+import com.buddies.server.model.NotificationInfo
 import com.buddies.server.repository.*
 import com.buddies.server.util.*
 import com.google.firebase.Timestamp

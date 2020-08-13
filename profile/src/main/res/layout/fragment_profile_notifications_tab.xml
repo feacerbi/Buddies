@@ -17,8 +17,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="80dp"
+            android:paddingTop="@dimen/margin_medium"
+            android:paddingBottom="@dimen/notifications_list_bottom_padding"
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

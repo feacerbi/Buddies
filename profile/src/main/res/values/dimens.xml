@@ -2,4 +2,5 @@
 <resources>
     <!-- View -->
     <dimen name="profile_picture_height">300dp</dimen>
+    <dimen name="notifications_list_bottom_padding">80dp</dimen>
 </resources>

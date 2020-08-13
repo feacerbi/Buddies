@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="owner_icon_size">56dp</dimen>
+    <dimen name="owner_icon_size">72dp</dimen>
+    <dimen name="divider_start_margin">108dp</dimen>
 </resources>

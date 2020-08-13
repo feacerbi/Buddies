@@ -66,10 +66,13 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
         pager.adapter = ProfileTabsAdapter(this@ProfileFragment)
 
+        myPetsWidget.addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
         myPetsWidget.addOnPetClickListener(this@ProfileFragment) {
             perform(OpenPetProfile(it.id))
         }
-        myPetsWidget.addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
+        myPetsWidget.setExpandedListener {
+            perform(SaveExpandedState(it))
+        }
     }
 
     private fun bindViews() = with (binding) {

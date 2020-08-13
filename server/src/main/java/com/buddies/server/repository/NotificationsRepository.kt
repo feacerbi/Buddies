@@ -1,7 +1,7 @@
 package com.buddies.server.repository
 
-import com.buddies.common.model.NotificationInfo
 import com.buddies.common.util.generateNewId
+import com.buddies.server.model.NotificationInfo
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot

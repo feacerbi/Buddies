@@ -2,6 +2,8 @@ package com.buddies.server.util
 
 import com.buddies.common.model.*
 import com.buddies.common.util.toOwnershipCategory
+import com.buddies.server.model.Notification
+import com.buddies.server.model.NotificationInfo
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.UploadTask

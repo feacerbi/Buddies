@@ -1,4 +1,4 @@
-package com.buddies.common.model
+package com.buddies.server.model
 
 import com.google.firebase.Timestamp
 

@@ -64,7 +64,7 @@ class ProfileApi(
             UserNotification(
                 it.id,
                 usersRepository.getUser(it.info.inviterId).handleTaskResult().toUser().info.name,
-                petsRepository.getPet(it.info.petId).handleTaskResult().toPet().info,
+                petsRepository.getPet(it.info.petId).handleTaskResult().toPet(),
                 it.info.category.toOwnershipCategory(),
                 it.info.type.toNotificationType(),
                 it.info.unread,

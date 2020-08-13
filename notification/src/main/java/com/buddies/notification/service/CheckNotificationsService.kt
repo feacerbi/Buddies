@@ -84,7 +84,7 @@ class CheckNotificationsService : Service() {
         .setContentText(getString(R.string.invite_notification_message,
             notification.userName,
             getString(notification.category.title),
-            notification.petInfo.name))
+            notification.pet.info.name))
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)
@@ -95,7 +95,6 @@ class CheckNotificationsService : Service() {
         name: String,
         descriptionText: String = ""
     ) {
-        // TODO Create real channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(id, name, importance).apply {
