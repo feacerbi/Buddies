@@ -27,6 +27,9 @@ fun DocumentSnapshot.toBreed() =
 fun DocumentSnapshot.toNotification() =
     Notification(id, to(NotificationInfo::class))
 
+fun DocumentSnapshot.toEncryptionKey() =
+    EncryptionKey(id, to(EncryptionKeyInfo::class))
+
 fun DocumentSnapshot.toOwner(ownership: Ownership) =
     Owner(toUser(), ownership.info.category.toOwnershipCategory())
 

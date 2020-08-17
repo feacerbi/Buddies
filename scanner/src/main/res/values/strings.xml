@@ -1,0 +1,4 @@
+<resources>
+    <!-- Destination -->
+    <string name="scanner_name">Scanner Fragment</string>
+</resources>

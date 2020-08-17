@@ -12,6 +12,8 @@ class ActionTimer(
 
     private var job: Job? = null
 
+    var available = true
+
     fun start(
         action: suspend () -> Unit
     ) {
@@ -30,5 +32,14 @@ class ActionTimer(
     ) {
         stop()
         start(action)
+    }
+
+    fun debounce() {
+        job?.cancel()
+        job = scope.launch {
+            available = false
+            delay(timeout)
+            available = true
+        }
     }
 }

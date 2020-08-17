@@ -11,22 +11,13 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.Transaction
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-abstract class BaseApi : CoroutineScope {
+abstract class BaseApi {
 
     private val db = Firebase.firestore
-
-    private val job = SupervisorJob()
-
-    override val coroutineContext: CoroutineContext =
-        job + Dispatchers.IO
 
     protected suspend fun <T> runWithResult(
         block: suspend () -> T

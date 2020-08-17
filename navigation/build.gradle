@@ -42,6 +42,7 @@ dependencies {
     implementation project(":login")
     implementation project(":pet")
     implementation project(":profile")
+    implementation project(":scanner")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

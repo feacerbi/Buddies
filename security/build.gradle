@@ -1,20 +1,18 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.buddies"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -32,10 +30,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
@@ -43,27 +37,21 @@ dependencies {
 
     // Projects
     implementation project(":common")
-    implementation project(":login")
-    implementation project(":pet")
-    implementation project(":navigation")
-    implementation project(":notification")
-    implementation project(":profile")
-    implementation project(":scanner")
-    implementation project(":security")
     implementation project(":server")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
-    // AndroidX Core & UI
+    // AndroidX Core
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$corektx_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-    implementation "com.google.android.material:material:$material_version"
 
     // Firebase
     implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
+
+    // Jetpack Security
+    implementation "androidx.security:security-crypto:$security_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"

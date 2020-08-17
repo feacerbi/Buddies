@@ -6,6 +6,4 @@ data class PetInfo(
     val photo: String = "",
     val animal: String = "",
     val breed: String = ""
-) {
-    fun toPet(id: String) = Pet(id, this)
-}
+)

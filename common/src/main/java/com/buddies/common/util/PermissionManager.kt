@@ -14,11 +14,16 @@ class PermissionsManager(
 
     fun requestCameraPermissions(activity: Activity) =
         ActivityCompat.requestPermissions(
-                    activity, REQUIRED_CAMERA_PERMISSIONS, REQUEST_CODE_CAMERA_PERMISSIONS
+            activity,
+            REQUIRED_CAMERA_PERMISSIONS,
+            REQUEST_CODE_CAMERA_PERMISSIONS
         )
 
     fun requestCameraPermissions(fragment: Fragment) =
-                fragment.requestPermissions(REQUIRED_CAMERA_PERMISSIONS, REQUEST_CODE_CAMERA_PERMISSIONS)
+        fragment.requestPermissions(
+            REQUIRED_CAMERA_PERMISSIONS,
+            REQUEST_CODE_CAMERA_PERMISSIONS
+        )
 
     fun onRequestResult(
         requestCode: Int,

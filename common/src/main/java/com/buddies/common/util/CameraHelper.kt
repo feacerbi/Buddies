@@ -2,12 +2,9 @@ package com.buddies.common.util
 
 import android.content.Context
 import android.util.Size
-import androidx.camera.core.CameraSelector
+import androidx.camera.core.*
 import androidx.camera.core.CameraSelector.LENS_FACING_BACK
 import androidx.camera.core.CameraSelector.LENS_FACING_FRONT
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
@@ -15,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
-import com.google.common.util.concurrent.ListenableFuture
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -24,25 +20,29 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class CameraHelper(
-    private val previewView: PreviewView,
     private val lifecycleOwner: LifecycleOwner,
-    var lensFacing: Int = LENS_FACING_BACK
+    private val previewView: PreviewView,
+    private val analyser: ImageAnalysis.Analyzer? = null,
+    private val photoSize: Size = Size(
+        DEFAULT_IMAGE_WIDTH,
+        DEFAULT_IMAGE_HEIGHT
+    ),
+    private var lensFacing: Int = LENS_FACING_BACK
 ): LifecycleObserver {
 
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
-    private val photoSize = Size(1920, 1080)
 
+    private var camera: Camera? = null
     private var imageCapture: ImageCapture? = null
+    private var imageAnalysis: ImageAnalysis? = null
     private var currentFile = getNewFile()
 
     init {
         lifecycleOwner.lifecycle.addObserver(this)
-        previewView.scaleType = PreviewView.ScaleType.FILL_CENTER
     }
 
     fun startCamera(context: Context) {
-        val providerFuture: ListenableFuture<ProcessCameraProvider>
-                = ProcessCameraProvider.getInstance(context)
+        val providerFuture = ProcessCameraProvider.getInstance(context)
 
         providerFuture.addListener(Runnable {
             bindPreview(providerFuture.get())
@@ -50,8 +50,7 @@ class CameraHelper(
     }
 
     fun stopCamera(context: Context) {
-        val providerFuture: ListenableFuture<ProcessCameraProvider>
-                = ProcessCameraProvider.getInstance(context)
+        val providerFuture = ProcessCameraProvider.getInstance(context)
 
         providerFuture.addListener(Runnable {
             unbindPreview(providerFuture.get())
@@ -93,7 +92,7 @@ class CameraHelper(
             setTargetResolution(photoSize)
         }.build()
 
-        val cameraSelector : CameraSelector = CameraSelector.Builder()
+        val cameraSelector: CameraSelector = CameraSelector.Builder()
             .requireLensFacing(lensFacing)
             .build()
 
@@ -101,8 +100,24 @@ class CameraHelper(
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
             .build()
 
+        if (analyser != null) {
+            imageAnalysis = ImageAnalysis.Builder()
+                .setTargetResolution(photoSize)
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build().apply {
+                    setAnalyzer(executor, analyser)
+                }
+        }
+
         cameraProvider.unbindAll()
-        cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, preview, imageCapture)
+
+        camera = cameraProvider.bindToLifecycle(
+                lifecycleOwner,
+                cameraSelector,
+                preview,
+                imageCapture,
+                imageAnalysis
+            )
 
         preview.setSurfaceProvider(previewView.createSurfaceProvider())
     }
@@ -118,5 +133,11 @@ class CameraHelper(
 
     private fun getNewFile() = File(
         previewView.context.externalMediaDirs.first(),
-        "${System.currentTimeMillis()}.jpg")
+        "${System.currentTimeMillis()}.jpg"
+    )
+
+    companion object {
+        private const val DEFAULT_IMAGE_HEIGHT = 1920
+        private const val DEFAULT_IMAGE_WIDTH = 1080
+    }
 }
