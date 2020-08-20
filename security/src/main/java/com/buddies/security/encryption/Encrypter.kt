@@ -1,5 +1,9 @@
 package com.buddies.security.encryption
 
+import com.buddies.common.model.DefaultError
+import com.buddies.common.model.DefaultErrorException
+import com.buddies.common.model.ErrorCode.INVALID_TAG
+import com.buddies.common.model.ErrorCode.UNKNOWN
 import com.buddies.security.usecase.SecurityUseCases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -22,9 +26,13 @@ class Encrypter(
         val specs = getKeySpecs()
 
         cipher.init(Cipher.ENCRYPT_MODE, specs.first, specs.second)
-        val encryptedText: ByteArray? = cipher.doFinal(plaintext?.toByteArray())
 
-        return encryptedText.toEncryptedString()
+        try {
+            val encryptedText: ByteArray? = cipher.doFinal(plaintext?.toByteArray())
+            return encryptedText.toEncryptedString()
+        } catch (e: Exception) {
+            throw DefaultErrorException(DefaultError(UNKNOWN))
+        }
     }
 
     suspend fun decrypt(
@@ -33,9 +41,13 @@ class Encrypter(
         val specs = getKeySpecs()
 
         cipher.init(Cipher.DECRYPT_MODE, specs.first, specs.second)
-        val decryptedText = cipher.doFinal(encryptedText.toEncryptedByteArray())
 
-        return decryptedText.toString(UTF_8)
+        try {
+            val decryptedText = cipher.doFinal(encryptedText.toEncryptedByteArray())
+            return decryptedText.toString(UTF_8)
+        } catch (e: Exception) {
+            throw DefaultErrorException(DefaultError(INVALID_TAG))
+        }
     }
 
     fun generateNewKey() =
@@ -50,13 +62,17 @@ class Encrypter(
     private suspend fun getKeySpecs(): Pair<SecretKeySpec, IvParameterSpec> {
         val secretKey = withContext(Dispatchers.IO) { securityUseCases.fetchEncryptionKey() }
 
-        val key = secretKey?.info?.key.toEncryptedByteArray()
-        val iv = secretKey?.info?.iv.toEncryptedByteArray()
+        try {
+            val key = secretKey?.info?.key.toEncryptedByteArray()
+            val iv = secretKey?.info?.iv.toEncryptedByteArray()
 
-        val keySpec = SecretKeySpec(key, ALGORITHM_WITH_PADDING)
-        val ivSpec = IvParameterSpec(iv)
+            val keySpec = SecretKeySpec(key, ALGORITHM_WITH_PADDING)
+            val ivSpec = IvParameterSpec(iv)
 
-        return Pair(keySpec, ivSpec)
+            return Pair(keySpec, ivSpec)
+        } catch (e: Exception) {
+            throw DefaultErrorException(DefaultError(UNKNOWN))
+        }
     }
 
     private fun String?.toEncryptedByteArray() = this

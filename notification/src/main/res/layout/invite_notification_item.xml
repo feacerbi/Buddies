@@ -13,8 +13,8 @@
 
     <ImageView
         android:id="@+id/pet_icon"
-        android:layout_width="@dimen/owner_icon_size"
-        android:layout_height="@dimen/owner_icon_size"
+        android:layout_width="@dimen/notification_owner_icon_size"
+        android:layout_height="@dimen/notification_owner_icon_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/circular_background"
@@ -58,7 +58,7 @@
         android:alpha="0.5"
         tools:text="3 minutes ago"/>
 
-    <com.google.android.material.textview.MaterialTextView
+    <Button
         android:id="@+id/ignore_button"
         style="@style/Button"
         android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
         android:layout_marginEnd="@dimen/margin_tiny"
         android:text="@string/ignore_button"/>
 
-    <com.google.android.material.textview.MaterialTextView
+    <Button
         android:id="@+id/accept_button"
         style="@style/Button.Filled"
         android:layout_width="wrap_content"

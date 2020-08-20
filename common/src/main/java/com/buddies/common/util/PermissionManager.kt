@@ -29,14 +29,16 @@ class PermissionsManager(
         requestCode: Int,
         onSuccess: () -> Unit,
         onFail: (String) -> Unit
-    ) {
+    ): Boolean {
         if (requestCode == REQUEST_CODE_CAMERA_PERMISSIONS) {
             if (cameraPermissionsGranted()) {
                 onSuccess.invoke()
             } else {
                 onFail.invoke(REQUIRED_CAMERA_PERMISSIONS.joinToString(separator = ", "))
             }
+            return true
         }
+        return false
     }
 
     fun cameraPermissionsGranted() = REQUIRED_CAMERA_PERMISSIONS.all {

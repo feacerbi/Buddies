@@ -29,6 +29,7 @@ import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.Result
 import com.buddies.common.ui.SelectableAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -233,4 +234,8 @@ fun String.customTextAppearance(
             }
         }
     }
+}
+
+fun ExtendedFloatingActionButton.expand(shouldExpand: Boolean) {
+    if (shouldExpand) extend() else shrink()
 }

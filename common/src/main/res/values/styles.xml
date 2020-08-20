@@ -50,5 +50,13 @@
     <style name="FloatingActionButton.Mini" parent="FloatingActionButton">
         <item name="fabSize">mini</item>
     </style>
+
+    <style name="ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+    </style>
+
+    <style name="ExtendedFloatingActionButton.Icon" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+    </style>
     
 </resources>

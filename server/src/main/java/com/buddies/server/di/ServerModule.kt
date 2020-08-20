@@ -12,6 +12,7 @@ val serverModule = module {
     single { BreedsRepository() }
     single { NotificationsRepository() }
     single { SecurityRepository() }
+    single { TagsRepository() }
 
     single { LoginApi(get()) }
     single { ProfileApi(get(), get(), get(), get()) }
@@ -19,4 +20,5 @@ val serverModule = module {
     single { AnimalApi(get(), get()) }
     single { NotificationsApi(get(), get(), get()) }
     single { SecurityApi(get()) }
+    single { NewPetApi(get()) }
 }

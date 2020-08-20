@@ -6,7 +6,6 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.buddies.notification.R
 import kotlin.math.roundToInt
 
 class NotificationListDecoration(
@@ -27,7 +26,7 @@ class NotificationListDecoration(
 
         canvas.save()
 
-        val left = parent.context.resources.getDimension(R.dimen.divider_start_margin).toInt()
+        val left = 0
         val right = parent.width
         val bounds = Rect()
 

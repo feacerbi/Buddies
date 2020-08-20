@@ -71,8 +71,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/scannerFragment"
-        android:name="com.buddies.scanner.ui.ScannerFragment"
-        android:label="@string/scanner_name" />
+        android:id="@+id/scanTagFragment"
+        android:name="com.buddies.scanner.ui.ScanTagFragment"
+        android:label="@string/scan_tag_name" />
 
 </navigation>

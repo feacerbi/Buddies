@@ -41,5 +41,6 @@
     <string name="null_task">Task is null</string>
     <string name="null_result">Result is null</string>
     <string name="access_denied_error_code">You can\'t do this with your current ownership.</string>
+    <string name="invalid_tag_error">Invalid Tag</string>
 
 </resources>

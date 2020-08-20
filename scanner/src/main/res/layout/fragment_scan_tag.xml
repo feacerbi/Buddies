@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ScanTagFragment">
+
+    <com.buddies.scanner.ui.QRScanner
+        android:id="@+id/scanner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/scanner_reference"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorSecondary"
+        android:alpha="@integer/camera_background_alpha"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scanner_reference"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorSecondary"
+        android:alpha="@integer/camera_background_alpha"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/scanner_reference"
+        app:layout_constraintBottom_toBottomOf="@id/scanner_reference"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/scanner_reference"
+        android:background="@color/colorSecondary"
+        android:alpha="@integer/camera_background_alpha"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/scanner_reference"
+        app:layout_constraintBottom_toBottomOf="@id/scanner_reference"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/scanner_reference"
+        android:background="@color/colorSecondary"
+        android:alpha="@integer/camera_background_alpha" />
+
+    <View
+        android:layout_width="@dimen/focus_width"
+        android:layout_height="@dimen/focus_height"
+        app:layout_constraintTop_toTopOf="@id/scanner_reference"
+        app:layout_constraintStart_toStartOf="@id/scanner_reference"
+        android:background="@android:color/white"/>
+
+    <View
+        android:layout_width="@dimen/focus_width"
+        android:layout_height="@dimen/focus_height"
+        app:layout_constraintTop_toTopOf="@id/scanner_reference"
+        app:layout_constraintEnd_toEndOf="@id/scanner_reference"
+        android:background="@android:color/white"/>
+
+    <View
+        android:layout_width="@dimen/focus_width"
+        android:layout_height="@dimen/focus_height"
+        app:layout_constraintBottom_toBottomOf="@id/scanner_reference"
+        app:layout_constraintStart_toStartOf="@id/scanner_reference"
+        android:background="@android:color/white"/>
+
+    <View
+        android:layout_width="@dimen/focus_width"
+        android:layout_height="@dimen/focus_height"
+        app:layout_constraintBottom_toBottomOf="@id/scanner_reference"
+        app:layout_constraintEnd_toEndOf="@id/scanner_reference"
+        android:background="@android:color/white"/>
+
+    <View
+        android:layout_width="@dimen/focus_height"
+        android:layout_height="@dimen/focus_width"
+        app:layout_constraintTop_toTopOf="@id/scanner_reference"
+        app:layout_constraintStart_toStartOf="@id/scanner_reference"
+        android:background="@android:color/white"/>
+
+    <View
+        android:layout_width="@dimen/focus_height"
+        android:layout_height="@dimen/focus_width"
+        app:layout_constraintTop_toTopOf="@id/scanner_reference"
+        app:layout_constraintEnd_toEndOf="@id/scanner_reference"
+        android:background="@android:color/white"/>
+
+    <View
+        android:layout_width="@dimen/focus_height"
+        android:layout_height="@dimen/focus_width"
+        app:layout_constraintBottom_toBottomOf="@id/scanner_reference"
+        app:layout_constraintStart_toStartOf="@id/scanner_reference"
+        android:background="@android:color/white"/>
+
+    <View
+        android:layout_width="@dimen/focus_height"
+        android:layout_height="@dimen/focus_width"
+        app:layout_constraintBottom_toBottomOf="@id/scanner_reference"
+        app:layout_constraintEnd_toEndOf="@id/scanner_reference"
+        android:background="@android:color/white"/>
+
+    <View
+        android:id="@+id/scanner_reference"
+        android:layout_width="@dimen/qr_camera_size"
+        android:layout_height="@dimen/qr_camera_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        android:layout_width="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="?attr/colorSecondary"
+        android:elevation="8dp"
+        app:navigationIcon="@drawable/ic_baseline_close"
+        app:titleTextColor="?attr/colorOnSecondary" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/steps"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="?attr/colorSecondary"
+        android:elevation="8dp"/>
+
+    <com.buddies.scanner.ui.StepsWidget
+        android:id="@+id/steps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="@id/scanner_reference"
+        app:layout_constraintEnd_toEndOf="@id/scanner_reference"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:paddingBottom="@dimen/margin_large"
+        android:elevation="8dp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/qr_result"
+        style="@style/Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/scanner_reference"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_large"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/white"
+        tools:text="@string/scan_your_tag_result"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/qr_result"
+        app:layout_constraintBottom_toTopOf="@id/forward_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@android:color/white"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/scan_again_button"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/qr_result"
+        app:layout_constraintBottom_toTopOf="@id/forward_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/scan_again_button"
+        android:textColor="@android:color/white"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/forward_button"
+        style="@style/ExtendedFloatingActionButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:icon="@drawable/ic_baseline_arrow_forward"
+        app:iconTint="?attr/colorSecondary"
+        app:backgroundTint="@android:color/white"
+        android:textColor="?attr/colorSecondary"
+        android:text="@string/no_valid_tags_button_message"
+        android:enabled="false"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

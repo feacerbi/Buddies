@@ -29,7 +29,7 @@
         android:layout_marginTop="@dimen/margin_large"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <Button
         android:id="@+id/apply_button"
         style="@style/Button.Filled"
         android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:layout_marginEnd="@dimen/margin_medium"
         android:text="@string/apply_button"/>
 
-    <com.google.android.material.textview.MaterialTextView
+    <Button
         android:id="@+id/cancel_button"
         style="@style/Button"
         android:layout_width="wrap_content"

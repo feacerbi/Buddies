@@ -4,7 +4,7 @@
     <color name="colorPrimary">#75d998</color>
     <color name="colorPrimaryVariant">#455A64</color>
     <color name="colorSecondary">#75d998</color>
-    <color name="colorSecondaryVariant">#75d998</color>
+    <color name="colorSecondaryVariant">#E86147</color>
 
     <!-- Surfaces -->
     <color name="colorSurface">@color/material_white</color>

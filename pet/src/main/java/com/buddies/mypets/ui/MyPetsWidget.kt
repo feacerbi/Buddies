@@ -31,7 +31,7 @@ class MyPetsWidget @JvmOverloads constructor(
     defStyle: Int = 0
 ) : MotionLayout(context, attrs, defStyle) {
 
-    private var binding: MyPetsWidgetBinding
+    private val binding: MyPetsWidgetBinding
 
     private val petUseCases by inject(PetUseCases::class.java)
 

@@ -42,6 +42,7 @@ dependencies {
     // Projects
     implementation project(":common")
     implementation project(":security")
+    implementation project(":server")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -63,9 +64,12 @@ dependencies {
 
     // Jetpack Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // ML Kit

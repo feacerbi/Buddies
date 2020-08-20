@@ -30,6 +30,10 @@ fun DocumentSnapshot.toNotification() =
 fun DocumentSnapshot.toEncryptionKey() =
     EncryptionKey(id, to(EncryptionKeyInfo::class))
 
+fun QuerySnapshot.toTag() = documents[0].run {
+    Tag(id, to(TagInfo::class))
+}
+
 fun DocumentSnapshot.toOwner(ownership: Ownership) =
     Owner(toUser(), ownership.info.category.toOwnershipCategory())
 
