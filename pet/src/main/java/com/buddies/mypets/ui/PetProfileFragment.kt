@@ -1,13 +1,11 @@
 package com.buddies.mypets.ui
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -50,6 +48,10 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         OwnersPagingAdapter(OwnersComparator, this@PetProfileFragment)
     }
 
+    private val galleryPick = registerForActivityResult(GetContent()) {
+        perform(ChangePhoto(it))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -74,7 +76,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.edit_picture_menu_action -> {
-                    pickGalleryPicture()
+                    galleryPick.launch(IMAGE_MIME_TYPE)
                     true
                 }
                 R.id.add_owner_menu_action -> {
@@ -136,21 +138,11 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         }
     }
 
-    private fun pickGalleryPicture() {
-        val pickerIntent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-
-        startActivityForResult(pickerIntent,
-            GALLERY_IMAGE_PICKER
-        )
-    }
-
     private fun showInviteOwnerBottomSheet() {
         val customView = OwnerInviteListBinding.inflate(layoutInflater)
         val dialog = openCustomBottomSheet(customView.root)
 
-        ownersPagingAdapter.addDataRefreshListener {
+        ownersPagingAdapter.addLoadStateListener {
             customView.ownersListEmpty.isVisible = ownersPagingAdapter.itemCount == 0
         }
 
@@ -204,18 +196,6 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         Toast.makeText(requireContext(), getString(text, *params), Toast.LENGTH_SHORT).show()
     }
 
-    private fun showMessage(text: String) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        if (requestCode == GALLERY_IMAGE_PICKER && resultCode == Activity.RESULT_OK) {
-            intent?.data?.let { perform(ChangePhoto(it)) }
-        } else {
-            super.onActivityResult(requestCode, resultCode, intent)
-        }
-    }
-
     private fun perform(action: Action) {
         viewModel.perform(action)
     }
@@ -224,6 +204,6 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         get() = lifecycleScope.coroutineContext
 
     companion object {
-        private const val GALLERY_IMAGE_PICKER = 1
+        private const val IMAGE_MIME_TYPE = "image/*"
     }
 }

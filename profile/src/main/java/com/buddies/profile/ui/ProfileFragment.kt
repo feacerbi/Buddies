@@ -1,13 +1,11 @@
 package com.buddies.profile.ui
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.lifecycle.lifecycleScope
 import coil.api.load
 import com.buddies.common.ui.NavigationFragment
@@ -30,6 +28,10 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private val viewModel: ProfileViewModel by sharedViewModel()
 
+    private val galleryPick = registerForActivityResult(GetContent()) {
+        perform(ChangePhoto(it))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,7 +53,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.edit_picture_menu_action -> {
-                    pickGalleryPicture()
+                    galleryPick.launch(IMAGE_MIME_TYPE)
                     true
                 }
                 else -> false
@@ -85,26 +87,8 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         }
     }
 
-    private fun pickGalleryPicture() {
-        val pickerIntent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-
-        startActivityForResult(pickerIntent,
-            GALLERY_IMAGE_PICKER
-        )
-    }
-
     private fun showMessage(text: Int) {
         Toast.makeText(requireContext(), getString(text), Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        if (requestCode == GALLERY_IMAGE_PICKER && resultCode == Activity.RESULT_OK) {
-            intent?.data?.let { perform(ChangePhoto(it)) }
-        } else {
-            super.onActivityResult(requestCode, resultCode, intent)
-        }
     }
 
     private fun perform(action: Action) {
@@ -115,6 +99,6 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         get() = lifecycleScope.coroutineContext
 
     companion object {
-        private const val GALLERY_IMAGE_PICKER = 1
+        private const val IMAGE_MIME_TYPE = "image/*"
     }
 }

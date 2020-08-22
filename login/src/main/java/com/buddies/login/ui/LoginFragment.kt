@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.view.isVisible
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.observe
@@ -22,6 +23,10 @@ class LoginFragment : NavigationFragment() {
     private lateinit var binding: FragmentLoginBinding
 
     private val viewModel: LoginViewModel by viewModel()
+
+    private val login = registerForActivityResult(StartActivityForResult()) {
+        perform(Login(it.data))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,15 +62,7 @@ class LoginFragment : NavigationFragment() {
     }
 
     private fun requestLogin(intent: Intent) {
-        startActivityForResult(intent, SIGN_IN)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == SIGN_IN) {
-            perform(Login(data))
-        }
+        login.launch(intent)
     }
 
     private fun showMessage(text: Int) {
@@ -74,9 +71,5 @@ class LoginFragment : NavigationFragment() {
 
     private fun perform(action: Action) {
         viewModel.perform(action)
-    }
-
-    companion object {
-        private const val SIGN_IN = 1
     }
 }

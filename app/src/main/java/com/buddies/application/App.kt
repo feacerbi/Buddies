@@ -6,7 +6,7 @@ import com.buddies.common.di.commonModule
 import com.buddies.login.di.loginModule
 import com.buddies.mypets.di.petModule
 import com.buddies.navigation.di.navigationModule
-import com.buddies.notification.service.CheckNotificationsService
+import com.buddies.notification.service.NotificationsService
 import com.buddies.profile.di.profileModule
 import com.buddies.scanner.di.newPetModule
 import com.buddies.security.di.securityModule
@@ -23,7 +23,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         setUpKoin()
-        startService(Intent(applicationContext, CheckNotificationsService::class.java))
+        startService(Intent(applicationContext, NotificationsService::class.java))
     }
 
     private fun setUpKoin() {

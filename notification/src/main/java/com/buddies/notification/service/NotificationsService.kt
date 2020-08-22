@@ -22,7 +22,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
-class CheckNotificationsService : Service() {
+class NotificationsService : Service() {
 
     private val notificationsApi: NotificationsApi by inject()
 
