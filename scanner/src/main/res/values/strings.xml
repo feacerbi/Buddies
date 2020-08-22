@@ -1,16 +1,20 @@
 <resources>
     <!-- Destination -->
-    <string name="scan_tag_name">Scan Tag Fragment</string>
+    <string name="tag_scan_name">Tag Scan Fragment</string>
+    <string name="choose_animal_breed_name">Choose Animal and Breed Fragment</string>
 
     <!-- Views -->
     <string name="qr_result_text">Tag: %s</string>
     <string name="scan_your_tag_result">Scan your Tag</string>
     <string name="validating_result">Validating…</string>
-    <string name="validated_result">Your Tag is valid!</string>
-    <string name="invalid_result">Your Tag is not valid!</string>
-    <string name="unrecognized_result">This is not a Buddy Tag!</string>
+    <string name="validated_result">Your Tag is valid</string>
+    <string name="invalid_result">Your Tag is not valid</string>
+    <string name="unrecognized_result">This is not a Buddy Tag</string>
     <string name="scan_another_button">Scan Another</string>
     <string name="new_buddy_flow_title">New Buddy</string>
     <string name="no_valid_tags_button_message">no valid tags</string>
+    <string name="no_animal_and_breed_message">no animal and breed</string>
     <string name="scan_again_button">Scan Again</string>
+    <string name="animal_title">Animal</string>
+    <string name="breed_title">Breed</string>
 </resources>

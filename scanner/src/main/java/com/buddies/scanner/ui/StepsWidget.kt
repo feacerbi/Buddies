@@ -49,7 +49,7 @@ class StepsWidget @JvmOverloads constructor(
                 secondStepTick.setImageResource(R.drawable.filled_tick_mark)
                 thirdStepTick.setImageResource(R.drawable.hollow_tick_mark)
 
-                secondTrack.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSecondaryVariant))
+                firstTrack.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSecondaryVariant))
                 firstTrack.alpha = SELECTED_ALPHA
                 secondTrack.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
                 secondTrack.alpha = UNSELECTED_ALPHA
@@ -65,7 +65,7 @@ class StepsWidget @JvmOverloads constructor(
                 secondStepTick.setImageResource(R.drawable.filled_tick_mark)
                 thirdStepTick.setImageResource(R.drawable.filled_tick_mark)
 
-                secondTrack.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSecondaryVariant))
+                firstTrack.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSecondaryVariant))
                 firstTrack.alpha = SELECTED_ALPHA
                 secondTrack.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSecondaryVariant))
                 secondTrack.alpha = SELECTED_ALPHA

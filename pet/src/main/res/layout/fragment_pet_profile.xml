@@ -53,7 +53,6 @@
         android:padding="@dimen/margin_large"
         android:elevation="@dimen/bottom_pets_elevation"
         android:contentDescription="@string/pet_name_icon_content_description"
-        android:tint="@color/iconColorNormal"
         android:visibility="invisible"
         android:src="@drawable/ic_baseline_pets" />
 
@@ -122,7 +121,7 @@
                     app:layout_constraintTop_toBottomOf="@id/profile_info_title"
                     app:layout_constraintStart_toStartOf="parent"
                     android:padding="@dimen/margin_large"
-                    android:tint="@color/iconColorNormal"
+                    app:tint="@color/iconColorNormal"
                     android:contentDescription="@string/pet_animal_icon_content_description"
                     android:src="@drawable/ic_baseline_pets" />
 
@@ -149,7 +148,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:padding="@dimen/margin_large"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:tint="?attr/colorSecondary"
+                    app:tint="?attr/colorSecondary"
                     android:contentDescription="@string/pet_animal_edit_icon_content_description"
                     android:src="@drawable/ic_edit" />
 
@@ -185,7 +184,7 @@
                     app:layout_constraintTop_toTopOf="@id/profile_tag_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:padding="@dimen/margin_large"
-                    android:tint="?attr/colorSecondary"
+                    app:tint="?attr/colorSecondary"
                     android:contentDescription="@string/pet_tag_edit_icon_content_description"
                     android:src="@drawable/ic_edit" />
 

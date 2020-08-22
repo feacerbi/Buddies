@@ -72,7 +72,21 @@
 
     <fragment
         android:id="@+id/scanTagFragment"
-        android:name="com.buddies.scanner.ui.ScanTagFragment"
-        android:label="@string/scan_tag_name" />
+        android:name="com.buddies.scanner.ui.TagScanFragment"
+        android:label="@string/tag_scan_name" >
+        <action
+            android:id="@+id/action_tagScanFragment_to_chooseAnimalBreedFragment"
+            app:destination="@id/chooseAnimalBreedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chooseAnimalBreedFragment"
+        android:name="com.buddies.scanner.ui.ChooseAnimalBreedFragment"
+        android:label="@string/choose_animal_breed_name" />
 
 </navigation>
