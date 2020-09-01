@@ -1,5 +1,6 @@
 package com.buddies.scanner.viewstate
 
+import android.net.Uri
 import com.buddies.common.model.Animal
 import com.buddies.common.viewstate.ViewStateReducer
 import com.buddies.scanner.R
@@ -83,6 +84,61 @@ sealed class NewPetViewStateReducer : ViewStateReducer<NewPetViewState> {
         override val reduce: NewPetViewState.() -> Unit = {
             forwardButtonEnabled = true
             forwardButtonExpanded = false
+        }
+    }
+
+    object ShowInfo : NewPetViewStateReducer() {
+        override val reduce: NewPetViewState.() -> Unit = {
+            title = R.string.new_buddy_flow_title
+            step = 3
+            forwardButtonEnabled = false
+            forwardButtonExpanded = true
+            forwardButtonText = R.string.no_name_message
+            showCameraOverlay = true
+        }
+    }
+
+    object ShowInvalidInfo : NewPetViewStateReducer() {
+        override val reduce: NewPetViewState.() -> Unit = {
+            forwardButtonEnabled = false
+            forwardButtonExpanded = true
+        }
+    }
+
+    object ShowInfoValidated : NewPetViewStateReducer() {
+        override val reduce: NewPetViewState.() -> Unit = {
+            forwardButtonEnabled = true
+            forwardButtonExpanded = false
+        }
+    }
+
+    data class ShowPetPhoto(
+        val photoUri: Uri
+    ) : NewPetViewStateReducer() {
+        override val reduce: NewPetViewState.() -> Unit = {
+            animalPhoto = photoUri
+            showCameraOverlay = false
+        }
+    }
+
+    object ShowAddingPet : NewPetViewStateReducer() {
+        override val reduce: NewPetViewState.() -> Unit = {
+            confirmationTitle = R.string.adding_pet_message
+            confirmationLoading = true
+            hideAnimalPhoto = true
+            showBackButton = true
+        }
+    }
+
+    data class ShowPetConfirmation(
+        val name: String
+    ) : NewPetViewStateReducer() {
+        override val reduce: NewPetViewState.() -> Unit = {
+            confirmationTitle = R.string.pet_added_message
+            animalName = name
+            confirmationLoading = false
+            hideAnimalPhoto = false
+            showBackButton = false
         }
     }
 }

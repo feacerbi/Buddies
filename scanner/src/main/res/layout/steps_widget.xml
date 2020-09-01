@@ -2,11 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:background="@color/colorSecondary">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/first_step_tick"
@@ -47,7 +45,7 @@
         app:layout_constraintStart_toEndOf="@id/first_step_tick"
         app:layout_constraintEnd_toStartOf="@id/second_step_tick"
         android:layout_margin="@dimen/margin_small"
-        android:background="?attr/colorPrimary"
+        android:background="@android:color/white"
         android:alpha="0.2"/>
 
     <View
@@ -59,7 +57,7 @@
         app:layout_constraintStart_toEndOf="@id/second_step_tick"
         app:layout_constraintEnd_toStartOf="@id/third_step_tick"
         android:layout_margin="@dimen/margin_small"
-        android:background="?attr/colorPrimary"
+        android:background="@android:color/white"
         android:alpha="0.2"/>
 
     <ImageView

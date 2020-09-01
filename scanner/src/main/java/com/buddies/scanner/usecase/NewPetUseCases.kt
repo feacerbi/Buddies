@@ -1,5 +1,7 @@
 package com.buddies.scanner.usecase
 
+import com.buddies.common.model.NewPet
+import com.buddies.common.model.OwnershipCategory
 import com.buddies.common.usecase.BaseUseCases
 import com.buddies.server.api.AnimalApi
 import com.buddies.server.api.NewPetApi
@@ -9,10 +11,10 @@ class NewPetUseCases(
     private val animalApi: AnimalApi
 ) : BaseUseCases() {
 
-    suspend fun validateTag(
+    suspend fun getTag(
         tagValue: String
     ) = request {
-        newPetApi.isTagValid(tagValue)
+        newPetApi.getTagByValue(tagValue)
     }
 
     suspend fun getAllAnimals() = request {
@@ -25,4 +27,10 @@ class NewPetUseCases(
         animalApi.getAllAnimalBreeds(animalId)
     }
 
+    suspend fun addNewPet(
+        newPet: NewPet,
+        category: OwnershipCategory
+    ) = request {
+        newPetApi.addNewPet(newPet, category.id)
+    }
 }

@@ -11,6 +11,8 @@ import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplas
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToProfileFragment
 import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToLoginFragment
 import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToPetProfileFragment
+import com.buddies.scanner.ui.ChooseAnimalBreedFragmentDirections.Companion.actionChooseAnimalBreedFragmentToPetInfoFragment
+import com.buddies.scanner.ui.PetInfoFragmentDirections.Companion.actionPetInfoFragmentToAddConfirmationFragment
 import com.buddies.scanner.ui.TagScanFragmentDirections.Companion.actionTagScanFragmentToChooseAnimalBreedFragment
 
 class AppNavigator : Navigator {
@@ -33,5 +35,7 @@ class AppNavigator : Navigator {
         is ProfileToPetProfile -> actionProfileFragmentToPetProfileFragment(petId)
 
         is TagScanToAnimalAndBreed -> actionTagScanFragmentToChooseAnimalBreedFragment()
+        is AnimalAndBreedToInfo -> actionChooseAnimalBreedFragmentToPetInfoFragment()
+        is InfoToConfirmation -> actionPetInfoFragmentToAddConfirmationFragment()
     }
 }

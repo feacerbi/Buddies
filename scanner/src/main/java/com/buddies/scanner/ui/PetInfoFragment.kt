@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.buddies.common.model.Animal
-import com.buddies.common.model.Breed
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
+import coil.api.load
 import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
-import com.buddies.scanner.databinding.FragmentChooseAnimalBreedBinding
+import com.buddies.scanner.databinding.FragmentPetInfoBinding
 import com.buddies.scanner.databinding.NewPetHeaderBinding
 import com.buddies.scanner.viewmodel.NewPetViewModel
 import com.buddies.scanner.viewmodel.NewPetViewModel.Action
@@ -18,28 +21,22 @@ import com.buddies.scanner.viewmodel.NewPetViewModel.Action.*
 import com.buddies.scanner.viewstate.NewPetViewEffect.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class ChooseAnimalBreedFragment : NavigationFragment() {
+class PetInfoFragment : NavigationFragment() {
 
-    private lateinit var binding: FragmentChooseAnimalBreedBinding
+    private lateinit var binding: FragmentPetInfoBinding
     private lateinit var headerBinding: NewPetHeaderBinding
 
     private val viewModel: NewPetViewModel by sharedViewModel()
 
-    private val animalsAdapter = HorizontalAnimalsAdapter(
-        emptyList(),
-        this@ChooseAnimalBreedFragment,
-        ::handleAnimalPicked)
-
-    private val breedsAdapter = HorizontalBreedsAdapter(
-        emptyList(),
-        this@ChooseAnimalBreedFragment,
-        ::handleBreedPicked)
+    private val galleryPick = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        perform(PhotoInput(it))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentChooseAnimalBreedBinding.inflate(layoutInflater, container, false).apply {
+    ): View? = FragmentPetInfoBinding.inflate(layoutInflater, container, false).apply {
         binding = this
         headerBinding = NewPetHeaderBinding.bind(this.root)
     }.root
@@ -54,8 +51,17 @@ class ChooseAnimalBreedFragment : NavigationFragment() {
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
         backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next) }
-        animalsList.adapter = animalsAdapter
-        breedsList.adapter = breedsAdapter
+
+        nameInputEditText.addTextChangedListener {
+            sendInput()
+        }
+        ageInputEditText.addTextChangedListener {
+            sendInput()
+        }
+
+        animalPhoto.setOnClickListener {
+            galleryPick.launch(IMAGE_MIME_TYPE)
+        }
     }
 
     private fun bindViews() = with (binding) {
@@ -65,12 +71,12 @@ class ChooseAnimalBreedFragment : NavigationFragment() {
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
             forwardButton.text = getString(it.forwardButtonText)
-            animalsAdapter.addItems(it.animalsList)
+            animalPhoto.load(it.animalPhoto) { createLoadRequest(this@PetInfoFragment, true) }
+            cameraOverlay.isVisible = it.showCameraOverlay
         }
 
         observe(viewModel.getEffectStream()) {
             when (it) {
-                is ShowBreeds -> showBreeds(it.breedsList)
                 is NavigateBack -> navigateBack()
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
@@ -78,17 +84,10 @@ class ChooseAnimalBreedFragment : NavigationFragment() {
         }
     }
 
-    private fun showBreeds(breeds: List<Breed>?) {
-        breedsAdapter.setItems(breeds)
-        binding.breedsList.scheduleLayoutAnimation()
-    }
-
-    private fun handleAnimalPicked(animal: Animal) {
-        perform(ChooseAnimal(animal))
-    }
-
-    private fun handleBreedPicked(breed: Breed) {
-        perform(ChooseBreed(breed))
+    private fun sendInput() = with (binding) {
+        perform(InfoInput(
+            nameInputEditText.text.toString(),
+            ageInputEditText.text.toString()))
     }
 
     private fun showMessage(message: Int) {
@@ -97,5 +96,9 @@ class ChooseAnimalBreedFragment : NavigationFragment() {
 
     private fun perform(action: Action) {
         viewModel.perform(action)
+    }
+
+    companion object {
+        private const val IMAGE_MIME_TYPE = "image/*"
     }
 }

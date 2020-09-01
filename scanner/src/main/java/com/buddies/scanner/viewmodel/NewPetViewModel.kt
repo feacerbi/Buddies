@@ -1,10 +1,11 @@
 package com.buddies.scanner.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.*
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
-import com.buddies.common.navigation.Navigator.NavDirection.TagScanToAnimalAndBreed
+import com.buddies.common.navigation.Navigator.NavDirection.*
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.scanner.usecase.NewPetUseCases
@@ -14,6 +15,7 @@ import com.buddies.scanner.viewstate.NewPetViewEffect.*
 import com.buddies.scanner.viewstate.NewPetViewState
 import com.buddies.scanner.viewstate.NewPetViewStateReducer.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlin.coroutines.CoroutineContext
 
 class NewPetViewModel(
@@ -37,6 +39,9 @@ class NewPetViewModel(
             is ScanAgain -> startScan()
             is ChooseAnimal -> handleChosenAnimal(action.animal)
             is ChooseBreed -> handleChosenBreed(action.breed)
+            is InfoInput -> validateInfo(action.name, action.age)
+            is PhotoInput -> savePhoto(action.photo)
+            is AddNewPet -> addNewPet()
             is CloseFlow -> closeFlow()
         }
     }
@@ -45,6 +50,7 @@ class NewPetViewModel(
         when (viewState.value?.step) {
             1 -> goToStep2()
             2 -> goToStep3()
+            3 -> addNewPet()
         }
     }
 
@@ -71,7 +77,8 @@ class NewPetViewModel(
     }
 
     private fun goToStep3() {
-
+        updateEffect(Navigate(AnimalAndBreedToInfo))
+        updateState(ShowInfo)
     }
 
     private fun handleTag(number: Result<String>) {
@@ -90,11 +97,11 @@ class NewPetViewModel(
     private fun validateTag(
         tagValue: String
     ) = safeLaunch(::showError) {
-        val result = newPetUseCases.validateTag(tagValue)
+        val tag = newPetUseCases.getTag(tagValue)
 
-        when (result) {
+        when (tag?.info?.available) {
             true -> {
-                newPet.tag = tagValue
+                newPet.tag = tag.id
                 updateState(ShowValidated)
             }
             false -> updateState(ShowInvalid)
@@ -108,18 +115,43 @@ class NewPetViewModel(
     private fun requestAnimals() = safeLaunch(::showError) {
         val animals = newPetUseCases.getAllAnimals()
         updateState(ShowAnimalPicker(animals))
+        updateEffect(ShowBreeds(emptyList()))
     }
 
     private fun handleChosenAnimal(animal: Animal) = safeLaunch(::showError) {
-        newPet.animal = animal.id
+        newPet.animal = animal
         val breeds = newPetUseCases.getBreedsFromAnimal(animal.id)
         updateState(ShowBreedPicker)
         updateEffect(ShowBreeds(breeds))
     }
 
     private fun handleChosenBreed(breed: Breed) {
-        newPet.breed = breed.id
+        newPet.breed = breed
         updateState(ShowAnimalAndBreedPicked)
+    }
+
+    private fun validateInfo(name: String, age: String) {
+        newPet.name = name
+        newPet.age = age.toIntOrNull() ?: 0
+
+        if (newPet.name.length >= 2) {
+            updateState(ShowInfoValidated)
+        } else {
+            updateState(ShowInvalidInfo)
+        }
+    }
+
+    private fun savePhoto(uri: Uri) {
+        newPet.photo = uri
+        updateState(ShowPetPhoto(uri))
+    }
+
+    private fun addNewPet() = safeLaunch(::showError) {
+        updateEffect(Navigate(InfoToConfirmation))
+        updateState(ShowAddingPet)
+        delay(1000)
+//        newPetUseCases.addNewPet(newPet, OWNER)
+        updateState(ShowPetConfirmation(newPet.name))
     }
 
     private fun closeFlow() {
@@ -136,9 +168,12 @@ class NewPetViewModel(
         object ScanAgain : Action()
         object Next : Action()
         object Previous : Action()
+        object AddNewPet : Action()
         data class ValidateTag(val result: Result<String>) : Action()
         data class ChooseAnimal(val animal: Animal) : Action()
         data class ChooseBreed(val breed: Breed) : Action()
+        data class InfoInput(val name: String, val age: String) : Action()
+        data class PhotoInput(val photo: Uri) : Action()
     }
 
     override val coroutineContext: CoroutineContext

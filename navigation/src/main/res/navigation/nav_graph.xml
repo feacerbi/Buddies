@@ -87,6 +87,34 @@
     <fragment
         android:id="@+id/chooseAnimalBreedFragment"
         android:name="com.buddies.scanner.ui.ChooseAnimalBreedFragment"
-        android:label="@string/choose_animal_breed_name" />
+        android:label="@string/choose_animal_breed_name" >
+        <action
+            android:id="@+id/action_chooseAnimalBreedFragment_to_petInfoFragment"
+            app:destination="@id/petInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/petInfoFragment"
+        android:name="com.buddies.scanner.ui.PetInfoFragment"
+        android:label="@string/add_confirmation_name" >
+        <action
+            android:id="@+id/action_petInfoFragment_to_addConfirmationFragment"
+            app:destination="@id/addConfirmationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addConfirmationFragment"
+        android:name="com.buddies.scanner.ui.AddConfirmationFragment"
+        android:label="AddConfirmationFragment" />
 
 </navigation>

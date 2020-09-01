@@ -11,7 +11,6 @@ import com.buddies.common.model.OwnershipAccess.EDIT_ALL
 import com.buddies.common.model.OwnershipCategory.VISITOR
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
-import com.buddies.common.util.generateNewId
 import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.model.NotificationInfo
 import com.buddies.server.repository.*
@@ -108,32 +107,14 @@ class PetApi(
     ) = runWithResult {
         checkAccess(petId)
 
-        runTransactionsWithResult(
-            petsRepository.updatePhoto(petId, photo.toString())
-        )
-    }
+        val uploadResult = petsRepository.uploadImage(petId, photo)
+            .handleTaskResult()
 
-    suspend fun addNewPet(
-        petInfo: PetInfo,
-        category: OwnershipCategory
-    ) = addNewPet(petInfo, usersRepository.getCurrentUserId(), category)
-
-    private suspend fun addNewPet(
-        petInfo: PetInfo,
-        userId: String,
-        category: OwnershipCategory
-    ) = runWithResult {
-        val newPetId = generateNewId()
+        val downloadUri = uploadResult.getDownloadUrl()
+            .handleTaskResult()
 
         runTransactionsWithResult(
-            petsRepository.addPet(newPetId, petInfo),
-            ownershipsRepository.addOwnership(
-                OwnershipInfo(
-                    newPetId,
-                    userId,
-                    category.id
-                )
-            )
+            petsRepository.updatePhoto(petId, downloadUri.toString())
         )
     }
 

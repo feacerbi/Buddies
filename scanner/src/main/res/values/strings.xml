@@ -2,6 +2,8 @@
     <!-- Destination -->
     <string name="tag_scan_name">Tag Scan Fragment</string>
     <string name="choose_animal_breed_name">Choose Animal and Breed Fragment</string>
+    <string name="pet_info_name">Pet Info Fragment</string>
+    <string name="add_confirmation_name">Add Confirmation Fragment</string>
 
     <!-- Views -->
     <string name="qr_result_text">Tag: %s</string>
@@ -14,7 +16,12 @@
     <string name="new_buddy_flow_title">New Buddy</string>
     <string name="no_valid_tags_button_message">no valid tags</string>
     <string name="no_animal_and_breed_message">no animal and breed</string>
+    <string name="no_name_message">no name</string>
     <string name="scan_again_button">Scan Again</string>
     <string name="animal_title">Animal</string>
     <string name="breed_title">Breed</string>
+    <string name="name_hint">Name</string>
+    <string name="age_hint">Age</string>
+    <string name="adding_pet_message">Adding %s to your pets…</string>
+    <string name="pet_added_message">%s is now in your pets!</string>
 </resources>

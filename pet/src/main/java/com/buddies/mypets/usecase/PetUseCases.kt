@@ -2,7 +2,6 @@ package com.buddies.mypets.usecase
 
 import android.net.Uri
 import com.buddies.common.model.OwnershipCategory
-import com.buddies.common.model.PetInfo
 import com.buddies.common.model.User
 import com.buddies.common.usecase.BaseUseCases
 import com.buddies.server.api.AnimalApi
@@ -30,13 +29,6 @@ class PetUseCases(
 
     suspend fun getCurrentUserPetOwnership(petId: String) = request {
         petApi.getCurrentUserPetOwnership(petId)
-    }
-
-    suspend fun addNewPet(
-        petInfo: PetInfo,
-        category: OwnershipCategory
-    ) = request {
-        petApi.addNewPet(petInfo, category)
     }
 
     suspend fun getPet(

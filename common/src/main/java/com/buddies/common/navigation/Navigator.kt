@@ -17,5 +17,7 @@ interface Navigator {
         data class ProfileToPetProfile(val petId: String) : NavDirection()
 
         object TagScanToAnimalAndBreed : NavDirection()
+        object AnimalAndBreedToInfo : NavDirection()
+        object InfoToConfirmation : NavDirection()
     }
 }
