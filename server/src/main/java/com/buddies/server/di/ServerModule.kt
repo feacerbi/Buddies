@@ -16,7 +16,7 @@ val serverModule = module {
 
     single { LoginApi(get()) }
     single { ProfileApi(get(), get(), get(), get()) }
-    single { PetApi(get(), get(), get(), get(), get(), get()) }
+    single { PetApi(get(), get(), get(), get(), get(), get(), get()) }
     single { AnimalApi(get(), get()) }
     single { NotificationsApi(get(), get(), get()) }
     single { SecurityApi(get()) }

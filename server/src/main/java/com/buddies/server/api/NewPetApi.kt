@@ -21,7 +21,7 @@ class NewPetApi(
     suspend fun getTagByValue(
         tagValue: String
     ) = runWithResult {
-        tagsRepository.getTag(tagValue)
+        tagsRepository.getTagByValue(tagValue)
             .handleTaskResult()
             .toTag()
     }

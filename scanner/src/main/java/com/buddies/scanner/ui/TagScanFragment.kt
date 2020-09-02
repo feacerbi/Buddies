@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
 import com.buddies.scanner.databinding.FragmentTagScanBinding
@@ -22,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 @FlowPreview
 @ExperimentalCoroutinesApi
 @androidx.camera.core.ExperimentalGetImage
-class TagScanFragment : NavigationFragment() {
+class TagScanFragment : NewPetNavigationFragment() {
 
     private lateinit var binding: FragmentTagScanBinding
     private lateinit var headerBinding: NewPetHeaderBinding
@@ -57,9 +56,9 @@ class TagScanFragment : NavigationFragment() {
             qrResult.text = getString(it.result)
             progress.isVisible = it.isLoading
             scanAgainButton.isVisible = it.showScanButton
+            forwardButton.text = getString(it.forwardButtonText)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
-            forwardButton.text = getString(it.forwardButtonText)
         }
 
         observe(viewModel.getEffectStream()) {

@@ -15,12 +15,13 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
         val pet: Pet?,
         val animalAndBreed: Pair<Animal, Breed>?,
         val ownersList: List<Owner>?,
-        val currentOwnership: OwnershipInfo?
+        val currentOwnership: OwnershipInfo?,
+        val petTag: Tag?
     ) : PetProfileViewStateReducer() {
         override val reduce: PetProfileViewState.() -> Unit = {
             name = pet?.info?.name ?: ""
             nameEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
-            tag = pet?.info?.tag ?: ""
+            tag = petTag?.info?.value ?: ""
             tagEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
             animal = animalAndBreed?.first?.animalInfo?.name ?: ""
             animalEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL

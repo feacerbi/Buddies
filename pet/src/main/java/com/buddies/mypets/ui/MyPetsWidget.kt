@@ -41,6 +41,7 @@ class MyPetsWidget @JvmOverloads constructor(
     private val adapter = MyPetsAdapter()
 
     private var onExpandedListener: ((Boolean) -> Unit)? = null
+    private var onNewPetListener: (() -> Unit)? = null
 
     private val backPressedCallback by lazy {
         object : OnBackPressedCallback(false) {
@@ -66,6 +67,10 @@ class MyPetsWidget @JvmOverloads constructor(
     fun addOnPetClickListener(lifecycleOwner: LifecycleOwner? = null, onClick: (Pet) -> Unit) {
         adapter.onPetClick = onClick
         adapter.owner = lifecycleOwner
+    }
+
+    fun addNewPetClickListener(onClick: () -> Unit) {
+        onNewPetListener = onClick
     }
 
     fun addBackPressedHandler(owner: LifecycleOwner, dispatcher: OnBackPressedDispatcher) {
@@ -96,7 +101,7 @@ class MyPetsWidget @JvmOverloads constructor(
         petsToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_add -> {
-                    // TODO Open add pet screen
+                    onNewPetListener?.invoke()
                     true
                 }
                 else -> false
@@ -127,8 +132,8 @@ class MyPetsWidget @JvmOverloads constructor(
     }
 
     private fun transitionBack() = with (binding) {
-        petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
         adapter.isBig = false
+        petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
         motion.transitionToStart()
     }
@@ -147,9 +152,8 @@ class MyPetsWidget @JvmOverloads constructor(
         petsToolbar.isEnabled = true
 
         if (animate) TransitionManager.beginDelayedTransition(motion)
-        petsList.layoutManager = GridLayoutManager(context,
-            context.resources.getInteger(R.integer.mypets_widget_big_span_count))
         adapter.isBig = true
+        petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
 
@@ -166,10 +170,16 @@ class MyPetsWidget @JvmOverloads constructor(
     private fun calculateSpanCount(): Int {
         val maxSpan = context.resources.getInteger(R.integer.mypets_widget_small_span_count)
 
-        return if (adapter.itemCount in 1 until maxSpan) {
-            adapter.itemCount
-        } else {
-            maxSpan
+        return when {
+            adapter.isBig -> {
+                context.resources.getInteger(R.integer.mypets_widget_big_span_count)
+            }
+            adapter.itemCount in 1 until maxSpan -> {
+                adapter.itemCount
+            }
+            else -> {
+                maxSpan
+            }
         }
     }
 

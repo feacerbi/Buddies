@@ -1,6 +1,7 @@
 package com.buddies.server.repository
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Transaction
 import com.google.firebase.firestore.ktx.firestore
@@ -10,11 +11,17 @@ class TagsRepository {
 
     private val db = Firebase.firestore
 
-    fun getTag(
+    fun getTagByValue(
         tagValue: String
     ): Task<QuerySnapshot> =
         db.collection(TAGS_COLLECTION)
             .whereEqualTo(VALUE_FIELD, tagValue)
+            .get()
+
+    fun getTagById(
+        tagId: String
+    ): Task<DocumentSnapshot> =
+        db.collection(TAGS_COLLECTION).document(tagId)
             .get()
 
     fun markTagUnavailable(

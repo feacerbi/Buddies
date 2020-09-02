@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
-import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
 import com.buddies.scanner.databinding.FragmentChooseAnimalBreedBinding
@@ -18,7 +17,7 @@ import com.buddies.scanner.viewmodel.NewPetViewModel.Action.*
 import com.buddies.scanner.viewstate.NewPetViewEffect.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class ChooseAnimalBreedFragment : NavigationFragment() {
+class ChooseAnimalBreedFragment : NewPetNavigationFragment() {
 
     private lateinit var binding: FragmentChooseAnimalBreedBinding
     private lateinit var headerBinding: NewPetHeaderBinding

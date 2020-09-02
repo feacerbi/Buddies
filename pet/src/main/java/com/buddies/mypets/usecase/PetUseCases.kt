@@ -91,6 +91,12 @@ class PetUseCases(
         animalApi.getAllAnimalBreeds(animalId)
     }
 
+    suspend fun getPetsTag(
+        tagId: String
+    ) = request {
+        petApi.getPetTag(tagId)
+    }
+
     @ExperimentalCoroutinesApi
     suspend fun getOwnersToInvite(
         petId: String,

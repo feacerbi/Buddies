@@ -4,8 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.UserNotification
-import com.buddies.common.navigation.Navigator.NavDirection.ProfileToLogin
-import com.buddies.common.navigation.Navigator.NavDirection.ProfileToPetProfile
+import com.buddies.common.navigation.Navigator.NavDirection.*
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.profile.usecase.ProfileUseCases
@@ -38,6 +37,7 @@ class ProfileViewModel(
             is RefreshInfo -> refreshUser()
             is RefreshNotifications -> refreshNotifications()
             is OpenPetProfile -> openPetProfile(action.petId)
+            is OpenNewPetFlow -> openNewPetFlow()
             is ChangeName -> updateName(action.name)
             is ChangePhoto -> updatePhoto(action.photo)
             is IgnoreNotification -> ignoreNotification(action.notification)
@@ -50,6 +50,10 @@ class ProfileViewModel(
     private fun openPetProfile(petId: String) {
         updateState(ExpandedWidget(expandedState))
         updateEffect(Navigate(ProfileToPetProfile(petId)))
+    }
+
+    private fun openNewPetFlow() {
+        updateEffect(Navigate(ProfileToNewPetFlow))
     }
 
     private fun updateName(name: String) = safeLaunch(::showError) {
@@ -106,6 +110,7 @@ class ProfileViewModel(
     sealed class Action {
         object RefreshInfo : Action()
         object RefreshNotifications : Action()
+        object OpenNewPetFlow : Action()
         object SignOut : Action()
         data class ChangeName(val name: String) : Action()
         data class ChangePhoto(val photo: Uri) : Action()

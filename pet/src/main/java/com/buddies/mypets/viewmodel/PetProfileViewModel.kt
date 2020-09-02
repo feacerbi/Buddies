@@ -93,7 +93,8 @@ class PetProfileViewModel(
         )
         val owners = petUseCases.getOwnersFromPet(petId)
         val currentOwnership = petUseCases.getCurrentUserPetOwnership(petId)
-        updateState(ShowInfo(pet, animalAndBreed, owners, currentOwnership))
+        val tag = petUseCases.getPetsTag(pet?.info?.tag ?: "")
+        updateState(ShowInfo(pet, animalAndBreed, owners, currentOwnership, tag))
     }
 
     private fun openOwnerProfile(owner: Owner) {

@@ -30,6 +30,9 @@ fun DocumentSnapshot.toNotification() =
 fun DocumentSnapshot.toEncryptionKey() =
     EncryptionKey(id, to(EncryptionKeyInfo::class))
 
+fun DocumentSnapshot.toTag() =
+    Tag(id, to(TagInfo::class))
+
 fun QuerySnapshot.toTag() = documents[0].run {
     Tag(id, to(TagInfo::class))
 }

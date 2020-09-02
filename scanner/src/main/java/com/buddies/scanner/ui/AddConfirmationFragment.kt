@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import coil.api.load
-import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.invisible
 import com.buddies.common.util.observe
@@ -20,7 +19,7 @@ import com.buddies.scanner.viewmodel.NewPetViewModel.Action.CloseFlow
 import com.buddies.scanner.viewstate.NewPetViewEffect.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class AddConfirmationFragment : NavigationFragment() {
+class AddConfirmationFragment : NewPetNavigationFragment() {
 
     private lateinit var binding: FragmentAddPetConfirmationBinding
 

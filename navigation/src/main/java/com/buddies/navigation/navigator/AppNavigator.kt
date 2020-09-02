@@ -10,10 +10,8 @@ import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmen
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToLoginFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToProfileFragment
 import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToLoginFragment
+import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToNewPetFlow
 import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToPetProfileFragment
-import com.buddies.scanner.ui.ChooseAnimalBreedFragmentDirections.Companion.actionChooseAnimalBreedFragmentToPetInfoFragment
-import com.buddies.scanner.ui.PetInfoFragmentDirections.Companion.actionPetInfoFragmentToAddConfirmationFragment
-import com.buddies.scanner.ui.TagScanFragmentDirections.Companion.actionTagScanFragmentToChooseAnimalBreedFragment
 
 class AppNavigator : Navigator {
 
@@ -32,10 +30,9 @@ class AppNavigator : Navigator {
         is LoginToProfile -> actionLoginFragmentToProfileFragment()
 
         is ProfileToLogin -> actionProfileFragmentToLoginFragment()
+        is ProfileToNewPetFlow -> actionProfileFragmentToNewPetFlow()
         is ProfileToPetProfile -> actionProfileFragmentToPetProfileFragment(petId)
 
-        is TagScanToAnimalAndBreed -> actionTagScanFragmentToChooseAnimalBreedFragment()
-        is AnimalAndBreedToInfo -> actionChooseAnimalBreedFragmentToPetInfoFragment()
-        is InfoToConfirmation -> actionPetInfoFragmentToAddConfirmationFragment()
+        else -> throw Navigator.UnsupportedDirectionException()
     }
 }

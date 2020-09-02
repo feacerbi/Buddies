@@ -66,6 +66,9 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         myPetsWidget.addOnPetClickListener(this@ProfileFragment) {
             perform(OpenPetProfile(it.id))
         }
+        myPetsWidget.addNewPetClickListener {
+            perform(OpenNewPetFlow)
+        }
         myPetsWidget.setExpandedListener {
             perform(SaveExpandedState(it))
         }

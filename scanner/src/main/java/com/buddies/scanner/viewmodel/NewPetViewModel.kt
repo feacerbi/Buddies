@@ -3,11 +3,12 @@ package com.buddies.scanner.viewmodel
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.*
+import com.buddies.common.model.OwnershipCategory.OWNER
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
-import com.buddies.common.navigation.Navigator.NavDirection.*
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
+import com.buddies.scanner.navigation.NewPetNavDirection.*
 import com.buddies.scanner.usecase.NewPetUseCases
 import com.buddies.scanner.viewmodel.NewPetViewModel.Action.*
 import com.buddies.scanner.viewstate.NewPetViewEffect
@@ -36,7 +37,7 @@ class NewPetViewModel(
             is Next -> nextStep()
             is Previous -> previousStep()
             is ValidateTag -> handleTag(action.result)
-            is ScanAgain -> startScan()
+            is ScanAgain -> restartScan()
             is ChooseAnimal -> handleChosenAnimal(action.animal)
             is ChooseBreed -> handleChosenBreed(action.breed)
             is InfoInput -> validateInfo(action.name, action.age)
@@ -112,6 +113,11 @@ class NewPetViewModel(
         updateState(ShowScan)
     }
 
+    private fun restartScan() {
+        updateEffect(StartCamera)
+        startScan()
+    }
+
     private fun requestAnimals() = safeLaunch(::showError) {
         val animals = newPetUseCases.getAllAnimals()
         updateState(ShowAnimalPicker(animals))
@@ -149,13 +155,14 @@ class NewPetViewModel(
     private fun addNewPet() = safeLaunch(::showError) {
         updateEffect(Navigate(InfoToConfirmation))
         updateState(ShowAddingPet)
-        delay(1000)
-//        newPetUseCases.addNewPet(newPet, OWNER)
+        newPetUseCases.addNewPet(newPet, OWNER)
         updateState(ShowPetConfirmation(newPet.name))
+        delay(CONFIRMATION_DELAY)
+        closeFlow()
     }
 
     private fun closeFlow() {
-
+        updateEffect(Navigate(FinishFlow))
     }
 
     private fun showError(error: DefaultError) {
@@ -178,4 +185,8 @@ class NewPetViewModel(
 
     override val coroutineContext: CoroutineContext
         get() = viewModelScope.coroutineContext
+
+    companion object {
+        const val CONFIRMATION_DELAY = 2000L
+    }
 }

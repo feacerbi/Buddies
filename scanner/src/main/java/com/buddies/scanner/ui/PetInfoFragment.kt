@@ -9,7 +9,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import coil.api.load
-import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
@@ -21,7 +20,7 @@ import com.buddies.scanner.viewmodel.NewPetViewModel.Action.*
 import com.buddies.scanner.viewstate.NewPetViewEffect.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class PetInfoFragment : NavigationFragment() {
+class PetInfoFragment : NewPetNavigationFragment() {
 
     private lateinit var binding: FragmentPetInfoBinding
     private lateinit var headerBinding: NewPetHeaderBinding

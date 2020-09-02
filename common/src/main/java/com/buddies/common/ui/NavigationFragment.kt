@@ -7,7 +7,7 @@ import org.koin.android.ext.android.inject
 
 abstract class NavigationFragment : Fragment() {
 
-    private val navigator: Navigator by inject()
+    open val navigator: Navigator by inject()
 
     protected fun navigate(direction: NavDirection) {
         navigator.steer(this, direction)

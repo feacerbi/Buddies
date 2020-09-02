@@ -25,6 +25,7 @@ class PetApi(
     private val animalsRepository: AnimalsRepository,
     private val breedsRepository: BreedsRepository,
     private val ownershipsRepository: OwnershipsRepository,
+    private val tagsRepository: TagsRepository,
     private val notificationsRepository: NotificationsRepository
 ): BaseApi() {
 
@@ -138,19 +139,13 @@ class PetApi(
         )
     }
 
-    suspend fun addNewPetOwnership(
-        pet: Pet,
-        user: User,
-        category: OwnershipCategory
-    ) = runTransactionsWithResult(
-        ownershipsRepository.addOwnership(
-            OwnershipInfo(
-                pet.id,
-                user.id,
-                category.id
-            )
-        )
-    )
+    suspend fun getPetTag(
+        tagId: String
+    ) = runWithResult {
+        tagsRepository.getTagById(tagId)
+            .handleTaskResult()
+            .toTag()
+    }
 
     suspend fun getPetOwners(
         petId: String
