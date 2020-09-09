@@ -46,9 +46,9 @@ dependencies {
     implementation project(":login")
     implementation project(":pet")
     implementation project(":navigation")
+    implementation project(':newpet')
     implementation project(":notification")
     implementation project(":profile")
-    implementation project(":scanner")
     implementation project(":security")
     implementation project(":server")
 

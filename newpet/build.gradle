@@ -5,7 +5,6 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
 
     defaultConfig {
         minSdkVersion 21
@@ -14,7 +13,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -32,6 +31,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -39,20 +42,31 @@ dependencies {
 
     // Projects
     implementation project(":common")
-    implementation project(":login")
-    implementation project(':newpet')
-    implementation project(":pet")
-    implementation project(":profile")
+    implementation project(":scanner")
+    implementation project(":server")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
-    // AndroidX Core
+    // AndroidX Core & UI
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$corektx_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
+    implementation "com.google.android.material:material:$material_version"
+
+    // Coil
+    implementation "io.coil-kt:coil:$coil_version"
 
     // Firebase
     implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
+
+    // Jetpack CameraX
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+
+    // Jetpack Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
 
     // Jetpack Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
@@ -60,6 +74,7 @@ dependencies {
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"

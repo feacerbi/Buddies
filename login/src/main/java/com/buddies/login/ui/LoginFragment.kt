@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.core.view.isVisible
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.observe
+import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.login.databinding.FragmentLoginBinding
 import com.buddies.login.viewmodel.LoginViewModel
 import com.buddies.login.viewmodel.LoginViewModel.Action
@@ -24,7 +25,7 @@ class LoginFragment : NavigationFragment() {
 
     private val viewModel: LoginViewModel by viewModel()
 
-    private val login = registerForActivityResult(StartActivityForResult()) {
+    private val login = registerForNonNullActivityResult(StartActivityForResult()) {
         perform(Login(it.data))
     }
 

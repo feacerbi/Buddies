@@ -3,7 +3,6 @@ package com.buddies.scanner.ui
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.widget.Toast
 import androidx.camera.view.PreviewView.ScaleType.FILL_CENTER
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -101,15 +100,5 @@ class QRScanner @JvmOverloads constructor(
 
     private fun requestCameraPermissions(fragment: Fragment) {
         permissionsManager.requestCameraPermissions(fragment)
-    }
-
-    fun onRequestCameraPermissionsResult(
-        requestCode: Int,
-    ): Boolean = permissionsManager.onRequestResult(requestCode,
-        { startCamera() },
-        { showMessage(it) })
-
-    private fun showMessage(text: String) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 }

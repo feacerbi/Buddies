@@ -6,9 +6,9 @@ import com.buddies.common.di.commonModule
 import com.buddies.login.di.loginModule
 import com.buddies.mypets.di.petModule
 import com.buddies.navigation.di.navigationModule
+import com.buddies.newpet.di.newPetModule
 import com.buddies.notification.service.NotificationsService
 import com.buddies.profile.di.profileModule
-import com.buddies.scanner.di.newPetModule
 import com.buddies.security.di.securityModule
 import com.buddies.server.di.serverModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi

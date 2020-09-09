@@ -11,6 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -238,4 +241,14 @@ fun String.customTextAppearance(
 
 fun ExtendedFloatingActionButton.expand(shouldExpand: Boolean) {
     if (shouldExpand) extend() else shrink()
+}
+
+fun <I, O> Fragment.registerForNonNullActivityResult(
+    contract: ActivityResultContract<I, O>,
+    callback: ActivityResultCallback<O>): ActivityResultLauncher<I> {
+    return registerForActivityResult(contract) {
+        if (it != null) {
+            callback.onActivityResult(it)
+        }
+    }
 }

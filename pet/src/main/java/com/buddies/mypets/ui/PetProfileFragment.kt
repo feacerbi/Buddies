@@ -48,7 +48,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         OwnersPagingAdapter(OwnersComparator, this@PetProfileFragment)
     }
 
-    private val galleryPick = registerForActivityResult(GetContent()) {
+    private val galleryPick = registerForNonNullActivityResult(GetContent()) {
         perform(ChangePhoto(it))
     }
 

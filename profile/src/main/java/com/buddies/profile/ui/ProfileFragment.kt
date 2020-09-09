@@ -11,6 +11,7 @@ import coil.api.load
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.observe
+import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
 import com.buddies.profile.util.ProfileTabsMediator
@@ -28,7 +29,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private val viewModel: ProfileViewModel by sharedViewModel()
 
-    private val galleryPick = registerForActivityResult(GetContent()) {
+    private val galleryPick = registerForNonNullActivityResult(GetContent()) {
         perform(ChangePhoto(it))
     }
 
