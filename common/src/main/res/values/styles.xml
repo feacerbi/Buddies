@@ -58,5 +58,15 @@
     <style name="ExtendedFloatingActionButton.Icon" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
         <item name="android:layout_margin">@dimen/fab_margin</item>
     </style>
+
+    <!-- Notifications -->
+    <style name="NotificationMessage" parent="Body2">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="NotificationMessage.Highlight" parent="Body2">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     
 </resources>

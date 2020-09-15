@@ -9,8 +9,7 @@ import androidx.annotation.ColorRes
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.ErrorCode
-import com.buddies.common.model.NotificationType.INVITE
-import com.buddies.common.model.NotificationType.UNKNOWN
+import com.buddies.common.model.NotificationType.*
 import com.buddies.common.model.OwnershipCategory.*
 
 fun Exception.toDefaultError() =
@@ -32,6 +31,7 @@ fun Int.toOwnershipCategory() = when (this) {
 
 fun Int.toNotificationType() = when (this) {
     INVITE.id -> INVITE
+    PET_FOUND.id -> PET_FOUND
     else -> UNKNOWN
 }
 

@@ -1,13 +1,14 @@
 package com.buddies.common.model
 
+import android.content.Context
+import android.text.SpannableString
 import java.util.*
 
-data class UserNotification(
+abstract class UserNotification(
     val id: String,
-    val userName: String,
-    val pet: Pet,
-    val category: OwnershipCategory,
     val type: NotificationType,
     val unread: Boolean,
     val timestamp: Date
-)
+) {
+    abstract fun getMessage(context: Context): SpannableString
+}

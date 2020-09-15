@@ -1,5 +1,10 @@
 package com.buddies.server.api
 
+import com.buddies.common.model.DefaultError
+import com.buddies.common.model.DefaultErrorException
+import com.buddies.common.model.ErrorCode.UNKNOWN_NOTIFICATION_TYPE
+import com.buddies.common.model.NotificationType.INVITE
+import com.buddies.common.model.NotificationType.PET_FOUND
 import com.buddies.common.model.Result
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
@@ -7,14 +12,11 @@ import com.buddies.common.model.UserNotification
 import com.buddies.common.util.mapResult
 import com.buddies.common.util.toDefaultError
 import com.buddies.common.util.toNotificationType
-import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.model.Notification
 import com.buddies.server.repository.NotificationsRepository
 import com.buddies.server.repository.PetsRepository
 import com.buddies.server.repository.UsersRepository
-import com.buddies.server.util.toNotifications
-import com.buddies.server.util.toPet
-import com.buddies.server.util.toUser
+import com.buddies.server.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -48,18 +50,18 @@ class NotificationsApi(
     }.map { result ->
         result.mapResult { list ->
             list?.map {
-                val inviter = usersRepository.getUser(it.info.inviterId).handleTaskResult().toUser()
-                val pet = petsRepository.getPet(it.info.petId).handleTaskResult().toPet()
+                val user = usersRepository.getUser(it.info.sourceUserId)
+                    .handleTaskResult()
+                    .toUser()
+                val pet = petsRepository.getPet(it.info.petId)
+                    .handleTaskResult()
+                    .toPet()
 
-                UserNotification(
-                    it.id,
-                    inviter.info.name,
-                    pet,
-                    it.info.category.toOwnershipCategory(),
-                    it.info.type.toNotificationType(),
-                    it.info.unread,
-                    it.info.timestamp.toDate()
-                )
+                when (it.info.type.toNotificationType()) {
+                    INVITE -> it.toInviteNotification(user, pet)
+                    PET_FOUND -> it.toPetFoundNotification(user, pet)
+                    else -> throw DefaultErrorException(DefaultError(UNKNOWN_NOTIFICATION_TYPE))
+                }
             }
         }
     }.flowOn(Dispatchers.IO)

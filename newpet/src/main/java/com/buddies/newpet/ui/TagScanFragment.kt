@@ -45,7 +45,7 @@ class TagScanFragment : NewPetNavigationFragment() {
 
     private fun setUpViews() = with (binding) {
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
-        scanAgainButton.setOnClickListener { perform(ScanAgain) }
+        scannerMask.scanAgainButton.setOnClickListener { perform(ScanAgain) }
         forwardButton.setOnClickListener { perform(Next) }
     }
 
@@ -53,9 +53,9 @@ class TagScanFragment : NewPetNavigationFragment() {
         observe(viewModel.getStateStream()) {
             headerBinding.toolbar.title = getString(it.title)
             headerBinding.steps.selectStep(it.step)
-            qrResult.text = getString(it.result)
-            progress.isVisible = it.isLoading
-            scanAgainButton.isVisible = it.showScanButton
+            scannerMask.qrResult.text = getString(it.result)
+            scannerMask.progress.isVisible = it.isLoading
+            scannerMask.scanAgainButton.isVisible = it.showScanButton
             forwardButton.text = getString(it.forwardButtonText)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)

@@ -23,7 +23,12 @@
 
     <!-- Notification Types Descriptions -->
     <string name="invitation_description">Invitation</string>
+    <string name="pet_found_description">Pet Found</string>
     <string name="unknown_description">Notification</string>
+
+    <!-- Notification Messages -->
+    <string name="invite_notification_message">%s is inviting you to be %s of %s.</string>
+    <string name="pet_found_notification_message">%s was found by %s!</string>
 
     <!-- View -->
     <string name="cancel_button">Cancel</string>
@@ -42,5 +47,6 @@
     <string name="null_result">Result is null</string>
     <string name="access_denied_error_code">You can\'t do this with your current ownership.</string>
     <string name="invalid_tag_error">Invalid Tag</string>
+    <string name="unknown_notification_error">Notification type unknown</string>
 
 </resources>

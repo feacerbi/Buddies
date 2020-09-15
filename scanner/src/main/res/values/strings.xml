@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- View -->
+    <string name="qr_result_text">Tag: %s</string>
+    <string name="validating_result">Validating…</string>
+    <string name="validated_result">Your Tag is valid</string>
+    <string name="invalid_result">Your Tag is not valid</string>
+    <string name="unrecognized_result">This is not a Buddy Tag</string>
+    <string name="scan_your_tag_result">Scan your Tag</string>
+    <string name="scan_again_button">Scan Again</string>
+</resources>

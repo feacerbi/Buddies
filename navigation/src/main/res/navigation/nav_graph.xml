@@ -12,8 +12,8 @@
         android:name="com.buddies.login.ui.SplashScreenFragment"
         android:label="@string/splash_name" >
         <action
-            android:id="@+id/action_splashScreenFragment_to_profileFragment"
-            app:destination="@id/profileFragment"
+            android:id="@+id/action_splashScreenFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:launchSingleTop="true"
@@ -32,8 +32,8 @@
         android:name="com.buddies.login.ui.LoginFragment"
         android:label="@string/login_name" >
         <action
-            android:id="@+id/action_loginFragment_to_profileFragment"
-            app:destination="@id/profileFragment"
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:launchSingleTop="true"
@@ -76,6 +76,20 @@
         <argument
             android:name="petId"
             app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.buddies.home.ui.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <include app:graph="@navigation/new_pet_nav_graph"/>

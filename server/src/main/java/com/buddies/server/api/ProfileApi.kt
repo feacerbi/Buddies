@@ -1,10 +1,12 @@
 package com.buddies.server.api
 
 import android.net.Uri
+import com.buddies.common.model.DefaultError
+import com.buddies.common.model.DefaultErrorException
+import com.buddies.common.model.ErrorCode
+import com.buddies.common.model.NotificationType.*
 import com.buddies.common.model.OwnershipInfo
-import com.buddies.common.model.UserNotification
 import com.buddies.common.util.toNotificationType
-import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.repository.NotificationsRepository
 import com.buddies.server.repository.OwnershipsRepository
 import com.buddies.server.repository.PetsRepository
@@ -61,16 +63,20 @@ class ProfileApi(
             .toNotifications()
 
         notifications.map {
-            UserNotification(
-                it.id,
-                usersRepository.getUser(it.info.inviterId).handleTaskResult().toUser().info.name,
-                petsRepository.getPet(it.info.petId).handleTaskResult().toPet(),
-                it.info.category.toOwnershipCategory(),
-                it.info.type.toNotificationType(),
-                it.info.unread,
-                it.info.timestamp.toDate()
-            )
+            val user = usersRepository.getUser(it.info.sourceUserId)
+                .handleTaskResult()
+                .toUser()
+            val pet = petsRepository.getPet(it.info.petId)
+                .handleTaskResult()
+                .toPet()
+
+            when (it.info.type.toNotificationType()) {
+                INVITE -> it.toInviteNotification(user, pet)
+                PET_FOUND -> it.toPetFoundNotification(user, pet)
+                UNKNOWN -> throw DefaultErrorException(DefaultError(ErrorCode.UNKNOWN_NOTIFICATION_TYPE))
+            }
         }
+
     }
 
     suspend fun removeNotification(

@@ -3,7 +3,10 @@
     <string name="empty_notifications_list">No notifications</string>
     <string name="ignore_button">Ignore</string>
     <string name="accept_button">Accept</string>
-    <string name="invite_notification_message">%s is inviting you to be %s of %s.</string>
+
+    <!-- Channels -->
     <string name="invitation_notification_channel_name">Invitation</string>
     <string name="invitation_notification_channel_description">Used for inviting other owners.</string>
+    <string name="pet_found_notification_channel_name">Pet Found</string>
+    <string name="pet_found_notification_channel_description">Used for notifying a lost pet was found.</string>
 </resources>

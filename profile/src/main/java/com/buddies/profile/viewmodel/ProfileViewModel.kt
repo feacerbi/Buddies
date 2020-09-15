@@ -3,6 +3,8 @@ package com.buddies.profile.viewmodel
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
+import com.buddies.common.model.InviteNotification
+import com.buddies.common.model.PetFoundNotification
 import com.buddies.common.model.UserNotification
 import com.buddies.common.navigation.Navigator.NavDirection.*
 import com.buddies.common.util.safeLaunch
@@ -36,6 +38,7 @@ class ProfileViewModel(
         when (action) {
             is RefreshInfo -> refreshUser()
             is RefreshNotifications -> refreshNotifications()
+            is NotificationIconClick -> handleIconClick(action.notification)
             is OpenPetProfile -> openPetProfile(action.petId)
             is OpenNewPetFlow -> openNewPetFlow()
             is ChangeName -> updateName(action.name)
@@ -44,6 +47,13 @@ class ProfileViewModel(
             is AcceptNotification -> acceptNotification(action.notification)
             is SaveExpandedState -> saveExpandedState(action.expanded)
             is SignOut -> logout()
+        }
+    }
+
+    private fun handleIconClick(notification: UserNotification) {
+        when (notification) {
+            is InviteNotification -> openPetProfile(notification.pet.id)
+            is PetFoundNotification -> openPetProfile(notification.pet.id)
         }
     }
 
@@ -115,6 +125,7 @@ class ProfileViewModel(
         data class ChangeName(val name: String) : Action()
         data class ChangePhoto(val photo: Uri) : Action()
         data class OpenPetProfile(val petId: String) : Action()
+        data class NotificationIconClick(val notification: UserNotification) : Action()
         data class IgnoreNotification(val notification: UserNotification) : Action()
         data class AcceptNotification(val notification: UserNotification) : Action()
         data class SaveExpandedState(val expanded: Boolean) : Action()

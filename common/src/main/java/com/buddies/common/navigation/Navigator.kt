@@ -9,9 +9,11 @@ interface Navigator {
 
     open class NavDirection {
         object SplashToLogin : NavDirection()
-        object SplashToProfile : NavDirection()
+        object SplashToHome : NavDirection()
 
-        object LoginToProfile : NavDirection()
+        object LoginToHome : NavDirection()
+
+        object HomeToProfile : NavDirection()
 
         object ProfileToLogin : NavDirection()
         object ProfileToNewPetFlow : NavDirection()

@@ -1,0 +1,9 @@
+<resources>
+    <!-- View -->
+    <string name="scan_pet_button">Scan Pet</string>
+    <string name="notify_button">Notify</string>
+    <string name="lost_pet_found">%s is lost, notify the owners?</string>
+    <string name="pet_found">This is %s</string>
+    <string name="empty_tag_message">Your Tag is empty</string>
+    <string name="owners_notified_message">Owners notified!</string>
+</resources>

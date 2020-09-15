@@ -4,6 +4,7 @@ import android.net.Uri
 import com.buddies.common.model.PetInfo
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Transaction
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -37,6 +38,13 @@ class PetsRepository {
         petId: String
     ): Task<DocumentSnapshot> =
         db.collection(PETS_COLLECTION).document(petId)
+            .get()
+
+    fun getPetByTag(
+        tagId: String
+    ): Task<QuerySnapshot> =
+        db.collection(PETS_COLLECTION)
+            .whereEqualTo(TAG_FIELD, tagId)
             .get()
 
     fun updateName(

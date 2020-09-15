@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="qr_camera_size">250dp</dimen>
-    <dimen name="focus_width">4dp</dimen>
-    <dimen name="focus_height">50dp</dimen>
     <dimen name="new_pet_header_elevation">8dp</dimen>
     <dimen name="pet_icon_size">112dp</dimen>
     <dimen name="pet_icon_max_width">150dp</dimen>

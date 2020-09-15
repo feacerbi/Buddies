@@ -43,7 +43,7 @@ class LoginViewModel(
     private fun handleSplashScreen(context: Context) = safeLaunch(::showError) {
         if (useCases.isUserLoggedIn(context)) {
             useCases.checkNewUser()
-            updateEffect(Navigate(SplashToProfile))
+            updateEffect(Navigate(SplashToHome))
         } else {
             delay(SPLASH_TIME)
             updateEffect(Navigate(SplashToLogin))
@@ -57,7 +57,7 @@ class LoginViewModel(
     private fun login(data: Intent?) = safeLaunch(::showError) {
         useCases.login(data)
         useCases.checkNewUser()
-        updateEffect(Navigate(LoginToProfile))
+        updateEffect(Navigate(LoginToHome))
     }
 
     private fun getLoginIntent(activity: Activity): Intent {

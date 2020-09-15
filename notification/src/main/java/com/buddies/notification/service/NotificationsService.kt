@@ -11,7 +11,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.buddies.common.model.DefaultError
-import com.buddies.common.model.NotificationType.INVITE
+import com.buddies.common.model.InviteNotification
+import com.buddies.common.model.PetFoundNotification
 import com.buddies.common.model.UserNotification
 import com.buddies.common.ui.SingleActivity
 import com.buddies.common.util.handleResult
@@ -48,6 +49,12 @@ class NotificationsService : Service() {
             getString(R.string.invitation_notification_channel_description)
         )
 
+        createNotificationChannel(
+            PET_FOUND_NOTIFICATION_CHANNEL_ID,
+            getString(R.string.pet_found_notification_channel_name),
+            getString(R.string.pet_found_notification_channel_description)
+        )
+
         scope.safeLaunch(::handleError) {
             notificationsApi.listenToCurrentUserNotifications().collect { result ->
                 val unreadNotifications = result.handleResult()?.filter {
@@ -69,15 +76,17 @@ class NotificationsService : Service() {
     }
 
     private fun showNotification(userNotification: UserNotification) {
-        val notification = when (userNotification.type) {
-            INVITE -> buildInviteNotification(userNotification)
-            else -> buildInviteNotification(userNotification)
+        val notification = when (userNotification) {
+            is InviteNotification -> buildInviteNotification(userNotification)
+            is PetFoundNotification -> buildPetFoundNotification(userNotification)
+            else -> return
         }
 
         NotificationManagerCompat.from(this).notify(userNotification.id.hashCode(), notification)
     }
 
-    private fun buildInviteNotification(notification: UserNotification
+    private fun buildInviteNotification(
+        notification: InviteNotification
     ) = NotificationCompat.Builder(this, INVITATION_NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.drawable.buddies_logo_white)
         .setContentTitle(getString(notification.type.description))
@@ -85,6 +94,19 @@ class NotificationsService : Service() {
             notification.userName,
             getString(notification.category.title),
             notification.pet.info.name))
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
+        .build()
+
+    private fun buildPetFoundNotification(
+        notification: PetFoundNotification
+    ) = NotificationCompat.Builder(this, PET_FOUND_NOTIFICATION_CHANNEL_ID)
+        .setSmallIcon(R.drawable.buddies_logo_white)
+        .setContentTitle(getString(notification.type.description))
+        .setContentText(getString(R.string.pet_found_notification_message,
+            notification.pet.info.name,
+            notification.userName))
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)
@@ -122,6 +144,7 @@ class NotificationsService : Service() {
     }
 
     companion object {
-        private val INVITATION_NOTIFICATION_CHANNEL_ID = "invitation"
+        private const val INVITATION_NOTIFICATION_CHANNEL_ID = "invitation"
+        private const val PET_FOUND_NOTIFICATION_CHANNEL_ID = "pet_found"
     }
 }

@@ -56,7 +56,7 @@ class ProfileNotificationsFragment : NavigationFragment(), CoroutineScope {
                 owner = this@ProfileNotificationsFragment,
                 ignoreAction = { notification -> perform(IgnoreNotification(notification)) },
                 acceptAction = { notification -> perform(AcceptNotification(notification)) },
-                clickAction = { pet -> perform(OpenPetProfile(pet.id)) }
+                iconClickAction = { notification -> perform(NotificationIconClick(notification)) }
             )
             notificationsListEmpty.isVisible = it.emptyNotifications
             refresh.isRefreshing = it.loadingNotifications

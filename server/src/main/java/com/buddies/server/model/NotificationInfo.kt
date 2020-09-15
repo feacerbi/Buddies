@@ -4,8 +4,8 @@ import com.google.firebase.Timestamp
 
 data class NotificationInfo(
     val type: Int = -1,
-    val userId: String = "",
-    val inviterId: String = "",
+    val targetUserId: String = "",
+    val sourceUserId: String = "",
     val petId: String = "",
     val category: Int = -1,
     val unread: Boolean = true,

@@ -32,7 +32,7 @@ class NotificationsRepository {
         userId: String
     ): Task<QuerySnapshot> =
         db.collection(NOTIFICATIONS_COLLECTION)
-            .whereEqualTo(USERID_FIELD, userId)
+            .whereEqualTo(TARGET_USERID_FIELD, userId)
             .get()
 
     fun queryCurrentUserNotifications(
@@ -42,7 +42,7 @@ class NotificationsRepository {
         userId: String
     ): Query =
         db.collection(NOTIFICATIONS_COLLECTION)
-            .whereEqualTo(USERID_FIELD, userId)
+            .whereEqualTo(TARGET_USERID_FIELD, userId)
 
     fun addNotification(
         info: NotificationInfo
@@ -73,7 +73,7 @@ class NotificationsRepository {
 
     companion object {
         private const val NOTIFICATIONS_COLLECTION = "notifications"
-        private const val USERID_FIELD = "userId"
+        private const val TARGET_USERID_FIELD = "targetUserId"
         private const val UNREAD_FIELD = "unread"
     }
 }
