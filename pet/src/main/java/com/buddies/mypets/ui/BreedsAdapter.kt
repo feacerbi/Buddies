@@ -4,18 +4,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
 import com.buddies.common.model.Breed
 import com.buddies.common.ui.SelectableAdapter
-import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.inflater
+import com.buddies.common.util.load
 import com.buddies.mypets.R
 import com.buddies.mypets.databinding.BreedListItemBinding
 import com.buddies.mypets.ui.BreedsAdapter.BreedsViewHolder
 
 class BreedsAdapter(
+    private val owner: LifecycleOwner,
     list: List<Breed>? = null,
-    private val owner: LifecycleOwner? = null,
     private var onBreedChanged: ((Breed) -> Unit)? = null
 ) : SelectableAdapter<BreedsViewHolder, Breed>() {
 
@@ -56,8 +55,9 @@ class BreedsAdapter(
             breedName.text = breed.first.breedInfo.name
             checkedBackground.isVisible = breed.second
 
-            breedIcon.load(breed.first.breedInfo.photo) {
-                createLoadRequest(owner,  true, R.drawable.ic_baseline_pets_dark)
+            breedIcon.load(breed.first.breedInfo.photo, owner) {
+                circleTransform = true
+                error = R.drawable.ic_baseline_pets_dark
             }
 
             root.setOnClickListener {

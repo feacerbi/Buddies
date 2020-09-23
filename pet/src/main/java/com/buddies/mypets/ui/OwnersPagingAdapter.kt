@@ -5,18 +5,17 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
 import com.buddies.common.model.Owner
 import com.buddies.common.model.OwnershipCategory.VISITOR
-import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.inflater
+import com.buddies.common.util.load
 import com.buddies.mypets.R
 import com.buddies.mypets.databinding.OwnerInviteItemBinding
 import com.buddies.mypets.ui.OwnersPagingAdapter.OwnersPagingViewHolder
 
 class OwnersPagingAdapter(
+    private val lifecycleOwner: LifecycleOwner,
     diffCallback: DiffUtil.ItemCallback<Owner>,
-    private val lifecycleOwner: LifecycleOwner? = null,
     var onClick: ((Owner) -> Unit)? = null
 ) : PagingDataAdapter<Owner, OwnersPagingViewHolder>(diffCallback) {
 
@@ -38,8 +37,9 @@ class OwnersPagingAdapter(
         ) = with (binding) {
             if (owner != null) {
 
-                ownerIcon.load(owner.user.info.photo) {
-                    createLoadRequest(lifecycleOwner,  true, R.drawable.ic_baseline_person)
+                ownerIcon.load(owner.user.info.photo, lifecycleOwner) {
+                    circleTransform = true
+                    error = R.drawable.ic_baseline_person
                 }
 
                 ownerName.text = owner.user.info.name

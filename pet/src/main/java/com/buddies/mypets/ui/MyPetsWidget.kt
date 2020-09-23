@@ -2,7 +2,6 @@ package com.buddies.mypets.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_UP
@@ -38,7 +37,7 @@ class MyPetsWidget @JvmOverloads constructor(
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
-    private val adapter = MyPetsAdapter()
+    private lateinit var adapter: MyPetsAdapter
 
     private var onExpandedListener: ((Boolean) -> Unit)? = null
     private var onNewPetListener: (() -> Unit)? = null
@@ -60,13 +59,11 @@ class MyPetsWidget @JvmOverloads constructor(
             attrs, R.styleable.MyPetsWidget, defStyle, 0
         )
 
-        setup(styleAttrs)
         styleAttrs.recycle()
     }
 
-    fun addOnPetClickListener(lifecycleOwner: LifecycleOwner? = null, onClick: (Pet) -> Unit) {
+    fun addOnPetClickListener(onClick: (Pet) -> Unit) {
         adapter.onPetClick = onClick
-        adapter.owner = lifecycleOwner
     }
 
     fun addNewPetClickListener(onClick: () -> Unit) {
@@ -82,13 +79,11 @@ class MyPetsWidget @JvmOverloads constructor(
         if (expanded) finalStateSetup(false) else initialStateSetup()
     }
 
-    fun setExpandedListener(listener: (Boolean) -> Unit) {
-        onExpandedListener = listener
-    }
+    fun isExpanded() = binding.motion.progress == 1F
 
     fun refresh() = addPets()
 
-    private fun setup(attrs: TypedArray) = with (binding) {
+    fun setup(lifecycleOwner: LifecycleOwner) = with (binding) {
 
         elevation = context.resources.getDimension(R.dimen.bottom_pets_elevation)
 
@@ -125,6 +120,7 @@ class MyPetsWidget @JvmOverloads constructor(
             }
         })
 
+        adapter = MyPetsAdapter(lifecycleOwner)
         petsList.adapter = adapter
         petsListEmpty.alpha = 0F
 

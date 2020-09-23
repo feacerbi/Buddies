@@ -5,20 +5,19 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
 import com.buddies.common.model.Pet
-import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.inflater
+import com.buddies.common.util.load
 import com.buddies.common.util.show
 import com.buddies.mypets.R
 import com.buddies.mypets.databinding.PetListItemBinding
 import com.buddies.mypets.ui.MyPetsAdapter.MyPetsViewHolder
 
 class MyPetsAdapter(
+    var owner: LifecycleOwner,
     pets: List<Pet>? = null,
     var isBig: Boolean = false,
-    var onPetClick: ((Pet) -> Unit)? = null,
-    var owner: LifecycleOwner? = null
+    var onPetClick: ((Pet) -> Unit)? = null
 ) : RecyclerView.Adapter<MyPetsViewHolder>() {
 
     private val petsList = mutableListOf<Pet>()
@@ -69,8 +68,9 @@ class MyPetsAdapter(
 
             petIcon.layoutParams.width = size.toInt()
             petIcon.layoutParams.height = size.toInt()
-            petIcon.load(pet.info.photo) {
-                createLoadRequest(owner,  true, R.drawable.ic_baseline_pets)
+            petIcon.load(pet.info.photo, owner) {
+                circleTransform = true
+                error = R.drawable.ic_baseline_pets
             }
 
             petName.text = pet.info.name

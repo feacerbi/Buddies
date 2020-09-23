@@ -8,9 +8,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import coil.api.load
-import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.expand
+import com.buddies.common.util.load
 import com.buddies.common.util.observe
 import com.buddies.newpet.databinding.FragmentPetInfoBinding
 import com.buddies.newpet.databinding.NewPetHeaderBinding
@@ -70,7 +69,9 @@ class PetInfoFragment : NewPetNavigationFragment() {
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
             forwardButton.text = getString(it.forwardButtonText)
-            animalPhoto.load(it.animalPhoto) { createLoadRequest(this@PetInfoFragment, true) }
+            animalPhoto.load(it.animalPhoto, this@PetInfoFragment) {
+                circleTransform = true
+            }
             cameraOverlay.isVisible = it.showCameraOverlay
         }
 

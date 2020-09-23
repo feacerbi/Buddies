@@ -51,9 +51,10 @@ class ProfileNotificationsFragment : NavigationFragment(), CoroutineScope {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
+            // TODO Set items with diff
             list.adapter = NotificationsAdapter(
-                it.notifications,
                 owner = this@ProfileNotificationsFragment,
+                it.notifications,
                 ignoreAction = { notification -> perform(IgnoreNotification(notification)) },
                 acceptAction = { notification -> perform(AcceptNotification(notification)) },
                 iconClickAction = { notification -> perform(NotificationIconClick(notification)) }

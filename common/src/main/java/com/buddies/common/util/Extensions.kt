@@ -1,6 +1,7 @@
 package com.buddies.common.util
 
 import android.content.Context
+import android.net.Uri
 import android.text.InputType
 import android.text.Spannable
 import android.text.SpannableString
@@ -11,19 +12,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import coil.request.CachePolicy
-import coil.request.LoadRequestBuilder
-import coil.transform.CircleCropTransformation
 import com.buddies.common.R
 import com.buddies.common.databinding.InputTextLayoutBinding
 import com.buddies.common.databinding.SelectableListLayoutBinding
@@ -35,11 +32,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 fun <T> LifecycleOwner.observe(liveData: LiveData<T>, action: (T) -> Unit) {
-    liveData.observe(this, Observer { action.invoke(it) })
+    liveData.observe(this, { action.invoke(it) })
 }
 
 var View.show: Boolean
@@ -60,17 +58,22 @@ fun RecyclerView.animate(run: Boolean) {
 
 fun Float?.orZero(): Float = this ?: 0f
 
-fun LoadRequestBuilder.createLoadRequest(
-    lifecycleOwner: LifecycleOwner? = null,
-    circleTransform: Boolean = false,
-    @DrawableRes error: Int = -1
+fun ImageView.load(
+    uri: Uri?,
+    lifecycleOwner: LifecycleOwner,
+    options: RequestOptions.() -> Unit = {}
 ) {
-    memoryCachePolicy(CachePolicy.ENABLED)
-    networkCachePolicy(CachePolicy.ENABLED)
-    crossfade(true)
-    lifecycle(lifecycleOwner)
-    if (error != -1) error(error)
-    if (circleTransform) transformations(CircleCropTransformation())
+    val cache by inject(ImageCache::class.java)
+    cache.load(lifecycleOwner, this, uri, options)
+}
+
+fun ImageView.load(
+    image: String?,
+    lifecycleOwner: LifecycleOwner,
+    options: RequestOptions.() -> Unit = {}
+) {
+    val cache by inject(ImageCache::class.java)
+    cache.load(lifecycleOwner, this, image, options)
 }
 
 fun CoroutineScope.safeLaunch(

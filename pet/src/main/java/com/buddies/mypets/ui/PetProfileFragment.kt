@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
-import coil.api.load
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.Owner
@@ -45,7 +44,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     }
 
     private val ownersPagingAdapter by lazy {
-        OwnersPagingAdapter(OwnersComparator, this@PetProfileFragment)
+        OwnersPagingAdapter(this@PetProfileFragment, OwnersComparator)
     }
 
     private val galleryPick = registerForNonNullActivityResult(GetContent()) {
@@ -107,7 +106,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
-            petPicture.load(it.photo.toString()) { createLoadRequest(this@PetProfileFragment) }
+            petPicture.load(it.photo.toString(), this@PetProfileFragment)
             profileName.text = it.name
             profileAnimal.text = getString(R.string.animal_field, it.animal, it.breed)
             profileTagNumber.text = it.tag
@@ -116,10 +115,11 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             profileTagEdit.isVisible = it.tagEdit
             toolbar.menu.clear()
             toolbar.inflateMenu(it.toolbarMenu)
+            // TODO Set items with diff
             ownersList.adapter = OwnersAdapter(
+                this@PetProfileFragment,
                 it.owners,
                 it.ownershipInfo,
-                this@PetProfileFragment,
                 onClick = { owner -> perform(OpenOwnerProfile(owner)) },
                 onOwnershipClick = { owner -> showEditOwnershipBottomSheet(owner) }
             )
@@ -171,7 +171,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     }
 
     private fun openAnimalsList(list: List<Animal>?) {
-        val animalsAdapter = AnimalsAdapter(list, this)
+        val animalsAdapter = AnimalsAdapter(this, list)
 
         openBottomSelectableDialog(
             getString(R.string.select_animal_title),
@@ -182,7 +182,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     }
 
     private fun openBreedsList(list: List<Breed>?, animal: Animal) {
-        val breedsAdapter = BreedsAdapter(list, this)
+        val breedsAdapter = BreedsAdapter(this, list)
 
         openBottomSelectableDialog(
             getString(R.string.select_breed_title),

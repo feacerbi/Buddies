@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.lifecycle.lifecycleScope
-import coil.api.load
 import com.buddies.common.ui.NavigationFragment
-import com.buddies.common.util.createLoadRequest
+import com.buddies.common.util.load
 import com.buddies.common.util.observe
 import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.profile.R
@@ -28,6 +27,9 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
     private lateinit var binding: FragmentProfileBinding
 
     private val viewModel: ProfileViewModel by sharedViewModel()
+
+    private var tabsMediator: ProfileTabsMediator? = null
+    private var expandedWidget = false
 
     private val galleryPick = registerForNonNullActivityResult(GetContent()) {
         perform(ChangePhoto(it))
@@ -63,23 +65,22 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
         pager.adapter = ProfileTabsAdapter(this@ProfileFragment)
 
-        myPetsWidget.addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
-        myPetsWidget.addOnPetClickListener(this@ProfileFragment) {
-            perform(OpenPetProfile(it.id))
-        }
-        myPetsWidget.addNewPetClickListener {
-            perform(OpenNewPetFlow)
-        }
-        myPetsWidget.setExpandedListener {
-            perform(SaveExpandedState(it))
+        tabsMediator = ProfileTabsMediator(requireContext(), tabs, pager, 0)
+            .apply { connect() }
+
+        myPetsWidget.apply {
+            setup(this@ProfileFragment)
+            addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
+            addOnPetClickListener { perform(OpenPetProfile(it.id)) }
+            addNewPetClickListener { perform(OpenNewPetFlow) }
+            setExpanded(expandedWidget)
         }
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
-            ProfileTabsMediator(requireContext(), tabs, pager, it.notifications.size).connect()
-            profilePicture.load(it.photo.toString()) { createLoadRequest(this@ProfileFragment) }
-            myPetsWidget.setExpanded(it.myPetsWidgetExpanded)
+            tabsMediator?.updateBadge(it.notifications.size)
+            profilePicture.load(it.photo, this@ProfileFragment)
         }
 
         observe(viewModel.getEffectStream()) {
@@ -97,6 +98,11 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private fun perform(action: Action) {
         viewModel.perform(action)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        expandedWidget = binding.myPetsWidget.isExpanded()
     }
 
     override val coroutineContext: CoroutineContext

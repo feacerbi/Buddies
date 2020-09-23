@@ -8,7 +8,6 @@ class ProfileViewState(
     var name: String = "",
     var email: String = "",
     var photo: Uri = Uri.EMPTY,
-    var myPetsWidgetExpanded: Boolean = false,
     var notifications: List<UserNotification> = listOf(),
     var emptyNotifications: Boolean = false,
     var loadingInfo: Boolean = false,

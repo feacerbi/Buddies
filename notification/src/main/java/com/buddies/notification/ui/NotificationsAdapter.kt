@@ -3,22 +3,21 @@ package com.buddies.notification.ui
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
 import com.buddies.common.model.InviteNotification
 import com.buddies.common.model.NotificationType.INVITE
 import com.buddies.common.model.NotificationType.PET_FOUND
 import com.buddies.common.model.PetFoundNotification
 import com.buddies.common.model.UserNotification
-import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.inflater
+import com.buddies.common.util.load
 import com.buddies.common.util.toFormatted
 import com.buddies.notification.R
 import com.buddies.notification.databinding.InviteNotificationItemBinding
 import com.buddies.notification.databinding.PetFoundNotificationItemBinding
 
 class NotificationsAdapter(
+    var owner: LifecycleOwner,
     items: List<UserNotification>? = null,
-    var owner: LifecycleOwner? = null,
     var ignoreAction: (UserNotification) -> Unit,
     var acceptAction: (UserNotification) -> Unit,
     var iconClickAction: (UserNotification) -> Unit
@@ -59,8 +58,9 @@ class NotificationsAdapter(
         ) = with (binding) {
 
             petIcon.setOnClickListener { iconClickAction.invoke(notification) }
-            petIcon.load(notification.pet.info.photo) {
-                createLoadRequest(owner,  true, R.drawable.ic_baseline_pets)
+            petIcon.load(notification.pet.info.photo, owner) {
+                circleTransform = true
+                error = R.drawable.ic_baseline_pets
             }
 
             message.text = notification.getMessage(root.context)
@@ -89,8 +89,9 @@ class NotificationsAdapter(
         ) = with (binding) {
 
             petIcon.setOnClickListener { iconClickAction.invoke(notification) }
-            petIcon.load(notification.pet.info.photo) {
-                createLoadRequest(owner,  true, R.drawable.ic_baseline_pets)
+            petIcon.load(notification.pet.info.photo, owner) {
+                circleTransform = true
+                error = R.drawable.ic_baseline_pets
             }
 
             message.text = notification.getMessage(root.context)

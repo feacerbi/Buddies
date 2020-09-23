@@ -57,9 +57,6 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recycler_version"
     implementation "com.google.android.material:material:$material_version"
 
-    // Coil
-    implementation "io.coil-kt:coil:$coil_version"
-
     // Firebase
     implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
 

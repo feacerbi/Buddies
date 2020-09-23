@@ -8,9 +8,8 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.transition.TransitionManager
-import coil.api.load
-import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.invisible
+import com.buddies.common.util.load
 import com.buddies.common.util.observe
 import com.buddies.newpet.databinding.FragmentAddPetConfirmationBinding
 import com.buddies.newpet.viewmodel.NewPetViewModel
@@ -59,7 +58,9 @@ class AddConfirmationFragment : NewPetNavigationFragment() {
             confirmationTitle.text = getString(it.confirmationTitle, it.animalName)
             progress.isVisible = it.confirmationLoading
             animalPhoto.invisible(it.hideAnimalPhoto)
-            animalPhoto.load(it.animalPhoto) { createLoadRequest(this@AddConfirmationFragment, true) }
+            animalPhoto.load(it.animalPhoto, this@AddConfirmationFragment) {
+                circleTransform = true
+            }
             backButton.isVisible = it.showBackButton
         }
 

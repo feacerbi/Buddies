@@ -25,13 +25,13 @@ class ChooseAnimalBreedFragment : NewPetNavigationFragment() {
     private val viewModel: NewPetViewModel by sharedViewModel()
 
     private val animalsAdapter = HorizontalAnimalsAdapter(
-        emptyList(),
         this@ChooseAnimalBreedFragment,
+        emptyList(),
         ::handleAnimalPicked)
 
     private val breedsAdapter = HorizontalBreedsAdapter(
-        emptyList(),
         this@ChooseAnimalBreedFragment,
+        emptyList(),
         ::handleBreedPicked)
 
     override fun onCreateView(

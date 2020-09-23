@@ -4,18 +4,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
 import com.buddies.common.model.Animal
 import com.buddies.common.ui.SelectableAdapter
-import com.buddies.common.util.createLoadRequest
 import com.buddies.common.util.inflater
+import com.buddies.common.util.load
 import com.buddies.newpet.R
 import com.buddies.newpet.databinding.AnimalHorizontalListItemBinding
 import com.buddies.newpet.ui.HorizontalAnimalsAdapter.HorizontalAnimalsViewHolder
 
 class HorizontalAnimalsAdapter(
+    private val owner: LifecycleOwner,
     list: List<Animal>? = null,
-    private val owner: LifecycleOwner? = null,
     private var onAnimalChanged: ((Animal) -> Unit)? = null
 ) : SelectableAdapter<HorizontalAnimalsViewHolder, Animal>() {
 
@@ -39,8 +38,6 @@ class HorizontalAnimalsAdapter(
 
         if (notify) notifyDataSetChanged()
     }
-
-    fun getSelected() = animalsList.first { it.second }.first
 
     override fun addOnSelectedListener(listener: (Animal) -> Unit) {
         onAnimalChanged = listener
@@ -69,8 +66,9 @@ class HorizontalAnimalsAdapter(
             animalName.text = animal.first.animalInfo.name
             checkedBackground.isVisible = animal.second
 
-            animalIcon.load(animal.first.animalInfo.photo) {
-                createLoadRequest(owner,  true, R.drawable.ic_baseline_pets)
+            animalIcon.load(animal.first.animalInfo.photo, owner) {
+                circleTransform = true
+                error = R.drawable.ic_baseline_pets
             }
 
             root.setOnClickListener {

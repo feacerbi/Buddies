@@ -15,16 +15,7 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
             name = user?.info?.name ?: ""
             email = user?.info?.email ?: ""
             photo = user?.info?.photo?.toUri() ?: Uri.EMPTY
-            myPetsWidgetExpanded = false
             loadingInfo = false
-        }
-    }
-
-    data class ExpandedWidget(
-        val expanded: Boolean
-    ) : ProfileViewStateReducer() {
-        override val reduce: ProfileViewState.() -> Unit = {
-            myPetsWidgetExpanded = expanded
         }
     }
 
@@ -44,21 +35,18 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
         override val reduce: ProfileViewState.() -> Unit = {
             notifications = notifications.minus(notification)
             emptyNotifications = notifications.isEmpty()
-            myPetsWidgetExpanded = false
         }
     }
 
     object InfoLoading : ProfileViewStateReducer() {
         override val reduce: ProfileViewState.() -> Unit = {
             loadingInfo = true
-            myPetsWidgetExpanded = false
         }
     }
 
     object NotificationsLoading : ProfileViewStateReducer() {
         override val reduce: ProfileViewState.() -> Unit = {
             loadingNotifications = true
-            myPetsWidgetExpanded = false
         }
     }
 
@@ -67,7 +55,6 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
             loadingInfo = false
             loadingNotifications = false
             emptyNotifications = notifications.isEmpty()
-            myPetsWidgetExpanded = false
         }
     }
 }

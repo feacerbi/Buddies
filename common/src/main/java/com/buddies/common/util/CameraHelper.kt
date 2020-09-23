@@ -119,7 +119,7 @@ class CameraHelper(
                 imageAnalysis
             )
 
-        preview.setSurfaceProvider(previewView.createSurfaceProvider())
+        preview.setSurfaceProvider(previewView.surfaceProvider)
     }
 
     private fun unbindPreview(cameraProvider: ProcessCameraProvider) {
