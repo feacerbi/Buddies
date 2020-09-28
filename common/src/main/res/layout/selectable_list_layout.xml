@@ -27,6 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/list_title"
         android:layout_marginTop="@dimen/margin_large"
+        app:layout_goneMarginTop="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <Button

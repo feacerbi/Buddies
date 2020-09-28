@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -27,6 +28,7 @@ import com.buddies.common.databinding.SelectableListLayoutBinding
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.Result
+import com.buddies.common.ui.MediaPickerAdapter
 import com.buddies.common.ui.SelectableAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -155,6 +157,23 @@ fun <T : RecyclerView.ViewHolder, R> Fragment.openBottomSelectableDialog(
     }
 
     bottomSheet.show()
+}
+
+fun Fragment.openMediaPicker(
+    onClick: ((MediaPickerAdapter.MediaSource) -> Unit)?
+) {
+    with (SelectableListLayoutBinding.inflate(layoutInflater)) {
+        val dialog = openCustomBottomSheet(root)
+
+        cancelButton.isVisible = false
+        changeButton.isVisible = false
+        listTitle.isVisible = false
+
+        list.adapter = MediaPickerAdapter {
+            dialog.dismiss()
+            onClick?.invoke(it)
+        }
+    }
 }
 
 fun openCustomBottomSheet(

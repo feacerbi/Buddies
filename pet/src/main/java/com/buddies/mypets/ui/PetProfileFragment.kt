@@ -1,10 +1,12 @@
 package com.buddies.mypets.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -13,6 +15,8 @@ import androidx.paging.ExperimentalPagingApi
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.Owner
+import com.buddies.common.ui.MediaPickerAdapter.MediaSource.CAMERA
+import com.buddies.common.ui.MediaPickerAdapter.MediaSource.GALLERY
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.*
 import com.buddies.mypets.R
@@ -36,6 +40,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     private lateinit var binding: FragmentPetProfileBinding
     private lateinit var viewModel: PetProfileViewModel
 
+    private var photoUri: Uri = Uri.EMPTY
+
     private val petIdArg
         get() = arguments?.getString(getString(R.string.pet_id_arg)) ?: ""
 
@@ -47,6 +53,9 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         OwnersPagingAdapter(this@PetProfileFragment, OwnersComparator)
     }
 
+    private val cameraPick = registerForNonNullActivityResult(ActivityResultContracts.TakePicture()) {
+        perform(ChangePhoto(photoUri))
+    }
     private val galleryPick = registerForNonNullActivityResult(GetContent()) {
         perform(ChangePhoto(it))
     }
@@ -75,7 +84,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.edit_picture_menu_action -> {
-                    galleryPick.launch(IMAGE_MIME_TYPE)
+                    openEditPhotoPicker()
                     true
                 }
                 R.id.add_owner_menu_action -> {
@@ -190,6 +199,15 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             { perform(ChangeAnimal(animal, breedsAdapter.getSelected())) },
             getString(R.string.change_button)
         )
+    }
+
+    private fun openEditPhotoPicker() {
+        openMediaPicker {
+            when (it) {
+                GALLERY -> galleryPick.launch(IMAGE_MIME_TYPE)
+                CAMERA -> cameraPick.launch(photoUri)
+            }
+        }
     }
 
     private fun showMessage(text: Int, params: Array<String> = arrayOf()) {

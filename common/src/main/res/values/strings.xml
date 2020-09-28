@@ -35,6 +35,10 @@
     <string name="change_button">Change</string>
     <string name="next_button">Next</string>
 
+    <!-- Media Source -->
+    <string name="gallery_source_description">Pick from the gallery</string>
+    <string name="camera_source_description">Take new from camera</string>
+
     <!-- Timestamp -->
     <string name="hours_ago_timestamp">%d hours ago</string>
     <string name="minutes_ago_timestamp">%d minutes ago</string>

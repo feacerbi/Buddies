@@ -1,15 +1,20 @@
 package com.buddies.profile.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
+import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.lifecycle.lifecycleScope
+import com.buddies.common.ui.MediaPickerAdapter.MediaSource.CAMERA
+import com.buddies.common.ui.MediaPickerAdapter.MediaSource.GALLERY
 import com.buddies.common.ui.NavigationFragment
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
+import com.buddies.common.util.openMediaPicker
 import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
@@ -30,7 +35,11 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private var tabsMediator: ProfileTabsMediator? = null
     private var expandedWidget = false
+    private var photoUri: Uri = Uri.EMPTY
 
+    private val cameraPick = registerForNonNullActivityResult(TakePicture()) {
+        perform(ChangePhoto(photoUri))
+    }
     private val galleryPick = registerForNonNullActivityResult(GetContent()) {
         perform(ChangePhoto(it))
     }
@@ -56,7 +65,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.edit_picture_menu_action -> {
-                    galleryPick.launch(IMAGE_MIME_TYPE)
+                    openEditPhotoPicker()
                     true
                 }
                 else -> false
@@ -88,6 +97,15 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
                 is RefreshPets -> myPetsWidget.refresh()
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
+            }
+        }
+    }
+
+    private fun openEditPhotoPicker() {
+        openMediaPicker {
+            when (it) {
+                GALLERY -> galleryPick.launch(IMAGE_MIME_TYPE)
+                CAMERA -> cameraPick.launch(photoUri)
             }
         }
     }
