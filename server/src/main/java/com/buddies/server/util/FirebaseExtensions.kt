@@ -6,6 +6,7 @@ import com.buddies.server.model.Notification
 import com.buddies.server.model.NotificationInfo
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.UploadTask
 import kotlin.reflect.KClass
 
@@ -58,6 +59,10 @@ fun QuerySnapshot.toUsers() = documents.map { doc ->
 
 fun QuerySnapshot.toNotifications() = documents.map { doc ->
     Notification(doc.id, doc.to(NotificationInfo::class))
+}
+
+fun ListResult.toUris() = items.map {
+    it.downloadUrl
 }
 
 fun UploadTask.TaskSnapshot.getDownloadUrl() = storage.downloadUrl

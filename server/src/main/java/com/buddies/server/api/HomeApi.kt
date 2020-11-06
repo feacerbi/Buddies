@@ -54,7 +54,7 @@ class HomeApi(
             )
         }.toTypedArray()
 
-        runTransactionsWithResult(
+        runTransactions(
             *addNotifications
         )
     }

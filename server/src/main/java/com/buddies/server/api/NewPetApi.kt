@@ -38,7 +38,7 @@ class NewPetApi(
     ) = runWithResult {
         val newPetId = generateNewId()
 
-        val uploadResult = petsRepository.uploadImage(newPetId, newPet.photo)
+        val uploadResult = petsRepository.uploadProfileImage(newPetId, newPet.photo)
             .handleTaskResult()
 
         val downloadUri = uploadResult.getDownloadUrl()
@@ -52,7 +52,7 @@ class NewPetApi(
             newPet.breed?.id ?: ""
         )
 
-        runTransactionsWithResult(
+        runTransactions(
             petsRepository.addPet(newPetId, petInfo),
             tagsRepository.markTagUnavailable(petInfo.tag),
             ownershipsRepository.addOwnership(

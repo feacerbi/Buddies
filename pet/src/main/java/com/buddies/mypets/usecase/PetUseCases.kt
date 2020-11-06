@@ -91,7 +91,7 @@ class PetUseCases(
         animalApi.getAllAnimalBreeds(animalId)
     }
 
-    suspend fun getPetsTag(
+    suspend fun getPetTag(
         tagId: String
     ) = request {
         petApi.getPetTag(tagId)
@@ -110,5 +110,11 @@ class PetUseCases(
         category: OwnershipCategory
     ) = request {
         petApi.inviteOwner(userId, petId, category.id)
+    }
+
+    suspend fun getGallery(
+        petId: String
+    ) = request {
+        petApi.getPetGalleryPictures(petId)
     }
 }

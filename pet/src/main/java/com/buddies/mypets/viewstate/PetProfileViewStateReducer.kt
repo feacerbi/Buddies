@@ -16,7 +16,8 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
         val animalAndBreed: Pair<Animal, Breed>?,
         val ownersList: List<Owner>?,
         val currentOwnership: OwnershipInfo?,
-        val petTag: Tag?
+        val petTag: Tag?,
+        val list: List<Uri>?
     ) : PetProfileViewStateReducer() {
         override val reduce: PetProfileViewState.() -> Unit = {
             name = pet?.info?.name ?: ""
@@ -34,6 +35,7 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
             }
             ownershipInfo = currentOwnership ?: OwnershipInfo()
             owners = ownersList ?: emptyList()
+            gallery = listOf(photo) + (list ?: listOf())
             loading = false
         }
     }

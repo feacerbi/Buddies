@@ -133,6 +133,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
                 onOwnershipClick = { owner -> showEditOwnershipBottomSheet(owner) }
             )
             ownersPagingAdapter.submitData(lifecycle, it.pagingData)
+            petGallery.adapter = GalleryAdapter(this@PetProfileFragment, it.gallery)
             refresh.isRefreshing = it.loading
         }
 

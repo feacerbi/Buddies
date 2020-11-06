@@ -73,7 +73,7 @@ class PetApi(
     ) = runWithResult {
         checkAccess(petId)
 
-        runTransactionsWithResult(
+        runTransactions(
             petsRepository.updateName(petId, name)
         )
     }
@@ -84,7 +84,7 @@ class PetApi(
     ) = runWithResult {
         checkAccess(petId)
 
-        runTransactionsWithResult(
+        runTransactions(
             petsRepository.updateTag(petId, tag)
         )
     }
@@ -96,7 +96,7 @@ class PetApi(
     ) = runWithResult {
         checkAccess(petId)
 
-        runTransactionsWithResult(
+        runTransactions(
             petsRepository.updateAnimal(petId, animalId),
             petsRepository.updateBreed(petId, breedId)
         )
@@ -108,13 +108,13 @@ class PetApi(
     ) = runWithResult {
         checkAccess(petId)
 
-        val uploadResult = petsRepository.uploadImage(petId, photo)
+        val uploadResult = petsRepository.uploadProfileImage(petId, photo)
             .handleTaskResult()
 
         val downloadUri = uploadResult.getDownloadUrl()
             .handleTaskResult()
 
-        runTransactionsWithResult(
+        runTransactions(
             petsRepository.updatePhoto(petId, downloadUri.toString())
         )
     }
@@ -131,7 +131,7 @@ class PetApi(
             .toOwnerships()
             .first()
 
-        runTransactionsWithResult(
+        runTransactions(
             when (category) {
                 VISITOR.id -> ownershipsRepository.removeOwnership(ownership.id)
                 else -> ownershipsRepository.updateOwnership(ownership.id, category)
@@ -195,7 +195,7 @@ class PetApi(
             ownershipsRepository.removeOwnership(ownership.id)
         }.toTypedArray()
 
-        runTransactionsWithResult(
+        runTransactions(
             petsRepository.deletePet(petId),
             *deleteOwnerships
         )
@@ -242,6 +242,17 @@ class PetApi(
     ) = runWithResult {
         usersRepository.getUsers(pageSize, query, start)
             .handleTaskResult()
+    }
+
+    suspend fun getPetGalleryPictures(
+        petId: String
+    ): Result<List<Uri>> = runWithResult {
+        petsRepository.getGalleryPictures(petId)
+            .handleTaskResult()
+            .toUris()
+            .map {
+                it.handleTaskResult()
+            }
     }
 
     private suspend fun checkAccess(

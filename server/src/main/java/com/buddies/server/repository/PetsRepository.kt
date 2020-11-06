@@ -2,6 +2,7 @@ package com.buddies.server.repository
 
 import android.net.Uri
 import com.buddies.common.model.PetInfo
+import com.buddies.common.util.generateNewId
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
@@ -84,7 +85,7 @@ class PetsRepository {
         )
     }
 
-    fun uploadImage(
+    fun uploadProfileImage(
         petId: String,
         photoUri: Uri
     ): UploadTask =
@@ -93,6 +94,34 @@ class PetsRepository {
             .child(PROFILE_PATH)
             .child(PROFILE_PICTURE_NAME)
             .putFile(photoUri)
+
+    fun uploadGalleryImage(
+        petId: String,
+        photoUri: Uri
+    ): UploadTask =
+        storage.getReference(PETS_PATH)
+            .child(petId)
+            .child(GALLERY_PATH)
+            .child(generateNewId())
+            .putFile(photoUri)
+
+    fun getGalleryPictures(
+        petId: String
+    ) =
+        storage.getReference(PETS_PATH)
+            .child(petId)
+            .child(GALLERY_PATH)
+            .listAll()
+
+    fun removeGalleryImage(
+        petId: String,
+        photoId: String
+    ): Task<Void> =
+        storage.getReference(PETS_PATH)
+            .child(petId)
+            .child(GALLERY_PATH)
+            .child(photoId)
+            .delete()
 
     companion object {
         private const val PETS_COLLECTION = "pets"
@@ -105,5 +134,6 @@ class PetsRepository {
         private const val PETS_PATH = "pets"
         private const val PROFILE_PATH = "profile"
         private const val PROFILE_PICTURE_NAME = "profile_picture"
+        private const val GALLERY_PATH = "gallery"
     }
 }

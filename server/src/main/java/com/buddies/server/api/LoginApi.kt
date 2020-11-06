@@ -34,7 +34,7 @@ class LoginApi(
             .handleTaskResult()
 
         if (userSnapshot.exists().not()) {
-            runTransactionsWithResult(
+            runTransactions(
                 usersRepository.setUser(UserInfo(
                     currentUser?.displayName ?: "",
                     currentUser?.email ?: "",

@@ -51,7 +51,7 @@ class ProfileApi(
         val downloadUri = uploadResult.getDownloadUrl()
             .handleTaskResult()
 
-        runTransactionsWithResult(
+        runTransactions(
             usersRepository.updatePhoto(downloadUri.toString())
         )
     }
@@ -92,7 +92,7 @@ class ProfileApi(
             .handleTaskResult()
             .toNotification()
 
-        runTransactionsWithResult(
+        runTransactions(
             ownershipsRepository.addOwnership(
                 OwnershipInfo(
                     notification.info.petId,

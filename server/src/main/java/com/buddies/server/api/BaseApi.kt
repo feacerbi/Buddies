@@ -29,7 +29,7 @@ abstract class BaseApi {
         }
 
     protected suspend fun <T> Task<T>?.handleTaskResult(
-    ) = suspendCoroutine<T> { cont ->
+    ): T = suspendCoroutine { cont ->
         if (this == null) {
             cont.resumeWithException(DefaultError(TASK_NULL).toException())
         } else {
@@ -44,6 +44,12 @@ abstract class BaseApi {
             }
         }
     }
+
+    protected suspend fun runTransactions(
+        vararg functions: Transaction.() -> Unit
+    ): Unit = db.runTransaction { transaction ->
+        functions.forEach { it.invoke(transaction) }
+    }.handleTaskResult()
 
     protected suspend fun runTransactionsWithResult(
         vararg functions: Transaction.() -> Unit
