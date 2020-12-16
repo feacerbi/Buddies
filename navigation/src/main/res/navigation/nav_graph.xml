@@ -63,15 +63,15 @@
             android:id="@+id/action_profileFragment_to_newPetFlow"
             app:destination="@id/new_pet_nav_graph"
             app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/fragment_fade_exit"
+            app:exitAnim="@android:anim/fade_out"
             app:launchSingleTop="true"
-            app:popExitAnim="@anim/slide_out_bottom"
-            app:popEnterAnim="@anim/fragment_fade_enter"/>
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
 
     <fragment
         android:id="@+id/petProfileFragment"
-        android:name="com.buddies.mypets.ui.PetProfileFragment"
+        android:name="com.buddies.pet.ui.PetProfileFragment"
         android:label="@string/pet_profile_title" >
         <argument
             android:name="petId"

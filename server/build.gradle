@@ -1,15 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion rootProject.ext.androidCompileVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        versionCode rootProject.ext.projectVersionCode
+        versionName rootProject.ext.projectVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -50,7 +50,7 @@ dependencies {
     implementation "com.google.firebase:firebase-storage-ktx:$firebase_storage_ktx"
 
     // Jetpack Paging
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"

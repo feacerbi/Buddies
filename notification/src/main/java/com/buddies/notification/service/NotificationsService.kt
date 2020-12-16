@@ -1,26 +1,26 @@
 package com.buddies.notification.service
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import com.buddies.common.model.DefaultError
-import com.buddies.common.model.InviteNotification
-import com.buddies.common.model.PetFoundNotification
+import com.buddies.common.model.INVITATION_NOTIFICATION_CHANNEL_ID
+import com.buddies.common.model.PET_FOUND_NOTIFICATION_CHANNEL_ID
 import com.buddies.common.model.UserNotification
-import com.buddies.common.ui.SingleActivity
 import com.buddies.common.util.handleResult
 import com.buddies.common.util.safeLaunch
 import com.buddies.notification.R
+import com.buddies.notification.util.createNotificationChannel
+import com.buddies.notification.util.showNotification
 import com.buddies.server.api.NotificationsApi
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
 class NotificationsService : Service() {
@@ -30,102 +30,56 @@ class NotificationsService : Service() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
-    private val intent by lazy {
-        Intent(this, SingleActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-    }
-    private val pendingIntent: PendingIntent by lazy {
-        PendingIntent.getActivity(this, 0, intent, 0)
-    }
-
     @ExperimentalCoroutinesApi
     override fun onCreate() {
         super.onCreate()
+        createRequiredChannels()
+        startListenForUnreadNotifications()
+    }
 
+    @ExperimentalCoroutinesApi
+    private fun startListenForUnreadNotifications() = scope.safeLaunch(::handleError) {
+        notificationsApi.listenForCurrentUserNotifications()
+            .flowOn(Dispatchers.IO)
+            .collect { result ->
+                val unreadNotifications = result.handleResult()?.filter {
+                    it.unread
+                }
+
+                unreadNotifications?.forEach {
+                    show(it)
+                    markAsRead(it)
+                }
+            }
+    }
+
+    private fun createRequiredChannels() {
         createNotificationChannel(
+            this,
             INVITATION_NOTIFICATION_CHANNEL_ID,
             getString(R.string.invitation_notification_channel_name),
             getString(R.string.invitation_notification_channel_description)
         )
 
         createNotificationChannel(
+            this,
             PET_FOUND_NOTIFICATION_CHANNEL_ID,
             getString(R.string.pet_found_notification_channel_name),
             getString(R.string.pet_found_notification_channel_description)
         )
+    }
 
-        scope.safeLaunch(::handleError) {
-            notificationsApi.listenToCurrentUserNotifications().collect { result ->
-                val unreadNotifications = result.handleResult()?.filter {
-                    it.unread
-                }
-
-                unreadNotifications?.forEach {
-                    showNotification(it)
-                    markAsRead(it)
-                }
-            }
-        }
+    private fun show(notification: UserNotification) {
+        showNotification(
+            this@NotificationsService,
+            notification.id.hashCode(),
+            notification.build(this@NotificationsService))
     }
 
     private suspend fun markAsRead(
         notification: UserNotification
     ) = withContext(Dispatchers.IO) {
         notificationsApi.markNotificationAsRead(notification.id)
-    }
-
-    private fun showNotification(userNotification: UserNotification) {
-        val notification = when (userNotification) {
-            is InviteNotification -> buildInviteNotification(userNotification)
-            is PetFoundNotification -> buildPetFoundNotification(userNotification)
-            else -> return
-        }
-
-        NotificationManagerCompat.from(this).notify(userNotification.id.hashCode(), notification)
-    }
-
-    private fun buildInviteNotification(
-        notification: InviteNotification
-    ) = NotificationCompat.Builder(this, INVITATION_NOTIFICATION_CHANNEL_ID)
-        .setSmallIcon(R.drawable.buddies_logo_white)
-        .setContentTitle(getString(notification.type.description))
-        .setContentText(getString(R.string.invite_notification_message,
-            notification.userName,
-            getString(notification.category.title),
-            notification.pet.info.name))
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        .setContentIntent(pendingIntent)
-        .setAutoCancel(true)
-        .build()
-
-    private fun buildPetFoundNotification(
-        notification: PetFoundNotification
-    ) = NotificationCompat.Builder(this, PET_FOUND_NOTIFICATION_CHANNEL_ID)
-        .setSmallIcon(R.drawable.buddies_logo_white)
-        .setContentTitle(getString(notification.type.description))
-        .setContentText(getString(R.string.pet_found_notification_message,
-            notification.pet.info.name,
-            notification.userName))
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        .setContentIntent(pendingIntent)
-        .setAutoCancel(true)
-        .build()
-
-    private fun createNotificationChannel(
-        id: String,
-        name: String,
-        descriptionText: String = ""
-    ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(id, name, importance).apply {
-                description = descriptionText
-            }
-            val notificationManager: NotificationManager? =
-                ContextCompat.getSystemService(this, NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(channel)
-        }
     }
 
     private fun handleError(error: DefaultError) {
@@ -141,10 +95,5 @@ class NotificationsService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_STICKY
-    }
-
-    companion object {
-        private const val INVITATION_NOTIFICATION_CHANNEL_ID = "invitation"
-        private const val PET_FOUND_NOTIFICATION_CHANNEL_ID = "pet_found"
     }
 }

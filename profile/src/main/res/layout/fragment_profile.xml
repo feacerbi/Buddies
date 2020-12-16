@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@id/tabs"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <com.buddies.mypets.ui.MyPetsWidget
+    <com.buddies.pet.ui.MyPetsWidget
         android:id="@+id/my_pets_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

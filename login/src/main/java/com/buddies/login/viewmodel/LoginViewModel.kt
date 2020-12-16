@@ -5,14 +5,20 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
-import com.buddies.common.navigation.Navigator.NavDirection.*
+import com.buddies.common.navigation.Navigator.NavDirection.LoginToHome
+import com.buddies.common.navigation.Navigator.NavDirection.SplashToHome
+import com.buddies.common.navigation.Navigator.NavDirection.SplashToLogin
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.login.R
 import com.buddies.login.usecase.LoginUseCases
-import com.buddies.login.viewmodel.LoginViewModel.Action.*
+import com.buddies.login.viewmodel.LoginViewModel.Action.Login
+import com.buddies.login.viewmodel.LoginViewModel.Action.LoginRequest
+import com.buddies.login.viewmodel.LoginViewModel.Action.StartSplashScreen
 import com.buddies.login.viewstate.LoginViewEffect
-import com.buddies.login.viewstate.LoginViewEffect.*
+import com.buddies.login.viewstate.LoginViewEffect.Navigate
+import com.buddies.login.viewstate.LoginViewEffect.RequestLogin
+import com.buddies.login.viewstate.LoginViewEffect.ShowError
 import com.buddies.login.viewstate.LoginViewState
 import com.buddies.login.viewstate.LoginViewStateReducer.ShowLoginOptions
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -61,8 +67,7 @@ class LoginViewModel(
     }
 
     private fun getLoginIntent(activity: Activity): Intent {
-        val gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(activity.getString(R.string.oauth_id))
                 .requestEmail()
                 .build()

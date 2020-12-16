@@ -36,7 +36,7 @@
     <string name="next_button">Next</string>
 
     <!-- Media Source -->
-    <string name="gallery_source_description">Pick from the gallery</string>
+    <string name="gallery_source_description">Pick from gallery</string>
     <string name="camera_source_description">Take new from camera</string>
 
     <!-- Timestamp -->

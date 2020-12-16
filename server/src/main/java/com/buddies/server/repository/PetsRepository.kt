@@ -9,6 +9,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Transaction
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 
@@ -105,9 +106,9 @@ class PetsRepository {
             .child(generateNewId())
             .putFile(photoUri)
 
-    fun getGalleryPictures(
+    fun listGalleryPictures(
         petId: String
-    ) =
+    ): Task<ListResult> =
         storage.getReference(PETS_PATH)
             .child(petId)
             .child(GALLERY_PATH)

@@ -16,14 +16,16 @@ import com.buddies.server.model.Notification
 import com.buddies.server.repository.NotificationsRepository
 import com.buddies.server.repository.PetsRepository
 import com.buddies.server.repository.UsersRepository
-import com.buddies.server.util.*
-import kotlinx.coroutines.Dispatchers
+import com.buddies.server.util.toInviteNotification
+import com.buddies.server.util.toNotifications
+import com.buddies.server.util.toPet
+import com.buddies.server.util.toPetFoundNotification
+import com.buddies.server.util.toUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class NotificationsApi(
@@ -33,7 +35,7 @@ class NotificationsApi(
 ) : BaseApi() {
 
     @ExperimentalCoroutinesApi
-    suspend fun listenToCurrentUserNotifications(
+    suspend fun listenForCurrentUserNotifications(
     ): Flow<Result<List<UserNotification>?>> = callbackFlow<Result<List<Notification>>> {
         notificationsRepository.queryCurrentUserNotifications().addSnapshotListener { snapshot, exception ->
             if (exception != null) {
@@ -64,7 +66,7 @@ class NotificationsApi(
                 }
             }
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
     suspend fun markNotificationAsRead(
         notificationId: String

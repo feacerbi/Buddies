@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/add_gallery_menu_action"
+        android:icon="@drawable/ic_baseline_add_to_photos"
+        android:title="@string/add_gallery_menu_title"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/add_owner_menu_action"
         android:icon="@drawable/ic_baseline_person_add"
         android:title="@string/add_owner_menu_title"

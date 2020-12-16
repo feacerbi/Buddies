@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="com.buddies.mypets.ui.MyPetsWidget">
+    tools:parentTag="com.buddies.pet.ui.MyPetsWidget">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/pets_sheet"

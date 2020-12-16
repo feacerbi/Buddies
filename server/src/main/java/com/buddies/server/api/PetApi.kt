@@ -4,17 +4,35 @@ import android.net.Uri
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.buddies.common.model.*
+import com.buddies.common.model.DefaultError
+import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.ErrorCode.ACCESS_DENIED
 import com.buddies.common.model.NotificationType.INVITE
+import com.buddies.common.model.Owner
 import com.buddies.common.model.OwnershipAccess.EDIT_ALL
 import com.buddies.common.model.OwnershipCategory.VISITOR
+import com.buddies.common.model.OwnershipInfo
+import com.buddies.common.model.Result
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
 import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.model.NotificationInfo
-import com.buddies.server.repository.*
-import com.buddies.server.util.*
+import com.buddies.server.repository.AnimalsRepository
+import com.buddies.server.repository.BreedsRepository
+import com.buddies.server.repository.NotificationsRepository
+import com.buddies.server.repository.OwnershipsRepository
+import com.buddies.server.repository.PetsRepository
+import com.buddies.server.repository.TagsRepository
+import com.buddies.server.repository.UsersRepository
+import com.buddies.server.util.OwnersDataSource
+import com.buddies.server.util.getDownloadUrl
+import com.buddies.server.util.toAnimal
+import com.buddies.server.util.toBreed
+import com.buddies.server.util.toOwner
+import com.buddies.server.util.toOwnerships
+import com.buddies.server.util.toPet
+import com.buddies.server.util.toTag
+import com.buddies.server.util.toUris
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.flow.Flow
@@ -205,24 +223,28 @@ class PetApi(
         userId: String,
         petId: String,
         category: Int
-    ) = runTransactionsWithResult(
-        notificationsRepository.addNotification(
-            NotificationInfo(
-                INVITE.id,
-                userId,
-                usersRepository.getCurrentUserId(),
-                petId,
-                category,
-                true,
-                Timestamp.now()))
-    )
+    ) = runWithResult {
+        checkAccess(petId)
+
+        runTransactions(
+            notificationsRepository.addNotification(
+                NotificationInfo(
+                    INVITE.id,
+                    userId,
+                    usersRepository.getCurrentUserId(),
+                    petId,
+                    category,
+                    true,
+                    Timestamp.now())
+            )
+        )
+    }
 
     suspend fun getOwnersFlowWithPaging(
         petId: String,
         query: String,
         pageSize: Int = -1
     ): Flow<PagingData<Owner>> {
-        checkAccess(petId)
 
         val ownerships = ownershipsRepository.getPetOwnerships(petId)
             .handleTaskResult()
@@ -246,13 +268,25 @@ class PetApi(
 
     suspend fun getPetGalleryPictures(
         petId: String
-    ): Result<List<Uri>> = runWithResult {
-        petsRepository.getGalleryPictures(petId)
+    ) = runWithResult {
+        petsRepository.listGalleryPictures(petId)
             .handleTaskResult()
             .toUris()
             .map {
                 it.handleTaskResult()
             }
+    }
+
+    suspend fun addPetGalleryPicture(
+        petId: String,
+        picture: Uri
+    ) = runWithResult {
+        checkAccess(petId)
+
+        petsRepository.uploadGalleryImage(petId, picture)
+            .handleTaskResult()
+
+        null
     }
 
     private suspend fun checkAccess(

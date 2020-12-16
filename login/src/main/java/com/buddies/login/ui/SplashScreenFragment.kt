@@ -22,10 +22,8 @@ class SplashScreenFragment : NavigationFragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        return FragmentSplashScreenBinding.inflate(layoutInflater, container, false)
+    ): View = FragmentSplashScreenBinding.inflate(layoutInflater, container, false)
             .root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +36,7 @@ class SplashScreenFragment : NavigationFragment() {
             when (it) {
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
+                else -> { /* Ignore */ }
             }
         }
     }
