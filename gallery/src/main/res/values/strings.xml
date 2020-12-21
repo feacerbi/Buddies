@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Destinations -->
+    <string name="gallery_name">Gallery Screen</string>
+
+    <!-- Toolbar Titles -->
+    <string name="add_gallery_menu_title">Add Gallery Pictures</string>
+
+    <!-- Views -->
+    <string name="empty_gallery_message">No gallery pictures.</string>
+    <string name="gallery_screen_title">Gallery</string>
+
+    <!-- Notifications -->
+    <plurals name="gallery_upload_waiting_notification_content">
+        <item quantity="one">Waiting to upload %d picture</item>
+        <item quantity="other">Waiting to upload %d pictures</item>
+    </plurals>
+    <string name="gallery_upload_fail_notification_content">Upload failed</string>
+    <string name="gallery_upload_complete_notification_content">Upload complete</string>
+    <string name="gallery_upload_progress_notification_content">Uploading %d/%d</string>
+    <string name="gallery_upload_notification_title">Upload Gallery Pictures</string>
+</resources>

@@ -18,6 +18,8 @@ interface Navigator {
         object ProfileToLogin : NavDirection()
         object ProfileToNewPetFlow : NavDirection()
         data class ProfileToPetProfile(val petId: String) : NavDirection()
+
+        data class PetProfileToGallery(val petId: String) : NavDirection()
     }
 
     class UnsupportedDirectionException : Exception()

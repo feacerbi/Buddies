@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/add_gallery_menu_action"
-        android:icon="@drawable/ic_baseline_add_to_photos"
-        android:title="@string/add_gallery_menu_title"
+        android:id="@+id/open_gallery_menu_action"
+        android:icon="@drawable/ic_baseline_photo_library"
+        android:title="@string/open_gallery_menu_title"
         app:showAsAction="ifRoom"/>
 
     <item

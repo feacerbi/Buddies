@@ -1,17 +1,18 @@
 package com.buddies.scanner.ui
 
+import android.Manifest
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import androidx.activity.result.ActivityResultLauncher
 import androidx.camera.view.PreviewView.ScaleType.FILL_CENTER
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.liveData
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
 import com.buddies.common.util.CameraHelper
-import com.buddies.common.util.PermissionsManager
 import com.buddies.common.util.inflater
 import com.buddies.common.util.toDefaultError
 import com.buddies.scanner.R
@@ -34,10 +35,11 @@ class QRScanner @JvmOverloads constructor(
 
     private val binding: QrScannerBinding
 
-    private val permissionsManager by inject(PermissionsManager::class.java)
     private val encrypter by inject(Encrypter::class.java)
 
     private var cameraHelper: CameraHelper? = null
+
+    private var cameraPermissionsRequest: ActivityResultLauncher<String>? = null
 
     init {
         QrScannerBinding.inflate(inflater(), this, true).apply {
@@ -56,19 +58,23 @@ class QRScanner @JvmOverloads constructor(
         preview.scaleType = FILL_CENTER
     }
 
-    fun scan(
-        fragment: Fragment
-    ) = liveData(fragment.lifecycleScope.coroutineContext) {
+    fun setupPermissionRequest(request: ActivityResultLauncher<String>) {
+        cameraPermissionsRequest = request
+    }
 
-        val qrCodeAnalyzer = QRCodeAnalyzer(fragment)
+    fun scan(
+        lifecycleOwner: LifecycleOwner
+    ) = liveData(lifecycleOwner.lifecycleScope.coroutineContext) {
+
+        val qrCodeAnalyzer = QRCodeAnalyzer(lifecycleOwner)
 
         cameraHelper = CameraHelper(
-            fragment,
+            lifecycleOwner,
             binding.preview,
             qrCodeAnalyzer
         )
 
-        tryStartCamera(fragment)
+        tryStartCamera()
 
         qrCodeAnalyzer.barcodes.collectLatest { barcode ->
             try {
@@ -80,25 +86,19 @@ class QRScanner @JvmOverloads constructor(
         }
     }
 
-    fun stop(
-        context: Context
-    ) {
+    fun stop(context: Context) {
         cameraHelper?.stopCamera(context)
     }
 
-    private fun tryStartCamera(fragment: Fragment) {
-        if (permissionsManager.cameraPermissionsGranted()) {
-            startCamera()
-        } else {
-            requestCameraPermissions(fragment)
-        }
+    fun permissionResultSuccess() {
+        startCamera()
+    }
+
+    private fun tryStartCamera() {
+        cameraPermissionsRequest?.launch(Manifest.permission.CAMERA)
     }
 
     private fun startCamera() {
         cameraHelper?.startCamera(context)
-    }
-
-    private fun requestCameraPermissions(fragment: Fragment) {
-        permissionsManager.requestCameraPermissions(fragment)
     }
 }

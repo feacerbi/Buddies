@@ -2,9 +2,14 @@ package com.buddies.common.util
 
 import android.content.Context
 import android.util.Size
-import androidx.camera.core.*
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraSelector.LENS_FACING_BACK
 import androidx.camera.core.CameraSelector.LENS_FACING_FRONT
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
@@ -52,7 +57,7 @@ class CameraHelper(
     fun stopCamera(context: Context) {
         val providerFuture = ProcessCameraProvider.getInstance(context)
 
-        providerFuture.addListener(Runnable {
+        providerFuture.addListener({
             unbindPreview(providerFuture.get())
         }, ContextCompat.getMainExecutor(context))
     }
@@ -132,7 +137,7 @@ class CameraHelper(
     }
 
     private fun getNewFile() = File(
-        previewView.context.externalMediaDirs.first(),
+        previewView.context.filesDir,
         "${System.currentTimeMillis()}.jpg"
     )
 

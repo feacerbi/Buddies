@@ -21,6 +21,5 @@ class PetProfileViewState(
     var ownershipInfo: OwnershipInfo = OwnershipInfo(),
     var owners: List<Owner> = emptyList(),
     var pagingData: PagingData<Owner> = PagingData.empty(),
-    var gallery: List<Uri> = listOf(),
     var loading: Boolean = false
 ) : ViewState

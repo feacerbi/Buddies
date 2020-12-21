@@ -1,39 +1,10 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
 
 android {
-    compileSdkVersion rootProject.ext.androidCompileVersion
-    buildToolsVersion rootProject.ext.androidBuildToolsVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.androidMinSdkVersion
-        targetSdkVersion rootProject.ext.androidTargetSdkVersion
-        versionCode rootProject.ext.projectVersionCode
-        versionName rootProject.ext.projectVersionName
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    buildFeatures {
-        viewBinding = true
-    }
+    with commonConfig
 }
 
 dependencies {
@@ -51,9 +22,7 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
 
     // Activity & Fragment
-    implementation "androidx.activity:activity:$activity_ktx_version"
     implementation "androidx.activity:activity-ktx:$activity_ktx_version"
-    implementation "androidx.fragment:fragment:$fragment_ktx_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
 
     // Coil
@@ -64,15 +33,9 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore-ktx:$firebase_firestore_ktx"
 
     // Jetpack CameraX
-    implementation("androidx.camera:camera-camera2:$camerax_version") {
-        exclude group:'com.google.guava'
-    }
-    implementation("androidx.camera:camera-lifecycle:$camerax_version") {
-        exclude group:'com.google.guava'
-    }
-    implementation("androidx.camera:camera-view:$cameraview_version") {
-        exclude group:'com.google.guava'
-    }
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    implementation "androidx.camera:camera-view:$cameraview_version"
 
     // Jetpack Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"

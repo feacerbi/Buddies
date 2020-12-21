@@ -5,12 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashScreenFragment"
-    tools:ignore="UnusedNavigation">
+    tools:ignore="UnusedNavigation" >
 
     <fragment
         android:id="@+id/splashScreenFragment"
         android:name="com.buddies.login.ui.SplashScreenFragment"
-        android:label="@string/splash_name" >
+        android:label="@string/splash_name"
+        tools:layout="@layout/fragment_splash_screen" >
         <action
             android:id="@+id/action_splashScreenFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -30,7 +31,8 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.buddies.login.ui.LoginFragment"
-        android:label="@string/login_name" >
+        android:label="@string/login_name"
+        tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -43,7 +45,8 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.buddies.profile.ui.ProfileFragment"
-        android:label="@string/profile_name" >
+        android:label="@string/profile_name"
+        tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -71,17 +74,27 @@
 
     <fragment
         android:id="@+id/petProfileFragment"
-        android:name="com.buddies.pet.ui.PetProfileFragment"
-        android:label="@string/pet_profile_title" >
+        android:name="com.buddies.pet.ui.fragment.PetProfileFragment"
+        android:label="@string/pet_profile_name"
+        tools:layout="@layout/fragment_pet_profile" >
         <argument
             android:name="petId"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_petProfileFragment_to_galleryFragment"
+            app:destination="@id/galleryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.buddies.home.ui.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="@string/home_name"
+        tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment"
@@ -92,6 +105,16 @@
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
-    <include app:graph="@navigation/new_pet_nav_graph"/>
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.buddies.gallery.ui.GalleryFragment"
+        android:label="@string/gallery_name"
+        tools:layout="@layout/fragment_gallery" >
+        <argument
+            android:name="petId"
+            app:argType="string"/>
+    </fragment>
+
+    <include app:graph="@navigation/new_pet_nav_graph" />
 
 </navigation>

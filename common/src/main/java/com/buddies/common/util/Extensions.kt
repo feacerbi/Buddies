@@ -65,8 +65,8 @@ fun ImageView.load(
     lifecycleOwner: LifecycleOwner,
     options: RequestOptions.() -> Unit = {}
 ) {
-    val cache by inject(ImageCache::class.java)
-    cache.load(lifecycleOwner, this, uri, options)
+    val handler by inject(ImageHandler::class.java)
+    handler.load(lifecycleOwner, this, uri, options)
 }
 
 fun ImageView.load(
@@ -74,8 +74,8 @@ fun ImageView.load(
     lifecycleOwner: LifecycleOwner,
     options: RequestOptions.() -> Unit = {}
 ) {
-    val cache by inject(ImageCache::class.java)
-    cache.load(lifecycleOwner, this, image, options)
+    val handler by inject(ImageHandler::class.java)
+    handler.load(lifecycleOwner, this, image, options)
 }
 
 fun CoroutineScope.safeLaunch(
@@ -271,6 +271,16 @@ fun <I, O> Fragment.registerForNonNullActivityResult(
     return registerForActivityResult(contract) {
         if (it != null) {
             callback.onActivityResult(it)
+        }
+    }
+}
+
+fun <I> Fragment.registerForTrueActivityResult(
+    contract: ActivityResultContract<I, Boolean>,
+    callback: ActivityResultCallback<Boolean>): ActivityResultLauncher<I> {
+    return registerForActivityResult(contract) {
+        if (it) {
+            callback.onActivityResult(true)
         }
     }
 }

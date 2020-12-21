@@ -1,16 +1,15 @@
 package com.buddies.common.di
 
 import coil.ImageLoader
-import com.buddies.common.util.ImageCache
-import com.buddies.common.util.PermissionsManager
+import com.buddies.common.util.ImageHandler
+import com.buddies.common.util.ImageHandler.Companion.MEMORY_POOL_PERCENTAGE
 import org.koin.dsl.module
 
 val commonModule = module {
-    factory { PermissionsManager(get()) }
     single {
         ImageLoader.Builder(get())
-            .availableMemoryPercentage(0.4)
+            .availableMemoryPercentage(MEMORY_POOL_PERCENTAGE)
             .build()
     }
-    single { ImageCache(get()) }
+    single { ImageHandler(get()) }
 }

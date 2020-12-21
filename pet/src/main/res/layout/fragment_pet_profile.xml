@@ -17,14 +17,6 @@
         android:scaleType="centerCrop"
         android:contentDescription="@string/pet_picture_content_description" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pet_gallery"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/profile_image_height"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <View
         android:id="@+id/top_scrim"
         android:layout_width="0dp"

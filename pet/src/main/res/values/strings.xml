@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Destinations -->
+    <string name="pet_profile_name">Pet Profile Screen</string>
+
     <!-- Toolbar Titles -->
     <string name="edit_picture_menu_title">Edit Picture</string>
     <string name="add_owner_menu_title">Add Owner</string>
-    <string name="add_gallery_menu_title">Add Gallery Pictures</string>
+    <string name="open_gallery_menu_title">Open Gallery</string>
 
     <!-- Views -->
     <string name="my_pets_title">My Pets</string>
@@ -23,7 +26,6 @@
     <string name="invite_owners_empty_list">No search results</string>
     <string name="invite_message">Invitation sent to %s!</string>
     <string name="pets_empty_message">You don\'t have any pets yet.\n Try adding a new one on the + above.</string>
-    <string name="add_gallery_pictures_message">Uploading pictures</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>
@@ -35,8 +37,4 @@
     <string name="pet_breed_edit_icon_content_description">Pet breed edit icon</string>
     <string name="pet_tag_icon_content_description">Pet tag icon</string>
     <string name="pet_tag_edit_icon_content_description">Pet tag edit icon</string>
-    <string name="gallery_upload_fail_notification_content">Upload failed</string>
-    <string name="gallery_upload_complete_notification_content">Upload complete</string>
-    <string name="gallery_upload_progress_notification_content">Uploading %d/%d</string>
-    <string name="gallery_upload_notification_title">Upload Gallery Pictures</string>
 </resources>

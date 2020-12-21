@@ -1,9 +1,9 @@
 <resources>
-    <!-- Destination -->
-    <string name="tag_scan_name">Tag Scan Fragment</string>
-    <string name="choose_animal_breed_name">Choose Animal and Breed Fragment</string>
-    <string name="pet_info_name">Pet Info Fragment</string>
-    <string name="add_confirmation_name">Add Confirmation Fragment</string>
+    <!-- Destinations -->
+    <string name="tag_scan_name">Tag Scan Screen</string>
+    <string name="choose_animal_breed_name">Choose Animal and Breed Screen</string>
+    <string name="pet_info_name">Pet Info Screen</string>
+    <string name="add_confirmation_name">Add Confirmation Screen</string>
 
     <!-- Views -->
     <string name="new_buddy_flow_title">New Buddy</string>

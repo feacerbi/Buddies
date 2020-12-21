@@ -3,6 +3,7 @@ package com.buddies.application
 import android.app.Application
 import android.content.Intent
 import com.buddies.common.di.commonModule
+import com.buddies.gallery.di.galleryModule
 import com.buddies.home.di.homeModule
 import com.buddies.login.di.loginModule
 import com.buddies.navigation.di.navigationModule
@@ -33,6 +34,7 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 commonModule,
+                galleryModule,
                 homeModule,
                 loginModule,
                 navigationModule,

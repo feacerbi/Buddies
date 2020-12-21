@@ -1,4 +1,7 @@
 <resources>
+    <!-- Destinations -->
+    <string name="home_name">Home Screen</string>
+
     <!-- View -->
     <string name="scan_pet_button">Scan Pet</string>
     <string name="notify_button">Notify</string>

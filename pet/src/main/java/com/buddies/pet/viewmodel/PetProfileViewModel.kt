@@ -51,7 +51,6 @@ class PetProfileViewModel(
             is RequestAnimals -> requestAnimals()
             is RequestInviteOwners -> startPagingOwners(action.query)
             is InviteOwner -> inviteOwner(action.owner)
-            is AddGalleryPictures -> addGalleryPictures(action.pictures)
         }
     }
 
@@ -95,8 +94,7 @@ class PetProfileViewModel(
         val owners = petUseCases.getOwnersFromPet(petId)
         val currentOwnership = petUseCases.getCurrentUserPetOwnership(petId)
         val tag = petUseCases.getPetTag(pet?.info?.tag ?: "")
-        val gallery = petUseCases.getGallery(petId)
-        updateState(ShowInfo(pet, animalAndBreed, owners, currentOwnership, tag, gallery))
+        updateState(ShowInfo(pet, animalAndBreed, owners, currentOwnership, tag))
     }
 
     private fun openOwnerProfile(owner: Owner) {
@@ -120,11 +118,6 @@ class PetProfileViewModel(
     private fun inviteOwner(owner: Owner) = safeLaunch(::showError) {
         petUseCases.inviteOwner(owner.user.id, petId, owner.category)
         updateEffect(ShowBottomMessage(R.string.invite_message, arrayOf(owner.user.info.name)))
-    }
-
-    private fun addGalleryPictures(list: List<Uri>) = safeLaunch(::showError) {
-        petUseCases.addPicturesToGallery(petId, list)
-        updateEffect(ShowBottomMessage(R.string.add_gallery_pictures_message))
     }
 
     private fun startPagingOwners(query: String) = timer.restart {
@@ -156,7 +149,6 @@ class PetProfileViewModel(
         data class RequestBreeds(val animal: Animal) : Action()
         data class InviteOwner(val owner: Owner) : Action()
         data class RequestInviteOwners(val query: String) : Action()
-        data class AddGalleryPictures(val pictures: List<Uri>) : Action()
         object RequestAnimals : Action()
         object Refresh : Action()
     }

@@ -1,9 +1,4 @@
 <resources>
-    <!-- Destination Titles -->
-    <string name="login_title">Login</string>
-    <string name="profile_title">Profile</string>
-    <string name="pet_profile_title">Pet Profile</string>
-
     <!-- Args -->
     <string name="pet_id_arg">petId</string>
 

@@ -1,41 +1,14 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
+}
 
 android {
-    compileSdkVersion rootProject.ext.androidCompileVersion
-    buildToolsVersion rootProject.ext.androidBuildToolsVersion
+    with commonConfig
 
     defaultConfig {
         applicationId "com.buddies"
-
-        minSdkVersion rootProject.ext.androidMinSdkVersion
-        targetSdkVersion rootProject.ext.androidTargetSdkVersion
-        versionCode rootProject.ext.projectVersionCode
-        versionName rootProject.ext.projectVersionName
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    buildFeatures {
-        viewBinding = true
     }
 }
 
@@ -44,6 +17,7 @@ dependencies {
 
     // Projects
     implementation project(":common")
+    implementation project(":gallery")
     implementation project(":home")
     implementation project(":login")
     implementation project(":navigation")

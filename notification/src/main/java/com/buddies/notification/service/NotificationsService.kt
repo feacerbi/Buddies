@@ -28,7 +28,7 @@ class NotificationsService : Service() {
     private val notificationsApi: NotificationsApi by inject()
 
     private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Main + job)
+    private val scope = CoroutineScope(job + Dispatchers.Main)
 
     @ExperimentalCoroutinesApi
     override fun onCreate() {
