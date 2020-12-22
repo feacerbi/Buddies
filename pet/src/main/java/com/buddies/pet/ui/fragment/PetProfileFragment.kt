@@ -106,9 +106,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         }
 
         refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
-        refresh.setOnRefreshListener {
-            perform(Refresh)
-        }
+        refresh.setOnRefreshListener { perform(Refresh) }
 
         profileNameEdit.setOnClickListener {
             openBottomEditDialog(

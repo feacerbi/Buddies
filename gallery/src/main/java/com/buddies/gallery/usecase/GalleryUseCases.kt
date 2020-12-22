@@ -69,6 +69,13 @@ class GalleryUseCases(
             request)
     }
 
+    suspend fun deletePicturesFromGallery(
+        petId: String,
+        pictureIds: List<String>
+    ) = withContext(Dispatchers.IO) {
+        petApi.deletePetGalleryPictures(petId, pictureIds)
+    }
+
     suspend fun cancelUploadWork() {
         clearUploadWorks()
         uploadNotificationHandler.cancel()

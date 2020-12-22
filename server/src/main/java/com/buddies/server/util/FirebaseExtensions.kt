@@ -1,9 +1,25 @@
 package com.buddies.server.util
 
-import com.buddies.common.model.*
+import com.buddies.common.model.Animal
+import com.buddies.common.model.AnimalInfo
+import com.buddies.common.model.Breed
+import com.buddies.common.model.BreedInfo
+import com.buddies.common.model.DocumentTransformationException
+import com.buddies.common.model.EncryptionKey
+import com.buddies.common.model.EncryptionKeyInfo
+import com.buddies.common.model.Owner
+import com.buddies.common.model.Ownership
+import com.buddies.common.model.OwnershipInfo
+import com.buddies.common.model.Pet
+import com.buddies.common.model.PetInfo
+import com.buddies.common.model.Tag
+import com.buddies.common.model.TagInfo
+import com.buddies.common.model.User
+import com.buddies.common.model.UserInfo
 import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.model.Notification
 import com.buddies.server.model.NotificationInfo
+import com.buddies.server.model.StoragePicture
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.ListResult
@@ -61,8 +77,8 @@ fun QuerySnapshot.toNotifications() = documents.map { doc ->
     Notification(doc.id, doc.to(NotificationInfo::class))
 }
 
-fun ListResult.toUris() = items.map {
-    it.downloadUrl
+fun ListResult.toStoragePictures() = items.map {
+    StoragePicture(it.name, it.downloadUrl)
 }
 
 fun UploadTask.TaskSnapshot.getDownloadUrl() = storage.downloadUrl

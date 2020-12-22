@@ -1,7 +1,9 @@
 package com.buddies.server.api
 
 import com.buddies.common.model.DefaultError
-import com.buddies.common.model.ErrorCode.*
+import com.buddies.common.model.ErrorCode.RESULT_NULL
+import com.buddies.common.model.ErrorCode.TASK_FAIL
+import com.buddies.common.model.ErrorCode.TASK_NULL
 import com.buddies.common.model.Result
 import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
@@ -39,6 +41,22 @@ abstract class BaseApi {
                 when {
                     isSuccessful && result != null -> cont.resume(result)
                     isSuccessful && result == null -> cont.resumeWithException(DefaultError(RESULT_NULL).toException())
+                    isSuccessful.not() -> cont.resumeWithException(DefaultError(TASK_FAIL).toException())
+                }
+            }
+        }
+    }
+
+    protected suspend fun <T> Task<T>?.handleNullTaskResult(
+    ): T? = suspendCoroutine { cont ->
+        if (this == null) {
+            cont.resumeWithException(DefaultError(TASK_NULL).toException())
+        } else {
+            addOnCompleteListener {
+                val result = it.result
+
+                when {
+                    isSuccessful -> cont.resume(result)
                     isSuccessful.not() -> cont.resumeWithException(DefaultError(TASK_FAIL).toException())
                 }
             }

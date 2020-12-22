@@ -1,9 +1,10 @@
 package com.buddies.gallery.viewstate
 
-import android.net.Uri
 import com.buddies.common.viewstate.ViewState
+import com.buddies.server.model.Picture
 
 data class GalleryViewState (
-    var picturesList: List<Uri> = listOf(),
-    var showEmpty: Boolean = false
+    var picturesList: List<Picture> = listOf(),
+    var showEmpty: Boolean = false,
+    var showloading: Boolean = false
 ) : ViewState

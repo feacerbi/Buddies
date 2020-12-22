@@ -5,14 +5,8 @@
 
     <item
         android:id="@+id/delete_gallery_menu_action"
-        android:icon="@drawable/ic_baseline_delete"
+        android:icon="@drawable/ic_baseline_delete_forever"
         android:title="@string/delete_gallery_menu_title"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/add_gallery_menu_action"
-        android:icon="@drawable/ic_baseline_add_to_photos"
-        android:title="@string/add_gallery_menu_title"
         app:showAsAction="ifRoom"/>
 
 </menu>

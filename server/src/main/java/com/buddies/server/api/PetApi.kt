@@ -17,6 +17,7 @@ import com.buddies.common.model.Result.Fail
 import com.buddies.common.model.Result.Success
 import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.model.NotificationInfo
+import com.buddies.server.model.Picture
 import com.buddies.server.repository.AnimalsRepository
 import com.buddies.server.repository.BreedsRepository
 import com.buddies.server.repository.NotificationsRepository
@@ -31,8 +32,8 @@ import com.buddies.server.util.toBreed
 import com.buddies.server.util.toOwner
 import com.buddies.server.util.toOwnerships
 import com.buddies.server.util.toPet
+import com.buddies.server.util.toStoragePictures
 import com.buddies.server.util.toTag
-import com.buddies.server.util.toUris
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.flow.Flow
@@ -271,9 +272,9 @@ class PetApi(
     ) = runWithResult {
         petsRepository.listGalleryPictures(petId)
             .handleTaskResult()
-            .toUris()
+            .toStoragePictures()
             .map {
-                it.handleTaskResult()
+                Picture(it.id, it.downloadTask.handleTaskResult())
             }
     }
 
@@ -287,6 +288,18 @@ class PetApi(
             .handleTaskResult()
 
         null
+    }
+
+    suspend fun deletePetGalleryPictures(
+        petId: String,
+        pictureIdList: List<String>
+    ) = runWithResult {
+        checkAccess(petId)
+
+        pictureIdList.forEach {
+            petsRepository.removeGalleryImage(petId, it)
+                .handleNullTaskResult()
+        }
     }
 
     private suspend fun checkAccess(

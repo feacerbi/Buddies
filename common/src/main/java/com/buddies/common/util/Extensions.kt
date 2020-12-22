@@ -16,6 +16,7 @@ import android.widget.ImageView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.annotation.PluralsRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.R
 import com.buddies.common.databinding.InputTextLayoutBinding
 import com.buddies.common.databinding.SelectableListLayoutBinding
+import com.buddies.common.databinding.SimpleLayoutBinding
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.Result
@@ -91,6 +93,43 @@ fun CoroutineScope.safeLaunch(
 }
 
 fun generateNewId() = UUID.randomUUID().toString()
+
+fun Fragment.getQuantityString(
+    @PluralsRes id: Int,
+    quantity: Int,
+    vararg formatArgs: Any = emptyArray()) =
+    requireContext().resources.getQuantityString(id, quantity, *formatArgs)
+
+fun Fragment.openBottomSimpleDialog(
+    title: String,
+    content: String = "",
+    confirmButtonText: String = getString(R.string.ok_button),
+    positiveAction: () -> Unit = {},
+    cancelAction: () -> Unit = {}
+) {
+    val simpleView = SimpleLayoutBinding.inflate(layoutInflater)
+    val bottomSheet = BottomSheetDialog(simpleView.root.context).apply {
+        setContentView(simpleView.root)
+        dismissWithAnimation = true
+        setCanceledOnTouchOutside(true)
+    }
+
+    with (simpleView) {
+        dialogTitle.text = title
+        dialogContent.text = content
+        confirmButton.text = confirmButtonText
+        cancelButton.setOnClickListener {
+            cancelAction.invoke()
+            bottomSheet.cancel()
+        }
+        confirmButton.setOnClickListener {
+            positiveAction.invoke()
+            bottomSheet.cancel()
+        }
+    }
+
+    bottomSheet.show()
+}
 
 fun Fragment.openBottomEditDialog(
     hint: String = "",

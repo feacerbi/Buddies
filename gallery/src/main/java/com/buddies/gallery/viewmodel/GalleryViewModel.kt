@@ -11,11 +11,18 @@ import androidx.work.WorkInfo
 import com.buddies.common.model.DefaultError
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
+import com.buddies.gallery.R
 import com.buddies.gallery.usecase.GalleryUseCases
 import com.buddies.gallery.viewmodel.GalleryViewModel.Action.AddGalleryPictures
+import com.buddies.gallery.viewmodel.GalleryViewModel.Action.DeleteGalleryPictures
+import com.buddies.gallery.viewmodel.GalleryViewModel.Action.RefreshPictures
+import com.buddies.gallery.viewmodel.GalleryViewModel.Action.RequestDeletePictures
 import com.buddies.gallery.viewstate.GalleryViewEffect
+import com.buddies.gallery.viewstate.GalleryViewEffect.OpenConfirmDeleteDialog
 import com.buddies.gallery.viewstate.GalleryViewEffect.ShowError
+import com.buddies.gallery.viewstate.GalleryViewEffect.ShowMessage
 import com.buddies.gallery.viewstate.GalleryViewState
+import com.buddies.gallery.viewstate.GalleryViewStateReducer.ShowLoading
 import com.buddies.gallery.viewstate.GalleryViewStateReducer.ShowPictures
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -43,11 +50,15 @@ class GalleryViewModel(
 
     fun perform(action: Action) {
         when (action) {
+            is RefreshPictures -> fetchGalleryPictures()
             is AddGalleryPictures -> addGalleryPictures(action.pictures)
+            is RequestDeletePictures -> checkPicturesToDelete(action.pictureIds)
+            is DeleteGalleryPictures -> removeGalleryPictures(action.pictureIds)
         }
     }
 
     private fun fetchGalleryPictures() = safeLaunch(::showError) {
+        updateState(ShowLoading)
         val galleryPictures = galleryUseCases.getGalleryPictures(petId)
         updateState(ShowPictures(galleryPictures))
     }
@@ -60,7 +71,21 @@ class GalleryViewModel(
 
     private fun addGalleryPictures(list: List<Uri>) = safeLaunch(::showError) {
         galleryUseCases.addPicturesToGallery(petId, list)
+        updateEffect(ShowMessage(R.string.gallery_upload_message))
+    }
 
+    private fun checkPicturesToDelete(pictureIds: List<String>) {
+        if (pictureIds.isEmpty()) {
+            updateEffect(ShowMessage(R.string.delete_pictures_check_message))
+        } else {
+            updateEffect(OpenConfirmDeleteDialog(pictureIds))
+        }
+    }
+
+    private fun removeGalleryPictures(list: List<String>) = safeLaunch(::showError) {
+        updateState(ShowLoading)
+        galleryUseCases.deletePicturesFromGallery(petId, list)
+        fetchGalleryPictures()
     }
 
     private fun showError(error: DefaultError) {
@@ -73,7 +98,10 @@ class GalleryViewModel(
     }
 
     sealed class Action {
+        object RefreshPictures : Action()
         data class AddGalleryPictures(val pictures: List<Uri>) : Action()
+        data class RequestDeletePictures(val pictureIds: List<String>) : Action()
+        data class DeleteGalleryPictures(val pictureIds: List<String>) : Action()
     }
 
     override val coroutineContext: CoroutineContext

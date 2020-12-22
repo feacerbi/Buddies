@@ -26,9 +26,11 @@
     <string name="pet_found_notification_message">%s was found by %s!</string>
 
     <!-- View -->
+    <string name="ok_button">OK</string>
     <string name="cancel_button">Cancel</string>
     <string name="change_button">Change</string>
     <string name="next_button">Next</string>
+    <string name="delete_button">Delete</string>
 
     <!-- Media Source -->
     <string name="gallery_source_description">Pick from gallery</string>

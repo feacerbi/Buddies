@@ -5,10 +5,21 @@
 
     <!-- Toolbar Titles -->
     <string name="add_gallery_menu_title">Add Gallery Pictures</string>
+    <string name="delete_gallery_menu_title">Delete Gallery Pictures</string>
 
     <!-- Views -->
-    <string name="empty_gallery_message">No gallery pictures.</string>
+    <string name="empty_gallery_message">No gallery pictures</string>
     <string name="gallery_screen_title">Gallery</string>
+    <plurals name="action_mode_title">
+        <item quantity="one">%d picture selected</item>
+        <item quantity="other">%d pictures selected</item>
+    </plurals>
+    <string name="gallery_upload_message">Uploading pictures</string>
+    <string name="confirm_delete_title">Delete Pictures</string>
+    <plurals name="confirm_delete_content">
+        <item quantity="one">Are you sure you want to delete this picture?</item>
+        <item quantity="other">Are you sure you want to delete these %s pictures?</item>
+    </plurals>
 
     <!-- Notifications -->
     <plurals name="gallery_upload_waiting_notification_content">
@@ -19,4 +30,5 @@
     <string name="gallery_upload_complete_notification_content">Upload complete</string>
     <string name="gallery_upload_progress_notification_content">Uploading %d/%d</string>
     <string name="gallery_upload_notification_title">Upload Gallery Pictures</string>
+    <string name="delete_pictures_check_message">Select at least 1 picture</string>
 </resources>
