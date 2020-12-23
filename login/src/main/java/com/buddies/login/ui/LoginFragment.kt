@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.view.isVisible
-import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.observe
 import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.login.databinding.FragmentLoginBinding

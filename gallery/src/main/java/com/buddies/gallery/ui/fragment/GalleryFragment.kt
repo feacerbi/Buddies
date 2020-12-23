@@ -1,4 +1,4 @@
-package com.buddies.gallery.ui
+package com.buddies.gallery.ui.fragment
 
 import android.content.Context
 import android.net.Uri
@@ -11,18 +11,21 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.core.view.isVisible
-import com.buddies.common.ui.MediaPickerAdapter.MediaSource.CAMERA
-import com.buddies.common.ui.MediaPickerAdapter.MediaSource.GALLERY
-import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
+import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
+import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
+import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
+import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.getQuantityString
 import com.buddies.common.util.observe
-import com.buddies.common.util.openBottomSimpleDialog
-import com.buddies.common.util.openMediaPicker
 import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.common.util.registerForTrueActivityResult
 import com.buddies.common.util.toColorId
 import com.buddies.gallery.R
 import com.buddies.gallery.databinding.FragmentGalleryBinding
+import com.buddies.gallery.ui.adapter.GalleryAdapter
+import com.buddies.gallery.ui.util.GalleryActionModeCallback
+import com.buddies.gallery.ui.util.GalleryListDecoration
 import com.buddies.gallery.util.OpenMultipleDocumentsWithPersistedPermissions
 import com.buddies.gallery.viewmodel.GalleryViewModel
 import com.buddies.gallery.viewmodel.GalleryViewModel.Action
@@ -135,29 +138,29 @@ class GalleryFragment : NavigationFragment() {
     }
 
     private fun openAddPhotosPicker() {
-        openMediaPicker {
-            when (it) {
-                GALLERY -> multipleGalleryPick.launch(arrayOf(IMAGE_MIME_TYPE))
-                CAMERA -> cameraPick.launch(newPhotoUri)
+        MediaPickerBottomSheet.Builder(layoutInflater)
+            .selected {
+                when (it) {
+                    GALLERY -> multipleGalleryPick.launch(arrayOf(IMAGE_MIME_TYPE))
+                    CAMERA -> cameraPick.launch(newPhotoUri)
+                }
             }
-        }
+            .build()
+            .show()
     }
 
     private fun openConfirmDeleteBottomSheet(pictureIds: List<String>) {
         val picturesCount = pictureIds.size
 
-        openBottomSimpleDialog(
-            getString(R.string.confirm_delete_title),
-            getQuantityString(
-                R.plurals.confirm_delete_content,
-                picturesCount,
-                picturesCount),
-            getString(R.string.delete_button),
-            {
+        SimpleBottomSheet.Builder(layoutInflater)
+            .title(getString(R.string.confirm_delete_title))
+            .content(getQuantityString(R.plurals.confirm_delete_content, picturesCount, picturesCount))
+            .confirmButton(getString(R.string.delete_button)) {
                 galleryAdapter.disableActionMode()
                 perform(DeleteGalleryPictures(pictureIds))
             }
-        )
+            .build()
+            .show()
     }
 
     private fun startDeleteMode() {

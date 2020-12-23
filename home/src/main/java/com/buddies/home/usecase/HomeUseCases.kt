@@ -7,6 +7,10 @@ class HomeUseCases(
     private val homeApi: HomeApi
 ) : BaseUseCases() {
 
+    suspend fun getUser() = request {
+        homeApi.getCurrentUserInfo()
+    }
+
     suspend fun getPet(
         tagValue: String
     ) = request {

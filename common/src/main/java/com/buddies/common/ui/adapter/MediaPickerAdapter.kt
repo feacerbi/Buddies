@@ -1,4 +1,4 @@
-package com.buddies.common.ui
+package com.buddies.common.ui.adapter
 
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
@@ -6,7 +6,7 @@ import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.R
 import com.buddies.common.databinding.MediaListItemBinding
-import com.buddies.common.ui.MediaPickerAdapter.MediaViewHolder
+import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaViewHolder
 import com.buddies.common.util.inflater
 
 class MediaPickerAdapter(

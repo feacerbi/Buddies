@@ -16,9 +16,13 @@ import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.Owner
 import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToGallery
-import com.buddies.common.ui.MediaPickerAdapter.MediaSource.CAMERA
-import com.buddies.common.ui.MediaPickerAdapter.MediaSource.GALLERY
-import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
+import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
+import com.buddies.common.ui.bottomsheet.CustomBottomSheet
+import com.buddies.common.ui.bottomsheet.InputBottomSheet
+import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
+import com.buddies.common.ui.bottomsheet.SelectableBottomSheet
+import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.*
 import com.buddies.pet.R
 import com.buddies.pet.databinding.FragmentPetProfileBinding
@@ -109,11 +113,12 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         refresh.setOnRefreshListener { perform(Refresh) }
 
         profileNameEdit.setOnClickListener {
-            openBottomEditDialog(
-                hint = getString(R.string.input_dialog_pet_name_hint),
-                text = profileName.text.toString(),
-                positiveAction = { perform(ChangeName(it) )}
-            )
+            InputBottomSheet.Builder(layoutInflater)
+                .hint(getString(R.string.input_dialog_pet_name_hint))
+                .content(profileName.text.toString())
+                .confirmButton(getString(R.string.change_button)) { perform(ChangeName(it)) }
+                .build()
+                .show()
         }
 
         profileAnimalEdit.setOnClickListener {
@@ -157,7 +162,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
     private fun showInviteOwnerBottomSheet() {
         val customView = OwnerInviteListBinding.inflate(layoutInflater)
-        val dialog = openCustomBottomSheet(customView.root)
+        val dialog = CustomBottomSheet.Builder(customView.root).build()
 
         ownersPagingAdapter.addLoadStateListener {
             customView.ownersListEmpty.isVisible = ownersPagingAdapter.itemCount == 0
@@ -169,10 +174,11 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
         customView.ownersList.adapter = ownersPagingAdapter.apply {
             onClick = { owner ->
-                dialog.setOnDismissListener { showInviteOwnershipBottomSheet(owner) }
-                dialog.cancel()
+                dialog.cancel { showInviteOwnershipBottomSheet(owner) }
             }
         }
+
+        dialog.show()
     }
 
     private fun showInviteOwnershipBottomSheet(owner: Owner) {
@@ -190,32 +196,39 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     private fun openAnimalsList(list: List<Animal>?) {
         val animalsAdapter = AnimalsAdapter(this, list)
 
-        openBottomSelectableDialog(
-            getString(R.string.select_animal_title),
-            animalsAdapter,
-            { perform(RequestBreeds(animalsAdapter.getSelected())) },
-            getString(R.string.next_button)
-        )
+        SelectableBottomSheet.Builder(layoutInflater)
+            .title(getString(R.string.select_animal_title))
+            .adapter(animalsAdapter)
+            .confirmButton(getString(R.string.next_button)) {
+                perform(RequestBreeds(animalsAdapter.getSelected()))
+            }
+            .build()
+            .show()
     }
 
     private fun openBreedsList(list: List<Breed>?, animal: Animal) {
         val breedsAdapter = BreedsAdapter(this, list)
 
-        openBottomSelectableDialog(
-            getString(R.string.select_breed_title),
-            breedsAdapter,
-            { perform(ChangeAnimal(animal, breedsAdapter.getSelected())) },
-            getString(R.string.change_button)
-        )
+        SelectableBottomSheet.Builder(layoutInflater)
+            .title(getString(R.string.select_breed_title))
+            .adapter(breedsAdapter)
+            .confirmButton(getString(R.string.change_button)) {
+                perform(ChangeAnimal(animal, breedsAdapter.getSelected()))
+            }
+            .build()
+            .show()
     }
 
     private fun openEditPhotoPicker() {
-        openMediaPicker {
-            when (it) {
-                GALLERY -> galleryPick.launch(IMAGE_MIME_TYPE)
-                CAMERA -> cameraPick.launch(newPhotoUri)
+        MediaPickerBottomSheet.Builder(layoutInflater)
+            .selected {
+                when (it) {
+                    GALLERY -> galleryPick.launch(IMAGE_MIME_TYPE)
+                    CAMERA -> cameraPick.launch(newPhotoUri)
+                }
             }
-        }
+            .build()
+            .show()
     }
 
     private fun showMessage(text: Int, params: Array<String> = arrayOf()) {

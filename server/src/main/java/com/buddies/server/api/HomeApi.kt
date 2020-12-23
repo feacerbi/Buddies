@@ -5,10 +5,15 @@ import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.ErrorCode.INVALID_TAG
 import com.buddies.common.model.NotificationType
 import com.buddies.server.model.NotificationInfo
-import com.buddies.server.repository.*
+import com.buddies.server.repository.NotificationsRepository
+import com.buddies.server.repository.OwnershipsRepository
+import com.buddies.server.repository.PetsRepository
+import com.buddies.server.repository.TagsRepository
+import com.buddies.server.repository.UsersRepository
 import com.buddies.server.util.toOwnerships
 import com.buddies.server.util.toPet
 import com.buddies.server.util.toTag
+import com.buddies.server.util.toUser
 
 class HomeApi(
     private val usersRepository: UsersRepository,
@@ -17,6 +22,13 @@ class HomeApi(
     private val ownershipsRepository: OwnershipsRepository,
     private val notificationsRepository: NotificationsRepository
 ) : BaseApi() {
+
+    suspend fun getCurrentUserInfo() = runWithResult {
+        usersRepository.getCurrentUser()
+            .handleTaskResult()
+            .toUser()
+            .info
+    }
 
     suspend fun getPetByTag(
         tagValue: String

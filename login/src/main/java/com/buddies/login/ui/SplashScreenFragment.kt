@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.observe
 import com.buddies.login.databinding.FragmentSplashScreenBinding
 import com.buddies.login.viewmodel.LoginViewModel

@@ -1,4 +1,4 @@
-package com.buddies.gallery.ui
+package com.buddies.gallery.ui.adapter
 
 import android.content.Context
 import android.view.ActionMode

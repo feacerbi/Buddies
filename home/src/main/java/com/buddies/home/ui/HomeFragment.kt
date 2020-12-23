@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.core.view.isVisible
+import com.buddies.common.model.UserInfo
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToProfile
-import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.customTextAppearance
 import com.buddies.common.util.observe
 import com.buddies.common.util.registerForTrueActivityResult
@@ -53,6 +55,11 @@ class HomeFragment : NavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() { perform(CloseScanner) }
+            })
+
         toolbar.setNavigationOnClickListener {
             perform(CloseScanner)
         }
@@ -90,11 +97,24 @@ class HomeFragment : NavigationFragment() {
             when (it) {
                 is StartCamera -> bindCamera()
                 is StopCamera -> stopCamera()
+                is ShowShareInfoDialog -> showShareInfoBottomSheet(it.user)
                 is ShowMessage -> showMessage(it.message)
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
         }
+    }
+
+    private fun showShareInfoBottomSheet(userInfo: UserInfo) {
+        ShareInfoBottomSheet.Builder(layoutInflater)
+            .name(userInfo.name)
+            .email(userInfo.email)
+            .phone(checked = false)
+            .location(checked = false)
+            .cancelButton()
+            .confirmButton { perform(SendUserInfo(it)) }
+            .build()
+            .show()
     }
 
     private fun bindCamera() {

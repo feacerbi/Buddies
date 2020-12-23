@@ -9,12 +9,12 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.lifecycle.lifecycleScope
-import com.buddies.common.ui.MediaPickerAdapter.MediaSource.CAMERA
-import com.buddies.common.ui.MediaPickerAdapter.MediaSource.GALLERY
-import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
+import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
+import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
+import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
-import com.buddies.common.util.openMediaPicker
 import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
@@ -48,7 +48,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentProfileBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentProfileBinding.inflate(layoutInflater, container, false).apply {
         binding = this
     }.root
 
@@ -102,12 +102,15 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
     }
 
     private fun openEditPhotoPicker() {
-        openMediaPicker {
-            when (it) {
-                GALLERY -> galleryPick.launch(IMAGE_MIME_TYPE)
-                CAMERA -> cameraPick.launch(photoUri)
+        MediaPickerBottomSheet.Builder(layoutInflater)
+            .selected {
+                when (it) {
+                    GALLERY -> galleryPick.launch(IMAGE_MIME_TYPE)
+                    CAMERA -> cameraPick.launch(photoUri)
+                }
             }
-        }
+            .build()
+            .show()
     }
 
     private fun showMessage(text: Int) {

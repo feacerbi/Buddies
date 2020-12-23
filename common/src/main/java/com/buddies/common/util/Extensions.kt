@@ -2,7 +2,6 @@ package com.buddies.common.util
 
 import android.content.Context
 import android.net.Uri
-import android.text.InputType
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.format.DateFormat
@@ -18,21 +17,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.PluralsRes
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.R
-import com.buddies.common.databinding.InputTextLayoutBinding
-import com.buddies.common.databinding.SelectableListLayoutBinding
-import com.buddies.common.databinding.SimpleLayoutBinding
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.Result
-import com.buddies.common.ui.MediaPickerAdapter
-import com.buddies.common.ui.SelectableAdapter
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -100,129 +92,6 @@ fun Fragment.getQuantityString(
     vararg formatArgs: Any = emptyArray()) =
     requireContext().resources.getQuantityString(id, quantity, *formatArgs)
 
-fun Fragment.openBottomSimpleDialog(
-    title: String,
-    content: String = "",
-    confirmButtonText: String = getString(R.string.ok_button),
-    positiveAction: () -> Unit = {},
-    cancelAction: () -> Unit = {}
-) {
-    val simpleView = SimpleLayoutBinding.inflate(layoutInflater)
-    val bottomSheet = BottomSheetDialog(simpleView.root.context).apply {
-        setContentView(simpleView.root)
-        dismissWithAnimation = true
-        setCanceledOnTouchOutside(true)
-    }
-
-    with (simpleView) {
-        dialogTitle.text = title
-        dialogContent.text = content
-        confirmButton.text = confirmButtonText
-        cancelButton.setOnClickListener {
-            cancelAction.invoke()
-            bottomSheet.cancel()
-        }
-        confirmButton.setOnClickListener {
-            positiveAction.invoke()
-            bottomSheet.cancel()
-        }
-    }
-
-    bottomSheet.show()
-}
-
-fun Fragment.openBottomEditDialog(
-    hint: String = "",
-    text: String = "",
-    positiveAction: (String) -> Unit,
-    dismissAction: (() -> Unit)? = null
-) {
-    val inputView = InputTextLayoutBinding.inflate(layoutInflater)
-    val bottomSheet = BottomSheetDialog(inputView.root.context).apply {
-        setContentView(inputView.root)
-        dismissWithAnimation = true
-        setCanceledOnTouchOutside(true)
-    }
-
-    with (inputView) {
-        inputLayout.hint = hint
-        inputEditText.setText(text)
-        inputEditText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
-
-        cancelButton.setOnClickListener {
-            dismissAction?.invoke()
-            bottomSheet.cancel()
-        }
-        changeButton.setOnClickListener {
-            positiveAction.invoke(inputEditText.text.toString())
-            bottomSheet.cancel()
-        }
-    }
-
-    bottomSheet.show()
-}
-
-fun <T : RecyclerView.ViewHolder, R> Fragment.openBottomSelectableDialog(
-    title: String,
-    adapter: SelectableAdapter<T, R>,
-    onSelectedChanged: (() -> Unit)? = null,
-    onSelectedButton: String = getString(com.buddies.common.R.string.change_button),
-    dismissAction: (() -> Unit)? = null
-) {
-    val selectableView = SelectableListLayoutBinding.inflate(layoutInflater)
-    val bottomSheet = BottomSheetDialog(selectableView.root.context).apply {
-        setContentView(selectableView.root)
-        dismissWithAnimation = true
-        setCanceledOnTouchOutside(true)
-    }
-
-    with (selectableView) {
-        adapter.addOnSelectedListener {
-            changeButton.isEnabled = true
-        }
-
-        listTitle.text = title
-        list.adapter = adapter
-
-        cancelButton.setOnClickListener {
-            dismissAction?.invoke()
-            bottomSheet.cancel()
-        }
-        changeButton.text = onSelectedButton
-        changeButton.setOnClickListener {
-            onSelectedChanged?.invoke()
-            bottomSheet.cancel()
-        }
-    }
-
-    bottomSheet.show()
-}
-
-fun Fragment.openMediaPicker(
-    onClick: ((MediaPickerAdapter.MediaSource) -> Unit)?
-) {
-    with (SelectableListLayoutBinding.inflate(layoutInflater)) {
-        val dialog = openCustomBottomSheet(root)
-
-        cancelButton.isVisible = false
-        changeButton.isVisible = false
-        listTitle.isVisible = false
-
-        list.adapter = MediaPickerAdapter {
-            dialog.dismiss()
-            onClick?.invoke(it)
-        }
-    }
-}
-
-fun openCustomBottomSheet(
-    content: View
-) = BottomSheetDialog(content.context).apply {
-    setContentView(content)
-    dismissWithAnimation = true
-    setCanceledOnTouchOutside(true)
-}.apply { show() }
-
 fun <T> Result<T>.handleResult(
 ) = when (this) {
     is Result.Success -> data
@@ -281,20 +150,22 @@ fun String.customTextAppearance(
         texts.forEach {
             val index = indexOf(it)
 
-            setSpan(
-                TextAppearanceSpan(context, style),
-                index,
-                index + it.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-
-            if (textColor != -1) {
+            if (index > -1) {
                 setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(context, textColor)),
+                    TextAppearanceSpan(context, style),
                     index,
                     index + it.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
+
+                if (textColor != -1) {
+                    setSpan(
+                        ForegroundColorSpan(ContextCompat.getColor(context, textColor)),
+                        index,
+                        index + it.length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
             }
         }
     }

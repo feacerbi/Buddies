@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.observe
 import com.buddies.common.util.toColorId
 import com.buddies.notification.ui.NotificationListDecoration

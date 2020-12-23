@@ -1,4 +1,4 @@
-package com.buddies.common.ui
+package com.buddies.common.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 

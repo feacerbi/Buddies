@@ -1,4 +1,4 @@
-package com.buddies.common.ui
+package com.buddies.common.ui.fragment
 
 import androidx.fragment.app.Fragment
 import com.buddies.common.navigation.Navigator

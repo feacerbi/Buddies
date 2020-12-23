@@ -1,9 +1,10 @@
 package com.buddies.common.model
 
+import androidx.annotation.StringRes
 import com.buddies.common.R
 
 enum class ErrorCode(
-    val message: Int
+    @StringRes val message: Int
 ) {
     UNKNOWN(R.string.unknown_error_message),
     TASK_FAIL(R.string.fail_task),

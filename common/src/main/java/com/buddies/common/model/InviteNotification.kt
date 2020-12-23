@@ -8,7 +8,7 @@ import android.text.SpannableString
 import androidx.core.app.NotificationCompat
 import com.buddies.common.R
 import com.buddies.common.model.NotificationType.INVITE
-import com.buddies.common.ui.SingleActivity
+import com.buddies.common.ui.activity.SingleActivity
 import com.buddies.common.util.customTextAppearance
 import java.util.*
 

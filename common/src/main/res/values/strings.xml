@@ -31,6 +31,7 @@
     <string name="change_button">Change</string>
     <string name="next_button">Next</string>
     <string name="delete_button">Delete</string>
+    <string name="send_button">Send</string>
 
     <!-- Media Source -->
     <string name="gallery_source_description">Pick from gallery</string>

@@ -107,7 +107,7 @@
 
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.buddies.gallery.ui.GalleryFragment"
+        android:name="com.buddies.gallery.ui.fragment.GalleryFragment"
         android:label="@string/gallery_name"
         tools:layout="@layout/fragment_gallery" >
         <argument

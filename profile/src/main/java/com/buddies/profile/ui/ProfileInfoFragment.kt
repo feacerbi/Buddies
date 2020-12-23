@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.buddies.common.ui.NavigationFragment
+import com.buddies.common.ui.bottomsheet.InputBottomSheet
+import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.observe
-import com.buddies.common.util.openBottomEditDialog
 import com.buddies.common.util.toColorId
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileInfoTabBinding
@@ -29,7 +29,7 @@ class ProfileInfoFragment : NavigationFragment(), CoroutineScope {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentProfileInfoTabBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentProfileInfoTabBinding.inflate(layoutInflater, container, false).apply {
         binding = this
     }.root
 
@@ -46,11 +46,12 @@ class ProfileInfoFragment : NavigationFragment(), CoroutineScope {
         }
 
         profileNameEdit.setOnClickListener {
-            openBottomEditDialog(
-                hint = getString(R.string.input_dialog_name_hint),
-                text = profileName.text.toString(),
-                positiveAction = { perform(ChangeName(it) )}
-            )
+            InputBottomSheet.Builder(layoutInflater)
+                .hint(getString(R.string.input_dialog_name_hint))
+                .content(profileName.text.toString())
+                .confirmButton(getString(R.string.change_button)) { perform(ChangeName(it)) }
+                .build()
+                .show()
         }
     }
 

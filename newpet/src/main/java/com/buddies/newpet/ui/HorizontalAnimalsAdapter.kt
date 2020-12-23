@@ -5,7 +5,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.model.Animal
-import com.buddies.common.ui.SelectableAdapter
+import com.buddies.common.ui.adapter.SelectableAdapter
 import com.buddies.common.util.inflater
 import com.buddies.common.util.load
 import com.buddies.newpet.R

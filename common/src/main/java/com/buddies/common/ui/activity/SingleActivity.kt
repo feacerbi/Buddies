@@ -1,4 +1,4 @@
-package com.buddies.common.ui
+package com.buddies.common.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

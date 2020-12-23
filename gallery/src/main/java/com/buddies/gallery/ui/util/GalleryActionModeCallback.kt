@@ -1,4 +1,4 @@
-package com.buddies.gallery.ui
+package com.buddies.gallery.ui.util
 
 import android.view.ActionMode
 import android.view.Menu
