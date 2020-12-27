@@ -2,10 +2,12 @@ package com.buddies.profile.usecase
 
 import android.net.Uri
 import com.buddies.common.usecase.BaseUseCases
+import com.buddies.server.api.NotificationsApi
 import com.buddies.server.api.ProfileApi
 
 class ProfileUseCases(
-    private val profileApi: ProfileApi
+    private val profileApi: ProfileApi,
+    private val notificationsApi: NotificationsApi
 ) : BaseUseCases() {
 
     suspend fun updateName(name: String) = request {
@@ -21,15 +23,15 @@ class ProfileUseCases(
     }
 
     suspend fun getNotifications() = request {
-        profileApi.getCurrentUserNotifications()
+        notificationsApi.getCurrentUserNotifications()
     }
 
     suspend fun ignoreInvitation(notificationId: String) = request {
-        profileApi.removeNotification(notificationId)
+        notificationsApi.removeNotification(notificationId)
     }
 
     suspend fun acceptInvitation(notificationId: String) = request {
-        profileApi.acceptInvitation(notificationId)
+        notificationsApi.acceptInvitation(notificationId)
     }
 
     fun logout() = profileApi.logout()

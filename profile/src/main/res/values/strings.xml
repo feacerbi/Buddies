@@ -17,4 +17,8 @@
     <string name="info">Info</string>
     <string name="info_tab_title">PROFILE</string>
     <string name="notifications_tab_title">NOTIFICATIONS</string>
+    <string name="email_action_subject">Lost pet found!</string>
+    <string name="email_action_message">Hey, I found your lost pet, please contact me through this email address.</string>
+    <string name="contact_info_dialog_title">Contact Info</string>
+    <string name="contact_info_dialog_content">This is the information provided by the person who found your pet.</string>
 </resources>

@@ -5,6 +5,7 @@ import com.buddies.common.model.Pet
 import com.buddies.common.model.PetFoundNotification
 import com.buddies.common.model.User
 import com.buddies.common.util.toOwnershipCategory
+import com.buddies.common.util.toShareInfoType
 import com.buddies.server.model.Notification
 
 fun Notification.toInviteNotification(
@@ -16,7 +17,7 @@ fun Notification.toInviteNotification(
     info.timestamp.toDate(),
     inviter.info.name,
     pet,
-    info.category.toOwnershipCategory()
+    info.ownershipCategory.toOwnershipCategory()
 )
 
 fun Notification.toPetFoundNotification(
@@ -27,5 +28,6 @@ fun Notification.toPetFoundNotification(
     info.unread,
     info.timestamp.toDate(),
     sourceUser.info.name,
-    pet
+    pet,
+    info.extra.mapKeys { it.key.toShareInfoType() }
 )

@@ -27,7 +27,6 @@ import com.buddies.common.util.*
 import com.buddies.pet.R
 import com.buddies.pet.databinding.FragmentPetProfileBinding
 import com.buddies.pet.databinding.OwnerInviteListBinding
-import com.buddies.pet.model.OwnersComparator
 import com.buddies.pet.ui.adapter.AnimalsAdapter
 import com.buddies.pet.ui.adapter.BreedsAdapter
 import com.buddies.pet.ui.adapter.OwnersAdapter
@@ -60,7 +59,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     }
 
     private val ownersPagingAdapter by lazy {
-        OwnersPagingAdapter(this@PetProfileFragment, OwnersComparator)
+        OwnersPagingAdapter(this@PetProfileFragment)
     }
 
     private val cameraPick = registerForTrueActivityResult(TakePicture()) {

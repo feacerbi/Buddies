@@ -15,9 +15,8 @@ import com.buddies.pet.ui.adapter.OwnersPagingAdapter.OwnersPagingViewHolder
 
 class OwnersPagingAdapter(
     private val lifecycleOwner: LifecycleOwner,
-    diffCallback: DiffUtil.ItemCallback<Owner>,
     var onClick: ((Owner) -> Unit)? = null
-) : PagingDataAdapter<Owner, OwnersPagingViewHolder>(diffCallback) {
+) : PagingDataAdapter<Owner, OwnersPagingViewHolder>(OwnersComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OwnersPagingViewHolder =
         OwnersPagingViewHolder(
@@ -56,5 +55,16 @@ class OwnersPagingAdapter(
                 inviteButton.setOnClickListener { onClick?.invoke(owner) }
             }
         }
+    }
+
+    class OwnersComparator : DiffUtil.ItemCallback<Owner>() {
+
+        override fun areItemsTheSame(oldItem: Owner, newItem: Owner): Boolean =
+            oldItem.user.id == newItem.user.id
+
+        override fun areContentsTheSame(oldItem: Owner, newItem: Owner): Boolean =
+            oldItem.category == newItem.category
+                && oldItem.user == newItem.user
+
     }
 }

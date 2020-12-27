@@ -96,8 +96,8 @@ class HomeViewModel(
     }
 
     private fun sendUserInfo(info: List<ShareInfo>) = safeLaunch(::showError) {
-        //homeUseCases.notifyPetFound(petFoundId)
-        updateState(StopPetScanner)
+        closeScanner()
+        homeUseCases.notifyPetFound(petFoundId, info)
         updateEffect(ShowMessage(R.string.owners_notified_message))
     }
 

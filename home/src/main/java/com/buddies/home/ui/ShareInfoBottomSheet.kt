@@ -2,15 +2,16 @@ package com.buddies.home.ui
 
 import android.text.InputType
 import android.view.LayoutInflater
+import androidx.core.view.isVisible
+import com.buddies.common.model.ShareInfoType.EMAIL
+import com.buddies.common.model.ShareInfoType.LOCATION
+import com.buddies.common.model.ShareInfoType.NAME
+import com.buddies.common.model.ShareInfoType.PHONE
 import com.buddies.common.ui.bottomsheet.BottomSheetFactory
 import com.buddies.home.R
 import com.buddies.home.databinding.ShareInfoLayoutBinding
 import com.buddies.home.model.ShareInfo
 import com.buddies.home.model.ShareInfoField
-import com.buddies.home.model.ShareInfoType.EMAIL
-import com.buddies.home.model.ShareInfoType.LOCATION
-import com.buddies.home.model.ShareInfoType.NAME
-import com.buddies.home.model.ShareInfoType.PHONE
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShareInfoBottomSheet private constructor(
@@ -125,6 +126,7 @@ class ShareInfoBottomSheet private constructor(
             title: String = cancelButtonDefaultText,
             action: () -> Unit = {}
         ) = with (shareView) {
+            cancelButton.isVisible = true
             cancelButton.text = title
             cancelButton.setOnClickListener {
                 action.invoke()

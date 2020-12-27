@@ -32,6 +32,7 @@
     <string name="next_button">Next</string>
     <string name="delete_button">Delete</string>
     <string name="send_button">Send</string>
+    <string name="close_button">Close</string>
 
     <!-- Media Source -->
     <string name="gallery_source_description">Pick from gallery</string>
@@ -41,6 +42,11 @@
     <string name="hours_ago_timestamp">%d hours ago</string>
     <string name="minutes_ago_timestamp">%d minutes ago</string>
     <string name="just_now_timestamp">Just now</string>
+
+    <!-- Unresolved Actions -->
+    <string name="no_email_app_message">No email apps found</string>
+    <string name="no_phone_app_message">No phone apps found</string>
+    <string name="no_map_app_message">No map apps found</string>
 
     <!-- Error Messages -->
     <string name="unknown_error_message">Unknown error</string>

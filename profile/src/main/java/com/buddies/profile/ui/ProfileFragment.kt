@@ -18,6 +18,7 @@ import com.buddies.common.util.observe
 import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
+import com.buddies.profile.model.ContactInfo
 import com.buddies.profile.util.ProfileTabsMediator
 import com.buddies.profile.viewmodel.ProfileViewModel
 import com.buddies.profile.viewmodel.ProfileViewModel.Action
@@ -97,8 +98,22 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
                 is RefreshPets -> myPetsWidget.refresh()
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
+                is ShowContactInfoBottomSheet -> openContactInfoBottomSheet(it.info)
             }
         }
+    }
+
+    private fun openContactInfoBottomSheet(info: List<ContactInfo>) {
+        val contactInfoBuilder = ContactInfoBottomSheet.Builder(layoutInflater)
+
+        info.forEach {
+            contactInfoBuilder.field(it)
+        }
+
+        contactInfoBuilder
+            .closeButton()
+            .build()
+            .show()
     }
 
     private fun openEditPhotoPicker() {

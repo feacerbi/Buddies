@@ -1,6 +1,7 @@
 package com.buddies.home.usecase
 
 import com.buddies.common.usecase.BaseUseCases
+import com.buddies.home.model.ShareInfo
 import com.buddies.server.api.HomeApi
 
 class HomeUseCases(
@@ -18,8 +19,11 @@ class HomeUseCases(
     }
 
     suspend fun notifyPetFound(
-        petId: String
+        petId: String,
+        shareInfoList: List<ShareInfo>
     ) = request {
-        homeApi.notifyPetFound(petId)
+        homeApi.notifyPetFound(
+            petId,
+            shareInfoList.map { it.toPair() }.toMap())
     }
 }

@@ -49,7 +49,8 @@ class HomeApi(
     }
 
     suspend fun notifyPetFound(
-        petId: String
+        petId: String,
+        shareInfoList: Map<String, String>
     ) = runWithResult {
         val ownerships = ownershipsRepository.getPetOwnerships(petId)
             .handleTaskResult()
@@ -58,10 +59,11 @@ class HomeApi(
         val addNotifications = ownerships.map {
             notificationsRepository.addNotification(
                 NotificationInfo(
-                    NotificationType.PET_FOUND.id,
-                    it.info.userId,
-                    usersRepository.getCurrentUserId(),
-                    petId
+                    type = NotificationType.PET_FOUND.id,
+                    targetUserId = it.info.userId,
+                    sourceUserId = usersRepository.getCurrentUserId(),
+                    petId = petId,
+                    extra = shareInfoList
                 )
             )
         }.toTypedArray()

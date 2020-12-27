@@ -26,11 +26,21 @@ class ProfileNotificationsFragment : NavigationFragment(), CoroutineScope {
 
     private val viewModel: ProfileViewModel by sharedViewModel()
 
+    private val notificationsAdapter by lazy {
+        NotificationsAdapter(
+            owner = this@ProfileNotificationsFragment,
+            acceptAction = { notification -> perform(AcceptNotification(notification)) },
+            infoAction = { notification -> perform(NotificationInfoClick(notification)) },
+            dismissAction = { notification -> perform(IgnoreNotification(notification)) },
+            iconClickAction = { notification -> perform(NotificationIconClick(notification)) }
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentProfileNotificationsTabBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentProfileNotificationsTabBinding.inflate(layoutInflater, container, false).apply {
         binding = this
     }.root
 
@@ -47,19 +57,13 @@ class ProfileNotificationsFragment : NavigationFragment(), CoroutineScope {
         }
 
         list.addItemDecoration(NotificationListDecoration(requireContext()))
+        list.adapter = notificationsAdapter
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
-            // TODO Set items with diff
-            list.adapter = NotificationsAdapter(
-                owner = this@ProfileNotificationsFragment,
-                it.notifications,
-                ignoreAction = { notification -> perform(IgnoreNotification(notification)) },
-                acceptAction = { notification -> perform(AcceptNotification(notification)) },
-                iconClickAction = { notification -> perform(NotificationIconClick(notification)) }
-            )
             notificationsListEmpty.isVisible = it.emptyNotifications
+            notificationsAdapter.submitList(it.notifications)
             refresh.isRefreshing = it.loadingNotifications
         }
     }

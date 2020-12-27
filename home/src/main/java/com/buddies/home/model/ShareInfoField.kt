@@ -2,6 +2,7 @@ package com.buddies.home.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.buddies.common.model.ShareInfoType
 
 data class ShareInfoField(
     val type: ShareInfoType,

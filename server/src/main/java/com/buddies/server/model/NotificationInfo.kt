@@ -7,7 +7,8 @@ data class NotificationInfo(
     val targetUserId: String = "",
     val sourceUserId: String = "",
     val petId: String = "",
-    val category: Int = -1,
+    val ownershipCategory: Int = -1,
     val unread: Boolean = true,
+    val extra: Map<String, String> = mapOf(),
     val timestamp: Timestamp = Timestamp.now()
 )

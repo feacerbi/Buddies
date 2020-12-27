@@ -34,7 +34,6 @@ import com.buddies.server.util.toOwnerships
 import com.buddies.server.util.toPet
 import com.buddies.server.util.toStoragePictures
 import com.buddies.server.util.toTag
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.flow.Flow
 
@@ -230,13 +229,12 @@ class PetApi(
         runTransactions(
             notificationsRepository.addNotification(
                 NotificationInfo(
-                    INVITE.id,
-                    userId,
-                    usersRepository.getCurrentUserId(),
-                    petId,
-                    category,
-                    true,
-                    Timestamp.now())
+                    type = INVITE.id,
+                    targetUserId = userId,
+                    sourceUserId = usersRepository.getCurrentUserId(),
+                    petId = petId,
+                    ownershipCategory = category,
+                    unread = true)
             )
         )
     }

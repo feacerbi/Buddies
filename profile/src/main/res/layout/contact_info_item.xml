@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/contact_title"
+        app:layout_constraintBottom_toBottomOf="@id/contact_title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/margin_large"
+        app:tint="@color/iconColorInactive"
+        tools:src="@drawable/ic_email"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/contact_title"
+        style="@style/Body1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/action"
+        android:layout_marginStart="@dimen/margin_large"
+        android:paddingTop="@dimen/margin_medium"
+        android:paddingBottom="@dimen/margin_medium"
+        android:textAlignment="viewStart"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="feaacerbi@gmail.com"/>
+
+    <ImageView
+        android:id="@+id/action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/contact_title"
+        app:layout_constraintBottom_toBottomOf="@id/contact_title"
+        app:layout_constraintEnd_toStartOf="@id/menu"
+        android:padding="@dimen/margin_small"
+        app:tint="?colorSecondary"
+        android:background="?selectableItemBackground"
+        tools:tint="@color/colorSecondary"
+        tools:src="@drawable/ic_email"/>
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/contact_title"
+        app:layout_constraintBottom_toBottomOf="@id/contact_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        app:tint="?colorSecondary"
+        android:background="?selectableItemBackground"
+        android:src="@drawable/ic_baseline_more_vert"
+        tools:tint="@color/colorSecondary"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

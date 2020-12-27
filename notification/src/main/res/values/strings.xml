@@ -3,6 +3,8 @@
     <string name="empty_notifications_list">No notifications</string>
     <string name="ignore_button">Ignore</string>
     <string name="accept_button">Accept</string>
+    <string name="dismiss_button">Dismiss</string>
+    <string name="contact_info_button">Contact Info</string>
 
     <!-- Channels -->
     <string name="invitation_notification_channel_name">Invitation</string>
