@@ -47,7 +47,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:padding="@dimen/margin_large"
                 android:background="?selectableItemBackgroundBorderless"
-                android:tint="?attr/colorSecondary"
+                app:tint="?colorSecondary"
                 android:contentDescription="@string/edit_name_content_description"
                 android:src="@drawable/ic_edit" />
 
@@ -82,7 +82,7 @@
                 app:layout_constraintTop_toBottomOf="@id/profile_name_edit"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:padding="@dimen/margin_large"
-                android:tint="?attr/colorSecondary"
+                app:tint="?colorSecondary"
                 android:contentDescription="@string/edit_name_content_description"
                 android:alpha="0"
                 android:src="@drawable/ic_edit" />

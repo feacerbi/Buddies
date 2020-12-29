@@ -3,10 +3,8 @@ package com.buddies.scanner.ml
 import android.media.Image
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import androidx.lifecycle.Lifecycle.Event.ON_STOP
-import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.lifecycleScope
 import com.buddies.common.util.ActionTimer
 import com.google.mlkit.vision.barcode.Barcode
@@ -23,7 +21,7 @@ import kotlinx.coroutines.flow.asFlow
 @androidx.camera.core.ExperimentalGetImage
 class QRCodeAnalyzer(
     lifecycleOwner: LifecycleOwner
-) : ImageAnalysis.Analyzer, LifecycleObserver {
+) : ImageAnalysis.Analyzer, DefaultLifecycleObserver {
 
     private val barcodesMutable = ConflatedBroadcastChannel<Barcode>()
     val barcodes = barcodesMutable.asFlow()
@@ -69,8 +67,9 @@ class QRCodeAnalyzer(
         imageProxy.close()
     }
 
-    @OnLifecycleEvent(ON_STOP)
-    fun clean() {
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        barcodesMutable.close()
         scanner.close()
     }
 

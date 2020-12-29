@@ -1,13 +1,11 @@
 package com.buddies.pet.ui.fragment
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
-import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -52,8 +50,6 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     private val petIdArg
         get() = arguments?.getString(getString(R.string.pet_id_arg)) ?: ""
 
-    private var newPhotoUri: Uri = Uri.EMPTY
-
     private val ownershipsBottomSheet: OwnershipsBottomDialog by lazy {
         OwnershipsBottomDialog(parentFragmentManager)
     }
@@ -62,9 +58,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         OwnersPagingAdapter(this@PetProfileFragment)
     }
 
-    private val cameraPick = registerForTrueActivityResult(TakePicture()) {
-        perform(ChangePhoto(newPhotoUri))
-    }
+    private val cameraHelper = CameraHelper(this)
     private val galleryPick = registerForNonNullActivityResult(GetContent()) {
         perform(ChangePhoto(it))
     }
@@ -223,7 +217,9 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             .selected {
                 when (it) {
                     GALLERY -> galleryPick.launch(IMAGE_MIME_TYPE)
-                    CAMERA -> cameraPick.launch(newPhotoUri)
+                    CAMERA -> cameraHelper.launchCamera(requireContext()) { uri ->
+                        perform(ChangePhoto(uri))
+                    }
                 }
             }
             .build()

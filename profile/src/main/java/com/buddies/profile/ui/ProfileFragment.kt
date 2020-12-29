@@ -1,18 +1,17 @@
 package com.buddies.profile.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
-import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.lifecycle.lifecycleScope
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
 import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
+import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
 import com.buddies.common.util.registerForNonNullActivityResult
@@ -36,11 +35,8 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private var tabsMediator: ProfileTabsMediator? = null
     private var expandedWidget = false
-    private var photoUri: Uri = Uri.EMPTY
 
-    private val cameraPick = registerForNonNullActivityResult(TakePicture()) {
-        perform(ChangePhoto(photoUri))
-    }
+    private val cameraHelper = CameraHelper(this)
     private val galleryPick = registerForNonNullActivityResult(GetContent()) {
         perform(ChangePhoto(it))
     }
@@ -121,7 +117,9 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             .selected {
                 when (it) {
                     GALLERY -> galleryPick.launch(IMAGE_MIME_TYPE)
-                    CAMERA -> cameraPick.launch(photoUri)
+                    CAMERA -> cameraHelper.launchCamera(requireContext()) { uri ->
+                        perform(ChangePhoto(uri))
+                    }
                 }
             }
             .build()

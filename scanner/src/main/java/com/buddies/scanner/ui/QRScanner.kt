@@ -1,10 +1,8 @@
 package com.buddies.scanner.ui
 
-import android.Manifest
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import androidx.activity.result.ActivityResultLauncher
 import androidx.camera.view.PreviewView.ScaleType.FILL_CENTER
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
@@ -37,10 +35,6 @@ class QRScanner @JvmOverloads constructor(
 
     private val encrypter by inject(Encrypter::class.java)
 
-    private var cameraHelper: CameraHelper? = null
-
-    private var cameraPermissionsRequest: ActivityResultLauncher<String>? = null
-
     init {
         QrScannerBinding.inflate(inflater(), this, true).apply {
             binding = this
@@ -58,23 +52,18 @@ class QRScanner @JvmOverloads constructor(
         preview.scaleType = FILL_CENTER
     }
 
-    fun setupPermissionRequest(request: ActivityResultLauncher<String>) {
-        cameraPermissionsRequest = request
-    }
-
     fun scan(
-        lifecycleOwner: LifecycleOwner
+        lifecycleOwner: LifecycleOwner,
+        cameraHelper: CameraHelper
     ) = liveData(lifecycleOwner.lifecycleScope.coroutineContext) {
 
         val qrCodeAnalyzer = QRCodeAnalyzer(lifecycleOwner)
 
-        cameraHelper = CameraHelper(
-            lifecycleOwner,
+        cameraHelper.startCamera(
+            context,
             binding.preview,
             qrCodeAnalyzer
         )
-
-        tryStartCamera()
 
         qrCodeAnalyzer.barcodes.collectLatest { barcode ->
             try {
@@ -84,21 +73,5 @@ class QRScanner @JvmOverloads constructor(
                 emit(Fail<String>(e.toDefaultError()))
             }
         }
-    }
-
-    fun stop(context: Context) {
-        cameraHelper?.stopCamera(context)
-    }
-
-    fun permissionResultSuccess() {
-        startCamera()
-    }
-
-    private fun tryStartCamera() {
-        cameraPermissionsRequest?.launch(Manifest.permission.CAMERA)
-    }
-
-    private fun startCamera() {
-        cameraHelper?.startCamera(context)
     }
 }

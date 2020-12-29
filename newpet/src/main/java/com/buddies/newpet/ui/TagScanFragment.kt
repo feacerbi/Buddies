@@ -5,18 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.core.view.isVisible
+import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
-import com.buddies.common.util.registerForTrueActivityResult
 import com.buddies.newpet.databinding.FragmentTagScanBinding
 import com.buddies.newpet.databinding.NewPetHeaderBinding
 import com.buddies.newpet.viewmodel.NewPetViewModel
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.*
 import com.buddies.newpet.viewstate.NewPetViewEffect.*
-import com.buddies.scanner.ui.QRScanner
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -31,11 +29,7 @@ class TagScanFragment : NewPetNavigationFragment() {
 
     private val viewModel: NewPetViewModel by sharedViewModel()
 
-    private val permissionRequest = registerForTrueActivityResult(RequestPermission()) {
-        qrScanner?.permissionResultSuccess()
-    }
-
-    private var qrScanner: QRScanner? = null
+    private val cameraHelper = CameraHelper(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,9 +56,6 @@ class TagScanFragment : NewPetNavigationFragment() {
         forwardButton.setOnClickListener {
             perform(Next)
         }
-        qrScanner = scanner.apply {
-            setupPermissionRequest(permissionRequest)
-        }
     }
 
     private fun bindViews() = with (binding) {
@@ -90,13 +81,13 @@ class TagScanFragment : NewPetNavigationFragment() {
     }
 
     private fun bindCamera() {
-        observe(binding.scanner.scan(this@TagScanFragment)) {
+        observe(binding.scanner.scan(this@TagScanFragment, cameraHelper)) {
             perform(ValidateTag(it))
         }
     }
 
     private fun stopCamera() {
-        binding.scanner.stop(requireContext())
+        cameraHelper.stopCamera(requireContext())
     }
 
     private fun showMessage(message: Int) {

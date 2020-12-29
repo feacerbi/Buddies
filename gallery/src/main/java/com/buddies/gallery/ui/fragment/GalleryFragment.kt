@@ -1,7 +1,6 @@
 package com.buddies.gallery.ui.fragment
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.view.ActionMode
 import android.view.LayoutInflater
@@ -9,17 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.core.view.isVisible
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
 import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
 import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
+import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.getQuantityString
 import com.buddies.common.util.observe
 import com.buddies.common.util.registerForNonNullActivityResult
-import com.buddies.common.util.registerForTrueActivityResult
 import com.buddies.common.util.toColorId
 import com.buddies.gallery.R
 import com.buddies.gallery.databinding.FragmentGalleryBinding
@@ -50,13 +48,9 @@ class GalleryFragment : NavigationFragment() {
     private val petIdArg
         get() = arguments?.getString(getString(R.string.pet_id_arg)) ?: ""
 
-    private var newPhotoUri: Uri = Uri.EMPTY
-
     private val galleryAdapter = GalleryAdapter(this, ::startActionMode)
 
-    private val cameraPick = registerForTrueActivityResult(TakePicture()) {
-        perform(AddGalleryPictures(listOf(newPhotoUri)))
-    }
+    private val cameraHelper = CameraHelper(this)
     private lateinit var multipleGalleryPick: ActivityResultLauncher<Array<String>>
 
     private val actionModeCallback: ActionMode.Callback by lazy {
@@ -142,7 +136,9 @@ class GalleryFragment : NavigationFragment() {
             .selected {
                 when (it) {
                     GALLERY -> multipleGalleryPick.launch(arrayOf(IMAGE_MIME_TYPE))
-                    CAMERA -> cameraPick.launch(newPhotoUri)
+                    CAMERA -> cameraHelper.launchCamera(requireContext()) { uri ->
+                        perform(AddGalleryPictures(listOf(uri)))
+                    }
                 }
             }
             .build()

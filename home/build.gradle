@@ -31,6 +31,7 @@ dependencies {
 
     // Jetpack Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"

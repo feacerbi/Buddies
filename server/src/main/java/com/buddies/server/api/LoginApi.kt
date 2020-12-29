@@ -15,10 +15,10 @@ class LoginApi(
 
     private val auth = FirebaseAuth.getInstance()
 
-    private val currentUser = auth.currentUser
+    private fun getCurrentUser() = auth.currentUser
 
     fun isUserLoggedIn(context: Context) =
-        GoogleSignIn.getLastSignedInAccount(context) != null && currentUser != null
+        GoogleSignIn.getLastSignedInAccount(context) != null && getCurrentUser() != null
 
     suspend fun login(
         data: Intent?
@@ -30,15 +30,16 @@ class LoginApi(
 
     suspend fun checkUserExists(
     ) = runWithResult {
-        val userSnapshot = usersRepository.getCurrentUser()
+        val userSnapshot = usersRepository
+            .getUser(usersRepository.getCurrentUserId())
             .handleTaskResult()
 
         if (userSnapshot.exists().not()) {
             runTransactions(
                 usersRepository.setUser(UserInfo(
-                    currentUser?.displayName ?: "",
-                    currentUser?.email ?: "",
-                    currentUser?.photoUrl.toString())
+                    getCurrentUser()?.displayName ?: "",
+                    getCurrentUser()?.email ?: "",
+                    getCurrentUser()?.photoUrl.toString())
                 )
             )
         }

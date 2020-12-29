@@ -33,6 +33,7 @@ dependencies {
     // Jetpack Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // Jetpack Paging
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
