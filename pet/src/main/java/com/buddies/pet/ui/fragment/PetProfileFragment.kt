@@ -2,6 +2,7 @@ package com.buddies.pet.ui.fragment
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.buddies.common.ui.bottomsheet.CustomBottomSheet
 import com.buddies.common.ui.bottomsheet.InputBottomSheet
 import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
 import com.buddies.common.ui.bottomsheet.SelectableBottomSheet
+import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.*
 import com.buddies.pet.R
@@ -111,6 +113,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             InputBottomSheet.Builder(layoutInflater)
                 .hint(getString(R.string.input_dialog_pet_name_hint))
                 .content(profileName.text.toString())
+                .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                .cancelButton()
                 .confirmButton(getString(R.string.change_button)) { perform(ChangeName(it)) }
                 .build()
                 .show()
@@ -131,6 +135,11 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             profileNameEdit.isVisible = it.nameEdit
             profileAnimalEdit.isVisible = it.animalEdit
             profileTagEdit.isVisible = it.tagEdit
+            profileReportLostSwitch.isChecked = it.lost
+            profileReportLostSwitch.setOnCheckedChangeListener { _, checked ->
+                perform(ReportLost(it.name, it.lost, checked))
+            }
+            profileReportLostStatus.text = getString(it.lostStatus)
             toolbar.menu.clear()
             toolbar.inflateMenu(it.toolbarMenu)
             // TODO Set items with diff
@@ -150,6 +159,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
                 is ShowAnimalsList -> openAnimalsList(it.list)
                 is ShowBreedsList -> openBreedsList(it.list, it.animal)
                 is ShowBottomMessage -> showMessage(it.message, it.params)
+                is ShowConfirmDialog -> showConfirmDialog(it.message, it.name)
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
@@ -195,6 +205,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         SelectableBottomSheet.Builder(layoutInflater)
             .title(getString(R.string.select_animal_title))
             .adapter(animalsAdapter)
+            .cancelButton()
             .confirmButton(getString(R.string.next_button)) {
                 perform(RequestBreeds(animalsAdapter.getSelected()))
             }
@@ -208,6 +219,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         SelectableBottomSheet.Builder(layoutInflater)
             .title(getString(R.string.select_breed_title))
             .adapter(breedsAdapter)
+            .cancelButton()
             .confirmButton(getString(R.string.change_button)) {
                 perform(ChangeAnimal(animal, breedsAdapter.getSelected()))
             }
@@ -234,6 +246,20 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             PetProfileToFullscreen(uri.toString(), image.transitionName),
             image to image.transitionName
         )
+    }
+
+    private fun showConfirmDialog(message: Int, name: String) {
+        SimpleBottomSheet.Builder(layoutInflater)
+            .title(getString(R.string.report_lost_dialog_title))
+            .content(getString(message, name))
+            .cancelButton {
+                perform(CancelLost)
+            }
+            .confirmButton(getString(R.string.report_lost_dialog_confirm_button)) {
+                perform(ConfirmLost(name))
+            }
+            .build()
+            .show()
     }
 
     private fun showMessage(text: Int, params: Array<String> = arrayOf()) {

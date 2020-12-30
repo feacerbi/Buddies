@@ -159,6 +159,7 @@ class GalleryFragment : NavigationFragment() {
         SimpleBottomSheet.Builder(layoutInflater)
             .title(getString(R.string.confirm_delete_title))
             .content(getQuantityString(R.plurals.confirm_delete_content, picturesCount, picturesCount))
+            .cancelButton()
             .confirmButton(getString(R.string.delete_button)) {
                 galleryAdapter.disableActionMode()
                 perform(DeleteGalleryPictures(pictureIds))

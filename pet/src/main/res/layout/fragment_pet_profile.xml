@@ -190,12 +190,47 @@
                     android:contentDescription="@string/pet_tag_edit_icon_content_description"
                     android:src="@drawable/ic_edit" />
 
+                <ImageView
+                    android:id="@+id/profile_report_lost_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/profile_tag_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:padding="@dimen/margin_large"
+                    android:contentDescription="@string/pet_tag_icon_content_description"
+                    android:src="@drawable/ic_baseline_health_and_safety" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_report_lost_status"
+                    style="@style/Body1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_report_lost_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_report_lost_icon"
+                    app:layout_constraintStart_toEndOf="@id/profile_report_lost_icon"
+                    app:layout_constraintEnd_toStartOf="@id/profile_report_lost_switch"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_goneMarginEnd="@dimen/margin_medium"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="@string/pet_safe_status"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/profile_report_lost_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_report_lost_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="@dimen/margin_large"
+                    app:tint="?attr/colorSecondary"
+                    android:checked="false"/>
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/profile_owners_title"
                     style="@style/Overline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/profile_tag_icon"
+                    app:layout_constraintTop_toBottomOf="@id/profile_report_lost_icon"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"

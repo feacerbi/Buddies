@@ -157,6 +157,17 @@ class PetApi(
         )
     }
 
+    suspend fun updatePetLostStatus(
+        petId: String,
+        lost: Boolean
+    ) = runWithResult {
+        checkAccess(petId)
+
+        runTransactions(
+            petsRepository.updateLost(petId, lost)
+        )
+    }
+
     suspend fun getPetTag(
         tagId: String
     ) = runWithResult {

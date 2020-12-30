@@ -2,6 +2,7 @@ package com.buddies.pet.viewstate
 
 import android.net.Uri
 import androidx.annotation.MenuRes
+import androidx.annotation.StringRes
 import androidx.paging.PagingData
 import com.buddies.common.model.Owner
 import com.buddies.common.model.OwnershipInfo
@@ -17,6 +18,8 @@ class PetProfileViewState(
     var animalEdit: Boolean = false,
     var breed: String = "",
     var photo: Uri = Uri.EMPTY,
+    var lost: Boolean = false,
+    @StringRes var lostStatus: Int = R.string.pet_safe_status,
     @MenuRes var toolbarMenu: Int = R.menu.empty_menu,
     var ownershipInfo: OwnershipInfo = OwnershipInfo(),
     var owners: List<Owner> = emptyList(),

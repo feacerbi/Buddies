@@ -26,6 +26,12 @@
     <string name="invite_owners_empty_list">No search results</string>
     <string name="invite_message">Invitation sent to %s!</string>
     <string name="pets_empty_message">You don\'t have any pets yet.\n Try adding a new one on the + above.</string>
+    <string name="report_lost_message">Are you sure you want to report %s as lost?</string>
+    <string name="report_lost_dialog_title">Report Lost</string>
+    <string name="report_lost_dialog_confirm_button">Report</string>
+    <string name="pet_safe_status">Pet safe</string>
+    <string name="pet_lost_status">Pet lost</string>
+    <string name="pet_report_lost_confirmation">%s was reported lost</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>

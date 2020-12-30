@@ -1,6 +1,7 @@
 package com.buddies.profile.ui
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import com.buddies.common.ui.bottomsheet.InputBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.observe
-import com.buddies.common.util.toColorId
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileInfoTabBinding
 import com.buddies.profile.viewmodel.ProfileViewModel
@@ -49,6 +49,8 @@ class ProfileInfoFragment : NavigationFragment(), CoroutineScope {
             InputBottomSheet.Builder(layoutInflater)
                 .hint(getString(R.string.input_dialog_name_hint))
                 .content(profileName.text.toString())
+                .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                .cancelButton()
                 .confirmButton(getString(R.string.change_button)) { perform(ChangeName(it)) }
                 .build()
                 .show()

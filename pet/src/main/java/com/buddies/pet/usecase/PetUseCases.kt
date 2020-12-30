@@ -81,6 +81,13 @@ class PetUseCases(
         petApi.updatePetOwnership(petId, userId, ownershipCategory.id)
     }
 
+    suspend fun updateLostStatus(
+        petId: String,
+        lost: Boolean
+    ) = request {
+        petApi.updatePetLostStatus(petId, lost)
+    }
+
     suspend fun getAllAnimals() = request {
         animalApi.getAllAnimals()
     }

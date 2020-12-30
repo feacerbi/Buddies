@@ -74,10 +74,27 @@ class PetsRepository {
         photo: String
     ) = updatePetField(petId, PHOTO_FIELD, photo)
 
+    fun updateLost(
+        petId: String,
+        lost: Boolean
+    ) = updatePetField(petId, LOST_FIELD, lost)
+
     private fun updatePetField(
         petId: String,
         petField: String,
         value: String
+    ): Transaction.() -> Unit = {
+        update(
+            db.collection(PETS_COLLECTION).document(petId),
+            petField,
+            value
+        )
+    }
+
+    private fun updatePetField(
+        petId: String,
+        petField: String,
+        value: Boolean
     ): Transaction.() -> Unit = {
         update(
             db.collection(PETS_COLLECTION).document(petId),
@@ -131,6 +148,7 @@ class PetsRepository {
         private const val ANIMAL_FIELD = "animal"
         private const val BREED_FIELD = "breed"
         private const val PHOTO_FIELD = "photo"
+        private const val LOST_FIELD = "lost"
 
         private const val PETS_PATH = "pets"
         private const val PROFILE_PATH = "profile"

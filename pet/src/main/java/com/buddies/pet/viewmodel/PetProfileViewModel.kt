@@ -51,6 +51,9 @@ class PetProfileViewModel(
             is RequestAnimals -> requestAnimals()
             is RequestInviteOwners -> startPagingOwners(action.query)
             is InviteOwner -> inviteOwner(action.owner)
+            is ReportLost -> reportLost(action.name, action.lost, action.switchChecked)
+            is ConfirmLost -> confirmLost(action.name)
+            is CancelLost -> cancelLost()
         }
     }
 
@@ -82,6 +85,31 @@ class PetProfileViewModel(
         updateState(ShowLoading())
         petUseCases.updateOwnership(petId, owner.user.id, ownership)
         refreshPet()
+    }
+
+    private fun reportLost(
+        name: String,
+        lost: Boolean,
+        switchChecked: Boolean
+    ) = safeLaunch(::showError) {
+        if (switchChecked != lost) {
+            if (switchChecked) {
+                updateState(ShowLostStatus)
+                updateEffect(ShowConfirmDialog(R.string.report_lost_message, name))
+            } else {
+                updateState(ShowSafeStatus)
+                petUseCases.updateLostStatus(petId, false)
+            }
+        }
+    }
+
+    private fun confirmLost(name: String) = safeLaunch(::showError) {
+        petUseCases.updateLostStatus(petId, true)
+        updateEffect(ShowBottomMessage(R.string.pet_report_lost_confirmation, arrayOf(name)))
+    }
+
+    private fun cancelLost() {
+        updateState(ShowSafeStatus)
     }
 
     private fun refreshPet() = safeLaunch(::showError) {
@@ -149,6 +177,9 @@ class PetProfileViewModel(
         data class RequestBreeds(val animal: Animal) : Action()
         data class InviteOwner(val owner: Owner) : Action()
         data class RequestInviteOwners(val query: String) : Action()
+        data class ReportLost(val name: String, val lost: Boolean, val switchChecked: Boolean) : Action()
+        data class ConfirmLost(val name: String) : Action()
+        object CancelLost : Action()
         object RequestAnimals : Action()
         object Refresh : Action()
     }

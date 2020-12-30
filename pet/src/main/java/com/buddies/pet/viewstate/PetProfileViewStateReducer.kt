@@ -32,6 +32,8 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
             animalEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
             breed = animalAndBreed?.second?.breedInfo?.name ?: ""
             photo = pet?.info?.photo?.toUri() ?: Uri.EMPTY
+            lost = pet?.info?.lost ?: false
+            lostStatus = if (pet?.info?.lost == true) R.string.pet_lost_status else R.string.pet_safe_status
             toolbarMenu = if (currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL) {
                 R.menu.pet_profile_toolbar_menu
             } else {
@@ -56,6 +58,20 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
     ) : PetProfileViewStateReducer() {
         override val reduce: PetProfileViewState.() -> Unit = {
             loading = show
+        }
+    }
+
+    object ShowSafeStatus : PetProfileViewStateReducer() {
+        override val reduce: PetProfileViewState.() -> Unit = {
+            lost = false
+            lostStatus = R.string.pet_safe_status
+        }
+    }
+
+    object ShowLostStatus : PetProfileViewStateReducer() {
+        override val reduce: PetProfileViewState.() -> Unit = {
+            lost = true
+            lostStatus = R.string.pet_lost_status
         }
     }
 }

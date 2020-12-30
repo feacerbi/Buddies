@@ -12,6 +12,9 @@ sealed class PetProfileViewEffect : ViewEffect {
     data class ShowBottomMessage(
         @StringRes val message: Int,
         val params: Array<String> = arrayOf()) : PetProfileViewEffect()
+    data class ShowConfirmDialog(
+        @StringRes val message: Int,
+        val name: String) : PetProfileViewEffect()
     data class Navigate(val direction: NavDirection) : PetProfileViewEffect()
     data class ShowError(val error: Int) : PetProfileViewEffect()
 }

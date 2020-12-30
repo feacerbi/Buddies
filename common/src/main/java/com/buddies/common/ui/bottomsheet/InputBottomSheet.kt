@@ -37,7 +37,7 @@ class InputBottomSheet private constructor(
 
         fun inputType(inputType: Int) = with (inputView) {
             inputEditText.inputType = inputType
-        }
+        }.let { this }
 
         fun cancelButton(
             title: String = cancelButtonDefaultText,
