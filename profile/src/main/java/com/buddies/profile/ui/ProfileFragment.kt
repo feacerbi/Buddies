@@ -1,5 +1,6 @@
 package com.buddies.profile.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.lifecycle.lifecycleScope
+import com.buddies.common.navigation.Navigator.NavDirection.ProfileToFullscreen
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
 import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
@@ -87,6 +89,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         observe(viewModel.getStateStream()) {
             tabsMediator?.updateBadge(it.notifications.size)
             profilePicture.load(it.photo, this@ProfileFragment)
+            profilePicture.setOnClickListener { _ -> navigateToFullscreen(profilePicture, it.photo) }
         }
 
         observe(viewModel.getEffectStream()) {
@@ -124,6 +127,13 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             }
             .build()
             .show()
+    }
+
+    private fun navigateToFullscreen(image: View, uri: Uri) {
+        navigate(
+            ProfileToFullscreen(uri.toString(), image.transitionName),
+            image to image.transitionName
+        )
     }
 
     private fun showMessage(text: Int) {

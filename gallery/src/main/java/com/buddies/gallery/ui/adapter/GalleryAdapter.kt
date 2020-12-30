@@ -2,6 +2,7 @@ package com.buddies.gallery.ui.adapter
 
 import android.content.Context
 import android.view.ActionMode
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
@@ -15,7 +16,8 @@ import com.buddies.server.model.Picture
 
 class GalleryAdapter(
     private val owner: LifecycleOwner,
-    private val startActionMode: () -> ActionMode
+    private val startActionMode: () -> ActionMode,
+    private val openFullscreenAction: (View, Picture) -> Unit = { _, _ -> }
 ) : ListAdapter<Picture, GalleryAdapter.GalleryViewHolder>(GalleryDiffUtil()) {
 
     private var actionMode: ActionMode? = null
@@ -38,6 +40,7 @@ class GalleryAdapter(
             val item = getItem(position)
 
             picture.load(item.downloadUri, owner)
+            picture.transitionName = item.id
 
             pictureSelectedView.isSelected = selectedPictures.contains(item)
 
@@ -54,7 +57,7 @@ class GalleryAdapter(
                 if (actionMode != null) {
                     togglePictureSelection(root.context, item)
                 } else {
-                    openFullscreenPicture(item)
+                    openFullscreenPicture(picture, item)
                 }
             }
         }
@@ -71,8 +74,8 @@ class GalleryAdapter(
         notifyDataSetChanged()
     }
 
-    private fun openFullscreenPicture(item: Picture) {
-        // TODO Open fullscreen picture
+    private fun openFullscreenPicture(image: View, item: Picture) {
+        openFullscreenAction.invoke(image, item)
     }
 
     private fun updateActionModeTitle(context: Context) {

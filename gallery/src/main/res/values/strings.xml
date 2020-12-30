@@ -2,6 +2,7 @@
 <resources>
     <!-- Destinations -->
     <string name="gallery_name">Gallery Screen</string>
+    <string name="fullscreen_name">Fullscreen Picture Screen</string>
 
     <!-- Toolbar Titles -->
     <string name="add_gallery_menu_title">Add Gallery Pictures</string>

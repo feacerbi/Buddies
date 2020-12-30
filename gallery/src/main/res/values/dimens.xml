@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="toolbar_elevation">8dp</dimen>
-    <dimen name="gallery_decoration_size">8dp</dimen>
+    <dimen name="gallery_decoration_size">2dp</dimen>
+    <dimen name="gallery_item_size">300dp</dimen>
 </resources>

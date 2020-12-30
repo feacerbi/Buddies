@@ -70,6 +70,9 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@anim/slide_out_bottom" />
+        <action
+            android:id="@+id/action_profileFragment_to_fullscreenFragment"
+            app:destination="@id/fullscreenFragment" />
     </fragment>
 
     <fragment
@@ -88,6 +91,9 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_petProfileFragment_to_fullscreenFragment"
+            app:destination="@id/fullscreenFragment" />
     </fragment>
 
     <fragment
@@ -113,6 +119,26 @@
         <argument
             android:name="petId"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_galleryFragment_to_fullscreenFragment"
+            app:destination="@id/fullscreenFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fullscreenFragment"
+        android:name="com.buddies.common.ui.fragment.FullscreenFragment"
+        android:label="@string/fullscreen_name"
+        tools:layout="@layout/fragment_fullscreen" >
+        <argument
+            android:name="pictureUrl"
+            app:argType="string"/>
+        <argument
+            android:name="transitionName"
+            app:argType="string"/>
+        <argument
+            android:name="transitionBack"
+            app:argType="boolean"
+            android:defaultValue="true"/>
     </fragment>
 
     <include app:graph="@navigation/new_pet_nav_graph" />

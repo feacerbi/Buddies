@@ -15,6 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:scaleType="centerCrop"
+        android:transitionName="pet_picture"
         android:contentDescription="@string/pet_picture_content_description" />
 
     <View

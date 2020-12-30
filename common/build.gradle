@@ -43,6 +43,9 @@ dependencies {
     // Koin
     implementation "org.koin:koin-android:$koin_version"
 
+    // PhotoView
+    implementation "com.github.chrisbanes:PhotoView:$photoview_version"
+
     // Testing
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$android_junit_version"

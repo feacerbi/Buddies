@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.isVisible
+import com.buddies.common.navigation.Navigator.NavDirection.GalleryToFullscreen
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
 import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
@@ -35,6 +36,7 @@ import com.buddies.gallery.viewstate.GalleryViewEffect.Navigate
 import com.buddies.gallery.viewstate.GalleryViewEffect.OpenConfirmDeleteDialog
 import com.buddies.gallery.viewstate.GalleryViewEffect.ShowError
 import com.buddies.gallery.viewstate.GalleryViewEffect.ShowMessage
+import com.buddies.server.model.Picture
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -48,7 +50,7 @@ class GalleryFragment : NavigationFragment() {
     private val petIdArg
         get() = arguments?.getString(getString(R.string.pet_id_arg)) ?: ""
 
-    private val galleryAdapter = GalleryAdapter(this, ::startActionMode)
+    private val galleryAdapter = GalleryAdapter(this, ::startActionMode, ::navigateToFullscreen)
 
     private val cameraHelper = CameraHelper(this)
     private lateinit var multipleGalleryPick: ActivityResultLauncher<Array<String>>
@@ -112,6 +114,12 @@ class GalleryFragment : NavigationFragment() {
 
         refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
         refresh.setOnRefreshListener { perform(RefreshPictures) }
+
+        postponeEnterTransition()
+        picturesGrid.viewTreeObserver.addOnPreDrawListener {
+            startPostponedEnterTransition()
+            true
+        }
     }
 
     private fun bindViews() = with (binding) {
@@ -164,6 +172,13 @@ class GalleryFragment : NavigationFragment() {
     }
 
     private fun startActionMode() = binding.toolbar.startActionMode(actionModeCallback)
+
+    private fun navigateToFullscreen(image: View, item: Picture) {
+        navigate(
+            GalleryToFullscreen(item.downloadUri.toString(), image.transitionName),
+            image to image.transitionName
+        )
+    }
 
     private fun showMessage(text: Int, params: Array<String> = arrayOf()) {
         Toast.makeText(requireContext(), getString(text, *params), Toast.LENGTH_SHORT).show()

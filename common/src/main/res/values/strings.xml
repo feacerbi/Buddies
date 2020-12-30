@@ -1,6 +1,9 @@
 <resources>
     <!-- Args -->
     <string name="pet_id_arg">petId</string>
+    <string name="picture_url_arg">pictureUrl</string>
+    <string name="transition_name_arg">transitionName</string>
+    <string name="transition_back_arg">transitionBack</string>
 
     <!-- Ownership Titles -->
     <string name="owner_title">Owner</string>

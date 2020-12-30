@@ -1,5 +1,6 @@
 package com.buddies.pet.ui.fragment
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.paging.ExperimentalPagingApi
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.Owner
+import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToFullscreen
 import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToGallery
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
@@ -122,6 +124,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
             petPicture.load(it.photo, this@PetProfileFragment)
+            petPicture.setOnClickListener { _ -> navigateToFullscreen(petPicture, it.photo) }
             profileName.text = it.name
             profileAnimal.text = getString(R.string.animal_field, it.animal, it.breed)
             profileTagNumber.text = it.tag
@@ -224,6 +227,13 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             }
             .build()
             .show()
+    }
+
+    private fun navigateToFullscreen(image: View, uri: Uri) {
+        navigate(
+            PetProfileToFullscreen(uri.toString(), image.transitionName),
+            image to image.transitionName
+        )
     }
 
     private fun showMessage(text: Int, params: Array<String> = arrayOf()) {

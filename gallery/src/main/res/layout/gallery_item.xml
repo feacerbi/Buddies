@@ -9,11 +9,11 @@
     <ImageView
         android:id="@+id/picture"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/gallery_item_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         tools:src="@drawable/cat1"/>
 
     <View
