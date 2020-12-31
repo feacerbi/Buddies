@@ -135,6 +135,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             profileNameEdit.isVisible = it.nameEdit
             profileAnimalEdit.isVisible = it.animalEdit
             profileTagEdit.isVisible = it.tagEdit
+            profileReportLostSwitch.isVisible = it.lostSwitch
             profileReportLostSwitch.isChecked = it.lost
             profileReportLostSwitch.setOnCheckedChangeListener { _, checked ->
                 perform(ReportLost(it.name, it.lost, checked))

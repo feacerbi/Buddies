@@ -218,13 +218,9 @@ class CameraHelper(
         deleteOnExit()
     }
 
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        executor?.shutdown()
-    }
-
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
+        executor?.shutdown()
         fragment = null
     }
 

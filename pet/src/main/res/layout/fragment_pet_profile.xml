@@ -220,8 +220,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="@id/profile_report_lost_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_report_lost_icon"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:padding="@dimen/margin_large"
+                    android:padding="@dimen/margin_medium"
                     app:tint="?attr/colorSecondary"
                     android:checked="false"/>
 

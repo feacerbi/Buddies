@@ -33,6 +33,7 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
             breed = animalAndBreed?.second?.breedInfo?.name ?: ""
             photo = pet?.info?.photo?.toUri() ?: Uri.EMPTY
             lost = pet?.info?.lost ?: false
+            lostSwitch = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
             lostStatus = if (pet?.info?.lost == true) R.string.pet_lost_status else R.string.pet_safe_status
             toolbarMenu = if (currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL) {
                 R.menu.pet_profile_toolbar_menu

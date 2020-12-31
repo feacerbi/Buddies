@@ -19,9 +19,9 @@ class UsersRepository {
     private val db = Firebase.firestore
     private val storage = Firebase.storage
 
-    private val userAuth = auth.currentUser
+    private fun getCurrentAuthUser() = auth.currentUser
 
-    fun getCurrentUserId() = userAuth?.uid ?: ""
+    fun getCurrentUserId() = getCurrentAuthUser()?.uid ?: ""
 
     fun setUser(
         info: UserInfo
@@ -32,7 +32,7 @@ class UsersRepository {
         )
     }
 
-    fun deleteCurrentUser() = userAuth?.delete()
+    fun deleteCurrentUser() = getCurrentAuthUser()?.delete()
 
     fun deleteUser(
         user: User

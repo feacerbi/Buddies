@@ -99,6 +99,7 @@ class PetProfileViewModel(
             } else {
                 updateState(ShowSafeStatus)
                 petUseCases.updateLostStatus(petId, false)
+                updateEffect(ShowBottomMessage(R.string.pet_report_safe_confirmation, arrayOf(name)))
             }
         }
     }

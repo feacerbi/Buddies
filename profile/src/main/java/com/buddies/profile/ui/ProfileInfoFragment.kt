@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.buddies.common.ui.bottomsheet.InputBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.observe
+import com.buddies.common.util.toColorId
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileInfoTabBinding
 import com.buddies.profile.viewmodel.ProfileViewModel
