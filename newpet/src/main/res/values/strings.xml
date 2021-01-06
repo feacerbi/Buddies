@@ -16,4 +16,5 @@
     <string name="age_hint">Age</string>
     <string name="adding_pet_message">Adding %s to your pets…</string>
     <string name="pet_added_message">%s is now in your pets!</string>
+    <string name="not_available_result">This Tag is not available</string>
 </resources>

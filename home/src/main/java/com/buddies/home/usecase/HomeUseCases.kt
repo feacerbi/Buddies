@@ -13,9 +13,9 @@ class HomeUseCases(
     }
 
     suspend fun getPet(
-        tagValue: String
+        tagId: String
     ) = request {
-        homeApi.getPetByTag(tagValue)
+        homeApi.getPet(tagId)
     }
 
     suspend fun notifyPetFound(

@@ -14,6 +14,8 @@ class PetProfileViewState(
     var nameEdit: Boolean = false,
     var tag: String = "",
     var tagEdit: Boolean = false,
+    var tagValid: Boolean = false,
+    @StringRes var tagResult: Int = R.string.empty,
     var animal: String = "",
     var animalEdit: Boolean = false,
     var breed: String = "",

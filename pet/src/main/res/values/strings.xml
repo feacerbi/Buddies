@@ -33,6 +33,9 @@
     <string name="pet_lost_status">Lost</string>
     <string name="pet_report_lost_confirmation">%s was reported lost</string>
     <string name="pet_report_safe_confirmation">%s is now safe</string>
+    <string name="not_available_result">This Tag is not available</string>
+    <string name="change_tag_dialog_title">Change Tag</string>
+    <string name="change_tag_dialog_content">Scan the new Tag for your pet.</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>

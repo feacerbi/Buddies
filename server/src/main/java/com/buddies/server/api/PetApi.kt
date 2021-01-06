@@ -102,7 +102,13 @@ class PetApi(
     ) = runWithResult {
         checkAccess(petId)
 
+        val pet = petsRepository.getPet(petId)
+            .handleTaskResult()
+            .toPet()
+
         runTransactions(
+            tagsRepository.markTagAvailable(pet.info.tag),
+            tagsRepository.markTagUnavailable(tag),
             petsRepository.updateTag(petId, tag)
         )
     }

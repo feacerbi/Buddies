@@ -9,11 +9,9 @@ import com.buddies.common.viewstate.ViewState
 class NewPetViewState(
     @StringRes var title: Int = R.string.empty,
     var step: Int = 0,
-    @StringRes var result: Int = R.string.empty,
-    var isLoading: Boolean = false,
-    var showScanButton: Boolean = false,
     var forwardButtonExpanded: Boolean = false,
     var forwardButtonEnabled: Boolean = false,
+    @StringRes var result: Int = R.string.empty,
     @StringRes var forwardButtonText: Int = R.string.empty,
     var animalsList: List<Animal> = emptyList(),
     var animalPhoto: Uri = Uri.EMPTY,

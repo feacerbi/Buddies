@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/dialog_title"
+        style="@style/Headline6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_medium"
+        tools:text="Title"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/dialog_content"
+        style="@style/Body1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/dialog_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        tools:text="Title"/>
+
+    <ImageView
+        android:id="@+id/pet_icon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_content"
+        app:layout_constraintBottom_toTopOf="@id/confirm_button"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@drawable/circular_background"
+        android:padding="@dimen/icon_border"
+        tools:src="@drawable/ic_baseline_person"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/pet_name"
+        style="@style/Body1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/pet_icon"
+        app:layout_constraintBottom_toBottomOf="@id/pet_icon"
+        app:layout_constraintStart_toEndOf="@id/pet_icon"
+        app:layout_constraintEnd_toStartOf="@id/pet_status"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="Name"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/pet_status"
+        style="@style/Overline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/pet_icon"
+        app:layout_constraintBottom_toBottomOf="@id/pet_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/textColorMedium"
+        tools:text="Name"/>
+
+    <Button
+        android:id="@+id/confirm_button"
+        style="@style/Button.Filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        tools:text="@string/change_button"/>
+
+    <Button
+        android:id="@+id/cancel_button"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/confirm_button"
+        app:layout_constraintTop_toTopOf="@id/confirm_button"
+        app:layout_constraintBottom_toBottomOf="@id/confirm_button"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:text="@string/cancel_button"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

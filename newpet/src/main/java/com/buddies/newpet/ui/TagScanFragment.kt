@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
@@ -50,9 +49,6 @@ class TagScanFragment : NewPetNavigationFragment() {
         headerBinding.toolbar.setNavigationOnClickListener {
             perform(CloseFlow)
         }
-        scannerMask.scanAgainButton.setOnClickListener {
-            perform(ScanAgain)
-        }
         forwardButton.setOnClickListener {
             perform(Next)
         }
@@ -62,32 +58,27 @@ class TagScanFragment : NewPetNavigationFragment() {
         observe(viewModel.getStateStream()) {
             headerBinding.toolbar.title = getString(it.title)
             headerBinding.steps.selectStep(it.step)
-            scannerMask.qrResult.text = getString(it.result)
-            scannerMask.progress.isVisible = it.isLoading
-            scannerMask.scanAgainButton.isVisible = it.showScanButton
             forwardButton.text = getString(it.forwardButtonText)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
+            scanner.setResultMessage(getString(it.result))
         }
 
         observe(viewModel.getEffectStream()) {
             when (it) {
-                is StartCamera -> bindCamera()
-                is StopCamera -> stopCamera()
+                is StopPetScanner -> stopScanner()
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
         }
-    }
 
-    private fun bindCamera() {
         observe(binding.scanner.scan(this@TagScanFragment, cameraHelper)) {
-            perform(ValidateTag(it))
+            perform(HandleTag(it))
         }
     }
 
-    private fun stopCamera() {
-        cameraHelper.stopCamera(requireContext())
+    private fun stopScanner() {
+        binding.scanner.stopScan()
     }
 
     private fun showMessage(message: Int) {
@@ -98,13 +89,8 @@ class TagScanFragment : NewPetNavigationFragment() {
         viewModel.perform(action)
     }
 
-    override fun onStart() {
-        super.onStart()
-        bindCamera()
-    }
-
     override fun onStop() {
         super.onStop()
-        stopCamera()
+        stopScanner()
     }
 }

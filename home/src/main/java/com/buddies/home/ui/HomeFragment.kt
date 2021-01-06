@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import com.buddies.common.model.Pet
 import com.buddies.common.model.UserInfo
+import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToProfile
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.CameraHelper
-import com.buddies.common.util.customTextAppearance
 import com.buddies.common.util.observe
 import com.buddies.home.R
 import com.buddies.home.databinding.FragmentHomeBinding
@@ -62,38 +63,60 @@ class HomeFragment : NavigationFragment() {
         }
         scanPetButton.setOnClickListener {
             perform(ScanPet)
-        }
-        scannerMask.scanAgainButton.setOnClickListener {
-            perform(ScanPet)
-        }
-        notifyButton.setOnClickListener {
-            perform(NotifyPetFound)
+            observe(binding.scanner.scan(this@HomeFragment, cameraHelper)) {
+                perform(HandleTag(it))
+            }
         }
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
-            toolbar.isVisible = it.showScanner
-            scanner.isVisible = it.showScanner
-            scannerMask.maskRoot.isVisible = it.showScanner
-            scannerMask.progress.isVisible = it.showLoading
-            scannerMask.scanAgainButton.isVisible = it.showScanAgainButton
-            scannerMask.qrResult.text = getString(it.result, it.scannedName)
-                .customTextAppearance(requireContext(), arrayOf(it.scannedName), R.style.BoldResult)
+            toolbar.isVisible = it.showToolbar
             scanPetButton.isVisible = it.showScanPetButton
-            notifyButton.isVisible = it.showNotifyButton
         }
 
         observe(viewModel.getEffectStream()) {
             when (it) {
-                is StartCamera -> bindCamera()
-                is StopCamera -> stopCamera()
+                is StopPetScanner -> stopScanner()
+                is ShowPetDialog -> showScannedPetBottomSheet(it.pet)
+                is ShowLostPetDialog -> showScannedLostPetBottomSheet(it.pet)
                 is ShowShareInfoDialog -> showShareInfoBottomSheet(it.user)
                 is ShowMessage -> showMessage(it.message)
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
         }
+    }
+
+    private fun showScannedPetBottomSheet(pet: Pet) {
+        ScannedPetBottomSheet.Builder(layoutInflater)
+            .title(getString(R.string.pet_tag_found_dialog_title))
+            .content(getString(R.string.pet_tag_found_dialog_content))
+            .petIcon(pet.info.photo, this)
+            .petName(pet.info.name)
+            .petStatus(pet.info.lost)
+            .cancelButton(getString(R.string.close_button))
+            .confirmButton(getString(R.string.open_profile_button)) {
+                perform(CloseScanner)
+                navigate(HomeToPetProfile(pet.id))
+            }
+            .build()
+            .show()
+    }
+
+    private fun showScannedLostPetBottomSheet(pet: Pet) {
+        ScannedPetBottomSheet.Builder(layoutInflater)
+            .title(getString(R.string.pet_tag_found_dialog_title))
+            .content(getString(R.string.pet_tag_found_lost_dialog_content))
+            .petIcon(pet.info.photo, this)
+            .petName(pet.info.name)
+            .petStatus(pet.info.lost)
+            .cancelButton(getString(R.string.cancel_button))
+            .confirmButton(getString(R.string.notify_button)) {
+                perform(NotifyPetFound)
+            }
+            .build()
+            .show()
     }
 
     private fun showShareInfoBottomSheet(userInfo: UserInfo) {
@@ -108,14 +131,8 @@ class HomeFragment : NavigationFragment() {
             .show()
     }
 
-    private fun bindCamera() {
-        observe(binding.scanner.scan(this@HomeFragment, cameraHelper)) {
-            perform(ValidateTag(it))
-        }
-    }
-
-    private fun stopCamera() {
-        cameraHelper.stopCamera(requireContext())
+    private fun stopScanner() {
+        binding.scanner.stopScan()
     }
 
     private fun showMessage(message: Int) {

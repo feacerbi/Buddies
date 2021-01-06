@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager
 import com.buddies.common.model.OwnershipCategory
 import com.buddies.common.model.OwnershipCategory.VISITOR
 import com.buddies.pet.R
-import com.buddies.pet.databinding.EditOwnershipListBinding
+import com.buddies.pet.databinding.EditOwnershipDialogBinding
 import com.buddies.pet.ui.adapter.OwnershipsAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -17,7 +17,7 @@ class OwnershipsBottomDialog(
     private val manager: FragmentManager
 ) : BottomSheetDialogFragment() {
 
-    private lateinit var binding: EditOwnershipListBinding
+    private lateinit var binding: EditOwnershipDialogBinding
 
     private var ownershipsAdapter = OwnershipsAdapter()
     private var currentSelectedOwnership = VISITOR
@@ -28,7 +28,7 @@ class OwnershipsBottomDialog(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = EditOwnershipListBinding.inflate(layoutInflater, container, false).apply {
+    ): View = EditOwnershipDialogBinding.inflate(layoutInflater, container, false).apply {
         binding = this
     }.root
 

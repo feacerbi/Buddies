@@ -7,6 +7,7 @@ import com.buddies.server.api.NewPetApi
 import com.buddies.server.api.NotificationsApi
 import com.buddies.server.api.PetApi
 import com.buddies.server.api.ProfileApi
+import com.buddies.server.api.ScannerApi
 import com.buddies.server.api.SecurityApi
 import com.buddies.server.repository.AnimalsRepository
 import com.buddies.server.repository.BreedsRepository
@@ -36,4 +37,5 @@ val serverModule = module {
     single { SecurityApi(get()) }
     single { NewPetApi(get(), get(), get(), get()) }
     single { HomeApi(get(), get(), get(), get(), get()) }
+    single { ScannerApi(get()) }
 }

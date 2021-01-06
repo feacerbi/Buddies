@@ -33,6 +33,7 @@ import com.buddies.pet.ui.adapter.AnimalsAdapter
 import com.buddies.pet.ui.adapter.BreedsAdapter
 import com.buddies.pet.ui.adapter.OwnersAdapter
 import com.buddies.pet.ui.adapter.OwnersPagingAdapter
+import com.buddies.pet.ui.view.ChangeTagBottomDialog
 import com.buddies.pet.ui.view.OwnershipsBottomDialog
 import com.buddies.pet.viewmodel.PetProfileViewModel
 import com.buddies.pet.viewmodel.PetProfileViewModel.Action
@@ -40,16 +41,19 @@ import com.buddies.pet.viewmodel.PetProfileViewModel.Action.*
 import com.buddies.pet.viewstate.PetProfileViewEffect.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import kotlinx.coroutines.FlowPreview
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
 
+@FlowPreview
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
+@androidx.camera.core.ExperimentalGetImage
 class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
     private lateinit var binding: FragmentPetProfileBinding
-    private lateinit var viewModel: PetProfileViewModel
+    private val viewModel: PetProfileViewModel by viewModel { parametersOf(petIdArg) }
 
     private val petIdArg
         get() = arguments?.getString(getString(R.string.pet_id_arg)) ?: ""
@@ -67,6 +71,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         perform(ChangePhoto(it))
     }
 
+    private var changeTagDialog: ChangeTagBottomDialog? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,9 +83,6 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = getViewModel { parametersOf(petIdArg) }
-
         setUpViews()
         bindViews()
     }
@@ -123,6 +126,10 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         profileAnimalEdit.setOnClickListener {
             perform(RequestAnimals)
         }
+
+        profileTagEdit.setOnClickListener {
+            openChangeTagDialog()
+        }
     }
 
     private fun bindViews() = with (binding) {
@@ -143,6 +150,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             profileReportLostStatus.text = getString(it.lostStatus)
             toolbar.menu.clear()
             toolbar.inflateMenu(it.toolbarMenu)
+            changeTagDialog?.enableConfirmButton(it.tagValid)
+            changeTagDialog?.setResult(getString(it.tagResult))
             // TODO Set items with diff
             ownersList.adapter = OwnersAdapter(
                 this@PetProfileFragment,
@@ -226,6 +235,22 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             }
             .build()
             .show()
+    }
+
+    private fun openChangeTagDialog() {
+        perform(OpenScanner)
+
+        changeTagDialog = ChangeTagBottomDialog.Builder(layoutInflater)
+            .title(getString(R.string.change_tag_dialog_title))
+            .content(getString(R.string.change_tag_dialog_content))
+            .cancelButton()
+            .confirmButton {
+                perform(ChangeTag(it))
+            }
+            .build()
+            .show(this, cameraHelper) {
+                perform(HandleTag(it))
+            }
     }
 
     private fun openEditPhotoPicker() {

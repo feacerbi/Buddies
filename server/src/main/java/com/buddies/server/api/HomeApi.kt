@@ -12,7 +12,6 @@ import com.buddies.server.repository.TagsRepository
 import com.buddies.server.repository.UsersRepository
 import com.buddies.server.util.toOwnerships
 import com.buddies.server.util.toPet
-import com.buddies.server.util.toTag
 import com.buddies.server.util.toUser
 
 class HomeApi(
@@ -30,14 +29,10 @@ class HomeApi(
             .info
     }
 
-    suspend fun getPetByTag(
-        tagValue: String
+    suspend fun getPet(
+        tagId: String
     ) = runWithResult {
-        val tag = tagsRepository.getTagByValue(tagValue)
-            .handleTaskResult()
-            .toTag()
-
-        val queryResult = petsRepository.getPetByTag(tag.id)
+        val queryResult = petsRepository.getPetByTag(tagId)
             .handleTaskResult()
             .documents
 

@@ -75,4 +75,25 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
             lostStatus = R.string.pet_lost_status
         }
     }
+
+    object ShowScan : PetProfileViewStateReducer() {
+        override val reduce: PetProfileViewState.() -> Unit = {
+            tagValid = false
+            tagResult = R.string.empty
+        }
+    }
+
+    object ShowTagValid : PetProfileViewStateReducer() {
+        override val reduce: PetProfileViewState.() -> Unit = {
+            tagValid = true
+            tagResult = R.string.validated_result
+        }
+    }
+
+    object ShowTagNotAvailable : PetProfileViewStateReducer() {
+        override val reduce: PetProfileViewState.() -> Unit = {
+            tagValid = false
+            tagResult = R.string.not_available_result
+        }
+    }
 }

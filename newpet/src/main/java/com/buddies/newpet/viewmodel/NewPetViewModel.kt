@@ -2,19 +2,47 @@ package com.buddies.newpet.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.buddies.common.model.*
+import com.buddies.common.model.Animal
+import com.buddies.common.model.Breed
+import com.buddies.common.model.DefaultError
+import com.buddies.common.model.NewPet
 import com.buddies.common.model.OwnershipCategory.OWNER
-import com.buddies.common.model.Result.Fail
-import com.buddies.common.model.Result.Success
+import com.buddies.common.model.Tag
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
-import com.buddies.newpet.navigation.NewPetNavDirection.*
+import com.buddies.newpet.navigation.NewPetNavDirection.AnimalAndBreedToInfo
+import com.buddies.newpet.navigation.NewPetNavDirection.FinishFlow
+import com.buddies.newpet.navigation.NewPetNavDirection.InfoToConfirmation
+import com.buddies.newpet.navigation.NewPetNavDirection.TagScanToAnimalAndBreed
 import com.buddies.newpet.usecase.NewPetUseCases
-import com.buddies.newpet.viewmodel.NewPetViewModel.Action.*
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.AddNewPet
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.ChooseAnimal
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.ChooseBreed
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.CloseFlow
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.HandleTag
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.InfoInput
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.Next
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.PhotoInput
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.Previous
+import com.buddies.newpet.viewmodel.NewPetViewModel.Action.StartScanner
 import com.buddies.newpet.viewstate.NewPetViewEffect
-import com.buddies.newpet.viewstate.NewPetViewEffect.*
+import com.buddies.newpet.viewstate.NewPetViewEffect.Navigate
+import com.buddies.newpet.viewstate.NewPetViewEffect.NavigateBack
+import com.buddies.newpet.viewstate.NewPetViewEffect.ShowBreeds
+import com.buddies.newpet.viewstate.NewPetViewEffect.ShowError
 import com.buddies.newpet.viewstate.NewPetViewState
-import com.buddies.newpet.viewstate.NewPetViewStateReducer.*
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowAddingPet
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowAnimalAndBreedPicked
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowAnimalPicker
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowBreedPicker
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowInfo
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowInfoValidated
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowInvalidInfo
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowNotAvailable
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowPetConfirmation
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowPetPhoto
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowScan
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowValid
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlin.coroutines.CoroutineContext
@@ -36,8 +64,8 @@ class NewPetViewModel(
         when (action) {
             is Next -> nextStep()
             is Previous -> previousStep()
-            is ValidateTag -> handleTag(action.result)
-            is ScanAgain -> restartScan()
+            is StartScanner -> startScan()
+            is HandleTag -> handleTag(action.tag)
             is ChooseAnimal -> handleChosenAnimal(action.animal)
             is ChooseBreed -> handleChosenBreed(action.breed)
             is InfoInput -> validateInfo(action.name, action.age)
@@ -82,40 +110,26 @@ class NewPetViewModel(
         updateState(ShowInfo)
     }
 
-    private fun handleTag(number: Result<String>) {
-        updateEffect(StopCamera)
-        updateState(ShowValidating)
-
-        when (number) {
-            is Success -> {
-                val tagValue = number.data ?: ""
-                validateTag(tagValue)
-            }
-            is Fail -> updateState(ShowUnrecognized)
-        }
-    }
-
-    private fun validateTag(
-        tagValue: String
-    ) = safeLaunch(::showError) {
-        val tag = newPetUseCases.getTag(tagValue)
-
-        when (tag?.info?.available) {
-            true -> {
-                newPet.tag = tag.id
-                updateState(ShowValidated)
-            }
-            false -> updateState(ShowInvalid)
-        }
-    }
-
     private fun startScan() {
         updateState(ShowScan)
     }
 
-    private fun restartScan() {
-        updateEffect(StartCamera)
-        startScan()
+    private fun handleTag(tag: Tag?) {
+        if (tag == null) {
+            updateState(ShowScan)
+        } else {
+            checkAvailability(tag)
+        }
+    }
+
+    private fun checkAvailability(tag: Tag) {
+        when (tag.info.available) {
+            true -> {
+                newPet.tag = tag.id
+                updateState(ShowValid)
+            }
+            false -> updateState(ShowNotAvailable)
+        }
     }
 
     private fun requestAnimals() = safeLaunch(::showError) {
@@ -172,11 +186,11 @@ class NewPetViewModel(
 
     sealed class Action {
         object CloseFlow : Action()
-        object ScanAgain : Action()
+        object StartScanner : Action()
         object Next : Action()
         object Previous : Action()
         object AddNewPet : Action()
-        data class ValidateTag(val result: Result<String>) : Action()
+        data class HandleTag(val tag: Tag?) : Action()
         data class ChooseAnimal(val animal: Animal) : Action()
         data class ChooseBreed(val breed: Breed) : Action()
         data class InfoInput(val name: String, val age: String) : Action()

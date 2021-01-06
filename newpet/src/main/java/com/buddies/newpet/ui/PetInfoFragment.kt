@@ -34,7 +34,7 @@ class PetInfoFragment : NewPetNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentPetInfoBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentPetInfoBinding.inflate(layoutInflater, container, false).apply {
         binding = this
         headerBinding = NewPetHeaderBinding.bind(this.root)
     }.root

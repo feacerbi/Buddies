@@ -16,4 +16,10 @@
     <string name="phone_hint">Phone</string>
     <string name="location_hint">Location</string>
     <string name="empty_field_error">Empty field</string>
+    <string name="pet_status_lost">Lost</string>
+    <string name="pet_status_safe">Safe</string>
+    <string name="open_profile_button">Open profile</string>
+    <string name="pet_tag_found_dialog_title">Pet Tag Found</string>
+    <string name="pet_tag_found_lost_dialog_content">The scanned tag belongs to the pet below and it\'s lost! Do you want to notify the owners?</string>
+    <string name="pet_tag_found_dialog_content">The scanned tag belongs to the pet below.</string>
 </resources>

@@ -11,6 +11,7 @@ import com.buddies.newpet.di.newPetModule
 import com.buddies.notification.service.NotificationsService
 import com.buddies.pet.di.petModule
 import com.buddies.profile.di.profileModule
+import com.buddies.scanner.di.scannerModule
 import com.buddies.security.di.securityModule
 import com.buddies.server.di.serverModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,6 +42,7 @@ class App : Application() {
                 newPetModule,
                 petModule,
                 profileModule,
+                scannerModule,
                 securityModule,
                 serverModule
             )

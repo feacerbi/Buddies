@@ -52,6 +52,8 @@ class PetProfileViewModel(
             is RequestInviteOwners -> startPagingOwners(action.query)
             is InviteOwner -> inviteOwner(action.owner)
             is ReportLost -> reportLost(action.name, action.lost, action.switchChecked)
+            is HandleTag -> handleTag(action.tag)
+            is OpenScanner -> startScanner()
             is ConfirmLost -> confirmLost(action.name)
             is CancelLost -> cancelLost()
         }
@@ -161,6 +163,25 @@ class PetProfileViewModel(
         }
     }
 
+    private fun startScanner() {
+        updateState(ShowScan)
+    }
+
+    private fun handleTag(tag: Tag?) {
+        if (tag == null) {
+            startScanner()
+        } else {
+            checkAvailability(tag)
+        }
+    }
+
+    private fun checkAvailability(tag: Tag) {
+        when (tag.info.available) {
+            true -> updateState(ShowTagValid)
+            false -> updateState(ShowTagNotAvailable)
+        }
+    }
+
     private fun checkNotValidQuery(query: String) = query.length < MIN_QUERY
 
     private fun showError(error: DefaultError) {
@@ -180,6 +201,8 @@ class PetProfileViewModel(
         data class RequestInviteOwners(val query: String) : Action()
         data class ReportLost(val name: String, val lost: Boolean, val switchChecked: Boolean) : Action()
         data class ConfirmLost(val name: String) : Action()
+        data class HandleTag(val tag: Tag?) : Action()
+        object OpenScanner : Action()
         object CancelLost : Action()
         object RequestAnimals : Action()
         object Refresh : Action()

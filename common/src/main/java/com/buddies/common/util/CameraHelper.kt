@@ -163,7 +163,7 @@ class CameraHelper(
     ) {
         fragment?.let {
             val preview = Preview.Builder().apply {
-                setTargetResolution(photoSize)
+                //setTargetResolution(photoSize)
             }.build()
 
             val cameraSelector: CameraSelector = CameraSelector.Builder()
@@ -221,6 +221,8 @@ class CameraHelper(
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
         executor?.shutdown()
+        executor = null
+        fragment?.lifecycle?.removeObserver(this)
         fragment = null
     }
 

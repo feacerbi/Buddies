@@ -16,6 +16,7 @@ interface Navigator {
         object LoginToHome : NavDirection()
 
         object HomeToProfile : NavDirection()
+        data class HomeToPetProfile(val petId: String) : NavDirection()
 
         object ProfileToLogin : NavDirection()
         object ProfileToNewPetFlow : NavDirection()

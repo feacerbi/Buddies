@@ -2,10 +2,7 @@ package com.buddies.home.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
-import com.buddies.common.model.ErrorCode.INVALID_TAG
-import com.buddies.common.model.Result
-import com.buddies.common.model.Result.Fail
-import com.buddies.common.model.Result.Success
+import com.buddies.common.model.Tag
 import com.buddies.common.model.UserInfo
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
@@ -13,25 +10,21 @@ import com.buddies.home.R
 import com.buddies.home.model.ShareInfo
 import com.buddies.home.usecase.HomeUseCases
 import com.buddies.home.viewmodel.HomeViewModel.Action.CloseScanner
+import com.buddies.home.viewmodel.HomeViewModel.Action.HandleTag
 import com.buddies.home.viewmodel.HomeViewModel.Action.NotifyPetFound
 import com.buddies.home.viewmodel.HomeViewModel.Action.ScanPet
 import com.buddies.home.viewmodel.HomeViewModel.Action.SendUserInfo
-import com.buddies.home.viewmodel.HomeViewModel.Action.ValidateTag
 import com.buddies.home.viewstate.HomeViewEffect
 import com.buddies.home.viewstate.HomeViewEffect.ShowError
+import com.buddies.home.viewstate.HomeViewEffect.ShowLostPetDialog
 import com.buddies.home.viewstate.HomeViewEffect.ShowMessage
+import com.buddies.home.viewstate.HomeViewEffect.ShowPetDialog
 import com.buddies.home.viewstate.HomeViewEffect.ShowShareInfoDialog
-import com.buddies.home.viewstate.HomeViewEffect.StartCamera
-import com.buddies.home.viewstate.HomeViewEffect.StopCamera
+import com.buddies.home.viewstate.HomeViewEffect.StopPetScanner
 import com.buddies.home.viewstate.HomeViewState
+import com.buddies.home.viewstate.HomeViewStateReducer.HidePetScanner
 import com.buddies.home.viewstate.HomeViewStateReducer.IdleHome
-import com.buddies.home.viewstate.HomeViewStateReducer.ShowInvalid
-import com.buddies.home.viewstate.HomeViewStateReducer.ShowLostPet
-import com.buddies.home.viewstate.HomeViewStateReducer.ShowPet
-import com.buddies.home.viewstate.HomeViewStateReducer.ShowUnrecognized
-import com.buddies.home.viewstate.HomeViewStateReducer.ShowValidating
-import com.buddies.home.viewstate.HomeViewStateReducer.StartPetScanner
-import com.buddies.home.viewstate.HomeViewStateReducer.StopPetScanner
+import com.buddies.home.viewstate.HomeViewStateReducer.ShowPetScanner
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
 
@@ -51,7 +44,7 @@ class HomeViewModel(
     fun perform(action: Action) {
         when (action) {
             is ScanPet -> startPetScanner()
-            is ValidateTag -> handleTag(action.result)
+            is HandleTag -> handleTag(action.tag)
             is NotifyPetFound -> requestUserInfo()
             is SendUserInfo -> sendUserInfo(action.info)
             is CloseScanner -> closeScanner()
@@ -59,34 +52,22 @@ class HomeViewModel(
     }
 
     private fun startPetScanner() {
-        updateState(StartPetScanner)
-        updateEffect(StartCamera)
+        updateState(ShowPetScanner)
     }
 
-    private fun handleTag(number: Result<String>) {
-        updateEffect(StopCamera)
-        updateState(ShowValidating)
-
-        when (number) {
-            is Success -> {
-                val tagValue = number.data ?: ""
-                checkLost(tagValue)
-            }
-            is Fail -> updateState(ShowUnrecognized)
-        }
-    }
-
-    private fun checkLost(
-        tagValue: String
+    private fun handleTag(
+        tag: Tag?
     ) = safeLaunch(::showError) {
-        val pet = homeUseCases.getPet(tagValue)
+        if (tag != null) {
+            val pet = homeUseCases.getPet(tag.id)
 
-        when (pet?.info?.lost) {
-            true -> {
-                petFoundId = pet.id
-                updateState(ShowLostPet(pet.info.name))
+            when (pet?.info?.lost) {
+                true -> {
+                    petFoundId = pet.id
+                    updateEffect(ShowLostPetDialog(pet))
+                }
+                false -> updateEffect(ShowPetDialog(pet))
             }
-            false -> updateState(ShowPet(pet.info.name))
         }
     }
 
@@ -102,18 +83,12 @@ class HomeViewModel(
     }
 
     private fun closeScanner() {
-        updateState(StopPetScanner)
-        updateEffect(StopCamera)
+        updateState(HidePetScanner)
+        updateEffect(StopPetScanner)
     }
 
     private fun showError(error: DefaultError) {
-        when (error.code) {
-            INVALID_TAG -> updateState(ShowInvalid)
-            else -> {
-                updateEffect(ShowError(error.code.message))
-                startPetScanner()
-            }
-        }
+        updateEffect(ShowError(error.code.message))
     }
 
     override val coroutineContext: CoroutineContext
@@ -121,7 +96,7 @@ class HomeViewModel(
 
     sealed class Action {
         object ScanPet : Action()
-        data class ValidateTag(val result: Result<String>) : Action()
+        data class HandleTag(val tag: Tag?) : Action()
         data class SendUserInfo(val info: List<ShareInfo>) : Action()
         object NotifyPetFound : Action()
         object CloseScanner : Action()

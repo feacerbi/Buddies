@@ -24,6 +24,16 @@ class TagsRepository {
         db.collection(TAGS_COLLECTION).document(tagId)
             .get()
 
+    fun markTagAvailable(
+        tagId: String
+    ): Transaction.() -> Unit = {
+        update(
+            db.collection(TAGS_COLLECTION).document(tagId),
+            AVAILABLE_FIELD,
+            true
+        )
+    }
+
     fun markTagUnavailable(
         tagId: String
     ): Transaction.() -> Unit = {

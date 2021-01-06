@@ -72,7 +72,8 @@
             app:popExitAnim="@anim/slide_out_bottom" />
         <action
             android:id="@+id/action_profileFragment_to_fullscreenFragment"
-            app:destination="@id/fullscreenFragment" />
+            app:destination="@id/fullscreenFragment"
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment
@@ -93,7 +94,8 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_petProfileFragment_to_fullscreenFragment"
-            app:destination="@id/fullscreenFragment" />
+            app:destination="@id/fullscreenFragment"
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment
@@ -109,6 +111,15 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_petProfileFragment"
+            app:destination="@id/petProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false"/>
     </fragment>
 
     <fragment
@@ -121,7 +132,8 @@
             app:argType="string"/>
         <action
             android:id="@+id/action_galleryFragment_to_fullscreenFragment"
-            app:destination="@id/fullscreenFragment" />
+            app:destination="@id/fullscreenFragment"
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment

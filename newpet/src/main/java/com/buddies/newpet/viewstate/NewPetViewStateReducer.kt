@@ -11,52 +11,26 @@ sealed class NewPetViewStateReducer : ViewStateReducer<NewPetViewState> {
         override val reduce: NewPetViewState.() -> Unit = {
             title = R.string.new_buddy_flow_title
             step = 1
-            result = R.string.scan_your_tag_result
-            isLoading = false
-            showScanButton = false
             forwardButtonEnabled = false
             forwardButtonExpanded = true
             forwardButtonText = R.string.no_valid_tags_button_message
+            result = R.string.empty
         }
     }
 
-    object ShowValidating : NewPetViewStateReducer() {
+    object ShowValid : NewPetViewStateReducer() {
         override val reduce: NewPetViewState.() -> Unit = {
-            result = R.string.validating_result
-            isLoading = true
-            showScanButton = false
-            forwardButtonEnabled = false
-            forwardButtonExpanded = true
-        }
-    }
-
-    object ShowValidated : NewPetViewStateReducer() {
-        override val reduce: NewPetViewState.() -> Unit = {
-            result = R.string.validated_result
-            isLoading = false
-            showScanButton = true
             forwardButtonEnabled = true
             forwardButtonExpanded = false
+            result = R.string.validated_result
         }
     }
 
-    object ShowInvalid : NewPetViewStateReducer() {
+    object ShowNotAvailable : NewPetViewStateReducer() {
         override val reduce: NewPetViewState.() -> Unit = {
-            result = R.string.invalid_result
-            isLoading = false
-            showScanButton = true
             forwardButtonEnabled = false
             forwardButtonExpanded = true
-        }
-    }
-
-    object ShowUnrecognized : NewPetViewStateReducer() {
-        override val reduce: NewPetViewState.() -> Unit = {
-            result = R.string.unrecognized_result
-            isLoading = false
-            showScanButton = true
-            forwardButtonEnabled = false
-            forwardButtonExpanded = true
+            result = R.string.not_available_result
         }
     }
 
