@@ -52,7 +52,7 @@ class ScannerViewModel(
         updateState(ShowValidating)
         
         try {
-            val decodedBarcode = encrypter.decrypt(number)
+            val decodedBarcode = encrypter.decrypt(number?.removePrefix(TAG_PREFIX))
             val tag = scannerUseCases.getTag(decodedBarcode)
 
             updateState(ShowResult(tag))
@@ -80,5 +80,9 @@ class ScannerViewModel(
         object StartScanner : Action()
         object CloseScanner : Action()
         data class ValidateTag(val result: String?) : Action()
+    }
+
+    companion object {
+        private const val TAG_PREFIX = "https://play.google.com/store/apps/details?id=com.buddies&referrer="
     }
 }
