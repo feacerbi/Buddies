@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.transition.TransitionManager
 import com.buddies.common.model.Pet
 import com.buddies.common.model.UserInfo
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
@@ -71,6 +72,7 @@ class HomeFragment : NavigationFragment() {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
+            TransitionManager.beginDelayedTransition(root)
             toolbar.isVisible = it.showToolbar
             scanPetButton.isVisible = it.showScanPetButton
         }

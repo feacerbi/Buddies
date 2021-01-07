@@ -5,6 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/app_title"
+        style="@style/Headline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="?colorSecondary"
+        android:text="@string/app_name"
+        android:layout_margin="@dimen/margin_medium"
+        android:textStyle="bold"
+        android:includeFontPadding="false"
+        tools:textColor="@color/colorSecondary"/>
+
     <ImageView
         android:id="@+id/profile_button"
         android:layout_width="wrap_content"
@@ -28,28 +42,83 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        style="@style/Toolbar"
+        style="@style/Toolbar.Transparent"
         android:layout_width="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="?attr/colorSecondary"
-        app:navigationIcon="@drawable/ic_baseline_close"
-        app:titleTextColor="@android:color/white"
+        app:navigationIcon="@drawable/ic_baseline_close_secondary"
         android:visibility="gone"
         tools:visibility="visible"/>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/scan_pet_button"
-        style="@style/ExtendedFloatingActionButton.Icon"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/scanPetButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_button"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:icon="@drawable/ic_baseline_photo_camera"
-        app:iconTint="@android:color/white"
-        app:backgroundTint="?attr/colorSecondary"
-        android:textColor="@android:color/white"
-        android:text="@string/scan_pet_button"/>
+        android:layout_marginTop="@dimen/margin_extra_large"
+        app:contentPadding="@dimen/margin_small"
+        android:layout_margin="@dimen/margin_medium"
+        app:cardElevation="@dimen/margin_small"
+        android:foreground="?android:selectableItemBackground">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/scan_icon_background"
+                android:layout_width="@dimen/card_icon_min_size"
+                android:layout_height="0dp"
+                android:minHeight="@dimen/card_icon_min_size"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="?colorSecondary"/>
+
+            <ImageView
+                android:id="@+id/scan_icon"
+                android:layout_width="@dimen/card_icon_size"
+                android:layout_height="@dimen/card_icon_size"
+                app:layout_constraintTop_toTopOf="@id/scan_icon_background"
+                app:layout_constraintBottom_toBottomOf="@id/scan_icon_background"
+                app:layout_constraintStart_toStartOf="@id/scan_icon_background"
+                app:layout_constraintEnd_toEndOf="@id/scan_icon_background"
+                android:src="@drawable/ic_baseline_qr_code_scanner"/>
+
+            <TextView
+                android:id="@+id/scan_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/scan_subtitle"
+                app:layout_constraintStart_toEndOf="@id/scan_icon_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:text="@string/scan_pet_button_title"
+                android:textAppearance="@style/Headline6"/>
+
+            <TextView
+                android:id="@+id/scan_subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/scan_pet_button_subtitle"
+                android:textAppearance="@style/Body2"
+                android:textColor="@color/textColorMedium"
+                app:layout_constraintTop_toBottomOf="@id/scan_title"
+                app:layout_constraintStart_toStartOf="@id/scan_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

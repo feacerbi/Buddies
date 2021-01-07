@@ -29,6 +29,7 @@
     <string name="pet_found_notification_message">%s was found by %s!</string>
 
     <!-- View -->
+    <string name="app_name">Buddies</string>
     <string name="empty"> </string>
     <string name="ok_button">OK</string>
     <string name="cancel_button">Cancel</string>
