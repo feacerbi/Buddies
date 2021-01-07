@@ -59,12 +59,16 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private fun setUpViews() = with (binding) {
         toolbar.setNavigationOnClickListener {
-            perform(SignOut)
+            navigateBack()
         }
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.edit_picture_menu_action -> {
                     openEditPhotoPicker()
+                    true
+                }
+                R.id.logout_menu_action -> {
+                    perform(SignOut)
                     true
                 }
                 else -> false

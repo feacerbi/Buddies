@@ -23,4 +23,5 @@
     <string name="pet_tag_found_lost_dialog_content">The scanned tag belongs to the pet below and it\'s lost! Do you want to notify the owners?</string>
     <string name="pet_tag_found_dialog_content">The scanned tag belongs to the pet below.</string>
     <string name="scan_pet_button_subtitle">Open the pet scanner to either find a lost pet or go to a pet profile.</string>
+    <string name="tag_available_message">This Tag is available!</string>
 </resources>

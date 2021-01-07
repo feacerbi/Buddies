@@ -5,6 +5,12 @@ plugins {
 }
 
 android {
+    buildTypes {
+        debug {
+            versionNameSuffix "-debug"
+        }
+    }
+
     with commonConfig
 
     defaultConfig {

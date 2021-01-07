@@ -1,8 +1,5 @@
 package com.buddies.server.api
 
-import com.buddies.common.model.DefaultError
-import com.buddies.common.model.DefaultErrorException
-import com.buddies.common.model.ErrorCode.INVALID_TAG
 import com.buddies.common.model.NotificationType
 import com.buddies.server.model.NotificationInfo
 import com.buddies.server.repository.NotificationsRepository
@@ -39,7 +36,7 @@ class HomeApi(
         if (queryResult.size > 0) {
             queryResult[0].toPet()
         } else {
-            throw DefaultErrorException(DefaultError(INVALID_TAG))
+            null
         }
     }
 

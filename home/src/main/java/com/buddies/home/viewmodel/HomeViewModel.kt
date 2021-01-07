@@ -61,12 +61,13 @@ class HomeViewModel(
         if (tag != null) {
             val pet = homeUseCases.getPet(tag.id)
 
-            when (pet?.info?.lost) {
-                true -> {
+            when {
+                pet == null -> updateEffect(ShowMessage(R.string.tag_available_message))
+                pet.info.lost -> {
                     petFoundId = pet.id
                     updateEffect(ShowLostPetDialog(pet))
                 }
-                false -> updateEffect(ShowPetDialog(pet))
+                else -> updateEffect(ShowPetDialog(pet))
             }
         }
     }

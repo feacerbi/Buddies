@@ -11,6 +11,7 @@
 
     <!-- Toolbar Titles -->
     <string name="edit_picture_menu_title">Edit Picture</string>
+    <string name="logout_menu_title">Logout</string>
 
     <!-- Views -->
     <string name="input_dialog_name_hint">Name</string>

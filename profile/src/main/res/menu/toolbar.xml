@@ -8,4 +8,10 @@
         android:title="@string/edit_picture_menu_title"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/logout_menu_action"
+        android:icon="@drawable/ic_baseline_exit_to_app"
+        android:title="@string/logout_menu_title"
+        app:showAsAction="ifRoom"/>
+
 </menu>
