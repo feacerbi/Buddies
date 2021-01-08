@@ -29,8 +29,9 @@ dependencies {
     implementation "io.coil-kt:coil:$coil_version"
 
     // Firebase
-    implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
-    implementation "com.google.firebase:firebase-firestore-ktx:$firebase_firestore_ktx"
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom")
+    implementation "com.google.firebase:firebase-analytics-ktx"
+    implementation "com.google.firebase:firebase-firestore-ktx"
 
     // Jetpack CameraX
     implementation "androidx.camera:camera-camera2:$camerax_version"

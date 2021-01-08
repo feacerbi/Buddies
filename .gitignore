@@ -8,6 +8,7 @@ build/
 *.aar
 *.zip
 google-services.json
+output-metadata.json
 
 .project
 .settings

@@ -25,9 +25,9 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
 
     // Firebase
-    implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
-    implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
-    implementation "com.google.android.gms:play-services-auth:$gms_playservices_version"
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom")
+    implementation "com.google.firebase:firebase-analytics-ktx"
+    implementation "com.google.firebase:firebase-auth-ktx"
 
     // Jetpack Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
@@ -36,6 +36,9 @@ dependencies {
     // Koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
+    // Play Services
+    implementation "com.google.android.gms:play-services-auth:$gms_playservices_version"
 
     // Testing
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

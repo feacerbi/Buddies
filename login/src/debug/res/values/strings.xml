@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Firebase -->
+    <string name="oauth_id" tools:ignore="TypographyDashes">
+        1050537636542-lo568gq3qkmq178imdh415gt225dgg6n.apps.googleusercontent.com
+    </string>
+</resources>
