@@ -49,4 +49,8 @@ class GeneratorUseCases(
     fun copyToClipboard(text: String) {
         clipboardHelper.saveToClipboard(text)
     }
+
+    fun logoutAdmin() {
+        generatorApi.logout()
+    }
 }

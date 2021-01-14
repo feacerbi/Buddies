@@ -28,8 +28,9 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
 
     // Firebase
-    implementation platform("com.google.firebase:firebase-bom:$firebase_bom")
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
     implementation "com.google.firebase:firebase-analytics-ktx"
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // Jetpack Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"

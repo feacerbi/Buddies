@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.transition.TransitionManager
 import com.buddies.common.model.Pet
@@ -51,11 +50,6 @@ class HomeFragment : NavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() { perform(CloseScanner) }
-            })
-
         toolbar.setNavigationOnClickListener {
             perform(CloseScanner)
         }

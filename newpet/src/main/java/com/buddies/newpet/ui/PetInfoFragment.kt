@@ -53,6 +53,7 @@ class PetInfoFragment : NewPetNavigationFragment() {
         nameInputEditText.addTextChangedListener {
             sendInput()
         }
+
         ageInputEditText.addTextChangedListener {
             sendInput()
         }

@@ -127,6 +127,11 @@ class GeneratorViewModel(
         updateState(ShowError(error.code.message))
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        generatorUseCases.logoutAdmin()
+    }
+
     sealed class Action {
         data class InputChanged(val input: String) : Action()
         object GenerateNewValue : Action()

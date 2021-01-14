@@ -1,5 +1,6 @@
 package com.buddies.server.api
 
+import android.net.Uri
 import com.buddies.common.model.NewPet
 import com.buddies.common.model.OwnershipInfo
 import com.buddies.common.model.PetInfo
@@ -38,16 +39,21 @@ class NewPetApi(
     ) = runWithResult {
         val newPetId = generateNewId()
 
-        val uploadResult = petsRepository.uploadProfileImage(newPetId, newPet.photo)
-            .handleTaskResult()
+        var downloadUri = ""
 
-        val downloadUri = uploadResult.getDownloadUrl()
-            .handleTaskResult()
+        if (newPet.photo != Uri.EMPTY) {
+            val uploadResult = petsRepository.uploadProfileImage(newPetId, newPet.photo)
+                .handleTaskResult()
+
+            downloadUri = uploadResult.getDownloadUrl()
+                .handleTaskResult()
+                .toString()
+        }
 
         val petInfo = PetInfo(
             newPet.tag,
             newPet.name,
-            downloadUri.toString(),
+            downloadUri,
             newPet.animal?.id ?: "",
             newPet.breed?.id ?: ""
         )

@@ -51,6 +51,10 @@ class GeneratorApi(
         )
     }
 
+    fun logout() {
+        Firebase.auth.signOut()
+    }
+
     private suspend fun tagValueExists(tagValue: String): Boolean {
         val tags = tagsRepository.getTagByValue(tagValue)
             .handleTaskResult()
