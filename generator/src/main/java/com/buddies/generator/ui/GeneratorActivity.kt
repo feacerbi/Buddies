@@ -1,5 +1,6 @@
 package com.buddies.generator.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,9 @@ import com.buddies.generator.viewmodel.GeneratorViewModel.Action.CopyToClipboard
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.Generate
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.GenerateNewValue
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.InputChanged
+import com.buddies.generator.viewmodel.GeneratorViewModel.Action.ShareQRCode
 import com.buddies.generator.viewstate.GeneratorViewEffect.SetNewValue
+import com.buddies.generator.viewstate.GeneratorViewEffect.ShareImage
 import com.buddies.generator.viewstate.GeneratorViewEffect.ShowMessage
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -62,6 +65,10 @@ class GeneratorActivity : AppCompatActivity() {
             perform(InputChanged(text.toString()))
         }
 
+        shareQrButton.setOnClickListener {
+            perform(ShareQRCode)
+        }
+
         inputLayout.requestFocus()
     }
 
@@ -69,6 +76,9 @@ class GeneratorActivity : AppCompatActivity() {
         observe(viewModel.getStateStream()) {
             generateButton.isEnabled = it.enableGenerateButton
             addToDbButton.isEnabled = it.enableAddButton
+            shareQrButton.isEnabled = it.enableShareButton
+            newTagCopyButton.isEnabled = it.enableCopyButtons
+            newTagCryptCopyButton.isEnabled = it.enableCopyButtons
             syncProgress.isVisible = it.syncProgress
             qrProgress.isVisible = it.generateProgress
             qrResult.load(it.generatedQrTag, this@GeneratorActivity)
@@ -80,9 +90,14 @@ class GeneratorActivity : AppCompatActivity() {
         observe(viewModel.getEffectStream()) {
             when (it) {
                 is SetNewValue -> input.setText(it.value)
+                is ShareImage -> shareImage(it.intent)
                 is ShowMessage -> showMessage(it.message)
             }
         }
+    }
+
+    private fun shareImage(intent: Intent) {
+        startActivity(Intent.createChooser(intent, getString(R.string.share_qr_message)))
     }
 
     private fun showMessage(message: Int) {

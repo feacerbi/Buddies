@@ -98,6 +98,19 @@
         android:background="@drawable/qr_background_frame"
         android:src="@drawable/ic_baseline_qr_code_2"/>
 
+    <ImageView
+        android:id="@+id/share_qr_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/qr_result"
+        app:layout_constraintBottom_toBottomOf="@id/qr_result"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/margin_large"
+        android:background="?selectableItemBackgroundBorderless"
+        app:tint="?colorSecondary"
+        tools:tint="@color/colorSecondary"
+        android:src="@drawable/ic_baseline_share"/>
+
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/qr_progress"
         android:layout_width="wrap_content"

@@ -12,5 +12,6 @@ enum class ErrorCode(
     RESULT_NULL(R.string.null_result),
     ACCESS_DENIED(R.string.access_denied_error_code),
     INVALID_TAG(R.string.invalid_tag_error),
+    TAG_EXISTS(R.string.tag_exists_error),
     UNKNOWN_NOTIFICATION_TYPE(R.string.unknown_notification_error)
 }

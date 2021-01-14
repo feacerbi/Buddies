@@ -2,7 +2,7 @@ package com.buddies.server.api
 
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
-import com.buddies.common.model.ErrorCode.INVALID_TAG
+import com.buddies.common.model.ErrorCode.TAG_EXISTS
 import com.buddies.common.model.TagInfo
 import com.buddies.server.repository.TagsRepository
 import com.google.firebase.auth.ktx.auth
@@ -37,7 +37,7 @@ class GeneratorApi(
         val tagExists = tagValueExists(tagValue)
 
         if (tagExists) {
-            throw DefaultErrorException(DefaultError(INVALID_TAG))
+            throw DefaultErrorException(DefaultError(TAG_EXISTS))
         }
 
         val tagInfo = TagInfo(

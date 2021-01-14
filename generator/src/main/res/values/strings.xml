@@ -12,4 +12,5 @@
     <string name="add_to_db_button">Add To DB</string>
     <string name="copied_to_clipboard_message">Copied to clipboard!</string>
     <string name="login_fail_message">Fail to login</string>
+    <string name="share_qr_message">Share QR code to…</string>
 </resources>

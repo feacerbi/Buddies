@@ -1,8 +1,8 @@
 package com.buddies.generator.viewmodel
 
+import android.content.Intent
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
-import com.buddies.common.model.ErrorCode.INVALID_TAG
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.generator.R
@@ -13,8 +13,10 @@ import com.buddies.generator.viewmodel.GeneratorViewModel.Action.CopyToClipboard
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.Generate
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.GenerateNewValue
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.InputChanged
+import com.buddies.generator.viewmodel.GeneratorViewModel.Action.ShareQRCode
 import com.buddies.generator.viewstate.GeneratorViewEffect
 import com.buddies.generator.viewstate.GeneratorViewEffect.SetNewValue
+import com.buddies.generator.viewstate.GeneratorViewEffect.ShareImage
 import com.buddies.generator.viewstate.GeneratorViewEffect.ShowMessage
 import com.buddies.generator.viewstate.GeneratorViewState
 import com.buddies.generator.viewstate.GeneratorViewStateReducer.DisableGenerateButton
@@ -48,6 +50,7 @@ class GeneratorViewModel(
             is Generate -> generateTag(action.input, action.size)
             is AddToDB -> addTagToDB()
             is CopyToClipboard -> copyToClipboard(action.text)
+            is ShareQRCode -> shareQRCode()
         }
     }
 
@@ -88,18 +91,11 @@ class GeneratorViewModel(
     ) = safeLaunch(::showError) {
         updateState(ShowGenerateProgress)
 
-        val tagValidated = validateTagValue(input)
+        newTag.value = input
+        newTag.encryptedValue = generatorUseCases.encryptTagValue(input)
+        newTag.qrCode = generatorUseCases.generateQRCode(newTag.encryptedValue, size, size)
 
-        if (tagValidated) {
-            newTag.value = input
-            newTag.encryptedValue = generatorUseCases.encryptTagValue(input)
-
-            val qrCode = generatorUseCases.generateQRCode(newTag.encryptedValue, size, size)
-
-            updateState(ShowGeneratedData(newTag.value, newTag.encryptedValue, qrCode))
-        } else {
-            showError(DefaultError(INVALID_TAG))
-        }
+        updateState(ShowGeneratedData(newTag))
     }
 
     private fun addTagToDB() = safeLaunch(::showError) {
@@ -112,8 +108,20 @@ class GeneratorViewModel(
         updateEffect(ShowMessage(R.string.copied_to_clipboard_message))
     }
 
-    private suspend fun validateTagValue(value: String) =
-        generatorUseCases.tagValueExists(value) == false
+    private fun shareQRCode() {
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, newTag.qrCode)
+            type = IMAGE_MIME_TYPE
+        }
+
+        updateEffect(ShareImage(shareIntent))
+    }
+
+    private suspend fun validateTagValue(value: String): Boolean {
+        val tagValueExists = generatorUseCases.tagValueExists(value)
+        return tagValueExists != null && tagValueExists.not()
+    }
 
     private fun showError(error: DefaultError) {
         updateState(ShowError(error.code.message))
@@ -125,6 +133,7 @@ class GeneratorViewModel(
         data class Generate(val input: String, val size: Int) : Action()
         object AddToDB : Action()
         data class CopyToClipboard(val text: String) : Action()
+        object ShareQRCode : Action()
     }
 
     override val coroutineContext: CoroutineContext
@@ -134,5 +143,6 @@ class GeneratorViewModel(
         private const val TAG_VALUE_SIZE = 16
         private const val MIN_RANGE = 1000000000000000
         private const val MAX_RANGE = 9999999999999999
+        private const val IMAGE_MIME_TYPE = "image/jpeg"
     }
 }

@@ -12,5 +12,7 @@ class GeneratorViewState(
     var generatedQrTag: Uri? = null,
     var generatedValue: String = "",
     var generatedEncrypted: String = "",
+    var enableShareButton: Boolean = false,
+    var enableCopyButtons: Boolean = false,
     @StringRes var error: Int? = null
 ) : ViewState

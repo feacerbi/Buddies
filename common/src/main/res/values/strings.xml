@@ -57,8 +57,9 @@
     <string name="fail_task">Task failed</string>
     <string name="null_task">Task is null</string>
     <string name="null_result">Result is null</string>
-    <string name="access_denied_error_code">You can\'t do this with your current ownership.</string>
+    <string name="access_denied_error_code">You can\'t do this with your current ownership</string>
     <string name="invalid_tag_error">Invalid Tag</string>
     <string name="unknown_notification_error">Notification type unknown</string>
+    <string name="tag_exists_error">Tag already exists</string>
 
 </resources>

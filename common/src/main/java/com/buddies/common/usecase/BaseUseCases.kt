@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 
 abstract class BaseUseCases {
 
-    suspend fun <T> request(
+    protected suspend fun <T> request(
         block: suspend () -> Result<T>
     ): T? = withContext(Dispatchers.IO) {
         block.invoke().handleResult()

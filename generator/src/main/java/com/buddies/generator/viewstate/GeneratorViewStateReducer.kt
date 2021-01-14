@@ -1,8 +1,8 @@
 package com.buddies.generator.viewstate
 
-import android.net.Uri
 import androidx.annotation.StringRes
 import com.buddies.common.viewstate.ViewStateReducer
+import com.buddies.generator.model.NewTag
 
 sealed class GeneratorViewStateReducer : ViewStateReducer<GeneratorViewState> {
 
@@ -29,16 +29,16 @@ sealed class GeneratorViewStateReducer : ViewStateReducer<GeneratorViewState> {
     }
 
     data class ShowGeneratedData(
-        val newValue: String,
-        val encryptedValue: String,
-        val qrImage: Uri
+        val newTag: NewTag
     ) : GeneratorViewStateReducer() {
         override val reduce: GeneratorViewState.() -> Unit = {
             generateProgress = false
-            generatedEncrypted = encryptedValue
-            generatedQrTag = qrImage
-            generatedValue = newValue
+            generatedEncrypted = newTag.encryptedValue
+            generatedQrTag = newTag.qrCode
+            generatedValue = newTag.value
             enableAddButton = true
+            enableShareButton = true
+            enableCopyButtons = true
         }
     }
 
