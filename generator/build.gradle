@@ -5,6 +5,11 @@ plugins {
 
 android {
     with commonConfig
+
+    defaultConfig {
+        buildConfigField "String", "ADMIN_EMAIL", ADMIN_EMAIL
+        buildConfigField "String", "ADMIN_PASSWORD", ADMIN_PASSWORD
+    }
 }
 
 dependencies {
@@ -12,8 +17,7 @@ dependencies {
 
     // Projects
     implementation project(":common")
-    implementation project(":notification")
-    implementation project(":scanner")
+    implementation project(":security")
     implementation project(":server")
 
     // Kotlin
@@ -24,30 +28,22 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$corektx_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-    implementation "androidx.recyclerview:recyclerview:$recycler_version"
     implementation "com.google.android.material:material:$material_version"
 
     // Firebase
     implementation platform("com.google.firebase:firebase-bom:$firebase_bom")
     implementation "com.google.firebase:firebase-analytics-ktx"
-
-    // Jetpack CameraX
-    implementation "androidx.camera:camera-camera2:$camerax_version"
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Jetpack Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-
-    // Jetpack Paging
-    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
-    // Swipe Refresh
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_version"
+    // Zxing
+    implementation "com.google.zxing:core:$zxing_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"

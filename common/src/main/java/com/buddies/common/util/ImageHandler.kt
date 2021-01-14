@@ -1,5 +1,6 @@
 package com.buddies.common.util
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
 import androidx.lifecycle.LifecycleObserver
@@ -27,19 +28,51 @@ class ImageHandler(
         new: String?,
         options: RequestOptions.() -> Unit
     ) {
-        imageLoader.enqueue(
-            createRequest(
-                lifecycleOwner,
-                imageView,
-                new,
-                RequestOptions().apply(options))
-        )
+        if (new != null) {
+            imageLoader.enqueue(
+                createRequest(
+                    lifecycleOwner,
+                    imageView,
+                    new,
+                    RequestOptions().apply(options)
+                )
+            )
+        }
+    }
+
+    fun load(
+        lifecycleOwner: LifecycleOwner,
+        imageView: ImageView,
+        new: Bitmap?,
+        options: RequestOptions.() -> Unit
+    ) {
+        if (new != null) {
+            imageLoader.enqueue(
+                createRequest(
+                    lifecycleOwner,
+                    imageView,
+                    new,
+                    RequestOptions().apply(options)
+                )
+            )
+        }
     }
 
     private fun createRequest(
         lifecycleOwner: LifecycleOwner,
         imageView: ImageView,
         new: String?,
+        options: RequestOptions
+    ) = ImageRequest.Builder(imageView.context).apply {
+        data(new)
+        target(imageView)
+        applyOptions(lifecycleOwner, options)
+    }.build()
+
+    private fun createRequest(
+        lifecycleOwner: LifecycleOwner,
+        imageView: ImageView,
+        new: Bitmap?,
         options: RequestOptions
     ) = ImageRequest.Builder(imageView.context).apply {
         data(new)

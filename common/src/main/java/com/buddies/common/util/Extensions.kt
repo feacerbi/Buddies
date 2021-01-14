@@ -1,12 +1,15 @@
 package com.buddies.common.util
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Environment
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.format.DateFormat
 import android.text.style.ForegroundColorSpan
 import android.text.style.TextAppearanceSpan
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +19,9 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.PluralsRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -29,8 +34,11 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
+import java.io.File
 import java.util.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.roundToInt
+
 
 fun <T> LifecycleOwner.observe(liveData: LiveData<T>, action: (T) -> Unit) {
     liveData.observe(this, { action.invoke(it) })
@@ -52,6 +60,20 @@ fun RecyclerView.animate(run: Boolean) {
     }
 }
 
+fun Context.getStringOrNull(@StringRes resId: Int?) = resId?.let { getString(resId) }
+
+fun Context.newImageFile(): File =
+    File.createTempFile(
+        "${System.currentTimeMillis()}",
+        ".jpg",
+        getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    ).apply {
+        deleteOnExit()
+    }
+
+fun File.toUri(context: Context): Uri =
+    FileProvider.getUriForFile(context, "com.buddies.fileprovider", this)
+
 fun Float?.orZero(): Float = this ?: 0f
 
 fun ImageView.load(
@@ -72,6 +94,15 @@ fun ImageView.load(
     handler.load(lifecycleOwner, this, image, options)
 }
 
+fun ImageView.load(
+    bitmap: Bitmap?,
+    lifecycleOwner: LifecycleOwner,
+    options: RequestOptions.() -> Unit = {}
+) {
+    val handler by inject(ImageHandler::class.java)
+    handler.load(lifecycleOwner, this, bitmap, options)
+}
+
 fun CoroutineScope.safeLaunch(
     error: (DefaultError) -> Unit = {},
     context: CoroutineContext = coroutineContext,
@@ -89,8 +120,8 @@ fun generateNewId() = UUID.randomUUID().toString()
 fun Fragment.getQuantityString(
     @PluralsRes id: Int,
     quantity: Int,
-    vararg formatArgs: Any = emptyArray()) =
-    requireContext().resources.getQuantityString(id, quantity, *formatArgs)
+    vararg formatArgs: Any = emptyArray()
+) = requireContext().resources.getQuantityString(id, quantity, *formatArgs)
 
 fun <T> Result<T>.handleResult(
 ) = when (this) {
@@ -109,6 +140,11 @@ suspend fun <T, R> Result<T>.mapResult(
 fun Date.toFormatted(context: Context) = this.time.toFormattedDate(context)
 
 fun String.toFormattedDate(context: Context) = this.toLong().toFormattedDate(context)
+
+fun Int.dpToPx(context: Context): Int {
+    val displayMetrics: DisplayMetrics = context.resources.displayMetrics
+    return (this * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+}
 
 fun Long.toFormattedDate(context: Context): String {
     val currentTime = Calendar.getInstance()
@@ -177,7 +213,8 @@ fun ExtendedFloatingActionButton.expand(shouldExpand: Boolean) {
 
 fun <I, O> Fragment.registerForNonNullActivityResult(
     contract: ActivityResultContract<I, O>,
-    callback: ActivityResultCallback<O>): ActivityResultLauncher<I> {
+    callback: ActivityResultCallback<O>
+): ActivityResultLauncher<I> {
     return registerForActivityResult(contract) {
         if (it != null) {
             callback.onActivityResult(it)
@@ -187,7 +224,8 @@ fun <I, O> Fragment.registerForNonNullActivityResult(
 
 fun <I> Fragment.registerForTrueActivityResult(
     contract: ActivityResultContract<I, Boolean>,
-    callback: ActivityResultCallback<Boolean>): ActivityResultLauncher<I> {
+    callback: ActivityResultCallback<Boolean>
+): ActivityResultLauncher<I> {
     return registerForActivityResult(contract) {
         if (it) {
             callback.onActivityResult(true)

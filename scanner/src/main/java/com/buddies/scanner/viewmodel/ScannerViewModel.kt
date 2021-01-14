@@ -3,6 +3,7 @@ package com.buddies.scanner.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.ErrorCode.INVALID_TAG
+import com.buddies.common.util.TAG_PREFIX
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.scanner.usecase.ScannerUseCases
@@ -80,9 +81,5 @@ class ScannerViewModel(
         object StartScanner : Action()
         object CloseScanner : Action()
         data class ValidateTag(val result: String?) : Action()
-    }
-
-    companion object {
-        private const val TAG_PREFIX = "https://play.google.com/store/apps/details?id=com.buddies&referrer="
     }
 }

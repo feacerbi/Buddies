@@ -5,17 +5,40 @@ plugins {
 }
 
 android {
-    buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
-        }
-    }
 
     with commonConfig
 
     defaultConfig {
         applicationId "com.buddies"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(KEYSTORE_PATH)
+            storePassword KEYSTORE_PASSWORD
+            keyAlias KEYSTORE_KEY_ALIAS
+            keyPassword KEYSTORE_KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions "mode"
+    productFlavors {
+        generator {
+            versionNameSuffix "-generator"
+        }
+        production {
+
+        }
     }
 }
 
@@ -27,6 +50,7 @@ dependencies {
     implementation project(":gallery")
     implementation project(":home")
     implementation project(":login")
+    generatorImplementation project(":generator")
     implementation project(":navigation")
     implementation project(':newpet')
     implementation project(":notification")

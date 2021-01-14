@@ -3,7 +3,6 @@ package com.buddies.common.util
 import android.Manifest
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
 import android.util.Size
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
@@ -18,7 +17,6 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider.getUriForFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -69,7 +67,7 @@ class CameraHelper(
     }
 
     private fun launchCameraRequest(context: Context) {
-        uri = getNewUri(context)
+        uri = context.newImageFile().toUri(context)
         cameraLaunchRequest?.launch(uri)
     }
 
@@ -133,7 +131,7 @@ class CameraHelper(
         context: Context
     ) = suspendCoroutine<File> { cont ->
 
-        val newFile = getNewFile(context)
+        val newFile = context.newImageFile()
 
         val savedListener = object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
@@ -203,20 +201,6 @@ class CameraHelper(
 
     private fun getOrCreateExecutor(): ExecutorService =
         executor ?: Executors.newSingleThreadExecutor().apply { executor = this }
-
-    private fun getNewUri(
-        context: Context
-    ) = getUriForFile(context, "com.buddies.fileprovider", getNewFile(context))
-
-    private fun getNewFile(
-        context: Context
-    ) = File.createTempFile(
-        "${System.currentTimeMillis()}",
-        ".jpg",
-        context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    ).apply {
-        deleteOnExit()
-    }
 
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)

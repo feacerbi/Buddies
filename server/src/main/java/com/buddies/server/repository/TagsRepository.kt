@@ -1,5 +1,7 @@
 package com.buddies.server.repository
 
+import com.buddies.common.model.TagInfo
+import com.buddies.common.util.generateNewId
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
@@ -23,6 +25,15 @@ class TagsRepository {
     ): Task<DocumentSnapshot> =
         db.collection(TAGS_COLLECTION).document(tagId)
             .get()
+
+    fun addTag(
+        tagInfo: TagInfo
+    ): Transaction.() -> Unit = {
+        set(
+            db.collection(TAGS_COLLECTION).document(generateNewId()),
+            tagInfo
+        )
+    }
 
     fun markTagAvailable(
         tagId: String

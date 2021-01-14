@@ -13,3 +13,5 @@ output-metadata.json
 .project
 .settings
 .classpath
+
+*keystore*
