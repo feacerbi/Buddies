@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/new_pet_nav_graph"
-    app:startDestination="@id/scanTagFragment"
-    tools:ignore="UnusedNavigation" >
+    app:startDestination="@id/scanTagFragment" >
 
     <action
         android:id="@+id/action_global_finish"
@@ -14,9 +13,13 @@
 
     <fragment
         android:id="@+id/scanTagFragment"
-        android:name="com.buddies.newpet.ui.TagScanFragment"
+        android:name="com.buddies.newpet.ui.fragment.TagScanFragment"
         android:label="@string/tag_scan_name"
         tools:layout="@layout/fragment_tag_scan" >
+        <argument
+            android:name="tagValue"
+            app:argType="string"
+            android:defaultValue=""/>
         <action
             android:id="@+id/action_tagScanFragment_to_chooseAnimalBreedFragment"
             app:destination="@id/chooseAnimalBreedFragment"
@@ -29,7 +32,7 @@
 
     <fragment
         android:id="@+id/chooseAnimalBreedFragment"
-        android:name="com.buddies.newpet.ui.ChooseAnimalBreedFragment"
+        android:name="com.buddies.newpet.ui.fragment.ChooseAnimalBreedFragment"
         android:label="@string/choose_animal_breed_name"
         tools:layout="@layout/fragment_choose_animal_breed" >
         <action
@@ -44,7 +47,7 @@
 
     <fragment
         android:id="@+id/petInfoFragment"
-        android:name="com.buddies.newpet.ui.PetInfoFragment"
+        android:name="com.buddies.newpet.ui.fragment.PetInfoFragment"
         android:label="@string/add_confirmation_name"
         tools:layout="@layout/fragment_pet_info" >
         <action
@@ -59,7 +62,7 @@
 
     <fragment
         android:id="@+id/addConfirmationFragment"
-        android:name="com.buddies.newpet.ui.AddConfirmationFragment"
+        android:name="com.buddies.newpet.ui.fragment.AddConfirmationFragment"
         android:label="@string/add_confirmation_name"
         tools:layout="@layout/fragment_add_pet_confirmation" />
 

@@ -1,10 +1,8 @@
 <resources>
-    <string name="generator_name">Tag Generator</string>
-
     <!-- Views -->
     <string name="generator_input_hint">Tag value</string>
     <string name="tag_added_message">Tag added successfully</string>
-    <string name="generator_title">Buddy Tag Generator</string>
+    <string name="generator_title">Buddy Tag Generator (%s)</string>
     <string name="generator_subtitle">Create a new Buddy Tag from an input value or generate a new one and choose to add to the database automatically.</string>
     <string name="generated_tag_value_hint">Generated Tag value</string>
     <string name="generated_encrypted_value_hint">Generated encrypted value</string>

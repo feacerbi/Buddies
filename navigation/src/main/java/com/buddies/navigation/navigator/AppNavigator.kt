@@ -5,6 +5,7 @@ import com.buddies.common.navigation.BaseNavigator
 import com.buddies.common.navigation.Navigator
 import com.buddies.common.navigation.Navigator.NavDirection
 import com.buddies.common.navigation.Navigator.NavDirection.GalleryToFullscreen
+import com.buddies.common.navigation.Navigator.NavDirection.HomeToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToProfile
 import com.buddies.common.navigation.Navigator.NavDirection.LoginToHome
@@ -17,6 +18,7 @@ import com.buddies.common.navigation.Navigator.NavDirection.ProfileToPetProfile
 import com.buddies.common.navigation.Navigator.NavDirection.SplashToHome
 import com.buddies.common.navigation.Navigator.NavDirection.SplashToLogin
 import com.buddies.gallery.ui.fragment.GalleryFragmentDirections.Companion.actionGalleryFragmentToFullscreenFragment
+import com.buddies.home.ui.HomeFragmentDirections.Companion.actionHomeFragmentToNewPetFlow
 import com.buddies.home.ui.HomeFragmentDirections.Companion.actionHomeFragmentToPetProfileFragment
 import com.buddies.home.ui.HomeFragmentDirections.Companion.actionHomeFragmentToProfileFragment
 import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmentToHomeFragment
@@ -39,6 +41,7 @@ class AppNavigator : BaseNavigator() {
 
         is HomeToProfile -> actionHomeFragmentToProfileFragment()
         is HomeToPetProfile -> actionHomeFragmentToPetProfileFragment(petId)
+        is HomeToNewPetFlow -> actionHomeFragmentToNewPetFlow(tagValue)
 
         is ProfileToLogin -> actionProfileFragmentToLoginFragment()
         is ProfileToNewPetFlow -> actionProfileFragmentToNewPetFlow()

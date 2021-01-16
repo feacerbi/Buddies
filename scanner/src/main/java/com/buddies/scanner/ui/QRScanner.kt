@@ -19,8 +19,9 @@ import com.buddies.scanner.databinding.QrScannerBinding
 import com.buddies.scanner.ml.QRCodeAnalyzer
 import com.buddies.scanner.viewmodel.ScannerViewModel
 import com.buddies.scanner.viewmodel.ScannerViewModel.Action.CloseScanner
+import com.buddies.scanner.viewmodel.ScannerViewModel.Action.HandleResult
 import com.buddies.scanner.viewmodel.ScannerViewModel.Action.StartScanner
-import com.buddies.scanner.viewmodel.ScannerViewModel.Action.ValidateTag
+import com.buddies.scanner.viewmodel.ScannerViewModel.Action.ValidateScan
 import com.buddies.scanner.viewstate.ScannerViewEffect.StartCamera
 import com.buddies.scanner.viewstate.ScannerViewEffect.StopCamera
 import kotlinx.coroutines.DisposableHandle
@@ -66,7 +67,8 @@ class QRScanner @JvmOverloads constructor(
 
     fun scan(
         fragment: Fragment,
-        cameraHelper: CameraHelper
+        cameraHelper: CameraHelper,
+        initResult: String = ""
     ) = liveData(fragment.lifecycleScope.coroutineContext) {
 
         viewModel = fragment.getViewModel()
@@ -97,13 +99,14 @@ class QRScanner @JvmOverloads constructor(
             }
 
             localViewModel.perform(StartScanner)
+            localViewModel.perform(HandleResult(initResult))
 
             currentScan = emitSource(map(localViewModel.getStateStream()) {
                 it.result
             }.distinctUntilChanged())
 
             analyzer.barcodes.collectLatest { barcode ->
-                localViewModel.perform(ValidateTag(barcode.displayValue))
+                localViewModel.perform(ValidateScan(barcode.displayValue))
             }
         }
     }

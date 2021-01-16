@@ -1,4 +1,4 @@
-package com.buddies.newpet.ui
+package com.buddies.newpet.ui.view
 
 import android.content.Context
 import android.util.AttributeSet

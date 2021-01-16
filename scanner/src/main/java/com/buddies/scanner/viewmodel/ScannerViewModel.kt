@@ -8,8 +8,9 @@ import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.scanner.usecase.ScannerUseCases
 import com.buddies.scanner.viewmodel.ScannerViewModel.Action.CloseScanner
+import com.buddies.scanner.viewmodel.ScannerViewModel.Action.HandleResult
 import com.buddies.scanner.viewmodel.ScannerViewModel.Action.StartScanner
-import com.buddies.scanner.viewmodel.ScannerViewModel.Action.ValidateTag
+import com.buddies.scanner.viewmodel.ScannerViewModel.Action.ValidateScan
 import com.buddies.scanner.viewstate.ScannerViewEffect
 import com.buddies.scanner.viewstate.ScannerViewEffect.StartCamera
 import com.buddies.scanner.viewstate.ScannerViewEffect.StopCamera
@@ -32,14 +33,15 @@ class ScannerViewModel(
 
     fun getStateStream() = viewState
     fun getEffectStream() = viewEffect
-    
+
     private val encrypter by inject(Encrypter::class.java)
 
     fun perform(action: Action) {
         when (action) {
             is StartScanner -> startPetScanner()
             is CloseScanner -> closeScanner()
-            is ValidateTag -> handleTag(action.result)
+            is ValidateScan -> handleScannedTag(action.result)
+            is HandleResult -> handleTagResult(action.tagValue)
         }
     }
 
@@ -48,17 +50,26 @@ class ScannerViewModel(
         updateEffect(StartCamera)
     }
 
-    private fun handleTag(number: String?) = safeLaunch(::showError) {
+    private fun handleScannedTag(number: String?) = safeLaunch(::showError) {
         updateEffect(StopCamera)
         updateState(ShowValidating)
-        
+
         try {
-            val decodedBarcode = encrypter.decrypt(number?.removePrefix(TAG_PREFIX))
-            val tag = scannerUseCases.getTag(decodedBarcode)
+            val decodedQRCode = encrypter.decrypt(number?.removePrefix(TAG_PREFIX))
+            val tag = scannerUseCases.getTag(decodedQRCode)
 
             updateState(ShowResult(tag))
         } catch (exception: Exception) {
             updateState(ShowUnrecognized)
+        }
+    }
+
+    private fun handleTagResult(tagValue: String) = safeLaunch(::showError) {
+        if (tagValue.isNotEmpty()) {
+            val tag = scannerUseCases.getTag(tagValue)
+
+            updateState(ShowResult(tag))
+            updateEffect(StopCamera)
         }
     }
 
@@ -80,6 +91,7 @@ class ScannerViewModel(
     sealed class Action {
         object StartScanner : Action()
         object CloseScanner : Action()
-        data class ValidateTag(val result: String?) : Action()
+        data class ValidateScan(val result: String?) : Action()
+        data class HandleResult(val tagValue: String) : Action()
     }
 }

@@ -1,5 +1,6 @@
-package com.buddies.newpet.ui
+package com.buddies.newpet.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.transition.TransitionManager
 import com.buddies.common.util.invisible
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
+import com.buddies.newpet.R
 import com.buddies.newpet.databinding.FragmentAddPetConfirmationBinding
 import com.buddies.newpet.viewmodel.NewPetViewModel
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action
@@ -28,7 +30,7 @@ class AddConfirmationFragment : NewPetNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentAddPetConfirmationBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentAddPetConfirmationBinding.inflate(layoutInflater, container, false).apply {
         binding = this
     }.root
 
@@ -52,6 +54,7 @@ class AddConfirmationFragment : NewPetNavigationFragment() {
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun bindViews() = with (binding) {
         observe(viewModel.getStateStream()) {
             TransitionManager.beginDelayedTransition(root)
@@ -60,6 +63,7 @@ class AddConfirmationFragment : NewPetNavigationFragment() {
             animalPhoto.invisible(it.hideAnimalPhoto)
             animalPhoto.load(it.animalPhoto, this@AddConfirmationFragment) {
                 circleTransform = true
+                error = R.drawable.ic_baseline_pets
             }
             backButton.isVisible = it.showBackButton
         }

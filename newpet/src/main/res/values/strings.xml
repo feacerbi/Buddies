@@ -5,6 +5,9 @@
     <string name="pet_info_name">Pet Info Screen</string>
     <string name="add_confirmation_name">Add Confirmation Screen</string>
 
+    <!-- Args -->
+    <string name="tag_value_arg">tagValue</string>
+
     <!-- Views -->
     <string name="new_buddy_flow_title">New Buddy</string>
     <string name="no_valid_tags_button_message">no valid tags</string>

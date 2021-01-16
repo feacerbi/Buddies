@@ -4,17 +4,23 @@ import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.Tag
 import com.buddies.common.model.UserInfo
+import com.buddies.common.navigation.Navigator.NavDirection.HomeToNewPetFlow
+import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.home.R
 import com.buddies.home.model.ShareInfo
 import com.buddies.home.usecase.HomeUseCases
+import com.buddies.home.viewmodel.HomeViewModel.Action.AddNewPet
 import com.buddies.home.viewmodel.HomeViewModel.Action.CloseScanner
 import com.buddies.home.viewmodel.HomeViewModel.Action.HandleTag
 import com.buddies.home.viewmodel.HomeViewModel.Action.NotifyPetFound
+import com.buddies.home.viewmodel.HomeViewModel.Action.OpenPetProfile
 import com.buddies.home.viewmodel.HomeViewModel.Action.ScanPet
 import com.buddies.home.viewmodel.HomeViewModel.Action.SendUserInfo
 import com.buddies.home.viewstate.HomeViewEffect
+import com.buddies.home.viewstate.HomeViewEffect.Navigate
+import com.buddies.home.viewstate.HomeViewEffect.ShowAddPetDialog
 import com.buddies.home.viewstate.HomeViewEffect.ShowError
 import com.buddies.home.viewstate.HomeViewEffect.ShowLostPetDialog
 import com.buddies.home.viewstate.HomeViewEffect.ShowMessage
@@ -35,8 +41,6 @@ class HomeViewModel(
     fun getStateStream() = viewState
     fun getEffectStream() = viewEffect
 
-    private var petFoundId: String = ""
-
     init {
         updateState(IdleHome)
     }
@@ -45,8 +49,10 @@ class HomeViewModel(
         when (action) {
             is ScanPet -> startPetScanner()
             is HandleTag -> handleTag(action.tag)
-            is NotifyPetFound -> requestUserInfo()
-            is SendUserInfo -> sendUserInfo(action.info)
+            is OpenPetProfile -> openPetProfile(action.petId)
+            is NotifyPetFound -> requestUserInfo(action.petId)
+            is SendUserInfo -> sendUserInfo(action.petId, action.info)
+            is AddNewPet -> openNewPetFlow(action.tag)
             is CloseScanner -> closeScanner()
         }
     }
@@ -62,25 +68,32 @@ class HomeViewModel(
             val pet = homeUseCases.getPet(tag.id)
 
             when {
-                pet == null -> updateEffect(ShowMessage(R.string.tag_available_message))
-                pet.info.lost -> {
-                    petFoundId = pet.id
-                    updateEffect(ShowLostPetDialog(pet))
-                }
+                pet == null -> updateEffect(ShowAddPetDialog(tag))
+                pet.info.lost -> updateEffect(ShowLostPetDialog(pet))
                 else -> updateEffect(ShowPetDialog(pet))
             }
         }
     }
 
-    private fun requestUserInfo() = safeLaunch(::showError) {
-        val userInfo = homeUseCases.getUser() ?: UserInfo()
-        updateEffect(ShowShareInfoDialog(userInfo))
+    private fun openPetProfile(petId: String) {
+        closeScanner()
+        updateEffect(Navigate(HomeToPetProfile(petId)))
     }
 
-    private fun sendUserInfo(info: List<ShareInfo>) = safeLaunch(::showError) {
+    private fun requestUserInfo(petId: String) = safeLaunch(::showError) {
+        val userInfo = homeUseCases.getUser() ?: UserInfo()
+        updateEffect(ShowShareInfoDialog(petId, userInfo))
+    }
+
+    private fun sendUserInfo(petId: String, info: List<ShareInfo>) = safeLaunch(::showError) {
         closeScanner()
-        homeUseCases.notifyPetFound(petFoundId, info)
+        homeUseCases.notifyPetFound(petId, info)
         updateEffect(ShowMessage(R.string.owners_notified_message))
+    }
+
+    private fun openNewPetFlow(tag: Tag) {
+        closeScanner()
+        updateEffect(Navigate(HomeToNewPetFlow(tag.info.value)))
     }
 
     private fun closeScanner() {
@@ -98,8 +111,10 @@ class HomeViewModel(
     sealed class Action {
         object ScanPet : Action()
         data class HandleTag(val tag: Tag?) : Action()
-        data class SendUserInfo(val info: List<ShareInfo>) : Action()
-        object NotifyPetFound : Action()
+        data class OpenPetProfile(val petId: String) : Action()
+        data class SendUserInfo(val petId: String, val info: List<ShareInfo>) : Action()
+        data class NotifyPetFound(val petId: String) : Action()
+        data class AddNewPet(val tag: Tag) : Action()
         object CloseScanner : Action()
     }
 }

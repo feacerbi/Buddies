@@ -8,9 +8,10 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.transition.TransitionManager
 import com.buddies.common.model.Pet
+import com.buddies.common.model.Tag
 import com.buddies.common.model.UserInfo
-import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToProfile
+import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.observe
@@ -62,6 +63,11 @@ class HomeFragment : NavigationFragment() {
                 perform(HandleTag(it))
             }
         }
+
+        val packageInfo =
+            requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
+
+        version.text = getString(R.string.app_version, packageInfo.versionName)
     }
 
     private fun bindViews() = with (binding) {
@@ -75,8 +81,9 @@ class HomeFragment : NavigationFragment() {
             when (it) {
                 is StopPetScanner -> stopScanner()
                 is ShowPetDialog -> showScannedPetBottomSheet(it.pet)
+                is ShowAddPetDialog -> showScannedAvailableTagBottomSheet(it.tag)
                 is ShowLostPetDialog -> showScannedLostPetBottomSheet(it.pet)
-                is ShowShareInfoDialog -> showShareInfoBottomSheet(it.user)
+                is ShowShareInfoDialog -> showShareInfoBottomSheet(it.petId, it.user)
                 is ShowMessage -> showMessage(it.message)
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
@@ -93,8 +100,7 @@ class HomeFragment : NavigationFragment() {
             .petStatus(pet.info.lost)
             .cancelButton(getString(R.string.close_button))
             .confirmButton(getString(R.string.open_profile_button)) {
-                perform(CloseScanner)
-                navigate(HomeToPetProfile(pet.id))
+                perform(OpenPetProfile(pet.id))
             }
             .build()
             .show()
@@ -109,20 +115,32 @@ class HomeFragment : NavigationFragment() {
             .petStatus(pet.info.lost)
             .cancelButton(getString(R.string.cancel_button))
             .confirmButton(getString(R.string.notify_button)) {
-                perform(NotifyPetFound)
+                perform(NotifyPetFound(pet.id))
             }
             .build()
             .show()
     }
 
-    private fun showShareInfoBottomSheet(userInfo: UserInfo) {
+    private fun showScannedAvailableTagBottomSheet(tag: Tag) {
+        SimpleBottomSheet.Builder(layoutInflater)
+            .title(getString(R.string.pet_tag_found_dialog_title))
+            .content(getString(R.string.pet_tag_found_available_dialog_content))
+            .cancelButton(getString(R.string.cancel_button))
+            .confirmButton(getString(R.string.add_new_pet_button)) {
+                perform(AddNewPet(tag))
+            }
+            .build()
+            .show()
+    }
+
+    private fun showShareInfoBottomSheet(petId: String, userInfo: UserInfo) {
         ShareInfoBottomSheet.Builder(layoutInflater)
             .name(userInfo.name)
             .email(userInfo.email)
             .phone(checked = false)
             .location(checked = false)
             .cancelButton()
-            .confirmButton { perform(SendUserInfo(it)) }
+            .confirmButton { perform(SendUserInfo(petId, it)) }
             .build()
             .show()
     }

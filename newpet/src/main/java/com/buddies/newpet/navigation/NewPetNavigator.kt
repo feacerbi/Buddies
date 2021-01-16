@@ -5,10 +5,13 @@ import com.buddies.common.navigation.BaseNavigator
 import com.buddies.common.navigation.Navigator.NavDirection
 import com.buddies.common.navigation.Navigator.UnsupportedDirectionException
 import com.buddies.newpet.NewPetNavGraphDirections
-import com.buddies.newpet.navigation.NewPetNavDirection.*
-import com.buddies.newpet.ui.ChooseAnimalBreedFragmentDirections.Companion.actionChooseAnimalBreedFragmentToPetInfoFragment
-import com.buddies.newpet.ui.PetInfoFragmentDirections.Companion.actionPetInfoFragmentToAddConfirmationFragment
-import com.buddies.newpet.ui.TagScanFragmentDirections.Companion.actionTagScanFragmentToChooseAnimalBreedFragment
+import com.buddies.newpet.navigation.NewPetNavDirection.AnimalAndBreedToInfo
+import com.buddies.newpet.navigation.NewPetNavDirection.FinishFlow
+import com.buddies.newpet.navigation.NewPetNavDirection.InfoToConfirmation
+import com.buddies.newpet.navigation.NewPetNavDirection.TagScanToAnimalAndBreed
+import com.buddies.newpet.ui.fragment.ChooseAnimalBreedFragmentDirections.Companion.actionChooseAnimalBreedFragmentToPetInfoFragment
+import com.buddies.newpet.ui.fragment.PetInfoFragmentDirections.Companion.actionPetInfoFragmentToAddConfirmationFragment
+import com.buddies.newpet.ui.fragment.TagScanFragmentDirections.Companion.actionTagScanFragmentToChooseAnimalBreedFragment
 
 class NewPetNavigator : BaseNavigator() {
 

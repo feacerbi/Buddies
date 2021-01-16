@@ -9,7 +9,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/generator_title"
-        style="@style/Headline4"
+        style="@style/Headline5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/margin_large"
         android:gravity="start"
-        android:text="@string/generator_title"/>
+        tools:text="@string/generator_title"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/generator_subtitle"

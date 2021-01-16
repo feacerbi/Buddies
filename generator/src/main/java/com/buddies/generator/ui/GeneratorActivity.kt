@@ -9,6 +9,7 @@ import androidx.core.widget.doOnTextChanged
 import com.buddies.common.util.getStringOrNull
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
+import com.buddies.generator.BuildConfig
 import com.buddies.generator.R
 import com.buddies.generator.databinding.ActivityGeneratorBinding
 import com.buddies.generator.viewmodel.GeneratorViewModel
@@ -22,6 +23,7 @@ import com.buddies.generator.viewstate.GeneratorViewEffect.SetNewValue
 import com.buddies.generator.viewstate.GeneratorViewEffect.ShareImage
 import com.buddies.generator.viewstate.GeneratorViewEffect.ShowMessage
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class GeneratorActivity : AppCompatActivity() {
 
@@ -41,6 +43,10 @@ class GeneratorActivity : AppCompatActivity() {
     }
 
     private fun setupViews() = with (binding) {
+        generatorTitle.text = getString(
+            R.string.generator_title,
+            BuildConfig.BUILD_TYPE.capitalize(Locale.getDefault()))
+
         generateNewTagValueButton.setOnClickListener {
             perform(GenerateNewValue)
         }

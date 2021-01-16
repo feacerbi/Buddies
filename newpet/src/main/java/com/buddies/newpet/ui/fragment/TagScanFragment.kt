@@ -1,40 +1,44 @@
-package com.buddies.newpet.ui
+package com.buddies.newpet.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
+import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.expand
-import com.buddies.common.util.load
 import com.buddies.common.util.observe
-import com.buddies.newpet.databinding.FragmentPetInfoBinding
+import com.buddies.newpet.R
+import com.buddies.newpet.databinding.FragmentTagScanBinding
 import com.buddies.newpet.databinding.NewPetHeaderBinding
 import com.buddies.newpet.viewmodel.NewPetViewModel
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.*
 import com.buddies.newpet.viewstate.NewPetViewEffect.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class PetInfoFragment : NewPetNavigationFragment() {
+@FlowPreview
+@ExperimentalCoroutinesApi
+@androidx.camera.core.ExperimentalGetImage
+class TagScanFragment : NewPetNavigationFragment() {
 
-    private lateinit var binding: FragmentPetInfoBinding
+    private lateinit var binding: FragmentTagScanBinding
     private lateinit var headerBinding: NewPetHeaderBinding
 
     private val viewModel: NewPetViewModel by sharedViewModel()
 
-    private val galleryPick = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        perform(PhotoInput(it))
-    }
+    private val tagValueArg
+        get() = arguments?.getString(getString(R.string.tag_value_arg)) ?: ""
+
+    private val cameraHelper = CameraHelper(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentPetInfoBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentTagScanBinding.inflate(layoutInflater, container, false).apply {
         binding = this
         headerBinding = NewPetHeaderBinding.bind(this.root)
     }.root
@@ -46,20 +50,12 @@ class PetInfoFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
-        backButton.setOnClickListener { perform(Previous) }
-        forwardButton.setOnClickListener { perform(Next) }
-
-        nameInputEditText.addTextChangedListener {
-            sendInput()
+        headerBinding.toolbar.setNavigationOnClickListener {
+            perform(CloseFlow)
         }
 
-        ageInputEditText.addTextChangedListener {
-            sendInput()
-        }
-
-        animalPhoto.setOnClickListener {
-            galleryPick.launch(IMAGE_MIME_TYPE)
+        forwardButton.setOnClickListener {
+            perform(Next)
         }
     }
 
@@ -67,28 +63,22 @@ class PetInfoFragment : NewPetNavigationFragment() {
         observe(viewModel.getStateStream()) {
             headerBinding.toolbar.title = getString(it.title)
             headerBinding.steps.selectStep(it.step)
+            forwardButton.text = getString(it.forwardButtonText)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
-            forwardButton.text = getString(it.forwardButtonText)
-            animalPhoto.load(it.animalPhoto, this@PetInfoFragment) {
-                circleTransform = true
-            }
-            cameraOverlay.isVisible = it.showCameraOverlay
+            scanner.setResultMessage(getString(it.result))
         }
 
         observe(viewModel.getEffectStream()) {
             when (it) {
-                is NavigateBack -> navigateBack()
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
         }
-    }
 
-    private fun sendInput() = with (binding) {
-        perform(InfoInput(
-            nameInputEditText.text.toString(),
-            ageInputEditText.text.toString()))
+        observe(binding.scanner.scan(this@TagScanFragment, cameraHelper, tagValueArg)) {
+            perform(HandleTag(it))
+        }
     }
 
     private fun showMessage(message: Int) {
@@ -97,9 +87,5 @@ class PetInfoFragment : NewPetNavigationFragment() {
 
     private fun perform(action: Action) {
         viewModel.perform(action)
-    }
-
-    companion object {
-        private const val IMAGE_MIME_TYPE = "image/*"
     }
 }

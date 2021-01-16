@@ -57,7 +57,7 @@ class AnimalsAdapter(
 
             animalIcon.load(animal.first.animalInfo.photo, owner) {
                 circleTransform = true
-                error = R.drawable.ic_baseline_pets_dark
+                error = R.drawable.ic_baseline_pets_secondary
             }
 
             root.setOnClickListener {

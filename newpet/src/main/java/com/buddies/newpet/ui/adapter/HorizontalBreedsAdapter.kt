@@ -1,4 +1,4 @@
-package com.buddies.newpet.ui
+package com.buddies.newpet.ui.adapter
 
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -10,7 +10,7 @@ import com.buddies.common.util.inflater
 import com.buddies.common.util.load
 import com.buddies.newpet.R
 import com.buddies.newpet.databinding.AnimalHorizontalListItemBinding
-import com.buddies.newpet.ui.HorizontalBreedsAdapter.HorizontalBreedsViewHolder
+import com.buddies.newpet.ui.adapter.HorizontalBreedsAdapter.HorizontalBreedsViewHolder
 
 class HorizontalBreedsAdapter(
     private val owner: LifecycleOwner,
@@ -63,7 +63,7 @@ class HorizontalBreedsAdapter(
 
             animalIcon.load(animal.first.breedInfo.photo, owner) {
                 circleTransform = true
-                error = R.drawable.ic_baseline_pets
+                error = R.drawable.ic_baseline_pets_secondary
             }
 
             root.setOnClickListener {

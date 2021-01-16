@@ -168,10 +168,14 @@ class NewPetViewModel(
 
     private fun addNewPet() = safeLaunch(::showError) {
         updateEffect(Navigate(InfoToConfirmation))
+
         updateState(ShowAddingPet)
         newPetUseCases.addNewPet(newPet, OWNER)
+        delay(CONFIRMATION_DELAY)
+
         updateState(ShowPetConfirmation(newPet.name))
         delay(CONFIRMATION_DELAY)
+
         closeFlow()
     }
 

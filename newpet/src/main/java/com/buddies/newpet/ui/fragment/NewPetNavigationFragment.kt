@@ -1,4 +1,4 @@
-package com.buddies.newpet.ui
+package com.buddies.newpet.ui.fragment
 
 import com.buddies.common.navigation.Navigator
 import com.buddies.common.ui.fragment.NavigationFragment

@@ -120,6 +120,19 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_homeFragment_to_new_pet_flow"
+            app:destination="@id/new_pet_nav_graph"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@android:anim/fade_out"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@anim/slide_out_bottom" >
+            <argument
+                android:name="tagValue"
+                app:argType="string"
+                android:defaultValue=""/>
+        </action>
     </fragment>
 
     <fragment
