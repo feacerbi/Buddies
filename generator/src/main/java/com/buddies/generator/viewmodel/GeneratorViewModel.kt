@@ -34,9 +34,6 @@ class GeneratorViewModel(
     private val generatorUseCases: GeneratorUseCases
 ) : StateViewModel<GeneratorViewState, GeneratorViewEffect>(GeneratorViewState()), CoroutineScope {
 
-    fun getStateStream() = viewState
-    fun getEffectStream() = viewEffect
-
     private var newTag = NewTag()
 
     init {

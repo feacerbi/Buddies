@@ -82,7 +82,7 @@ class QRScanner @JvmOverloads constructor(
                 localViewModel.perform(StartScanner)
             }
 
-            fragment.observe(localViewModel.getStateStream()) {
+            fragment.observe(localViewModel.viewState) {
                 with(binding) {
                     isVisible = it.showScanner
                     progress.isVisible = it.showLoading
@@ -91,7 +91,7 @@ class QRScanner @JvmOverloads constructor(
                 }
             }
 
-            fragment.observe(localViewModel.getEffectStream()) {
+            fragment.observe(localViewModel.viewEffect) {
                 when (it) {
                     is StartCamera -> startCamera(cameraHelper, analyzer)
                     is StopCamera -> stopCamera(cameraHelper)
@@ -101,7 +101,7 @@ class QRScanner @JvmOverloads constructor(
             localViewModel.perform(StartScanner)
             localViewModel.perform(HandleResult(initResult))
 
-            currentScan = emitSource(map(localViewModel.getStateStream()) {
+            currentScan = emitSource(map(localViewModel.viewState) {
                 it.result
             }.distinctUntilChanged())
 

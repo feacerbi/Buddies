@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import com.buddies.common.util.expand
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
+import com.buddies.newpet.R
 import com.buddies.newpet.databinding.FragmentPetInfoBinding
 import com.buddies.newpet.databinding.NewPetHeaderBinding
 import com.buddies.newpet.viewmodel.NewPetViewModel
@@ -46,6 +47,7 @@ class PetInfoFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
+        headerBinding.toolbar.title = getString(R.string.new_buddy_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
         backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next) }
@@ -64,8 +66,7 @@ class PetInfoFragment : NewPetNavigationFragment() {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
-            headerBinding.toolbar.title = getString(it.title)
+        observe(viewModel.viewState) {
             headerBinding.steps.selectStep(it.step)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
@@ -76,7 +77,7 @@ class PetInfoFragment : NewPetNavigationFragment() {
             cameraOverlay.isVisible = it.showCameraOverlay
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is NavigateBack -> navigateBack()
                 is Navigate -> navigate(it.direction)

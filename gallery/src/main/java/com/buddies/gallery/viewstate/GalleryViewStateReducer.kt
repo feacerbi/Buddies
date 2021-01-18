@@ -8,16 +8,16 @@ sealed class GalleryViewStateReducer : ViewStateReducer<GalleryViewState> {
     data class ShowPictures(
         val pictures: List<Picture>?
     ) : GalleryViewStateReducer() {
-        override val reduce: GalleryViewState.() -> Unit = {
-            picturesList = pictures ?: listOf()
-            showEmpty = picturesList.isEmpty()
-            showloading = false
-        }
+        override fun reduce(state: GalleryViewState) = state.copy(
+            picturesList = pictures ?: listOf(),
+            showEmpty = pictures.isNullOrEmpty(),
+            showLoading = false
+        )
     }
 
     object ShowLoading : GalleryViewStateReducer() {
-        override val reduce: GalleryViewState.() -> Unit = {
-            showloading = true
-        }
+        override fun reduce(state: GalleryViewState) = state.copy(
+            showLoading = true
+        )
     }
 }

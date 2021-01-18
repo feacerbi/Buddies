@@ -123,13 +123,13 @@ class GalleryFragment : NavigationFragment() {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             galleryAdapter.submitList(it.picturesList)
             emptyPictures.isVisible = it.showEmpty
-            refresh.isRefreshing = it.showloading
+            refresh.isRefreshing = it.showLoading
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is OpenConfirmDeleteDialog -> openConfirmDeleteBottomSheet(it.pictureIds)
                 is ShowMessage -> showMessage(it.message)

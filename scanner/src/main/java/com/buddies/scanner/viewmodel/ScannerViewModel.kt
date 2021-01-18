@@ -31,9 +31,6 @@ class ScannerViewModel(
     private val scannerUseCases: ScannerUseCases
 ) : StateViewModel<ScannerViewState, ScannerViewEffect>(ScannerViewState()), CoroutineScope {
 
-    fun getStateStream() = viewState
-    fun getEffectStream() = viewEffect
-
     private val encrypter by inject(Encrypter::class.java)
 
     fun perform(action: Action) {
@@ -81,7 +78,7 @@ class ScannerViewModel(
     private fun showError(error: DefaultError) {
         when (error.code) {
             INVALID_TAG -> updateState(ShowInvalid)
-            else -> updateState(ShowError)
+            else -> updateState(ShowError(error.code.message))
         }
     }
 

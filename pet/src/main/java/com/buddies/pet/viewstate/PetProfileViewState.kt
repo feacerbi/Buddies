@@ -9,23 +9,23 @@ import com.buddies.common.model.OwnershipInfo
 import com.buddies.common.viewstate.ViewState
 import com.buddies.pet.R
 
-class PetProfileViewState(
-    var name: String = "",
-    var nameEdit: Boolean = false,
-    var tag: String = "",
-    var tagEdit: Boolean = false,
-    var tagValid: Boolean = false,
-    @StringRes var tagResult: Int = R.string.empty,
-    var animal: String = "",
-    var animalEdit: Boolean = false,
-    var breed: String = "",
-    var photo: Uri = Uri.EMPTY,
-    var lost: Boolean = false,
-    var lostSwitch: Boolean = false,
-    @StringRes var lostStatus: Int = R.string.empty,
-    @MenuRes var toolbarMenu: Int = R.menu.empty_menu,
-    var ownershipInfo: OwnershipInfo = OwnershipInfo(),
-    var owners: List<Owner> = emptyList(),
-    var pagingData: PagingData<Owner> = PagingData.empty(),
-    var loading: Boolean = false
+data class PetProfileViewState(
+    val name: String = "",
+    val nameEdit: Boolean = false,
+    val tag: String = "",
+    val tagEdit: Boolean = false,
+    val tagValid: Boolean = false,
+    @StringRes val tagResult: Int = R.string.empty,
+    val animal: String = "",
+    val animalEdit: Boolean = false,
+    val breed: String = "",
+    val photo: Uri = Uri.EMPTY,
+    val lost: Boolean = false,
+    val lostSwitch: Boolean = false,
+    @StringRes val lostStatus: Int = R.string.empty,
+    @MenuRes val toolbarMenu: Int = R.menu.empty_menu,
+    val ownershipInfo: OwnershipInfo = OwnershipInfo(),
+    val owners: List<Owner> = emptyList(),
+    val pagingData: PagingData<Owner> = PagingData.empty(),
+    val loading: Boolean = false
 ) : ViewState

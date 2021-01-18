@@ -32,7 +32,7 @@ class SplashScreenFragment : NavigationFragment() {
     }
 
     private fun bindViews() {
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)

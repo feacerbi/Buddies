@@ -51,9 +51,6 @@ class NewPetViewModel(
     private val newPetUseCases: NewPetUseCases
 ) : StateViewModel<NewPetViewState, NewPetViewEffect>(NewPetViewState()), CoroutineScope {
 
-    fun getStateStream() = viewState
-    fun getEffectStream() = viewEffect
-
     private val newPet = NewPet()
 
     init {

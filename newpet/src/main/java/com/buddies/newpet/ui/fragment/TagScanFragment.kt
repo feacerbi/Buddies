@@ -50,6 +50,8 @@ class TagScanFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
+        headerBinding.toolbar.title = getString(R.string.new_buddy_flow_title)
+
         headerBinding.toolbar.setNavigationOnClickListener {
             perform(CloseFlow)
         }
@@ -60,8 +62,7 @@ class TagScanFragment : NewPetNavigationFragment() {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
-            headerBinding.toolbar.title = getString(it.title)
+        observe(viewModel.viewState) {
             headerBinding.steps.selectStep(it.step)
             forwardButton.text = getString(it.forwardButtonText)
             forwardButton.isEnabled = it.forwardButtonEnabled
@@ -69,7 +70,7 @@ class TagScanFragment : NewPetNavigationFragment() {
             scanner.setResultMessage(getString(it.result))
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)

@@ -23,77 +23,81 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
         val currentOwnership: OwnershipInfo?,
         val petTag: Tag?
     ) : PetProfileViewStateReducer() {
-        override val reduce: PetProfileViewState.() -> Unit = {
-            name = pet?.info?.name ?: ""
-            nameEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
-            tag = petTag?.info?.value ?: ""
-            tagEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
-            animal = animalAndBreed?.first?.animalInfo?.name ?: ""
-            animalEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
-            breed = animalAndBreed?.second?.breedInfo?.name ?: ""
-            photo = pet?.info?.photo?.toUri() ?: Uri.EMPTY
-            lost = pet?.info?.lost ?: false
-            lostSwitch = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
-            lostStatus = if (pet?.info?.lost == true) R.string.pet_lost_status else R.string.pet_safe_status
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            name = pet?.info?.name ?: "",
+            nameEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL,
+            tag = petTag?.info?.value ?: "",
+            tagEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL,
+            animal = animalAndBreed?.first?.animalInfo?.name ?: "",
+            animalEdit = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL,
+            breed = animalAndBreed?.second?.breedInfo?.name ?: "",
+            photo = pet?.info?.photo?.toUri() ?: Uri.EMPTY,
+            lost = pet?.info?.lost ?: false,
+            lostSwitch = currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL,
+            lostStatus = if (pet?.info?.lost == true) R.string.pet_lost_status else R.string.pet_safe_status,
             toolbarMenu = if (currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL) {
                 R.menu.pet_profile_toolbar_menu
             } else {
                 R.menu.empty_menu
-            }
-            ownershipInfo = currentOwnership ?: OwnershipInfo()
-            owners = ownersList ?: emptyList()
+            },
+            ownershipInfo = currentOwnership ?: OwnershipInfo(),
+            owners = ownersList ?: emptyList(),
             loading = false
-        }
+        )
     }
 
     data class ShowOwnersToInvite(
         val data: PagingData<Owner>
     ) : PetProfileViewStateReducer() {
-        override val reduce: PetProfileViewState.() -> Unit = {
+        override fun reduce(state: PetProfileViewState) = state.copy(
             pagingData = data
-        }
+        )
     }
 
-    data class ShowLoading(
-        val show: Boolean = true
-    ) : PetProfileViewStateReducer() {
-        override val reduce: PetProfileViewState.() -> Unit = {
-            loading = show
-        }
+    object ShowLoading : PetProfileViewStateReducer() {
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            loading = true
+        )
+    }
+
+    object HideLoading : PetProfileViewStateReducer() {
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            loading = false
+        )
     }
 
     object ShowSafeStatus : PetProfileViewStateReducer() {
-        override val reduce: PetProfileViewState.() -> Unit = {
-            lost = false
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            lost = false,
             lostStatus = R.string.pet_safe_status
-        }
+        )
     }
 
     object ShowLostStatus : PetProfileViewStateReducer() {
-        override val reduce: PetProfileViewState.() -> Unit = {
-            lost = true
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            lost = true,
             lostStatus = R.string.pet_lost_status
-        }
+        )
     }
 
     object ShowScan : PetProfileViewStateReducer() {
-        override val reduce: PetProfileViewState.() -> Unit = {
-            tagValid = false
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            tagValid = false,
             tagResult = R.string.empty
-        }
+        )
     }
 
     object ShowTagValid : PetProfileViewStateReducer() {
-        override val reduce: PetProfileViewState.() -> Unit = {
-            tagValid = true
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            tagValid = true,
             tagResult = R.string.validated_result
-        }
+        )
     }
 
     object ShowTagNotAvailable : PetProfileViewStateReducer() {
-        override val reduce: PetProfileViewState.() -> Unit = {
-            tagValid = false
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            tagValid = false,
             tagResult = R.string.not_available_result
-        }
+        )
     }
 }

@@ -5,10 +5,10 @@ import com.buddies.common.viewstate.ViewState
 import com.buddies.scanner.R
 
 data class ScannerViewState(
-    var showScanner: Boolean = true,
-    var showLoading: Boolean = false,
-    var showScanAgainButton: Boolean = false,
-    var message: Int = R.string.empty,
-    var error: String = "",
-    var result: Tag? = null
+    val showScanner: Boolean = true,
+    val showLoading: Boolean = false,
+    val showScanAgainButton: Boolean = false,
+    val message: Int = R.string.empty,
+    val error: String = "",
+    val result: Tag? = null
 ): ViewState

@@ -27,9 +27,6 @@ class PetProfileViewModel(
     private val dispatcher: CoroutineDispatcher
 ) : StateViewModel<PetProfileViewState, PetProfileViewEffect>(PetProfileViewState()), CoroutineScope {
 
-    fun getStateStream() = viewState
-    fun getEffectStream() = viewEffect
-
     private val timer by lazy {
         ActionTimer(this, QUERY_DEBOUNCE_TIME)
     }
@@ -60,31 +57,31 @@ class PetProfileViewModel(
     }
 
     private fun updateName(name: String) = safeLaunch(::showError) {
-        updateState(ShowLoading())
+        updateState(ShowLoading)
         petUseCases.updatePetName(petId, name)
         refreshPet()
     }
 
     private fun updateTag(tag: String) = safeLaunch(::showError) {
-        updateState(ShowLoading())
+        updateState(ShowLoading)
         petUseCases.updatePetTag(petId, tag)
         refreshPet()
     }
 
     private fun updateAnimal(animal: Animal, breed: Breed) = safeLaunch(::showError) {
-        updateState(ShowLoading())
+        updateState(ShowLoading)
         petUseCases.updatePetAnimal(petId, animal.id, breed.id)
         refreshPet()
     }
 
     private fun updatePhoto(photo: Uri) = safeLaunch(::showError) {
-        updateState(ShowLoading())
+        updateState(ShowLoading)
         petUseCases.updatePetPhoto(petId, photo)
         refreshPet()
     }
 
     private fun changeOwnership(owner: Owner, ownership: OwnershipCategory) = safeLaunch(::showError) {
-        updateState(ShowLoading())
+        updateState(ShowLoading)
         petUseCases.updateOwnership(petId, owner.user.id, ownership)
         refreshPet()
     }
@@ -116,7 +113,7 @@ class PetProfileViewModel(
     }
 
     private fun refreshPet() = safeLaunch(::showError) {
-        updateState(ShowLoading())
+        updateState(ShowLoading)
         val pet = petUseCases.getPet(petId)
         val animalAndBreed = petUseCases.getAnimalAndBreed(
             pet?.info?.animal ?: "",
@@ -133,16 +130,16 @@ class PetProfileViewModel(
     }
 
     private fun requestAnimals() = safeLaunch(::showError) {
-        updateState(ShowLoading())
+        updateState(ShowLoading)
         val animals = petUseCases.getAllAnimals()
-        updateState(ShowLoading(false))
+        updateState(HideLoading)
         updateEffect(ShowAnimalsList(animals))
     }
 
     private fun requestBreeds(animal: Animal) = safeLaunch(::showError) {
-        updateState(ShowLoading())
+        updateState(ShowLoading)
         val breeds = petUseCases.getBreedsFromAnimal(animal.id)
-        updateState(ShowLoading(false))
+        updateState(HideLoading)
         updateEffect(ShowBreedsList(breeds, animal))
     }
 
@@ -185,7 +182,7 @@ class PetProfileViewModel(
     private fun checkNotValidQuery(query: String) = query.length < MIN_QUERY
 
     private fun showError(error: DefaultError) {
-        updateState(ShowLoading(false))
+        updateState(HideLoading)
         updateEffect(ShowError(error.code.message))
     }
 

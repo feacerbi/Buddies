@@ -90,13 +90,13 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             tabsMediator?.updateBadge(it.notifications.size)
             profilePicture.load(it.photo, this@ProfileFragment)
             profilePicture.setOnClickListener { _ -> navigateToFullscreen(profilePicture, it.photo) }
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is RefreshPets -> myPetsWidget.refresh()
                 is Navigate -> navigate(it.direction)

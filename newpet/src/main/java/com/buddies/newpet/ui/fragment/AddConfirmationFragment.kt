@@ -56,7 +56,7 @@ class AddConfirmationFragment : NewPetNavigationFragment() {
 
     @SuppressLint("StringFormatInvalid")
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             TransitionManager.beginDelayedTransition(root)
             confirmationTitle.text = getString(it.confirmationTitle, it.animalName)
             progress.isVisible = it.confirmationLoading
@@ -68,7 +68,7 @@ class AddConfirmationFragment : NewPetNavigationFragment() {
             backButton.isVisible = it.showBackButton
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is NavigateBack -> navigateBack()
                 is Navigate -> navigate(it.direction)

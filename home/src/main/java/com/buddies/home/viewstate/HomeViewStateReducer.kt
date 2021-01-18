@@ -4,24 +4,17 @@ import com.buddies.common.viewstate.ViewStateReducer
 
 sealed class HomeViewStateReducer : ViewStateReducer<HomeViewState> {
 
-    object IdleHome : HomeViewStateReducer() {
-        override val reduce: HomeViewState.() -> Unit = {
-            showToolbar = false
-            showScanPetButton = true
-        }
-    }
-
     object ShowPetScanner : HomeViewStateReducer() {
-        override val reduce: HomeViewState.() -> Unit = {
-            showToolbar = true
+        override fun reduce(state: HomeViewState) = state.copy(
+            showToolbar = true,
             showScanPetButton = false
-        }
+        )
     }
 
     object HidePetScanner : HomeViewStateReducer() {
-        override val reduce: HomeViewState.() -> Unit = {
-            showToolbar = false
+        override fun reduce(state: HomeViewState) = state.copy(
+            showToolbar = false,
             showScanPetButton = true
-        }
+        )
     }
 }

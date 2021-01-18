@@ -37,9 +37,6 @@ class GalleryViewModel(
     private val dispatcher: CoroutineDispatcher
 ) : StateViewModel<GalleryViewState, GalleryViewEffect>(GalleryViewState()), CoroutineScope, LifecycleOwner {
 
-    fun getStateStream() = viewState
-    fun getEffectStream() = viewEffect
-
     private val lifecycleRegistry = LifecycleRegistry(this)
 
     init {

@@ -61,7 +61,7 @@ class ProfileNotificationsFragment : NavigationFragment(), CoroutineScope {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             notificationsListEmpty.isVisible = it.emptyNotifications
             notificationsAdapter.submitList(it.notifications)
             refresh.isRefreshing = it.loadingNotifications

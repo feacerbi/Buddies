@@ -11,50 +11,49 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
     data class ShowInfo(
         val user: User?
     ) : ProfileViewStateReducer() {
-        override val reduce: ProfileViewState.() -> Unit = {
-            name = user?.info?.name ?: ""
-            email = user?.info?.email ?: ""
-            photo = user?.info?.photo?.toUri() ?: Uri.EMPTY
+        override fun reduce(state: ProfileViewState) = state.copy(
+            name = user?.info?.name ?: "",
+            email = user?.info?.email ?: "",
+            photo = user?.info?.photo?.toUri() ?: Uri.EMPTY,
             loadingInfo = false
-        }
+        )
     }
 
     data class ShowNotifications(
         val list: List<UserNotification>?
     ) : ProfileViewStateReducer() {
-        override val reduce: ProfileViewState.() -> Unit = {
-            notifications = list ?: listOf()
-            emptyNotifications = notifications.isEmpty()
+        override fun reduce(state: ProfileViewState) = state.copy(
+            notifications = list ?: listOf(),
+            emptyNotifications = list.isNullOrEmpty(),
             loadingNotifications = false
-        }
+        )
     }
 
     data class NotificationRemoved(
         val notification: UserNotification
     ) : ProfileViewStateReducer() {
-        override val reduce: ProfileViewState.() -> Unit = {
-            notifications = notifications.minus(notification)
-            emptyNotifications = notifications.isEmpty()
-        }
+        override fun reduce(state: ProfileViewState) = state.copy(
+            notifications = state.notifications.minus(notification),
+            emptyNotifications = state.notifications.minus(notification).isEmpty()
+        )
     }
 
     object InfoLoading : ProfileViewStateReducer() {
-        override val reduce: ProfileViewState.() -> Unit = {
+        override fun reduce(state: ProfileViewState) = state.copy(
             loadingInfo = true
-        }
+        )
     }
 
     object NotificationsLoading : ProfileViewStateReducer() {
-        override val reduce: ProfileViewState.() -> Unit = {
+        override fun reduce(state: ProfileViewState) = state.copy(
             loadingNotifications = true
-        }
+        )
     }
 
     object ShowError : ProfileViewStateReducer() {
-        override val reduce: ProfileViewState.() -> Unit = {
-            loadingInfo = false
+        override fun reduce(state: ProfileViewState) = state.copy(
+            loadingInfo = false,
             loadingNotifications = false
-            emptyNotifications = notifications.isEmpty()
-        }
+        )
     }
 }

@@ -9,19 +9,17 @@ import com.buddies.common.viewstate.ViewState
 import com.buddies.common.viewstate.ViewStateReducer
 
 abstract class StateViewModel<VS : ViewState, VE : ViewEffect>(
-    initialState: VS
+    private val initialState: VS
 ) : ViewModel() {
 
     private val viewStateMutable = MutableLiveData(initialState)
     private val viewEffectMutable = SingleLiveEvent<VE>()
 
-    protected val viewState: LiveData<VS> = viewStateMutable
-    protected val viewEffect: LiveData<VE> = viewEffectMutable
+    val viewState: LiveData<VS> = viewStateMutable
+    val viewEffect: LiveData<VE> = viewEffectMutable
 
     protected fun updateState(reducer: ViewStateReducer<VS>) {
-        viewStateMutable.value = viewStateMutable.value?.apply {
-            reducer.reduce(this)
-        }
+        viewStateMutable.value = reducer.reduce(viewStateMutable.value ?: initialState)
     }
 
     protected fun updateEffect(effect: VE) {

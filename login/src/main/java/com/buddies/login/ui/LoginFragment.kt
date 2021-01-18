@@ -51,11 +51,11 @@ class LoginFragment : NavigationFragment() {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             signInButton.isVisible = it.showSignInButton
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is RequestLogin -> requestLogin(it.intent)
                 is Navigate -> navigate(it.direction)

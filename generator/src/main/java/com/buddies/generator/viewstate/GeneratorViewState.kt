@@ -4,15 +4,15 @@ import android.net.Uri
 import androidx.annotation.StringRes
 import com.buddies.common.viewstate.ViewState
 
-class GeneratorViewState(
-    var enableGenerateButton: Boolean = false,
-    var enableAddButton: Boolean = false,
-    var syncProgress: Boolean = false,
-    var generateProgress: Boolean = false,
-    var generatedQrTag: Uri? = null,
-    var generatedValue: String = "",
-    var generatedEncrypted: String = "",
-    var enableShareButton: Boolean = false,
-    var enableCopyButtons: Boolean = false,
-    @StringRes var error: Int? = null
+data class GeneratorViewState(
+    val enableGenerateButton: Boolean = false,
+    val enableAddButton: Boolean = false,
+    val syncProgress: Boolean = false,
+    val generateProgress: Boolean = false,
+    val generatedQrTag: Uri? = null,
+    val generatedValue: String = "",
+    val generatedEncrypted: String = "",
+    val enableShareButton: Boolean = false,
+    val enableCopyButtons: Boolean = false,
+    @StringRes val error: Int? = null
 ) : ViewState

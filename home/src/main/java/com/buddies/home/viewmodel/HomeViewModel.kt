@@ -29,7 +29,6 @@ import com.buddies.home.viewstate.HomeViewEffect.ShowShareInfoDialog
 import com.buddies.home.viewstate.HomeViewEffect.StopPetScanner
 import com.buddies.home.viewstate.HomeViewState
 import com.buddies.home.viewstate.HomeViewStateReducer.HidePetScanner
-import com.buddies.home.viewstate.HomeViewStateReducer.IdleHome
 import com.buddies.home.viewstate.HomeViewStateReducer.ShowPetScanner
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
@@ -37,13 +36,6 @@ import kotlin.coroutines.CoroutineContext
 class HomeViewModel(
     private val homeUseCases: HomeUseCases
 ) : StateViewModel<HomeViewState, HomeViewEffect>(HomeViewState()), CoroutineScope {
-
-    fun getStateStream() = viewState
-    fun getEffectStream() = viewEffect
-
-    init {
-        updateState(IdleHome)
-    }
 
     fun perform(action: Action) {
         when (action) {

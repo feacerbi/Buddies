@@ -1,5 +1,5 @@
 package com.buddies.common.viewstate
 
 interface ViewStateReducer<VS : ViewState> {
-    val reduce: VS.() -> Unit
+    fun reduce(state: VS): VS
 }

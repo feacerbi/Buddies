@@ -20,7 +20,6 @@ import com.buddies.login.viewstate.LoginViewEffect.Navigate
 import com.buddies.login.viewstate.LoginViewEffect.RequestLogin
 import com.buddies.login.viewstate.LoginViewEffect.ShowError
 import com.buddies.login.viewstate.LoginViewState
-import com.buddies.login.viewstate.LoginViewStateReducer.ShowLoginOptions
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.coroutines.CoroutineScope
@@ -30,13 +29,6 @@ import kotlin.coroutines.CoroutineContext
 class LoginViewModel(
     private val useCases: LoginUseCases
 ) : StateViewModel<LoginViewState, LoginViewEffect>(LoginViewState()), CoroutineScope {
-
-    fun getStateStream() = viewState
-    fun getEffectStream() = viewEffect
-
-    init {
-        updateState(ShowLoginOptions)
-    }
 
     fun perform(action: Action) {
         when (action) {

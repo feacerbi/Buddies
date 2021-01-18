@@ -38,9 +38,6 @@ class ProfileViewModel(
     private val profileUseCases: ProfileUseCases
 ) : StateViewModel<ProfileViewState, ProfileViewEffect>(ProfileViewState()), CoroutineScope {
 
-    fun getStateStream() = viewState
-    fun getEffectStream() = viewEffect
-
     init {
         refreshUser()
         refreshNotifications()

@@ -71,13 +71,13 @@ class HomeFragment : NavigationFragment() {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             TransitionManager.beginDelayedTransition(root)
             toolbar.isVisible = it.showToolbar
             scanPetButton.isVisible = it.showScanPetButton
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is StopPetScanner -> stopScanner()
                 is ShowPetDialog -> showScannedPetBottomSheet(it.pet)

@@ -79,7 +79,7 @@ class GeneratorActivity : AppCompatActivity() {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             generateButton.isEnabled = it.enableGenerateButton
             addToDbButton.isEnabled = it.enableAddButton
             shareQrButton.isEnabled = it.enableShareButton
@@ -93,7 +93,7 @@ class GeneratorActivity : AppCompatActivity() {
             inputLayout.error = getStringOrNull(it.error)
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is SetNewValue -> input.setText(it.value)
                 is ShareImage -> shareImage(it.intent)

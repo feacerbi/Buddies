@@ -59,7 +59,7 @@ class ProfileInfoFragment : NavigationFragment(), CoroutineScope {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             profileName.text = it.name
             profileEmail.text = it.email
             refresh.isRefreshing = it.loadingInfo

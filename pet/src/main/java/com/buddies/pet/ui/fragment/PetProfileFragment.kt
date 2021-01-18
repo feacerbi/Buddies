@@ -133,7 +133,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
     }
 
     private fun bindViews() = with (binding) {
-        observe(viewModel.getStateStream()) {
+        observe(viewModel.viewState) {
             petPicture.load(it.photo, this@PetProfileFragment)
             petPicture.setOnClickListener { _ -> navigateToFullscreen(petPicture, it.photo) }
             profileName.text = it.name
@@ -164,7 +164,7 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             refresh.isRefreshing = it.loading
         }
 
-        observe(viewModel.getEffectStream()) {
+        observe(viewModel.viewEffect) {
             when (it) {
                 is ShowAnimalsList -> openAnimalsList(it.list)
                 is ShowBreedsList -> openBreedsList(it.list, it.animal)
