@@ -3,6 +3,8 @@ package com.buddies.pet.ui.adapter
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.model.Owner
 import com.buddies.common.model.OwnershipAccess.EDIT_ALL
@@ -16,17 +18,15 @@ import com.buddies.pet.ui.adapter.OwnersAdapter.OwnersViewHolder
 
 class OwnersAdapter(
     private val lifecycleOwner: LifecycleOwner,
-    owners: List<Owner>? = null,
-    private val currentOwnership: OwnershipInfo,
     private val onClick: ((Owner) -> Unit)?,
     private val onOwnershipClick: ((Owner) -> Unit)?
-) : RecyclerView.Adapter<OwnersViewHolder>() {
+) : ListAdapter<Owner, OwnersViewHolder>(OwnersDiffUtil()) {
 
-    private val ownersList = mutableListOf<Owner>()
+    var currentOwnership: OwnershipInfo? = null
 
-    init {
-        if (owners != null) ownersList.addAll(owners)
-        sortCurrentOwnerFirst()
+    override fun submitList(list: MutableList<Owner>?, commitCallback: Runnable?) {
+        sortCurrentOwnerFirst(list)
+        super.submitList(list, commitCallback)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OwnersViewHolder =
@@ -34,22 +34,22 @@ class OwnersAdapter(
             OwnerListItemBinding.inflate(parent.inflater(), parent, false)
         )
 
-    override fun getItemCount(): Int = ownersList.size
-
     override fun onBindViewHolder(holder: OwnersViewHolder, position: Int) {
-        holder.bind(ownersList[position])
+        holder.bind(position)
     }
 
-    private fun sortCurrentOwnerFirst() =
-        ownersList.sortByDescending { it.user.id == currentOwnership.userId }
+    private fun sortCurrentOwnerFirst(list: MutableList<Owner>?) =
+        list?.sortByDescending { it.user.id == currentOwnership?.userId }
 
     inner class OwnersViewHolder(
         private val binding: OwnerListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            owner: Owner
+            position: Int
         ) = with (binding) {
+            val owner = getItem(position)
+
             root.setOnClickListener { onClick?.invoke(owner) }
 
             ownerIcon.load(owner.user.info.photo, lifecycleOwner) {
@@ -60,13 +60,23 @@ class OwnersAdapter(
             ownerName.text = owner.user.info.name
             ownerOwnership.text = root.context.resources.getString(owner.category.title)
 
+            // TODO Move to a security class: safer, testable and avoids duplication
             editOwnership.isVisible =
-                owner.user.id != currentOwnership.userId
-                        && currentOwnership.category.toOwnershipCategory().access == EDIT_ALL
+                currentOwnership?.userId != null
+                    && currentOwnership?.userId != owner.user.id
+                    && currentOwnership?.category?.toOwnershipCategory()?.access == EDIT_ALL
 
             editOwnership.setOnClickListener {
                 onOwnershipClick?.invoke(owner)
             }
         }
+    }
+
+    private class OwnersDiffUtil : DiffUtil.ItemCallback<Owner>() {
+        override fun areItemsTheSame(oldItem: Owner, newItem: Owner): Boolean =
+            oldItem.user.id == newItem.user.id
+
+        override fun areContentsTheSame(oldItem: Owner, newItem: Owner): Boolean =
+            oldItem.category == newItem.category
     }
 }

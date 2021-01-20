@@ -71,6 +71,12 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         perform(ChangePhoto(it))
     }
 
+    private val ownersAdapter = OwnersAdapter(
+        this@PetProfileFragment,
+        onClick = { owner -> perform(OpenOwnerProfile(owner)) },
+        onOwnershipClick = { owner -> showEditOwnershipBottomSheet(owner) }
+    )
+
     private var changeTagDialog: ChangeTagBottomDialog? = null
 
     override fun onCreateView(
@@ -130,6 +136,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         profileTagEdit.setOnClickListener {
             openChangeTagDialog()
         }
+
+        ownersList.adapter = ownersAdapter
     }
 
     private fun bindViews() = with (binding) {
@@ -152,14 +160,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             toolbar.inflateMenu(it.toolbarMenu)
             changeTagDialog?.enableConfirmButton(it.tagValid)
             changeTagDialog?.setResult(getString(it.tagResult))
-            // TODO Set items with diff
-            ownersList.adapter = OwnersAdapter(
-                this@PetProfileFragment,
-                it.owners,
-                it.ownershipInfo,
-                onClick = { owner -> perform(OpenOwnerProfile(owner)) },
-                onOwnershipClick = { owner -> showEditOwnershipBottomSheet(owner) }
-            )
+            ownersAdapter.currentOwnership = it.ownershipInfo
+            ownersAdapter.submitList(it.owners)
             ownersPagingAdapter.submitData(lifecycle, it.pagingData)
             refresh.isRefreshing = it.loading
         }
