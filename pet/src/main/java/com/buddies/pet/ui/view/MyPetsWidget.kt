@@ -11,8 +11,8 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionManager
+import com.buddies.common.model.Buddy
 import com.buddies.common.model.DefaultError
-import com.buddies.common.model.Pet
 import com.buddies.common.util.inflater
 import com.buddies.common.util.safeLaunch
 import com.buddies.pet.R
@@ -38,7 +38,7 @@ class MyPetsWidget @JvmOverloads constructor(
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
-    private lateinit var adapter: MyPetsAdapter
+    private var adapter: MyPetsAdapter? = null
 
     private var onExpandedListener: ((Boolean) -> Unit)? = null
     private var onNewPetListener: (() -> Unit)? = null
@@ -63,8 +63,8 @@ class MyPetsWidget @JvmOverloads constructor(
         styleAttrs.recycle()
     }
 
-    fun addOnPetClickListener(onClick: (Pet) -> Unit) {
-        adapter.onPetClick = onClick
+    fun addOnPetClickListener(onClick: (Buddy) -> Unit) {
+        adapter?.onPetClick = onClick
     }
 
     fun addNewPetClickListener(onClick: () -> Unit) {
@@ -82,7 +82,7 @@ class MyPetsWidget @JvmOverloads constructor(
 
     fun isExpanded() = binding.motion.progress == 1F
 
-    fun refresh() = addPets()
+    fun refresh() = reloadBuddies()
 
     fun setup(lifecycleOwner: LifecycleOwner) = with (binding) {
 
@@ -129,9 +129,7 @@ class MyPetsWidget @JvmOverloads constructor(
     }
 
     private fun transitionBack() = with (binding) {
-        adapter.isBig = false
-        petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
-        adapter.notifyItemRangeChanged(0, adapter.itemCount)
+        changeGridSize(big = false)
         motion.transitionToStart()
     }
 
@@ -149,30 +147,33 @@ class MyPetsWidget @JvmOverloads constructor(
         petsToolbar.isEnabled = true
 
         if (animate) TransitionManager.beginDelayedTransition(motion)
-        adapter.isBig = true
-        petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
-        adapter.notifyItemRangeChanged(0, adapter.itemCount)
+        changeGridSize(big = true)
     }
 
-    private fun addPets() = scope.safeLaunch(::showError) {
-        val pets = petUseCases.getPetsFromCurrentUser()
+    private fun changeGridSize(big: Boolean) = with (binding) {
+        adapter?.isBig = big
+        petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
+        adapter?.notifyItemRangeChanged(0, adapter?.itemCount ?: 0)
+    }
 
-        adapter.setItems(pets)
+    private fun reloadBuddies() = scope.safeLaunch(::showError) {
+        val buddies = petUseCases.getBuddiesFromCurrentUser()
+
+        adapter?.submitList(buddies)
         binding.petsList.layoutManager = GridLayoutManager(context, calculateSpanCount())
-        adapter.notifyItemRangeChanged(0, adapter.itemCount)
 
-        updatePetsCount(adapter.itemCount)
+        updatePetsCount(adapter?.itemCount ?: 0)
     }
 
     private fun calculateSpanCount(): Int {
         val maxSpan = context.resources.getInteger(R.integer.mypets_widget_small_span_count)
 
         return when {
-            adapter.isBig -> {
+            adapter?.isBig == true -> {
                 context.resources.getInteger(R.integer.mypets_widget_big_span_count)
             }
-            adapter.itemCount in 1 until maxSpan -> {
-                adapter.itemCount
+            adapter?.itemCount in 1 until maxSpan -> {
+                adapter?.itemCount ?: 0
             }
             else -> {
                 maxSpan
@@ -184,7 +185,7 @@ class MyPetsWidget @JvmOverloads constructor(
         count: Int
     ) = with (binding) {
         petsCount.text = count.toString()
-        petsListEmpty.alpha = if (adapter.itemCount == 0) 0.8F else 0F
+        petsListEmpty.alpha = if (adapter?.itemCount == 0) 0.8F else 0F
     }
 
     private fun showError(error: DefaultError) {
@@ -224,7 +225,7 @@ class MyPetsWidget @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        scope.safeLaunch(::showError) { addPets() }
+        scope.safeLaunch(::showError) { reloadBuddies() }
     }
 
     override fun onDetachedFromWindow() {

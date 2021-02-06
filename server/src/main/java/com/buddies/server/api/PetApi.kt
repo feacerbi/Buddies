@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.buddies.common.model.Buddy
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.ErrorCode.ACCESS_DENIED
@@ -47,9 +48,9 @@ class PetApi(
     private val notificationsRepository: NotificationsRepository
 ): BaseApi() {
 
-    suspend fun getPetsFromCurrentUser() = getPetsFromUser(usersRepository.getCurrentUserId())
+    suspend fun getBuddiesFromCurrentUser() = getBuddiesFromUser(usersRepository.getCurrentUserId())
 
-    suspend fun getPetsFromUser(
+    suspend fun getBuddiesFromUser(
         userId: String
     ) = runWithResult {
         val ownerships = ownershipsRepository.getUserOwnerships(userId)
@@ -57,9 +58,12 @@ class PetApi(
             .toOwnerships()
 
         ownerships.map { ownership ->
-            petsRepository.getPet(ownership.info.petId)
+            Buddy(
+                petsRepository.getPet(ownership.info.petId)
                 .handleTaskResult()
-                .toPet()
+                .toPet(),
+                ownership.info.category.toOwnershipCategory()
+            )
         }
     }
 

@@ -15,12 +15,12 @@ class PetUseCases(
     private val animalApi: AnimalApi
 ) : BaseUseCases() {
 
-    suspend fun getPetsFromCurrentUser() = request {
-        petApi.getPetsFromCurrentUser()
+    suspend fun getBuddiesFromCurrentUser() = request {
+        petApi.getBuddiesFromCurrentUser()
     }
 
     suspend fun getPetsFromUser(user: User) = request {
-        petApi.getPetsFromUser(user.id)
+        petApi.getBuddiesFromUser(user.id)
     }
 
     suspend fun getOwnersFromPet(petId: String) = request {

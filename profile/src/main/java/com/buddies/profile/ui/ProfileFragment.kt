@@ -83,7 +83,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         myPetsWidget.apply {
             setup(this@ProfileFragment)
             addBackPressedHandler(viewLifecycleOwner, requireActivity().onBackPressedDispatcher)
-            addOnPetClickListener { perform(OpenPetProfile(it.id)) }
+            addOnPetClickListener { perform(OpenPetProfile(it.pet.id)) }
             addNewPetClickListener { perform(OpenNewPetFlow) }
             setExpanded(expandedWidget)
         }
