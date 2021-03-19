@@ -21,6 +21,7 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
         val animalAndBreed: Pair<Animal, Breed>?,
         val ownersList: List<Owner>?,
         val currentOwnership: OwnershipInfo?,
+        val isFavorite: Boolean?,
         val petTag: Tag?
     ) : PetProfileViewStateReducer() {
         override fun reduce(state: PetProfileViewState) = state.copy(
@@ -42,6 +43,8 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
             },
             ownershipInfo = currentOwnership ?: OwnershipInfo(),
             owners = ownersList ?: emptyList(),
+            hideFavorite = ownersList?.any { it.user.id == currentOwnership?.userId } ?: true,
+            favoriteIcon = if (isFavorite == true) R.drawable.ic_baseline_favorite else R.drawable.ic_baseline_favorite_border,
             loading = false
         )
     }
@@ -77,6 +80,20 @@ sealed class PetProfileViewStateReducer : ViewStateReducer<PetProfileViewState> 
         override fun reduce(state: PetProfileViewState) = state.copy(
             lost = true,
             lostStatus = R.string.pet_lost_status
+        )
+    }
+
+    object EnableFavoritePet : PetProfileViewStateReducer() {
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            favoriteIcon = R.drawable.ic_baseline_favorite,
+            loading = false
+        )
+    }
+
+    object DisableFavoritePet : PetProfileViewStateReducer() {
+        override fun reduce(state: PetProfileViewState) = state.copy(
+            favoriteIcon = R.drawable.ic_baseline_favorite_border,
+            loading = false
         )
     }
 

@@ -102,7 +102,7 @@ class GalleryUseCases(
             sendBlocking(if (it.size > 0) it[0].state else WorkInfo.State.CANCELLED)
         }
 
-        awaitClose()
+        awaitClose { workInfosFuture.removeObservers(lifecycleOwner) }
     }.flowOn(Dispatchers.Main)
 
     companion object {

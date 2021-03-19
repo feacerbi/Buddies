@@ -1,6 +1,7 @@
 package com.buddies.pet.viewstate
 
 import android.net.Uri
+import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
 import androidx.paging.PagingData
@@ -27,5 +28,7 @@ data class PetProfileViewState(
     val ownershipInfo: OwnershipInfo = OwnershipInfo(),
     val owners: List<Owner> = emptyList(),
     val pagingData: PagingData<Owner> = PagingData.empty(),
+    val hideFavorite: Boolean = true,
+    @DrawableRes val favoriteIcon: Int = R.drawable.ic_baseline_favorite_border,
     val loading: Boolean = false
 ) : ViewState

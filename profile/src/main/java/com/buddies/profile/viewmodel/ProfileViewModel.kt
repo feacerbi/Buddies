@@ -2,8 +2,11 @@ package com.buddies.profile.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.InviteNotification
+import com.buddies.common.model.PetFavorite
 import com.buddies.common.model.PetFoundNotification
 import com.buddies.common.model.UserNotification
 import com.buddies.common.navigation.Navigator.NavDirection.ProfileToLogin
@@ -14,6 +17,7 @@ import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.profile.usecase.ProfileUseCases
 import com.buddies.profile.util.toContactInfo
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.AcceptNotification
+import com.buddies.profile.viewmodel.ProfileViewModel.Action.AddFavorite
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.ChangeName
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.ChangePhoto
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.IgnoreNotification
@@ -21,8 +25,10 @@ import com.buddies.profile.viewmodel.ProfileViewModel.Action.NotificationIconCli
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.NotificationInfoClick
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.OpenNewPetFlow
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.OpenPetProfile
+import com.buddies.profile.viewmodel.ProfileViewModel.Action.RefreshFavorites
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.RefreshInfo
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.RefreshNotifications
+import com.buddies.profile.viewmodel.ProfileViewModel.Action.RemoveFavorite
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.SignOut
 import com.buddies.profile.viewstate.ProfileViewEffect
 import com.buddies.profile.viewstate.ProfileViewEffect.Navigate
@@ -32,14 +38,19 @@ import com.buddies.profile.viewstate.ProfileViewEffect.ShowError
 import com.buddies.profile.viewstate.ProfileViewState
 import com.buddies.profile.viewstate.ProfileViewStateReducer.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalCoroutinesApi
 class ProfileViewModel(
     private val profileUseCases: ProfileUseCases
 ) : StateViewModel<ProfileViewState, ProfileViewEffect>(ProfileViewState()), CoroutineScope {
 
     init {
         refreshUser()
+        refreshFavorites()
         refreshNotifications()
     }
 
@@ -47,14 +58,17 @@ class ProfileViewModel(
         when (action) {
             is RefreshInfo -> refreshUser()
             is RefreshNotifications -> refreshNotifications()
-            is NotificationIconClick -> handleIconClick(action.notification)
+            is RefreshFavorites -> refreshFavorites()
             is OpenPetProfile -> openPetProfile(action.petId)
             is OpenNewPetFlow -> openNewPetFlow()
             is ChangeName -> updateName(action.name)
             is ChangePhoto -> updatePhoto(action.photo)
             is IgnoreNotification -> ignoreNotification(action.notification)
             is AcceptNotification -> acceptNotification(action.notification)
+            is NotificationIconClick -> handleIconClick(action.notification)
             is NotificationInfoClick -> handleShowInfoClick(action.notification)
+            is AddFavorite -> addFavoritePet(action.favorite)
+            is RemoveFavorite -> removeFavoritePet(action.favorite)
             is SignOut -> logout()
         }
     }
@@ -100,6 +114,25 @@ class ProfileViewModel(
         updateEffect(RefreshPets)
     }
 
+    private fun refreshFavorites() = safeLaunch(::showError) {
+        updateState(FavoritesLoading)
+
+        profileUseCases.listenForUserFavorites()
+            .cachedIn(this)
+            .collectLatest {
+                updateState(ShowFavorites(it))
+            }
+    }
+
+    private fun addFavoritePet(favorite: PetFavorite) = safeLaunch(::showError) {
+        profileUseCases.addFavorite(favorite)
+    }
+
+    private fun removeFavoritePet(favorite: PetFavorite) = safeLaunch(::showError) {
+        profileUseCases.removeFavorite(favorite)
+        refreshFavorites()
+    }
+
     private fun ignoreNotification(notification: UserNotification) = safeLaunch(::showError) {
         updateState(NotificationRemoved(notification))
         profileUseCases.ignoreInvitation(notification.id)
@@ -128,6 +161,7 @@ class ProfileViewModel(
     sealed class Action {
         object RefreshInfo : Action()
         object RefreshNotifications : Action()
+        object RefreshFavorites : Action()
         object OpenNewPetFlow : Action()
         object SignOut : Action()
         data class ChangeName(val name: String) : Action()
@@ -137,6 +171,8 @@ class ProfileViewModel(
         data class IgnoreNotification(val notification: UserNotification) : Action()
         data class NotificationInfoClick(val notification: PetFoundNotification) : Action()
         data class AcceptNotification(val notification: InviteNotification) : Action()
+        data class AddFavorite(val favorite: PetFavorite) : Action()
+        data class RemoveFavorite(val favorite: PetFavorite) : Action()
     }
 
     override val coroutineContext: CoroutineContext

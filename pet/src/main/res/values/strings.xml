@@ -39,7 +39,7 @@
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>
-    <string name="pet_name_icon_content_description">Pet name icon</string>
+    <string name="pet_favorite_icon_content_description">Pet favorite icon</string>
     <string name="profile_name_edit_icon_content_description">Pet name edit icon</string>
     <string name="pet_animal_icon_content_description">Pet animal icon</string>
     <string name="pet_animal_edit_icon_content_description">Pet animal edit icon</string>

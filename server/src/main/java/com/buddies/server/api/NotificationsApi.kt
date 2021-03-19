@@ -42,7 +42,8 @@ class NotificationsApi(
     @ExperimentalCoroutinesApi
     suspend fun listenForCurrentUserNotifications(
     ): Flow<Result<List<UserNotification>?>> = callbackFlow<Result<List<Notification>>> {
-        notificationsRepository.queryCurrentUserNotifications().addSnapshotListener { snapshot, exception ->
+
+        val registration = notificationsRepository.queryCurrentUserNotifications().addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 sendBlocking(Fail(exception.toDefaultError()))
             }
@@ -53,7 +54,8 @@ class NotificationsApi(
                 sendBlocking(Fail(e.toDefaultError()))
             }
         }
-        awaitClose()
+
+        awaitClose { registration.remove() }
     }.map { result ->
         result.mapResult { list ->
             list?.map {

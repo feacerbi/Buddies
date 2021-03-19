@@ -7,6 +7,8 @@ import com.buddies.common.model.BreedInfo
 import com.buddies.common.model.DocumentTransformationException
 import com.buddies.common.model.EncryptionKey
 import com.buddies.common.model.EncryptionKeyInfo
+import com.buddies.common.model.Favorite
+import com.buddies.common.model.FavoriteInfo
 import com.buddies.common.model.Owner
 import com.buddies.common.model.Ownership
 import com.buddies.common.model.OwnershipInfo
@@ -75,6 +77,10 @@ fun QuerySnapshot.toUsers() = documents.map { doc ->
 
 fun QuerySnapshot.toNotifications() = documents.map { doc ->
     Notification(doc.id, doc.to(NotificationInfo::class))
+}
+
+fun QuerySnapshot.toFavorites() = documents.map { doc ->
+    Favorite(doc.id, doc.to(FavoriteInfo::class))
 }
 
 fun ListResult.toStoragePictures() = items.map {

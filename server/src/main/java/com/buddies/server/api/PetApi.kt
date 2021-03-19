@@ -26,6 +26,7 @@ import com.buddies.server.repository.OwnershipsRepository
 import com.buddies.server.repository.PetsRepository
 import com.buddies.server.repository.TagsRepository
 import com.buddies.server.repository.UsersRepository
+import com.buddies.server.util.BaseDataSource.Companion.DEFAULT_PAGE_SIZE
 import com.buddies.server.util.OwnersDataSource
 import com.buddies.server.util.getDownloadUrl
 import com.buddies.server.util.toAnimal
@@ -338,9 +339,5 @@ class PetApi(
             is Success -> if (data == false) throw DefaultErrorException(DefaultError(ACCESS_DENIED))
             is Fail -> throw DefaultErrorException(error)
         }
-    }
-
-    companion object {
-        private const val DEFAULT_PAGE_SIZE = 10
     }
 }

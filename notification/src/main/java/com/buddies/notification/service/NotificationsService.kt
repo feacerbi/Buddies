@@ -20,6 +20,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
@@ -41,8 +42,9 @@ class NotificationsService : Service() {
     private fun startListenForUnreadNotifications() = scope.safeLaunch(::handleError) {
         notificationsApi.listenForCurrentUserNotifications()
             .flowOn(Dispatchers.IO)
-            .collect { result ->
-                val unreadNotifications = result.handleResult()?.filter {
+            .map { it.handleResult() }
+            .collect { list ->
+                val unreadNotifications = list?.filter {
                     it.unread
                 }
 

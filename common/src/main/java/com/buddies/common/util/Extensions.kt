@@ -29,6 +29,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.R
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
+import com.buddies.common.model.ErrorCode
+import com.buddies.common.model.ErrorCode.RESULT_NULL
 import com.buddies.common.model.Result
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.CoroutineScope
@@ -126,6 +128,12 @@ fun Fragment.getQuantityString(
 fun <T> Result<T>.handleResult(
 ) = when (this) {
     is Result.Success -> data
+    is Result.Fail -> throw DefaultErrorException(error)
+}
+
+fun <T> Result<T>.handleNonNullResult(
+) = when (this) {
+    is Result.Success -> data ?: throw DefaultErrorException(DefaultError(RESULT_NULL))
     is Result.Fail -> throw DefaultErrorException(error)
 }
 

@@ -18,13 +18,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:paddingTop="@dimen/margin_medium"
+            android:paddingTop="@dimen/margin_small"
             android:paddingBottom="@dimen/notifications_list_bottom_padding"
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/notifications_list_empty"
+            android:id="@+id/favorites_list_empty"
             style="@style/Body2"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -37,7 +37,7 @@
             android:gravity="center"
             android:alpha="0.5"
             android:background="?attr/colorSurface"
-            android:text="@string/empty_notifications_list"/>
+            android:text="@string/empty_favorites_list"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

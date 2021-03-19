@@ -53,6 +53,7 @@ class PetProfileViewModel(
             is OpenScanner -> startScanner()
             is ConfirmLost -> confirmLost(action.name)
             is CancelLost -> cancelLost()
+            is ToggleFavorite -> toggleFavorite()
         }
     }
 
@@ -121,8 +122,9 @@ class PetProfileViewModel(
         )
         val owners = petUseCases.getOwnersFromPet(petId)
         val currentOwnership = petUseCases.getCurrentUserPetOwnership(petId)
+        val isPetFavorite = petUseCases.isPetFavorite(petId)
         val tag = petUseCases.getPetTag(pet?.info?.tag ?: "")
-        updateState(ShowInfo(pet, animalAndBreed, owners, currentOwnership, tag))
+        updateState(ShowInfo(pet, animalAndBreed, owners, currentOwnership, isPetFavorite, tag))
     }
 
     private fun openOwnerProfile(owner: Owner) {
@@ -157,6 +159,18 @@ class PetProfileViewModel(
                 .collectLatest {
                 updateState(ShowOwnersToInvite(it))
             }
+        }
+    }
+
+    private fun toggleFavorite() = safeLaunch(::showError) {
+        updateState(ShowLoading)
+        val isPetFavorite = petUseCases.isPetFavorite(petId)
+        if (isPetFavorite == true) {
+            petUseCases.removeFavorite(petId)
+            updateState(DisableFavoritePet)
+        } else {
+            petUseCases.addFavorite(petId)
+            updateState(EnableFavoritePet)
         }
     }
 
@@ -199,6 +213,7 @@ class PetProfileViewModel(
         data class ReportLost(val name: String, val lost: Boolean, val switchChecked: Boolean) : Action()
         data class ConfirmLost(val name: String) : Action()
         data class HandleTag(val tag: Tag?) : Action()
+        object ToggleFavorite : Action()
         object OpenScanner : Action()
         object CancelLost : Action()
         object RequestAnimals : Action()

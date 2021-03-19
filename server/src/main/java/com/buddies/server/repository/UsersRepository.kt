@@ -1,10 +1,13 @@
 package com.buddies.server.repository
 
 import android.net.Uri
+import com.buddies.common.model.FavoriteInfo
 import com.buddies.common.model.User
 import com.buddies.common.model.UserInfo
+import com.buddies.common.util.generateNewId
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Transaction
@@ -86,6 +89,48 @@ class UsersRepository {
             photo)
     }
 
+    fun getUserFavorites(
+        pageSize: Int,
+        start: DocumentSnapshot? = null
+    ): Task<QuerySnapshot> {
+        val favorites = db.collection(USERS_COLLECTION)
+            .document(getCurrentUserId())
+            .collection(FAVORITES_COLLECTION)
+            .limit(pageSize.toLong())
+
+        val pageQuery = if (start != null) favorites.startAfter(start) else favorites
+
+        return pageQuery.get()
+    }
+
+    fun addFavorite(
+        favoriteInfo: FavoriteInfo
+    ): Transaction.() -> Unit = {
+        set(
+            db.collection(USERS_COLLECTION).document(getCurrentUserId())
+                .collection(FAVORITES_COLLECTION)
+                .document(generateNewId()),
+            favoriteInfo)
+    }
+
+    fun removeFavorite(
+        favoriteId: String
+    ): Transaction.() -> Unit = {
+        delete(
+            db.collection(USERS_COLLECTION).document(getCurrentUserId())
+                .collection(FAVORITES_COLLECTION)
+                .document(favoriteId))
+    }
+
+    fun getFavorite(
+        petId: String
+    ): Task<QuerySnapshot> =
+        db.collection(USERS_COLLECTION)
+            .document(getCurrentUserId())
+            .collection(FAVORITES_COLLECTION)
+            .whereEqualTo(PET_ID_FIELD, petId)
+            .get()
+
     fun uploadImage(
         photoUri: Uri
     ): UploadTask =
@@ -108,6 +153,9 @@ class UsersRepository {
         private const val USERS_COLLECTION = "users"
         private const val NAME_FIELD = "name"
         private const val PHOTO_FIELD = "photo"
+
+        private const val FAVORITES_COLLECTION = "favorites"
+        private const val PET_ID_FIELD = "petId"
 
         private const val USERS_PATH = "users"
         private const val PROFILE_PATH = "profile"

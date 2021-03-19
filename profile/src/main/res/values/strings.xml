@@ -22,4 +22,6 @@
     <string name="email_action_message">Hey, I found your lost pet, please contact me through this email address.</string>
     <string name="contact_info_dialog_title">Contact Info</string>
     <string name="contact_info_dialog_content">This is the information provided by the person who found your pet.</string>
+    <string name="empty_favorites_list">No favorites</string>
+    <string name="favorites_tab_title">FAVORITES</string>
 </resources>

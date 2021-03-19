@@ -9,6 +9,6 @@ import org.koin.dsl.module
 
 @ExperimentalCoroutinesApi
 val petModule = module {
-    factory { PetUseCases(get(), get()) }
+    factory { PetUseCases(get(), get(), get()) }
     viewModel { params -> PetProfileViewModel(params[0], get(), Dispatchers.Main) }
 }

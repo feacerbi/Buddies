@@ -1,4 +1,4 @@
-package com.buddies.notification.ui
+package com.buddies.common.util
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.roundToInt
 
-class NotificationListDecoration(
+class HorizontalSeparatorListDecoration(
     context: Context
 ) : DividerItemDecoration(context, VERTICAL) {
 

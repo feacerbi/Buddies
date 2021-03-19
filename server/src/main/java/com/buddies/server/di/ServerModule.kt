@@ -1,6 +1,7 @@
 package com.buddies.server.di
 
 import com.buddies.server.api.AnimalApi
+import com.buddies.server.api.FavoritesApi
 import com.buddies.server.api.GeneratorApi
 import com.buddies.server.api.HomeApi
 import com.buddies.server.api.LoginApi
@@ -40,4 +41,5 @@ val serverModule = module {
     single { HomeApi(get(), get(), get(), get(), get()) }
     single { ScannerApi(get()) }
     single { GeneratorApi(get()) }
+    single { FavoritesApi(get()) }
 }

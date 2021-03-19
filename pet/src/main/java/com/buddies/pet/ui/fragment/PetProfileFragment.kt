@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -118,6 +119,10 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
         refresh.setOnRefreshListener { perform(Refresh) }
 
+        profileFavoriteIcon.setOnClickListener {
+            perform(ToggleFavorite)
+        }
+
         profileNameEdit.setOnClickListener {
             InputBottomSheet.Builder(layoutInflater)
                 .hint(getString(R.string.input_dialog_pet_name_hint))
@@ -163,6 +168,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             ownersAdapter.currentOwnership = it.ownershipInfo
             ownersAdapter.submitList(it.owners)
             ownersPagingAdapter.submitData(lifecycle, it.pagingData)
+            profileFavoriteIcon.isInvisible = it.hideFavorite
+            profileFavoriteIcon.setImageResource(it.favoriteIcon)
             refresh.isRefreshing = it.loading
         }
 

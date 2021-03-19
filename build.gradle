@@ -1,10 +1,10 @@
 buildscript {
     apply from: "common.gradle"
 
-    ext.gradle_version = '4.1.2'
+    ext.gradle_version = '4.1.3'
     ext.gms_version = '4.3.3'
     ext.gms_playservices_version = '19.0.0'
-    ext.kotlin_version = '1.4.21'
+    ext.kotlin_version = '1.4.31'
     ext.coroutines_version = '1.3.7'
     ext.appcompat_version = '1.2.0'
     ext.junit_version = '4.13.1'
@@ -15,14 +15,14 @@ buildscript {
     ext.fragment_ktx_version = '1.3.0-rc01'
     ext.constraint_version = '2.0.4'
     ext.recycler_version = '1.2.0-beta01'
-    ext.material_version = '1.3.0-beta01'
+    ext.material_version = '1.3.0'
     ext.swipe_refresh_version = '1.1.0'
     ext.navigation_version = '2.3.2'
-    ext.lifecycle_version = '2.3.0-rc01'
-    ext.paging_version = '3.0.0-alpha11'
+    ext.lifecycle_version = '2.3.0'
+    ext.paging_version = '3.0.0-beta02'
     ext.workmanager_version = '2.4.0'
     ext.room_version = '2.2.6'
-    ext.viewmodel_ktx_version = '2.3.0-rc01'
+    ext.viewmodel_ktx_version = '2.3.0'
     ext.security_version = '1.1.0-alpha03'
     ext.startup_version = '1.0.0-alpha03'
     ext.preference_version = '1.1.1'
@@ -62,7 +62,7 @@ allprojects {
 ext {
     androidCompileVersion = 30
     androidTargetSdkVersion = 30
-    androidMinSdkVersion = 21
+    androidMinSdkVersion = 23
     androidBuildToolsVersion = "30.0.3"
     projectVersionCode = 1
     projectVersionName = "1.0.0"

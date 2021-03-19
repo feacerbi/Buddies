@@ -6,32 +6,31 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/margin_tiny"
-    android:paddingEnd="@dimen/margin_tiny"
     android:paddingTop="@dimen/margin_small"
     android:paddingBottom="@dimen/margin_small"
     android:background="?selectableItemBackground">
 
     <ImageView
-        android:id="@+id/owner_icon"
+        android:id="@+id/pet_icon"
         android:layout_width="@dimen/owner_icon_size"
         android:layout_height="@dimen/owner_icon_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/margin_medium"
         android:background="@drawable/circular_background"
         android:padding="@dimen/icon_border"
         tools:src="@drawable/ic_baseline_person"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/owner_name"
+        android:id="@+id/pet_name"
         style="@style/Body1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/owner_ownership"
-        app:layout_constraintStart_toEndOf="@id/owner_icon"
-        app:layout_constraintEnd_toStartOf="@id/edit_ownership"
+        app:layout_constraintBottom_toTopOf="@id/pet_extra"
+        app:layout_constraintStart_toEndOf="@id/pet_icon"
+        app:layout_constraintEnd_toStartOf="@id/favorite_button"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_goneMarginEnd="@dimen/margin_medium"
         android:includeFontPadding="false"
@@ -42,13 +41,13 @@
         tools:text="Owner Name"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/owner_ownership"
+        android:id="@+id/pet_extra"
         style="@style/Body2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/owner_name"
-        app:layout_constraintStart_toStartOf="@id/owner_name"
-        app:layout_constraintEnd_toEndOf="@id/owner_name"
+        app:layout_constraintTop_toBottomOf="@id/pet_name"
+        app:layout_constraintStart_toStartOf="@id/pet_name"
+        app:layout_constraintEnd_toEndOf="@id/pet_name"
         app:layout_constraintBottom_toBottomOf="parent"
         android:includeFontPadding="false"
         android:maxLines="1"
@@ -56,10 +55,10 @@
         android:textColor="?attr/colorOnSurface"
         android:textSize="12sp"
         android:alpha="0.5"
-        tools:text="Owner"/>
+        android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/edit_ownership"
+        android:id="@+id/favorite_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +67,6 @@
         android:padding="@dimen/margin_medium"
         android:background="?selectableItemBackgroundBorderless"
         app:tint="?attr/colorSecondary"
-        android:src="@drawable/ic_edit"/>
+        android:src="@drawable/ic_baseline_favorite"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

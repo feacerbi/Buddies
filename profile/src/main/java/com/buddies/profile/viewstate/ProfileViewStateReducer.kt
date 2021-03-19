@@ -2,6 +2,9 @@ package com.buddies.profile.viewstate
 
 import android.net.Uri
 import androidx.core.net.toUri
+import androidx.paging.PagingData
+import com.buddies.common.model.Pet
+import com.buddies.common.model.PetFavorite
 import com.buddies.common.model.User
 import com.buddies.common.model.UserNotification
 import com.buddies.common.viewstate.ViewStateReducer
@@ -38,6 +41,15 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
         )
     }
 
+    data class ShowFavorites(
+        val data: PagingData<PetFavorite>
+    ) : ProfileViewStateReducer() {
+        override fun reduce(state: ProfileViewState) = state.copy(
+            favorites = data,
+            loadingFavorites = false
+        )
+    }
+
     object InfoLoading : ProfileViewStateReducer() {
         override fun reduce(state: ProfileViewState) = state.copy(
             loadingInfo = true
@@ -47,6 +59,12 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
     object NotificationsLoading : ProfileViewStateReducer() {
         override fun reduce(state: ProfileViewState) = state.copy(
             loadingNotifications = true
+        )
+    }
+
+    object FavoritesLoading : ProfileViewStateReducer() {
+        override fun reduce(state: ProfileViewState) = state.copy(
+            loadingFavorites = true
         )
     }
 

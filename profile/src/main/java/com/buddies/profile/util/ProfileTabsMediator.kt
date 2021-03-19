@@ -19,7 +19,7 @@ class ProfileTabsMediator(
 ) {
 
     private val strategy = TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-        tab.text = context.resources.getString(TAB.byPosition(position).title)
+        //tab.text = context.resources.getString(TAB.byPosition(position).title)
         tab.icon = ResourcesCompat.getDrawable(context.resources, TAB.byPosition(position).icon, context.theme)
         tab.removeBadge()
         if (position == NOTIFICATIONS_TAB.position && badgeNumber > 0) tab.orCreateBadge.apply {
@@ -31,24 +31,26 @@ class ProfileTabsMediator(
     fun updateBadge(number: Int) {
         badgeNumber = number
 
-        tabLayout.getTabAt(1)?.let {
-            strategy.onConfigureTab(it, 1)
+        tabLayout.getTabAt(NOTIFICATIONS_TAB.position)?.let {
+            strategy.onConfigureTab(it, NOTIFICATIONS_TAB.position)
         }
     }
 
     fun connect() = TabLayoutMediator(tabLayout, viewPager2, strategy).attach()
 
-    private enum class TAB(
+    internal enum class TAB(
         val position: Int,
         @StringRes val title: Int,
         @DrawableRes val icon: Int
     ) {
         INFO_TAB(0, R.string.info_tab_title, R.drawable.ic_baseline_person),
-        NOTIFICATIONS_TAB(1, R.string.notifications_tab_title, R.drawable.ic_baseline_notifications);
+        FAVORITES_TAB(1, R.string.favorites_tab_title, R.drawable.ic_baseline_favorite),
+        NOTIFICATIONS_TAB(2, R.string.notifications_tab_title, R.drawable.ic_baseline_notifications);
 
         companion object {
             fun byPosition(position: Int) = when (position) {
                 INFO_TAB.position -> INFO_TAB
+                FAVORITES_TAB.position -> FAVORITES_TAB
                 NOTIFICATIONS_TAB.position -> NOTIFICATIONS_TAB
                 else -> throw IllegalArgumentException("Illegal position $position, out of bounds (max: 1).")
             }
