@@ -18,9 +18,9 @@ import com.buddies.common.navigation.Navigator.NavDirection.ProfileToPetProfile
 import com.buddies.common.navigation.Navigator.NavDirection.SplashToHome
 import com.buddies.common.navigation.Navigator.NavDirection.SplashToLogin
 import com.buddies.gallery.ui.fragment.GalleryFragmentDirections.Companion.actionGalleryFragmentToFullscreenFragment
-import com.buddies.home.ui.HomeFragmentDirections.Companion.actionHomeFragmentToNewPetFlow
-import com.buddies.home.ui.HomeFragmentDirections.Companion.actionHomeFragmentToPetProfileFragment
-import com.buddies.home.ui.HomeFragmentDirections.Companion.actionHomeFragmentToProfileFragment
+import com.buddies.home.ui.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToNewPetFlow
+import com.buddies.home.ui.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToPetProfileFragment
+import com.buddies.home.ui.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToProfileFragment
 import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmentToHomeFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToHomeFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToLoginFragment
