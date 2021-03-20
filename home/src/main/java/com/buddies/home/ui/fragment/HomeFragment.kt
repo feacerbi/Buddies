@@ -1,4 +1,4 @@
-package com.buddies.home.ui
+package com.buddies.home.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +17,8 @@ import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.observe
 import com.buddies.home.R
 import com.buddies.home.databinding.FragmentHomeBinding
+import com.buddies.home.ui.bottomsheet.ScannedPetBottomSheet
+import com.buddies.home.ui.bottomsheet.ShareInfoBottomSheet
 import com.buddies.home.viewmodel.HomeViewModel
 import com.buddies.home.viewmodel.HomeViewModel.Action
 import com.buddies.home.viewmodel.HomeViewModel.Action.*

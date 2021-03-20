@@ -100,7 +100,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.buddies.home.ui.HomeFragment"
+        android:name="com.buddies.home.ui.fragment.HomeFragment"
         android:label="@string/home_name"
         tools:layout="@layout/fragment_home" >
         <action

@@ -34,8 +34,8 @@ import com.buddies.pet.ui.adapter.AnimalsAdapter
 import com.buddies.pet.ui.adapter.BreedsAdapter
 import com.buddies.pet.ui.adapter.OwnersAdapter
 import com.buddies.pet.ui.adapter.OwnersPagingAdapter
-import com.buddies.pet.ui.view.ChangeTagBottomDialog
-import com.buddies.pet.ui.view.OwnershipsBottomDialog
+import com.buddies.pet.ui.bottomsheet.ChangeTagBottomDialog
+import com.buddies.pet.ui.bottomsheet.OwnershipsBottomDialog
 import com.buddies.pet.viewmodel.PetProfileViewModel
 import com.buddies.pet.viewmodel.PetProfileViewModel.Action
 import com.buddies.pet.viewmodel.PetProfileViewModel.Action.*

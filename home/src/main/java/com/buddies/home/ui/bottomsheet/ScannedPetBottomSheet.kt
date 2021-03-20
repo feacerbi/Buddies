@@ -1,4 +1,4 @@
-package com.buddies.home.ui
+package com.buddies.home.ui.bottomsheet
 
 import android.net.Uri
 import android.view.LayoutInflater

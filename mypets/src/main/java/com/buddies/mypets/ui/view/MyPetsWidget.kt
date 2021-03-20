@@ -1,4 +1,4 @@
-package com.buddies.mypets
+package com.buddies.mypets.ui.view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,7 +15,10 @@ import com.buddies.common.model.Buddy
 import com.buddies.common.model.DefaultError
 import com.buddies.common.util.inflater
 import com.buddies.common.util.safeLaunch
+import com.buddies.mypets.R
 import com.buddies.mypets.databinding.MyPetsWidgetBinding
+import com.buddies.mypets.ui.adapter.MyPetsAdapter
+import com.buddies.mypets.usecase.MyPetsUseCases
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

@@ -1,4 +1,4 @@
-package com.buddies.profile.ui.view
+package com.buddies.profile.ui.bottomsheet
 
 import android.view.LayoutInflater
 import androidx.core.view.isVisible

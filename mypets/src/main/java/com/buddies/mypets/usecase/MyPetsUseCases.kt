@@ -1,4 +1,4 @@
-package com.buddies.mypets
+package com.buddies.mypets.usecase
 
 import com.buddies.common.model.User
 import com.buddies.common.usecase.BaseUseCases

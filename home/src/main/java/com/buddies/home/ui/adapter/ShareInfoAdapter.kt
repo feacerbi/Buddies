@@ -1,4 +1,4 @@
-package com.buddies.home.ui
+package com.buddies.home.ui.adapter
 
 import android.text.TextWatcher
 import android.view.ViewGroup

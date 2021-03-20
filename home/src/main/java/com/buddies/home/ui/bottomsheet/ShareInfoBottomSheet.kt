@@ -1,4 +1,4 @@
-package com.buddies.home.ui
+package com.buddies.home.ui.bottomsheet
 
 import android.text.InputType
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import com.buddies.home.R
 import com.buddies.home.databinding.ShareInfoLayoutBinding
 import com.buddies.home.model.ShareInfo
 import com.buddies.home.model.ShareInfoField
+import com.buddies.home.ui.adapter.ShareInfoAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShareInfoBottomSheet private constructor(

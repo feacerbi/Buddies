@@ -1,4 +1,4 @@
-package com.buddies.pet.ui.view
+package com.buddies.pet.ui.bottomsheet
 
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment

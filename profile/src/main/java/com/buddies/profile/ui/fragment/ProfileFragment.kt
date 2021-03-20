@@ -20,7 +20,7 @@ import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
 import com.buddies.profile.model.ContactInfo
-import com.buddies.profile.ui.view.ContactInfoBottomSheet
+import com.buddies.profile.ui.bottomsheet.ContactInfoBottomSheet
 import com.buddies.profile.ui.adapter.ProfileTabsAdapter
 import com.buddies.profile.util.ProfileTabsMediator
 import com.buddies.profile.viewmodel.ProfileViewModel
