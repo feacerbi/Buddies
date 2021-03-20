@@ -1,4 +1,4 @@
-package com.buddies.profile.ui
+package com.buddies.profile.ui.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.util.inflater
 import com.buddies.profile.databinding.ContactInfoItemBinding
 import com.buddies.profile.model.ContactInfoField
-import com.buddies.profile.ui.ContactInfoAdapter.ContactInfoViewHolder
+import com.buddies.profile.ui.adapter.ContactInfoAdapter.ContactInfoViewHolder
 
 class ContactInfoAdapter(
 ) : ListAdapter<ContactInfoField, ContactInfoViewHolder>(ContactInfoDiffUtil()) {

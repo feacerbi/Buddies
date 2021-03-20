@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.buddies.profile.ui.ProfileFragment"
+        android:name="com.buddies.profile.ui.fragment.ProfileFragment"
         android:label="@string/profile_name"
         tools:layout="@layout/fragment_profile" >
         <action

@@ -1,4 +1,4 @@
-package com.buddies.profile.ui
+package com.buddies.profile.ui.fragment
 
 import android.net.Uri
 import android.os.Bundle
@@ -20,15 +20,19 @@ import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
 import com.buddies.profile.model.ContactInfo
+import com.buddies.profile.ui.view.ContactInfoBottomSheet
+import com.buddies.profile.ui.adapter.ProfileTabsAdapter
 import com.buddies.profile.util.ProfileTabsMediator
 import com.buddies.profile.viewmodel.ProfileViewModel
 import com.buddies.profile.viewmodel.ProfileViewModel.Action
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.*
 import com.buddies.profile.viewstate.ProfileViewEffect.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalCoroutinesApi
 class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private lateinit var binding: FragmentProfileBinding

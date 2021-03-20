@@ -224,6 +224,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/profile_report_lost_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:padding="@dimen/margin_medium"
+                    
                     app:tint="?attr/colorSecondary"
                     android:checked="false"/>
 

@@ -1,4 +1,4 @@
-package com.buddies.profile.ui
+package com.buddies.profile.ui.view
 
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
@@ -15,6 +15,7 @@ import com.buddies.profile.model.EmailInfoField
 import com.buddies.profile.model.MapInfoField
 import com.buddies.profile.model.NameInfoField
 import com.buddies.profile.model.PhoneInfoField
+import com.buddies.profile.ui.adapter.ContactInfoAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ContactInfoBottomSheet private constructor(

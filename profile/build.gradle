@@ -12,8 +12,8 @@ dependencies {
 
     // Projects
     implementation project(":common")
+    implementation project(":mypets")
     implementation project(":notification")
-    implementation project(":pet")
     implementation project(":server")
 
     // Kotlin

@@ -7,6 +7,7 @@ import com.buddies.gallery.di.galleryModule
 import com.buddies.generator.di.generatorModule
 import com.buddies.home.di.homeModule
 import com.buddies.login.di.loginModule
+import com.buddies.mypets.myPetsModule
 import com.buddies.navigation.di.navigationModule
 import com.buddies.newpet.di.newPetModule
 import com.buddies.notification.service.NotificationsService
@@ -37,9 +38,10 @@ class App : Application() {
             modules(
                 commonModule,
                 galleryModule,
-                homeModule,
                 generatorModule,
+                homeModule,
                 loginModule,
+                myPetsModule,
                 navigationModule,
                 newPetModule,
                 petModule,

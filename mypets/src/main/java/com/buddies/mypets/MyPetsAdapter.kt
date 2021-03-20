@@ -1,4 +1,4 @@
-package com.buddies.pet.ui.adapter
+package com.buddies.mypets
 
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -11,9 +11,8 @@ import com.buddies.common.model.Buddy
 import com.buddies.common.util.inflater
 import com.buddies.common.util.load
 import com.buddies.common.util.show
-import com.buddies.pet.R
-import com.buddies.pet.databinding.PetListItemBinding
-import com.buddies.pet.ui.adapter.MyPetsAdapter.MyPetsViewHolder
+import com.buddies.mypets.MyPetsAdapter.MyPetsViewHolder
+import com.buddies.mypets.databinding.PetListItemBinding
 
 class MyPetsAdapter(
     val owner: LifecycleOwner

@@ -1,4 +1,4 @@
-package com.buddies.pet.ui.view
+package com.buddies.mypets
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,10 +15,7 @@ import com.buddies.common.model.Buddy
 import com.buddies.common.model.DefaultError
 import com.buddies.common.util.inflater
 import com.buddies.common.util.safeLaunch
-import com.buddies.pet.R
-import com.buddies.pet.databinding.MyPetsWidgetBinding
-import com.buddies.pet.ui.adapter.MyPetsAdapter
-import com.buddies.pet.usecase.PetUseCases
+import com.buddies.mypets.databinding.MyPetsWidgetBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -33,7 +30,7 @@ class MyPetsWidget @JvmOverloads constructor(
 
     private val binding: MyPetsWidgetBinding
 
-    private val petUseCases by inject(PetUseCases::class.java)
+    private val petUseCases by inject(MyPetsUseCases::class.java)
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Main + job)

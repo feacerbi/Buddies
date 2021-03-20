@@ -3,31 +3,19 @@ package com.buddies.pet.usecase
 import android.net.Uri
 import com.buddies.common.model.FavoriteInfo
 import com.buddies.common.model.OwnershipCategory
-import com.buddies.common.model.PetFavorite
-import com.buddies.common.model.User
 import com.buddies.common.usecase.BaseUseCases
 import com.buddies.server.api.AnimalApi
 import com.buddies.server.api.FavoritesApi
 import com.buddies.server.api.PetApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 class PetUseCases(
     private val petApi: PetApi,
     private val animalApi: AnimalApi,
     private val favoritesApi: FavoritesApi
 ) : BaseUseCases() {
-
-    suspend fun getBuddiesFromCurrentUser() = request {
-        petApi.getBuddiesFromCurrentUser()
-    }
-
-    suspend fun getBuddiesFromUser(user: User) = request {
-        petApi.getBuddiesFromUser(user.id)
-    }
 
     suspend fun getOwnersFromPet(petId: String) = request {
         petApi.getPetOwners(petId)

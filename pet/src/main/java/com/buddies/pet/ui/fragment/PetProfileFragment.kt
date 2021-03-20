@@ -157,8 +157,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             profileTagEdit.isVisible = it.tagEdit
             profileReportLostSwitch.isVisible = it.lostSwitch
             profileReportLostSwitch.isChecked = it.lost
-            profileReportLostSwitch.setOnCheckedChangeListener { _, checked ->
-                perform(ReportLost(it.name, it.lost, checked))
+            profileReportLostSwitch.setOnClickListener { _ ->
+                perform(ReportLost(it.name, it.lost, profileReportLostSwitch.isChecked))
             }
             profileReportLostStatus.text = getString(it.lostStatus)
             toolbar.menu.clear()

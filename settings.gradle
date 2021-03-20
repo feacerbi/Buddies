@@ -1,3 +1,4 @@
+include ':mypets'
 rootProject.name='Buddies'
 include ':app'
 include ':common'

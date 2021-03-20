@@ -1,4 +1,4 @@
-package com.buddies.profile.ui
+package com.buddies.profile.ui.fragment
 
 import android.os.Bundle
 import android.text.InputType

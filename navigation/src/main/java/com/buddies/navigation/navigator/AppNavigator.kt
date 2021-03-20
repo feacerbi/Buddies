@@ -26,10 +26,10 @@ import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplas
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToLoginFragment
 import com.buddies.pet.ui.fragment.PetProfileFragmentDirections.Companion.actionPetProfileFragmentToFullscreenFragment
 import com.buddies.pet.ui.fragment.PetProfileFragmentDirections.Companion.actionPetProfileFragmentToGalleryFragment
-import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToFullscreenFragment
-import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToLoginFragment
-import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToNewPetFlow
-import com.buddies.profile.ui.ProfileFragmentDirections.Companion.actionProfileFragmentToPetProfileFragment
+import com.buddies.profile.ui.fragment.ProfileFragmentDirections.Companion.actionProfileFragmentToFullscreenFragment
+import com.buddies.profile.ui.fragment.ProfileFragmentDirections.Companion.actionProfileFragmentToLoginFragment
+import com.buddies.profile.ui.fragment.ProfileFragmentDirections.Companion.actionProfileFragmentToNewPetFlow
+import com.buddies.profile.ui.fragment.ProfileFragmentDirections.Companion.actionProfileFragmentToPetProfileFragment
 
 class AppNavigator : BaseNavigator() {
 

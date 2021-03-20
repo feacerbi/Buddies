@@ -9,8 +9,6 @@
     <string name="open_gallery_menu_title">Open Gallery</string>
 
     <!-- Views -->
-    <string name="my_pets_title">My Pets</string>
-    <string name="add_new_pet">Add new pet</string>
     <string name="info">Info</string>
     <string name="owners">Owners</string>
     <string name="animal_field">%s | %s</string>

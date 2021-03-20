@@ -1,4 +1,4 @@
-package com.buddies.profile.ui
+package com.buddies.profile.ui.adapter
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -11,7 +11,7 @@ import com.buddies.common.util.inflater
 import com.buddies.common.util.load
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FavoriteListItemBinding
-import com.buddies.profile.ui.FavoritesAdapter.FavoriteViewHolder
+import com.buddies.profile.ui.adapter.FavoritesAdapter.FavoriteViewHolder
 
 class FavoritesAdapter(
     private val lifecycleOwner: LifecycleOwner,

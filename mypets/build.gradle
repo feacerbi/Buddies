@@ -1,46 +1,10 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
 }
 
 android {
-
     with commonConfig
-
-    defaultConfig {
-        applicationId "com.buddies"
-    }
-
-    signingConfigs {
-        release {
-            storeFile file(KEYSTORE_PATH)
-            storePassword KEYSTORE_PASSWORD
-            keyAlias KEYSTORE_KEY_ALIAS
-            keyPassword KEYSTORE_KEY_PASSWORD
-        }
-    }
-
-    buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
-        }
-        release {
-            signingConfig signingConfigs.release
-        }
-    }
-
-    flavorDimensions "mode"
-    productFlavors {
-        generator {
-            versionNameSuffix "-generator"
-        }
-        production {
-
-        }
-    }
 }
 
 dependencies {
@@ -48,19 +12,7 @@ dependencies {
 
     // Projects
     implementation project(":common")
-    implementation project(":gallery")
-    implementation project(":home")
-    implementation project(":login")
-    implementation project(":mypets")
-    implementation project(":navigation")
-    implementation project(':newpet')
-    implementation project(":notification")
-    implementation project(":pet")
-    implementation project(":profile")
-    implementation project(":scanner")
-    implementation project(":security")
     implementation project(":server")
-    generatorImplementation project(":generator")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -70,6 +22,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$corektx_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
+    implementation "androidx.recyclerview:recyclerview:$recycler_version"
     implementation "com.google.android.material:material:$material_version"
 
     // Firebase
@@ -77,8 +30,17 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
+    // Jetpack Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    // Jetpack Paging
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
     // Koin
     implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"
