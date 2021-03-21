@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Buddies</string>
+    <string name="file_provider_authority">com.buddies.fileprovider</string>
 </resources>

@@ -74,7 +74,7 @@ fun Context.newImageFile(): File =
     }
 
 fun File.toUri(context: Context): Uri =
-    FileProvider.getUriForFile(context, "com.buddies.fileprovider", this)
+    FileProvider.getUriForFile(context, context.getString(R.string.file_provider_authority), this)
 
 fun Float?.orZero(): Float = this ?: 0f
 
