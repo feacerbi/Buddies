@@ -3,7 +3,6 @@ package com.buddies.profile.viewmodel
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import androidx.paging.map
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.InviteNotification
 import com.buddies.common.model.PetFavorite
@@ -14,6 +13,8 @@ import com.buddies.common.navigation.Navigator.NavDirection.ProfileToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.ProfileToPetProfile
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
+import com.buddies.configuration.Configuration
+import com.buddies.configuration.Feature.MY_PETS
 import com.buddies.profile.usecase.ProfileUseCases
 import com.buddies.profile.util.toContactInfo
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.AcceptNotification
@@ -40,12 +41,12 @@ import com.buddies.profile.viewstate.ProfileViewStateReducer.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
 class ProfileViewModel(
-    private val profileUseCases: ProfileUseCases
+    private val profileUseCases: ProfileUseCases,
+    private val configuration: Configuration
 ) : StateViewModel<ProfileViewState, ProfileViewEffect>(ProfileViewState()), CoroutineScope {
 
     init {
@@ -103,7 +104,8 @@ class ProfileViewModel(
     private fun refreshUser() = safeLaunch(::showError) {
         updateState(InfoLoading)
         val currentUser = profileUseCases.getCurrentUser()
-        updateState(ShowInfo(currentUser))
+        val isMyPetsEnabled = configuration.isFeatureEnabled(MY_PETS)
+        updateState(ShowInfo(currentUser, isMyPetsEnabled))
         updateEffect(RefreshPets)
     }
 

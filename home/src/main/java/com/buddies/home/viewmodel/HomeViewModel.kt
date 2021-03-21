@@ -8,6 +8,8 @@ import com.buddies.common.navigation.Navigator.NavDirection.HomeToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
+import com.buddies.configuration.Configuration
+import com.buddies.configuration.Feature.PET_SCANNER
 import com.buddies.home.R
 import com.buddies.home.model.ShareInfo
 import com.buddies.home.usecase.HomeUseCases
@@ -29,13 +31,19 @@ import com.buddies.home.viewstate.HomeViewEffect.ShowShareInfoDialog
 import com.buddies.home.viewstate.HomeViewEffect.StopPetScanner
 import com.buddies.home.viewstate.HomeViewState
 import com.buddies.home.viewstate.HomeViewStateReducer.HidePetScanner
+import com.buddies.home.viewstate.HomeViewStateReducer.Idle
 import com.buddies.home.viewstate.HomeViewStateReducer.ShowPetScanner
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
 
 class HomeViewModel(
-    private val homeUseCases: HomeUseCases
+    private val homeUseCases: HomeUseCases,
+    private val configuration: Configuration
 ) : StateViewModel<HomeViewState, HomeViewEffect>(HomeViewState()), CoroutineScope {
+
+    init {
+        updateState(Idle(configuration.isFeatureEnabled(PET_SCANNER)))
+    }
 
     fun perform(action: Action) {
         when (action) {

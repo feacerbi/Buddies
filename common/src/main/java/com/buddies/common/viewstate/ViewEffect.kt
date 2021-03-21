@@ -1,4 +1,3 @@
 package com.buddies.common.viewstate
 
-interface ViewEffect {
-}
+interface ViewEffect

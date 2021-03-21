@@ -4,5 +4,4 @@ import com.google.firebase.firestore.DocumentSnapshot
 
 class DocumentTransformationException(
     val documentSnapshot: DocumentSnapshot
-) : Exception() {
-}
+) : Exception()

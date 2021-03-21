@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="show_my_pets_key">show_my_pets</string>
+    <string name="show_pet_scanner_key">show_pet_scanner</string>
+</resources>

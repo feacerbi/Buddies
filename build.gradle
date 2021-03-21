@@ -24,7 +24,7 @@ buildscript {
     ext.room_version = '2.2.6'
     ext.viewmodel_ktx_version = '2.3.0'
     ext.security_version = '1.1.0-alpha03'
-    ext.startup_version = '1.0.0-alpha03'
+    ext.startup_version = '1.0.0'
     ext.preference_version = '1.1.1'
     ext.firebase_bom_version = '26.2.0'
     ext.firebase_crashlytics_version = '2.4.1'

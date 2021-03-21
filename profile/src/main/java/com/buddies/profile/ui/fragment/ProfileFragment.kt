@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.buddies.common.navigation.Navigator.NavDirection.ProfileToFullscreen
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
@@ -96,6 +97,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
             tabsMediator?.updateBadge(it.notifications.size)
+            myPetsWidget.isVisible = it.showMyPets
             profilePicture.load(it.photo, this@ProfileFragment)
             profilePicture.setOnClickListener { _ -> navigateToFullscreen(profilePicture, it.photo) }
         }

@@ -9,8 +9,7 @@ import com.buddies.profile.databinding.ContactInfoItemBinding
 import com.buddies.profile.model.ContactInfoField
 import com.buddies.profile.ui.adapter.ContactInfoAdapter.ContactInfoViewHolder
 
-class ContactInfoAdapter(
-) : ListAdapter<ContactInfoField, ContactInfoViewHolder>(ContactInfoDiffUtil()) {
+class ContactInfoAdapter : ListAdapter<ContactInfoField, ContactInfoViewHolder>(ContactInfoDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactInfoViewHolder =
         ContactInfoViewHolder(

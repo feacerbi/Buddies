@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>show_my_pets</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>show_pet_scanner</key>
+        <value>false</value>
+    </entry>
+</defaultsMap>

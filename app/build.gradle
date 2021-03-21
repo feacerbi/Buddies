@@ -48,6 +48,7 @@ dependencies {
 
     // Projects
     implementation project(":common")
+    implementation project(":configuration")
     implementation project(":gallery")
     implementation project(":home")
     implementation project(":login")
@@ -69,8 +70,6 @@ dependencies {
     // AndroidX Core & UI
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$corektx_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-    implementation "com.google.android.material:material:$material_version"
 
     // Firebase
     implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
@@ -79,6 +78,9 @@ dependencies {
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
+
+    // Jetpack Startup
+    implementation "androidx.startup:startup-runtime:$startup_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"

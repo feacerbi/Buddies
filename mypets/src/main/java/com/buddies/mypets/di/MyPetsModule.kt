@@ -1,4 +1,4 @@
-package com.buddies.mypets
+package com.buddies.mypets.di
 
 import com.buddies.mypets.usecase.MyPetsUseCases
 import org.koin.dsl.module

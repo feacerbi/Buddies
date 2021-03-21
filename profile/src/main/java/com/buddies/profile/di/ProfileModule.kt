@@ -9,5 +9,5 @@ import org.koin.dsl.module
 @ExperimentalCoroutinesApi
 val profileModule = module {
     factory { ProfileUseCases(get(), get(), get(), get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
 }

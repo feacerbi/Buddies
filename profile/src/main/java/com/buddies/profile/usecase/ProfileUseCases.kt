@@ -2,24 +2,16 @@ package com.buddies.profile.usecase
 
 import android.net.Uri
 import androidx.paging.map
-import com.buddies.common.model.DefaultError
-import com.buddies.common.model.DefaultErrorException
-import com.buddies.common.model.ErrorCode
-import com.buddies.common.model.ErrorCode.RESULT_NULL
 import com.buddies.common.model.Favorite
 import com.buddies.common.model.FavoriteInfo
-import com.buddies.common.model.Pet
 import com.buddies.common.model.PetFavorite
 import com.buddies.common.usecase.BaseUseCases
-import com.buddies.common.util.handleResult
 import com.buddies.server.api.FavoritesApi
-import com.buddies.server.api.NewPetApi
 import com.buddies.server.api.NotificationsApi
 import com.buddies.server.api.PetApi
 import com.buddies.server.api.ProfileApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 

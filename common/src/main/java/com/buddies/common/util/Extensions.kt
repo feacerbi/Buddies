@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.R
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
-import com.buddies.common.model.ErrorCode
 import com.buddies.common.model.ErrorCode.RESULT_NULL
 import com.buddies.common.model.Result
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
