@@ -16,11 +16,7 @@ dependencies {
     // Firebase
     implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
     implementation "com.google.firebase:firebase-analytics-ktx"
-    implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
-
-    // Jetpack Startup
-    implementation "androidx.startup:startup-runtime:$startup_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
