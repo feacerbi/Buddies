@@ -8,4 +8,8 @@
         <key>show_pet_scanner</key>
         <value>false</value>
     </entry>
+    <entry>
+        <key>home_screen</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>

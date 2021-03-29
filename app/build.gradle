@@ -52,6 +52,7 @@ dependencies {
     implementation project(":gallery")
     implementation project(":home")
     implementation project(":login")
+    implementation project(":missing")
     implementation project(":mypets")
     implementation project(":navigation")
     implementation project(':newpet')

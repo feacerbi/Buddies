@@ -15,7 +15,7 @@ import java.util.*
 data class InviteNotification(
     val notificationId: String,
     val notificationUnread: Boolean,
-    val notificationTimestamp: Date,
+    val notificationTimestamp: Calendar,
     val userName: String,
     val pet: Pet,
     val category: OwnershipCategory,

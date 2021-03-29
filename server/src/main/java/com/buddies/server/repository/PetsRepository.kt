@@ -131,7 +131,7 @@ class PetsRepository {
             .child(GALLERY_PATH)
             .listAll()
 
-    fun removeGalleryImage(
+    fun deleteGalleryImage(
         petId: String,
         photoId: String
     ): Task<Void> =
@@ -139,6 +139,13 @@ class PetsRepository {
             .child(petId)
             .child(GALLERY_PATH)
             .child(photoId)
+            .delete()
+
+    fun deleteGallery(
+        petId: String
+    ): Task<Void> =
+        storage.getReference(PETS_PATH)
+            .child(petId)
             .delete()
 
     companion object {

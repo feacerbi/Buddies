@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
-import com.buddies.newpet.R
 import com.buddies.newpet.databinding.FragmentChooseAnimalBreedBinding
 import com.buddies.newpet.databinding.NewPetHeaderBinding
 import com.buddies.newpet.ui.adapter.HorizontalAnimalsAdapter
@@ -53,16 +53,19 @@ class ChooseAnimalBreedFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        headerBinding.toolbar.title = getString(R.string.new_buddy_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
+
         backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next) }
+
         animalsList.adapter = animalsAdapter
         breedsList.adapter = breedsAdapter
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
+            headerBinding.toolbar.title = getString(it.flowTitle)
+            headerBinding.steps.isVisible = it.showSteps
             headerBinding.steps.selectStep(it.step)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)

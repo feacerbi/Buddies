@@ -26,6 +26,13 @@
             app:exitAnim="@android:anim/fade_out"
             app:launchSingleTop="true"
             app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_missingFeedFragment"
+            app:destination="@id/missingFeedFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
 
     <fragment
@@ -36,6 +43,13 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_loginFragment_to_missingFeedFragment"
+            app:destination="@id/missingFeedFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:launchSingleTop="true"
@@ -69,7 +83,11 @@
             app:exitAnim="@android:anim/fade_out"
             app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@anim/slide_out_bottom" />
+            app:popExitAnim="@anim/slide_out_bottom" >
+            <argument
+                android:name="flowType"
+                app:argType="com.buddies.newpet.util.FlowType"/>
+        </action>
         <action
             android:id="@+id/action_profileFragment_to_fullscreenFragment"
             app:destination="@id/fullscreenFragment"
@@ -129,6 +147,9 @@
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@anim/slide_out_bottom" >
             <argument
+                android:name="flowType"
+                app:argType="com.buddies.newpet.util.FlowType"/>
+            <argument
                 android:name="tagValue"
                 app:argType="string"
                 android:defaultValue=""/>
@@ -167,5 +188,31 @@
     </fragment>
 
     <include app:graph="@navigation/new_pet_nav_graph" />
+
+    <fragment
+        android:id="@+id/missingFeedFragment"
+        android:name="com.buddies.missing.ui.MissingFeedFragment"
+        android:label="@string/missing_feed_screen_name" >
+        <action
+            android:id="@+id/action_missingFeedFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_missingFeedFragment_to_new_pet_nav_graph"
+            app:destination="@id/new_pet_nav_graph"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@android:anim/fade_out"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@anim/slide_out_bottom" >
+            <argument
+                android:name="flowType"
+                app:argType="com.buddies.newpet.util.FlowType"/>
+        </action>
+    </fragment>
 
 </navigation>

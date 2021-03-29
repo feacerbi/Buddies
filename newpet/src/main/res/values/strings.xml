@@ -6,10 +6,17 @@
     <string name="add_confirmation_name">Add Confirmation Screen</string>
 
     <!-- Args -->
+    <string name="flow_type_arg">flowType</string>
     <string name="tag_value_arg">tagValue</string>
 
     <!-- Views -->
     <string name="new_buddy_flow_title">New Buddy</string>
+    <string name="report_pet_flow_title">Report Pet Found</string>
+    <string name="add_new_buddy_title">Add new Buddy</string>
+    <string name="report_pet_found_title">Report Pet found</string>
+    <string name="add_new_buddy_subtitle">Start the flow to add a new Buddy as its owner.</string>
+    <string name="report_pet_found_subtitle">Start the flow to report that you found a missing pet.</string>
+    <string name="start_flow_message">Start</string>
     <string name="no_valid_tags_button_message">no valid tags</string>
     <string name="no_animal_and_breed_message">no animal and breed</string>
     <string name="no_name_message">no name</string>
@@ -18,6 +25,8 @@
     <string name="name_hint">Name</string>
     <string name="age_hint">Age</string>
     <string name="adding_pet_message">Adding %s to your pets…</string>
+    <string name="reporting_pet_message">Reporting %s as found by you…</string>
     <string name="pet_added_message">%s is now in your pets!</string>
+    <string name="pet_reported_message">%s is now in the pets you found!</string>
     <string name="not_available_result">This Tag is not available</string>
 </resources>

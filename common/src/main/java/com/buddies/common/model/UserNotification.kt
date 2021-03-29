@@ -9,7 +9,7 @@ abstract class UserNotification(
     val id: String,
     val type: NotificationType,
     val unread: Boolean,
-    val timestamp: Date
+    val timestamp: Calendar
 ) {
     abstract fun getMessage(context: Context): SpannableString
     abstract fun build(context: Context): Notification

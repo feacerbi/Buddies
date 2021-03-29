@@ -50,19 +50,15 @@ class TagScanFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        headerBinding.toolbar.title = getString(R.string.new_buddy_flow_title)
+        headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
-        headerBinding.toolbar.setNavigationOnClickListener {
-            perform(CloseFlow)
-        }
-
-        forwardButton.setOnClickListener {
-            perform(Next)
-        }
+        backButton.setOnClickListener { perform(Previous) }
+        forwardButton.setOnClickListener { perform(Next) }
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
+            headerBinding.toolbar.title = getString(it.flowTitle)
             headerBinding.steps.selectStep(it.step)
             forwardButton.text = getString(it.forwardButtonText)
             forwardButton.isEnabled = it.forwardButtonEnabled

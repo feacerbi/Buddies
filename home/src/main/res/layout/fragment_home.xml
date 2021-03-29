@@ -37,6 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="@dimen/margin_medium"
+        android:background="?selectableItemBackground"
         app:tint="?attr/colorSecondary"
         android:src="@drawable/ic_baseline_person"/>
 

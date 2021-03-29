@@ -6,10 +6,14 @@ import android.content.Intent
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
 import com.buddies.common.navigation.Navigator.NavDirection.LoginToHome
+import com.buddies.common.navigation.Navigator.NavDirection.LoginToMissingFeed
 import com.buddies.common.navigation.Navigator.NavDirection.SplashToHome
 import com.buddies.common.navigation.Navigator.NavDirection.SplashToLogin
+import com.buddies.common.navigation.Navigator.NavDirection.SplashToMissingFeed
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
+import com.buddies.configuration.Configuration
+import com.buddies.configuration.Feature.HOME_SCREEN
 import com.buddies.login.R
 import com.buddies.login.usecase.LoginUseCases
 import com.buddies.login.viewmodel.LoginViewModel.Action.Login
@@ -27,7 +31,8 @@ import kotlinx.coroutines.delay
 import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel(
-    private val useCases: LoginUseCases
+    private val useCases: LoginUseCases,
+    private val configuration: Configuration
 ) : StateViewModel<LoginViewState, LoginViewEffect>(LoginViewState()), CoroutineScope {
 
     fun perform(action: Action) {
@@ -41,7 +46,8 @@ class LoginViewModel(
     private fun handleSplashScreen(context: Context) = safeLaunch(::showError) {
         if (useCases.isUserLoggedIn(context)) {
             useCases.checkNewUser()
-            updateEffect(Navigate(SplashToHome))
+            val homeScreenEnabled = configuration.isFeatureEnabled(HOME_SCREEN)
+            updateEffect(Navigate(if (homeScreenEnabled) SplashToHome else SplashToMissingFeed))
         } else {
             delay(SPLASH_TIME)
             updateEffect(Navigate(SplashToLogin))
@@ -55,7 +61,9 @@ class LoginViewModel(
     private fun login(data: Intent?) = safeLaunch(::showError) {
         useCases.login(data)
         useCases.checkNewUser()
-        updateEffect(Navigate(LoginToHome))
+
+        val homeScreenEnabled = configuration.isFeatureEnabled(HOME_SCREEN)
+        updateEffect(Navigate(if (homeScreenEnabled) LoginToHome else LoginToMissingFeed))
     }
 
     private fun getLoginIntent(activity: Activity): Intent {

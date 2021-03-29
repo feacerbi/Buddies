@@ -16,11 +16,9 @@ import com.buddies.pet.viewstate.PetProfileViewState
 import com.buddies.pet.viewstate.PetProfileViewStateReducer.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.coroutines.CoroutineContext
 
-@ExperimentalCoroutinesApi
 class PetProfileViewModel(
     private val petId: String,
     private val petUseCases: PetUseCases,

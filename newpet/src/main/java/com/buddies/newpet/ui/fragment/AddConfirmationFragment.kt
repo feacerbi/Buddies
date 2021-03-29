@@ -49,9 +49,7 @@ class AddConfirmationFragment : NewPetNavigationFragment() {
             }
         })
 
-        backButton.setOnClickListener {
-            navigateBack()
-        }
+        backButton.setOnClickListener { navigateBack() }
     }
 
     @SuppressLint("StringFormatInvalid")

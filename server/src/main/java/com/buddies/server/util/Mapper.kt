@@ -7,6 +7,7 @@ import com.buddies.common.model.User
 import com.buddies.common.util.toOwnershipCategory
 import com.buddies.common.util.toShareInfoType
 import com.buddies.server.model.Notification
+import java.util.*
 
 fun Notification.toInviteNotification(
     inviter: User,
@@ -14,7 +15,7 @@ fun Notification.toInviteNotification(
 ): InviteNotification = InviteNotification(
     id,
     info.unread,
-    info.timestamp.toDate(),
+    Calendar.getInstance().apply { timeInMillis = info.created },
     inviter.info.name,
     pet,
     info.ownershipCategory.toOwnershipCategory()
@@ -26,7 +27,7 @@ fun Notification.toPetFoundNotification(
 ): PetFoundNotification = PetFoundNotification(
     id,
     info.unread,
-    info.timestamp.toDate(),
+    Calendar.getInstance().apply { timeInMillis = info.created },
     sourceUser.info.name,
     pet,
     info.extra.mapKeys { it.key.toShareInfoType() }

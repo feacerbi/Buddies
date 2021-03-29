@@ -12,12 +12,17 @@ interface Navigator {
     open class NavDirection {
         object SplashToLogin : NavDirection()
         object SplashToHome : NavDirection()
+        object SplashToMissingFeed : NavDirection()
 
         object LoginToHome : NavDirection()
+        object LoginToMissingFeed : NavDirection()
 
         object HomeToProfile : NavDirection()
         data class HomeToPetProfile(val petId: String) : NavDirection()
         data class HomeToNewPetFlow(val tagValue: String) : NavDirection()
+
+        object MissingFeedToProfile : NavDirection()
+        object MissingFeedToNewPetFlow : NavDirection()
 
         object ProfileToLogin : NavDirection()
         object ProfileToNewPetFlow : NavDirection()

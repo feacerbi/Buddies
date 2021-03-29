@@ -1,6 +1,6 @@
 package com.buddies.server.model
 
-import com.google.firebase.Timestamp
+import java.util.*
 
 data class NotificationInfo(
     val type: Int = -1,
@@ -10,5 +10,5 @@ data class NotificationInfo(
     val ownershipCategory: Int = -1,
     val unread: Boolean = true,
     val extra: Map<String, String> = mapOf(),
-    val timestamp: Timestamp = Timestamp.now()
+    val created: Long = Calendar.getInstance().timeInMillis
 )

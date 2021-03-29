@@ -8,7 +8,6 @@ import com.buddies.server.api.AnimalApi
 import com.buddies.server.api.FavoritesApi
 import com.buddies.server.api.PetApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOn
 
 class PetUseCases(
@@ -110,7 +109,6 @@ class PetUseCases(
         favoritesApi.isPetFavorite(petId)
     }
 
-    @ExperimentalCoroutinesApi
     suspend fun getOwnersToInvite(
         petId: String,
         query: String

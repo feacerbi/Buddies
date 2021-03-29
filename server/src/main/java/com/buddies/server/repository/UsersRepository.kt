@@ -53,7 +53,7 @@ class UsersRepository {
             .get()
 
     fun getUsers(
-        pageSize: Int,
+        pageSize: Long,
         query: String,
         start: DocumentSnapshot? = null
     ): Task<QuerySnapshot> {
@@ -61,7 +61,7 @@ class UsersRepository {
             .whereGreaterThanOrEqualTo(NAME_FIELD, query)
             .whereLessThan(NAME_FIELD, generateEndQuery(query))
             .orderBy(NAME_FIELD)
-            .limit(pageSize.toLong())
+            .limit(pageSize)
 
         val pageQuery = if (start != null) users.startAfter(start) else users
 

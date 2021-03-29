@@ -235,6 +235,9 @@ class PetApi(
             ownershipsRepository.removeOwnership(ownership.id)
         }.toTypedArray()
 
+        petsRepository.deleteGallery(petId)
+            .handleTaskResult()
+
         runTransactions(
             petsRepository.deletePet(petId),
             *deleteOwnerships
@@ -283,7 +286,7 @@ class PetApi(
         query: String,
         start: DocumentSnapshot? = null
     ) = runWithResult {
-        usersRepository.getUsers(pageSize, query, start)
+        usersRepository.getUsers(pageSize.toLong(), query, start)
             .handleTaskResult()
     }
 
@@ -317,7 +320,7 @@ class PetApi(
         checkAccess(petId)
 
         pictureIdList.forEach {
-            petsRepository.removeGalleryImage(petId, it)
+            petsRepository.deleteGalleryImage(petId, it)
                 .handleNullTaskResult()
         }
     }

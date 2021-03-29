@@ -4,11 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/new_pet_nav_graph"
-    app:startDestination="@id/scanTagFragment" >
+    app:startDestination="@id/startFlowFragment" >
 
     <action
         android:id="@+id/action_global_finish"
-        app:popUpTo="@id/scanTagFragment"
+        app:popUpTo="@id/startFlowFragment"
         app:popUpToInclusive="true"/>
 
     <fragment
@@ -65,5 +65,39 @@
         android:name="com.buddies.newpet.ui.fragment.AddConfirmationFragment"
         android:label="@string/add_confirmation_name"
         tools:layout="@layout/fragment_add_pet_confirmation" />
+
+    <fragment
+        android:id="@+id/startFlowFragment"
+        android:name="com.buddies.newpet.ui.fragment.StartFlowFragment"
+        android:label="StartFlowFragment" >
+        <argument
+            android:name="flowType"
+            app:argType="com.buddies.newpet.util.FlowType" />
+        <argument
+            android:name="tagValue"
+            app:argType="string"
+            android:defaultValue=""/>
+        <action
+            android:id="@+id/action_startFlowFragment_to_scanTagFragment"
+            app:destination="@id/scanTagFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" >
+            <argument
+                android:name="tagValue"
+                app:argType="string"
+                android:defaultValue=""/>
+        </action>
+        <action
+            android:id="@+id/action_startFlowFragment_to_chooseAnimalBreedFragment"
+            app:destination="@id/chooseAnimalBreedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
 </navigation>

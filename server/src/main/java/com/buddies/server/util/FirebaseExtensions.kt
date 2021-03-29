@@ -9,6 +9,8 @@ import com.buddies.common.model.EncryptionKey
 import com.buddies.common.model.EncryptionKeyInfo
 import com.buddies.common.model.Favorite
 import com.buddies.common.model.FavoriteInfo
+import com.buddies.common.model.MissingPet
+import com.buddies.common.model.MissingPetInfo
 import com.buddies.common.model.Owner
 import com.buddies.common.model.Ownership
 import com.buddies.common.model.OwnershipInfo
@@ -58,6 +60,10 @@ fun QuerySnapshot.toTag() = documents[0].run {
 
 fun DocumentSnapshot.toOwner(ownership: Ownership) =
     Owner(toUser(), ownership.info.category.toOwnershipCategory())
+
+fun QuerySnapshot.toMissingPets() = documents.map { doc ->
+    MissingPet(doc.id, doc.to(MissingPetInfo::class))
+}
 
 fun QuerySnapshot.toOwnerships() = documents.map { doc ->
     Ownership(doc.id, doc.to(OwnershipInfo::class))

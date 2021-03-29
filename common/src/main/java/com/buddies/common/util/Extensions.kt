@@ -144,7 +144,7 @@ suspend fun <T, R> Result<T>.mapResult(
         is Result.Fail -> Result.Fail(error)
     }
 
-fun Date.toFormatted(context: Context) = this.time.toFormattedDate(context)
+fun Calendar.toFormatted(context: Context) = this.timeInMillis.toFormattedDate(context)
 
 fun String.toFormattedDate(context: Context) = this.toLong().toFormattedDate(context)
 

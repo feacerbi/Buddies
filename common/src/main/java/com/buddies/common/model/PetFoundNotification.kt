@@ -15,7 +15,7 @@ import java.util.*
 data class PetFoundNotification(
     val notificationId: String,
     val notificationUnread: Boolean,
-    val notificationTimestamp: Date,
+    val notificationTimestamp: Calendar,
     val userName: String,
     val pet: Pet,
     val shareInfo: Map<ShareInfoType, String>

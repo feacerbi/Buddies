@@ -11,7 +11,6 @@ import androidx.core.widget.addTextChangedListener
 import com.buddies.common.util.expand
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
-import com.buddies.newpet.R
 import com.buddies.newpet.databinding.FragmentPetInfoBinding
 import com.buddies.newpet.databinding.NewPetHeaderBinding
 import com.buddies.newpet.viewmodel.NewPetViewModel
@@ -47,26 +46,21 @@ class PetInfoFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        headerBinding.toolbar.title = getString(R.string.new_buddy_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
+
         backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next) }
 
-        nameInputEditText.addTextChangedListener {
-            sendInput()
-        }
+        nameInputEditText.addTextChangedListener { sendInput() }
+        ageInputEditText.addTextChangedListener { sendInput() }
 
-        ageInputEditText.addTextChangedListener {
-            sendInput()
-        }
-
-        animalPhoto.setOnClickListener {
-            galleryPick.launch(IMAGE_MIME_TYPE)
-        }
+        animalPhoto.setOnClickListener { galleryPick.launch(IMAGE_MIME_TYPE) }
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
+            headerBinding.toolbar.title = getString(it.flowTitle)
+            headerBinding.steps.isVisible = it.showSteps
             headerBinding.steps.selectStep(it.step)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)

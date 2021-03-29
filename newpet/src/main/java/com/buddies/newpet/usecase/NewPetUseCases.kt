@@ -11,12 +11,6 @@ class NewPetUseCases(
     private val animalApi: AnimalApi
 ) : BaseUseCases() {
 
-    suspend fun getTag(
-        tagValue: String
-    ) = request {
-        newPetApi.getTagByValue(tagValue)
-    }
-
     suspend fun getAllAnimals() = request {
         animalApi.getAllAnimals()
     }
@@ -32,5 +26,11 @@ class NewPetUseCases(
         category: OwnershipCategory
     ) = request {
         newPetApi.addNewPet(newPet, category.id)
+    }
+
+    suspend fun addNewMissingPet(
+        newPet: NewPet
+    ) = request {
+        newPetApi.addMissingPet(newPet)
     }
 }
