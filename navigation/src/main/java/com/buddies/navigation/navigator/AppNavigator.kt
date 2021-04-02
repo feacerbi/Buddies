@@ -10,6 +10,7 @@ import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToProfile
 import com.buddies.common.navigation.Navigator.NavDirection.LoginToHome
 import com.buddies.common.navigation.Navigator.NavDirection.LoginToMissingFeed
+import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToAllMissingPets
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToProfile
 import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToFullscreen
@@ -30,6 +31,7 @@ import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmen
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToHomeFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToLoginFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToMissingFeedFragment
+import com.buddies.missing.ui.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToAllMissingPetsFragment
 import com.buddies.missing.ui.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToNewPetNavGraph
 import com.buddies.missing.ui.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToProfileFragment
 import com.buddies.newpet.util.FlowType
@@ -56,6 +58,7 @@ class AppNavigator : BaseNavigator() {
 
         is MissingFeedToProfile -> actionMissingFeedFragmentToProfileFragment()
         is MissingFeedToNewPetFlow -> actionMissingFeedFragmentToNewPetNavGraph(FlowType.MISSING)
+        is MissingFeedToAllMissingPets -> actionMissingFeedFragmentToAllMissingPetsFragment()
 
         is ProfileToLogin -> actionProfileFragmentToLoginFragment()
         is ProfileToNewPetFlow -> actionProfileFragmentToNewPetFlow(FlowType.TAG)

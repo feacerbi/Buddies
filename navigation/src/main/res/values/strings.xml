@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="missing_feed_screen_name">MissingFeedFragment</string>
+    <string name="all_missing_pets_screen_name">AllMissingPetsFragment</string>
 </resources>

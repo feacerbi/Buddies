@@ -192,7 +192,8 @@
     <fragment
         android:id="@+id/missingFeedFragment"
         android:name="com.buddies.missing.ui.MissingFeedFragment"
-        android:label="@string/missing_feed_screen_name" >
+        android:label="@string/missing_feed_screen_name"
+        tools:layout="@layout/fragment_missing_feed" >
         <action
             android:id="@+id/action_missingFeedFragment_to_profileFragment"
             app:destination="@id/profileFragment"
@@ -213,6 +214,14 @@
                 android:name="flowType"
                 app:argType="com.buddies.newpet.util.FlowType"/>
         </action>
+        <action
+            android:id="@+id/action_missingFeedFragment_to_allMissingPetsFragment"
+            app:destination="@id/allMissingPetsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 </navigation>

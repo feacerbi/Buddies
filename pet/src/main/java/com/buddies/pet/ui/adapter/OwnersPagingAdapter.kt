@@ -28,7 +28,7 @@ class OwnersPagingAdapter(
     }
 
     inner class OwnersPagingViewHolder(
-        val binding: OwnerInviteItemBinding
+        private val binding: OwnerInviteItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(

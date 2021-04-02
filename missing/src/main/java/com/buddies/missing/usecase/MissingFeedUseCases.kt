@@ -1,10 +1,12 @@
 package com.buddies.missing.usecase
 
+import androidx.paging.map
 import com.buddies.common.model.MissingPet
 import com.buddies.common.usecase.BaseUseCases
 import com.buddies.server.api.MissingPetApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class MissingFeedUseCases(
     private val missingPetApi: MissingPetApi,
@@ -17,6 +19,11 @@ class MissingFeedUseCases(
     suspend fun getAllPetsWithPaging() =
         missingPetApi.getMissingPetsFlowWithPaging(PETS_PAGE_SIZE)
             .flowOn(Dispatchers.IO)
+            .map {
+                it.map { pet ->
+                    pet.mapAnimal()
+                }
+            }
 
     suspend fun getCurrentUserPets() = request {
         missingPetApi.getCurrentUserMissingPets(PETS_PREVIEW_LIST_SIZE)

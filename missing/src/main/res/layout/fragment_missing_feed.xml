@@ -80,7 +80,7 @@
                 android:orientation="horizontal"
                 android:layoutAnimation="@anim/layout_slide_in"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/missing_pet_item" />
+                tools:listitem="@layout/missing_pet_horizontal_item" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/near_you_list_title"
@@ -122,7 +122,7 @@
                 android:orientation="horizontal"
                 android:layoutAnimation="@anim/layout_slide_in"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/missing_pet_item" />
+                tools:listitem="@layout/missing_pet_horizontal_item" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/you_found_list_title"
@@ -164,7 +164,7 @@
                 android:orientation="horizontal"
                 android:layoutAnimation="@anim/layout_slide_in"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/missing_pet_item"/>
+                tools:listitem="@layout/missing_pet_horizontal_item"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

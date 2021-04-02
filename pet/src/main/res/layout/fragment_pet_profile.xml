@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="@id/profile_favorite_icon"
         app:layout_constraintStart_toStartOf="@id/profile_favorite_icon"
         app:layout_constraintEnd_toEndOf="@id/profile_name_edit"
-        android:elevation="@dimen/bottom_pets_elevation"
+        android:elevation="@dimen/pet_profile_elevation"
         android:background="@color/colorSecondary"/>
 
     <ImageView
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@id/pet_picture"
         app:layout_constraintStart_toStartOf="parent"
         android:padding="@dimen/margin_large"
-        android:elevation="@dimen/bottom_pets_elevation"
+        android:elevation="@dimen/pet_profile_elevation"
         android:contentDescription="@string/pet_favorite_icon_content_description"
         android:foreground="?selectableItemBackgroundBorderless"
         app:tint="@android:color/white"
@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toStartOf="@id/profile_name_edit"
         app:layout_constraintHorizontal_bias="0"
         app:layout_goneMarginEnd="@dimen/margin_medium"
-        android:elevation="@dimen/bottom_pets_elevation"
+        android:elevation="@dimen/pet_profile_elevation"
         android:maxLines="1"
         android:ellipsize="end"
         android:textColor="@color/colorOnSecondary"
@@ -83,7 +83,7 @@
         app:layout_constraintTop_toTopOf="@id/profile_favorite_icon"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="@dimen/margin_large"
-        android:elevation="@dimen/bottom_pets_elevation"
+        android:elevation="@dimen/pet_profile_elevation"
         android:background="?selectableItemBackground"
         android:contentDescription="@string/profile_name_edit_icon_content_description"
         android:src="@drawable/ic_edit" />
@@ -224,16 +224,51 @@
                     app:layout_constraintBottom_toBottomOf="@id/profile_report_lost_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:padding="@dimen/margin_medium"
-                    
                     app:tint="?attr/colorSecondary"
                     android:checked="false"/>
+
+                <ImageView
+                    android:id="@+id/profile_reporter_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/profile_report_lost_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:padding="@dimen/margin_large"
+                    android:src="@drawable/ic_baseline_person" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_reporter_name"
+                    style="@style/Body1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_reporter_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_reporter_icon"
+                    app:layout_constraintStart_toEndOf="@id/profile_reporter_icon"
+                    app:layout_constraintEnd_toStartOf="@id/profile_reporter_edit"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_goneMarginEnd="@dimen/margin_medium"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="User Name"/>
+
+                <ImageView
+                    android:id="@+id/profile_reporter_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_reporter_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="@dimen/margin_large"
+                    app:tint="?attr/colorSecondary"
+                    android:contentDescription="@string/pet_tag_edit_icon_content_description"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_edit" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/profile_owners_title"
                     style="@style/Overline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/profile_report_lost_icon"
+                    app:layout_constraintTop_toBottomOf="@id/profile_reporter_icon"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"

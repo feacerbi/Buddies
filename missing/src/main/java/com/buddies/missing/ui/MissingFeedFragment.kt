@@ -10,25 +10,27 @@ import com.buddies.common.util.observe
 import com.buddies.missing.databinding.FragmentMissingFeedBinding
 import com.buddies.missing.viewmodel.MissingFeedViewModel
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action
+import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenMorePets
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenProfile
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.ReportPet
 import com.buddies.missing.viewstate.MissingFeedViewEffect.Navigate
 import com.buddies.missing.viewstate.MissingFeedViewEffect.ShowError
 import com.buddies.missing.viewstate.MissingFeedViewEffect.ShowMessage
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class MissingFeedFragment : NavigationFragment() {
 
     private lateinit var binding: FragmentMissingFeedBinding
 
-    private val viewModel: MissingFeedViewModel by viewModel()
+    private val viewModel: MissingFeedViewModel by sharedViewModel()
 
     private val recentPetsAdapter = MissingPetsAdapter(this)
     private val nearPetsAdapter = MissingPetsAdapter(this)
     private val yourPetsAdapter = MissingPetsAdapter(this)
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = FragmentMissingFeedBinding.inflate(inflater, container, false).apply {
         binding = this
@@ -41,13 +43,12 @@ class MissingFeedFragment : NavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        profileButton.setOnClickListener {
-            perform(OpenProfile)
-        }
+        profileButton.setOnClickListener { perform(OpenProfile) }
+        reportButton.setOnClickListener { perform(ReportPet) }
 
-        reportButton.setOnClickListener {
-            perform(ReportPet)
-        }
+        moreRecentsButton.setOnClickListener { perform(OpenMorePets) }
+        moreNearYouButton.setOnClickListener { perform(OpenMorePets) }
+        moreYouFoundButton.setOnClickListener { perform(OpenMorePets) }
 
         recentsList.adapter = recentPetsAdapter
         nearYouList.adapter = nearPetsAdapter

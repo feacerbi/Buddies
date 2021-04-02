@@ -23,6 +23,7 @@ interface Navigator {
 
         object MissingFeedToProfile : NavDirection()
         object MissingFeedToNewPetFlow : NavDirection()
+        object MissingFeedToAllMissingPets : NavDirection()
 
         object ProfileToLogin : NavDirection()
         object ProfileToNewPetFlow : NavDirection()

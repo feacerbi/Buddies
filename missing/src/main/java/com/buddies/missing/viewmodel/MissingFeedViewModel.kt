@@ -1,21 +1,27 @@
 package com.buddies.missing.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.buddies.common.model.DefaultError
+import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToAllMissingPets
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToProfile
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.missing.usecase.MissingFeedUseCases
+import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenMorePets
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenProfile
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.ReportPet
+import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.RequestAllPets
 import com.buddies.missing.viewstate.MissingFeedViewEffect
 import com.buddies.missing.viewstate.MissingFeedViewEffect.Navigate
 import com.buddies.missing.viewstate.MissingFeedViewEffect.ShowError
 import com.buddies.missing.viewstate.MissingFeedViewState
+import com.buddies.missing.viewstate.MissingFeedViewStateReducer
 import com.buddies.missing.viewstate.MissingFeedViewStateReducer.ShowPetLists
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.coroutines.CoroutineContext
 
 class MissingFeedViewModel(
@@ -30,7 +36,9 @@ class MissingFeedViewModel(
     fun perform(action: Action) {
         when (action) {
             is OpenProfile -> openProfile()
+            is OpenMorePets -> openAllMissingPets()
             is ReportPet -> openNewPetFlow()
+            is RequestAllPets -> startPagingMissingPets()
         }
     }
 
@@ -50,13 +58,27 @@ class MissingFeedViewModel(
         updateEffect(Navigate(MissingFeedToNewPetFlow))
     }
 
+    private fun startPagingMissingPets() = safeLaunch(::showError) {
+        useCases.getAllPetsWithPaging()
+            .cachedIn(this)
+            .collectLatest {
+                updateState(MissingFeedViewStateReducer.ShowAllPets(it))
+            }
+    }
+
+    private fun openAllMissingPets() {
+        updateEffect(Navigate(MissingFeedToAllMissingPets))
+    }
+
     private fun showError(error: DefaultError) {
         updateEffect(ShowError(error.code.message))
     }
 
     sealed class Action {
         object OpenProfile : Action()
+        object OpenMorePets : Action()
         object ReportPet : Action()
+        object RequestAllPets : Action()
     }
 
     override val coroutineContext: CoroutineContext

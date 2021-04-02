@@ -2,22 +2,22 @@ package com.buddies.missing.ui
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.model.MissingPet
 import com.buddies.common.util.inflater
 import com.buddies.common.util.load
-import com.buddies.missing.databinding.MissingPetHorizontalItemBinding
-import com.buddies.missing.ui.MissingPetsAdapter.MissingPetViewHolder
+import com.buddies.missing.databinding.MissingPetVerticalItemBinding
+import com.buddies.missing.ui.MissingPetsPagingAdapter.MissingPetViewHolder
 
-class MissingPetsAdapter(
+class MissingPetsPagingAdapter(
     val lifecycleOwner: LifecycleOwner
-) : ListAdapter<MissingPet, MissingPetViewHolder>(MissingPetDiffUtil()) {
+) : PagingDataAdapter<MissingPet, MissingPetViewHolder>(MissingPetDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MissingPetViewHolder =
         MissingPetViewHolder(
-            MissingPetHorizontalItemBinding.inflate(parent.inflater(), parent, false)
+            MissingPetVerticalItemBinding.inflate(parent.inflater(), parent, false)
         )
 
     override fun onBindViewHolder(holder: MissingPetViewHolder, position: Int) {
@@ -25,15 +25,17 @@ class MissingPetsAdapter(
     }
 
     inner class MissingPetViewHolder(
-        private val binding: MissingPetHorizontalItemBinding
+        private val binding: MissingPetVerticalItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            pet: MissingPet
+            pet: MissingPet?
         ) = with (binding) {
-            petPicture.load(pet.info.photo, lifecycleOwner)
-            petName.text = pet.info.name
-            petInfo.text = pet.info.animal
+            if (pet != null) {
+                petPicture.load(pet.info.photo, lifecycleOwner)
+                petName.text = pet.info.name
+                petInfo.text = pet.info.animal
+            }
         }
     }
 

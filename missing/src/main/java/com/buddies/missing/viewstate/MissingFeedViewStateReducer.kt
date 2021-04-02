@@ -1,5 +1,6 @@
 package com.buddies.missing.viewstate
 
+import androidx.paging.PagingData
 import com.buddies.common.model.MissingPet
 import com.buddies.common.viewstate.ViewStateReducer
 
@@ -16,6 +17,14 @@ sealed class MissingFeedViewStateReducer : ViewStateReducer<MissingFeedViewState
             nearPets = nearestList ?: listOf(),
             yourPets = yourList ?: listOf(),
             titleName = name?.substringBefore(" ") ?: "",
+        )
+    }
+
+    data class ShowAllPets(
+        val pets: PagingData<MissingPet>
+    ) : MissingFeedViewStateReducer() {
+        override fun reduce(state: MissingFeedViewState) = state.copy(
+            allPets = pets
         )
     }
 }
