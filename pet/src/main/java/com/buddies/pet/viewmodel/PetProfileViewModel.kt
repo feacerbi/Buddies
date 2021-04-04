@@ -97,14 +97,14 @@ class PetProfileViewModel(
             } else {
                 updateState(ShowSafeStatus)
                 petUseCases.updateLostStatus(petId, false)
-                updateEffect(ShowBottomMessage(R.string.pet_report_safe_confirmation, arrayOf(name)))
+                updateEffect(ShowBottomMessage(R.string.pet_report_safe_confirmation, listOf(name)))
             }
         }
     }
 
     private fun confirmLost(name: String) = safeLaunch(::showError) {
         petUseCases.updateLostStatus(petId, true)
-        updateEffect(ShowBottomMessage(R.string.pet_report_lost_confirmation, arrayOf(name)))
+        updateEffect(ShowBottomMessage(R.string.pet_report_lost_confirmation, listOf(name)))
     }
 
     private fun cancelLost() {
@@ -145,7 +145,7 @@ class PetProfileViewModel(
 
     private fun inviteOwner(owner: Owner) = safeLaunch(::showError) {
         petUseCases.inviteOwner(owner.user.id, petId, owner.category)
-        updateEffect(ShowBottomMessage(R.string.invite_message, arrayOf(owner.user.info.name)))
+        updateEffect(ShowBottomMessage(R.string.invite_message, listOf(owner.user.info.name)))
     }
 
     private fun startPagingOwners(query: String) = timer.restart {

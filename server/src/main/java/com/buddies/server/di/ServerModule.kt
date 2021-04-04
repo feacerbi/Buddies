@@ -45,5 +45,5 @@ val serverModule = module {
     single { ScannerApi(get()) }
     single { GeneratorApi(get()) }
     single { FavoritesApi(get()) }
-    single { MissingPetApi(get(), get(), get()) }
+    single { MissingPetApi(get(), get(), get(), get()) }
 }

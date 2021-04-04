@@ -1,4 +1,4 @@
-package com.buddies.missing.ui
+package com.buddies.missing.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,32 +7,33 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.observe
-import com.buddies.missing.databinding.FragmentMissingFeedBinding
+import com.buddies.missing.R
+import com.buddies.missing.databinding.FragmentAllMissingPetsBinding
+import com.buddies.missing.ui.adapter.MissingPetsPagingAdapter
 import com.buddies.missing.viewmodel.MissingFeedViewModel
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action
-import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenMorePets
-import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenProfile
-import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.ReportPet
+import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenPetProfileFromAllPets
+import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.RequestAllPets
 import com.buddies.missing.viewstate.MissingFeedViewEffect.Navigate
 import com.buddies.missing.viewstate.MissingFeedViewEffect.ShowError
 import com.buddies.missing.viewstate.MissingFeedViewEffect.ShowMessage
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class MissingFeedFragment : NavigationFragment() {
+class AllMissingPetsFragment : NavigationFragment() {
 
-    private lateinit var binding: FragmentMissingFeedBinding
+    private lateinit var binding: FragmentAllMissingPetsBinding
 
     private val viewModel: MissingFeedViewModel by sharedViewModel()
 
-    private val recentPetsAdapter = MissingPetsAdapter(this)
-    private val nearPetsAdapter = MissingPetsAdapter(this)
-    private val yourPetsAdapter = MissingPetsAdapter(this)
+    private val petsAdapter = MissingPetsPagingAdapter(this) {
+        perform(OpenPetProfileFromAllPets(it.id))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentMissingFeedBinding.inflate(inflater, container, false).apply {
+    ): View = FragmentAllMissingPetsBinding.inflate(inflater, container, false).apply {
         binding = this
     }.root
 
@@ -43,27 +44,17 @@ class MissingFeedFragment : NavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        profileButton.setOnClickListener { perform(OpenProfile) }
-        reportButton.setOnClickListener { perform(ReportPet) }
+        toolbar.title = getString(R.string.all_missing_pets_title)
+        toolbar.setNavigationOnClickListener { navigateBack() }
 
-        moreRecentsButton.setOnClickListener { perform(OpenMorePets) }
-        moreNearYouButton.setOnClickListener { perform(OpenMorePets) }
-        moreYouFoundButton.setOnClickListener { perform(OpenMorePets) }
+        petsList.adapter = petsAdapter
 
-        recentsList.adapter = recentPetsAdapter
-        nearYouList.adapter = nearPetsAdapter
-        youFoundList.adapter = yourPetsAdapter
+        perform(RequestAllPets)
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
-            title.text = getString(it.title, it.titleName)
-            recentPetsAdapter.submitList(it.recentPets)
-            nearPetsAdapter.submitList(it.nearPets)
-            yourPetsAdapter.submitList(it.yourPets)
-            recentsList.scheduleLayoutAnimation()
-            nearYouList.scheduleLayoutAnimation()
-            youFoundList.scheduleLayoutAnimation()
+            petsAdapter.submitData(lifecycle, it.allPets)
         }
 
         observe(viewModel.viewEffect) {

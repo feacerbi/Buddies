@@ -20,9 +20,9 @@
         android:background="?attr/colorSecondary"/>
 
     <ImageView
-        android:id="@+id/breed_icon"
-        android:layout_width="@dimen/owner_icon_size"
-        android:layout_height="@dimen/owner_icon_size"
+        android:id="@+id/animal_icon"
+        android:layout_width="@dimen/animal_icon_size"
+        android:layout_height="@dimen/animal_icon_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,13 +34,13 @@
         tools:src="@drawable/ic_baseline_person"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/breed_name"
+        android:id="@+id/animal_name"
         style="@style/Body1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/breed_icon"
+        app:layout_constraintStart_toEndOf="@id/animal_icon"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_large"

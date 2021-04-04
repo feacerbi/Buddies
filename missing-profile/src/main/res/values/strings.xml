@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Destinations -->
+    <string name="missing_pet_profile_screen_name">Missing Pet Profile Screen</string>
+
+    <!-- Toolbar Titles -->
+    <string name="edit_picture_menu_title">Edit Picture</string>
+    <string name="open_gallery_menu_title">Open Gallery</string>
+
+    <!-- Views -->
+    <string name="info">Info</string>
+    <string name="animal_field">%s | %s</string>
+    <string name="input_dialog_pet_name_hint">Pet name</string>
+    <string name="apply_button">Apply</string>
+    <string name="select_animal_title">Select Animal</string>
+    <string name="select_breed_title">Select Breed</string>
+
+    <!-- Content Descriptions -->
+    <string name="pet_picture_content_description">Pet profile picture</string>
+    <string name="pet_favorite_icon_content_description">Pet favorite icon</string>
+    <string name="profile_name_edit_icon_content_description">Pet name edit icon</string>
+    <string name="pet_animal_icon_content_description">Pet animal icon</string>
+    <string name="pet_animal_edit_icon_content_description">Pet animal edit icon</string>
+    <string name="pet_breed_icon_content_description">Pet breed icon</string>
+    <string name="pet_breed_edit_icon_content_description">Pet breed edit icon</string>
+    <string name="reporter_title">Reporter</string>
+</resources>

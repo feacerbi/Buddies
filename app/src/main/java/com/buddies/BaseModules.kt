@@ -5,7 +5,8 @@ import com.buddies.configuration.di.configurationModule
 import com.buddies.gallery.di.galleryModule
 import com.buddies.home.di.homeModule
 import com.buddies.login.di.loginModule
-import com.buddies.missing.di.missingPetsModule
+import com.buddies.missing.di.missingFeedModule
+import com.buddies.missing_profile.di.missingPetModule
 import com.buddies.mypets.di.myPetsModule
 import com.buddies.navigation.di.navigationModule
 import com.buddies.newpet.di.newPetModule
@@ -23,7 +24,8 @@ val baseModules = arrayOf(
     galleryModule,
     homeModule,
     loginModule,
-    missingPetsModule,
+    missingFeedModule,
+    missingPetModule,
     myPetsModule,
     navigationModule,
     newPetModule,

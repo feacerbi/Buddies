@@ -1,16 +1,15 @@
-package com.buddies.pet.ui.adapter
+package com.buddies.common.ui.adapter
 
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import com.buddies.common.R
+import com.buddies.common.databinding.BreedListItemBinding
 import com.buddies.common.model.Breed
-import com.buddies.common.ui.adapter.SelectableAdapter
+import com.buddies.common.ui.adapter.BreedsAdapter.BreedsViewHolder
 import com.buddies.common.util.inflater
 import com.buddies.common.util.load
-import com.buddies.pet.R
-import com.buddies.pet.databinding.BreedListItemBinding
-import com.buddies.pet.ui.adapter.BreedsAdapter.BreedsViewHolder
 
 class BreedsAdapter(
     private val owner: LifecycleOwner,

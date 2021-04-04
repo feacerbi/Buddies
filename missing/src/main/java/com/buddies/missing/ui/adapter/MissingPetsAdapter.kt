@@ -1,4 +1,4 @@
-package com.buddies.missing.ui
+package com.buddies.missing.ui.adapter
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -9,10 +9,11 @@ import com.buddies.common.model.MissingPet
 import com.buddies.common.util.inflater
 import com.buddies.common.util.load
 import com.buddies.missing.databinding.MissingPetHorizontalItemBinding
-import com.buddies.missing.ui.MissingPetsAdapter.MissingPetViewHolder
+import com.buddies.missing.ui.adapter.MissingPetsAdapter.MissingPetViewHolder
 
 class MissingPetsAdapter(
-    val lifecycleOwner: LifecycleOwner
+    val lifecycleOwner: LifecycleOwner,
+    val onPetClicked: ((MissingPet) -> Unit)? = null
 ) : ListAdapter<MissingPet, MissingPetViewHolder>(MissingPetDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MissingPetViewHolder =
@@ -34,6 +35,10 @@ class MissingPetsAdapter(
             petPicture.load(pet.info.photo, lifecycleOwner)
             petName.text = pet.info.name
             petInfo.text = pet.info.animal
+
+            root.setOnClickListener {
+                onPetClicked?.invoke(pet)
+            }
         }
     }
 

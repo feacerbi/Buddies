@@ -1,4 +1,4 @@
-package com.buddies.pet.ui.fragment
+package com.buddies.missing_profile.ui
 
 import android.net.Uri
 import android.os.Bundle
@@ -8,81 +8,59 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
-import com.buddies.common.model.Owner
-import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToFullscreen
-import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToGallery
+import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToFullscreen
+import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToGallery
 import com.buddies.common.ui.adapter.AnimalsAdapter
 import com.buddies.common.ui.adapter.BreedsAdapter
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
-import com.buddies.common.ui.bottomsheet.CustomBottomSheet
 import com.buddies.common.ui.bottomsheet.InputBottomSheet
 import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
 import com.buddies.common.ui.bottomsheet.SelectableBottomSheet
-import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.*
-import com.buddies.pet.R
-import com.buddies.pet.databinding.FragmentPetProfileBinding
-import com.buddies.pet.databinding.OwnerInviteListBinding
-import com.buddies.pet.ui.adapter.OwnersAdapter
-import com.buddies.pet.ui.adapter.OwnersPagingAdapter
-import com.buddies.pet.ui.bottomsheet.ChangeTagBottomDialog
-import com.buddies.pet.ui.bottomsheet.OwnershipsBottomDialog
-import com.buddies.pet.viewmodel.PetProfileViewModel
-import com.buddies.pet.viewmodel.PetProfileViewModel.Action
-import com.buddies.pet.viewmodel.PetProfileViewModel.Action.*
-import com.buddies.pet.viewstate.PetProfileViewEffect.*
+import com.buddies.missing_profile.R
+import com.buddies.missing_profile.databinding.FragmentMissingPetProfileBinding
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeAnimal
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeName
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangePhoto
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.Refresh
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestAnimals
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestBreeds
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.Navigate
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowAnimalsList
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowBottomMessage
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowBreedsList
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowError
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
 
-@FlowPreview
-@ExperimentalCoroutinesApi
-@androidx.camera.core.ExperimentalGetImage
-class PetProfileFragment : NavigationFragment(), CoroutineScope {
+class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
 
-    private lateinit var binding: FragmentPetProfileBinding
-    private val viewModel: PetProfileViewModel by viewModel { parametersOf(petIdArg) }
+    private lateinit var binding: FragmentMissingPetProfileBinding
+    private val viewModel: MissingPetProfileViewModel by viewModel { parametersOf(petIdArg) }
 
     private val petIdArg
         get() = arguments?.getString(getString(R.string.pet_id_arg)) ?: ""
-
-    private val ownershipsBottomSheet: OwnershipsBottomDialog by lazy {
-        OwnershipsBottomDialog(parentFragmentManager)
-    }
-
-    private val ownersPagingAdapter by lazy {
-        OwnersPagingAdapter(this@PetProfileFragment)
-    }
 
     private val cameraHelper = CameraHelper(this)
     private val galleryPick = registerForNonNullActivityResult(GetContent()) {
         perform(ChangePhoto(it))
     }
 
-    private val ownersAdapter = OwnersAdapter(
-        this@PetProfileFragment,
-        onClick = { owner -> perform(OpenOwnerProfile(owner)) },
-        onOwnershipClick = { owner -> showEditOwnershipBottomSheet(owner) }
-    )
-
-    private var changeTagDialog: ChangeTagBottomDialog? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentPetProfileBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentMissingPetProfileBinding.inflate(layoutInflater, container, false).apply {
         binding = this
     }.root
 
@@ -102,12 +80,8 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
                     openEditPhotoPicker()
                     true
                 }
-                R.id.add_owner_menu_action -> {
-                    showInviteOwnerBottomSheet()
-                    true
-                }
                 R.id.open_gallery_menu_action -> {
-                    navigate(PetProfileToGallery(petIdArg))
+                    navigate(MissingPetToGallery(petIdArg))
                     true
                 }
                 else -> false
@@ -116,10 +90,6 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
         refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
         refresh.setOnRefreshListener { perform(Refresh) }
-
-        profileFavoriteIcon.setOnClickListener {
-            perform(ToggleFavorite)
-        }
 
         profileNameEdit.setOnClickListener {
             InputBottomSheet.Builder(layoutInflater)
@@ -135,39 +105,19 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         profileAnimalEdit.setOnClickListener {
             perform(RequestAnimals)
         }
-
-        profileTagEdit.setOnClickListener {
-            openChangeTagDialog()
-        }
-
-        ownersList.adapter = ownersAdapter
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
-            petPicture.load(it.photo, this@PetProfileFragment)
+            petPicture.load(it.photo, this@MissingPetProfileFragment)
             petPicture.setOnClickListener { _ -> navigateToFullscreen(petPicture, it.photo) }
             profileName.text = it.name
             profileAnimal.text = getString(R.string.animal_field, it.animal, it.breed)
-            profileTagNumber.text = it.tag
             profileNameEdit.isVisible = it.nameEdit
             profileAnimalEdit.isVisible = it.animalEdit
-            profileTagEdit.isVisible = it.tagEdit
-            profileReportLostSwitch.isVisible = it.lostSwitch
-            profileReportLostSwitch.isChecked = it.lost
-            profileReportLostSwitch.setOnClickListener { _ ->
-                perform(ReportLost(it.name, it.lost, profileReportLostSwitch.isChecked))
-            }
-            profileReportLostStatus.text = getString(it.lostStatus)
+            profileReporterName.text = it.reporter
             toolbar.menu.clear()
             toolbar.inflateMenu(it.toolbarMenu)
-            changeTagDialog?.enableConfirmButton(it.tagValid)
-            changeTagDialog?.setResult(getString(it.tagResult))
-            ownersAdapter.currentOwnership = it.ownershipInfo
-            ownersAdapter.submitList(it.owners)
-            ownersPagingAdapter.submitData(lifecycle, it.pagingData)
-            profileFavoriteIcon.isInvisible = it.hideFavorite
-            profileFavoriteIcon.setImageResource(it.favoriteIcon)
             refresh.isRefreshing = it.loading
         }
 
@@ -176,43 +126,9 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
                 is ShowAnimalsList -> openAnimalsList(it.list)
                 is ShowBreedsList -> openBreedsList(it.list, it.animal)
                 is ShowBottomMessage -> showMessage(it.message, it.params.toTypedArray())
-                is ShowConfirmDialog -> showConfirmDialog(it.message, it.name)
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
-        }
-    }
-
-    private fun showInviteOwnerBottomSheet() {
-        val customView = OwnerInviteListBinding.inflate(layoutInflater)
-        val dialog = CustomBottomSheet.Builder(customView.root).build()
-
-        ownersPagingAdapter.addLoadStateListener {
-            customView.ownersListEmpty.isVisible = ownersPagingAdapter.itemCount == 0
-        }
-
-        customView.searchBox.addTextChangedListener {
-            perform(RequestInviteOwners(it.toString()))
-        }
-
-        customView.ownersList.adapter = ownersPagingAdapter.apply {
-            onClick = { owner ->
-                dialog.cancel { showInviteOwnershipBottomSheet(owner) }
-            }
-        }
-
-        dialog.show()
-    }
-
-    private fun showInviteOwnershipBottomSheet(owner: Owner) {
-        ownershipsBottomSheet.show(owner.category, R.string.send_button) {
-            perform(InviteOwner(Owner(owner.user, it)))
-        }
-    }
-
-    private fun showEditOwnershipBottomSheet(owner: Owner) {
-        ownershipsBottomSheet.show(owner.category, R.string.change_button) {
-            perform(ChangeOwnership(owner, it))
         }
     }
 
@@ -244,22 +160,6 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
             .show()
     }
 
-    private fun openChangeTagDialog() {
-        perform(OpenScanner)
-
-        changeTagDialog = ChangeTagBottomDialog.Builder(layoutInflater)
-            .title(getString(R.string.change_tag_dialog_title))
-            .content(getString(R.string.change_tag_dialog_content))
-            .cancelButton()
-            .confirmButton {
-                perform(ChangeTag(it))
-            }
-            .build()
-            .show(this, cameraHelper) {
-                perform(HandleTag(it))
-            }
-    }
-
     private fun openEditPhotoPicker() {
         MediaPickerBottomSheet.Builder(layoutInflater)
             .selected {
@@ -276,23 +176,9 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
 
     private fun navigateToFullscreen(image: View, uri: Uri) {
         navigate(
-            PetProfileToFullscreen(uri.toString(), image.transitionName),
+            MissingPetToFullscreen(uri.toString(), image.transitionName),
             image to image.transitionName
         )
-    }
-
-    private fun showConfirmDialog(message: Int, name: String) {
-        SimpleBottomSheet.Builder(layoutInflater)
-            .title(getString(R.string.report_lost_dialog_title))
-            .content(getString(message, name))
-            .cancelButton {
-                perform(CancelLost)
-            }
-            .confirmButton(getString(R.string.report_lost_dialog_confirm_button)) {
-                perform(ConfirmLost(name))
-            }
-            .build()
-            .show()
     }
 
     private fun showMessage(text: Int, params: Array<String> = emptyArray()) {

@@ -4,6 +4,7 @@ import androidx.navigation.NavDirections
 import com.buddies.common.navigation.BaseNavigator
 import com.buddies.common.navigation.Navigator
 import com.buddies.common.navigation.Navigator.NavDirection
+import com.buddies.common.navigation.Navigator.NavDirection.AllMissingPetsToMissingPet
 import com.buddies.common.navigation.Navigator.NavDirection.GalleryToFullscreen
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
@@ -11,8 +12,11 @@ import com.buddies.common.navigation.Navigator.NavDirection.HomeToProfile
 import com.buddies.common.navigation.Navigator.NavDirection.LoginToHome
 import com.buddies.common.navigation.Navigator.NavDirection.LoginToMissingFeed
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToAllMissingPets
+import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToMissingPet
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToProfile
+import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToFullscreen
+import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToGallery
 import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToFullscreen
 import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToGallery
 import com.buddies.common.navigation.Navigator.NavDirection.ProfileToFullscreen
@@ -31,9 +35,13 @@ import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmen
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToHomeFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToLoginFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToMissingFeedFragment
-import com.buddies.missing.ui.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToAllMissingPetsFragment
-import com.buddies.missing.ui.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToNewPetNavGraph
-import com.buddies.missing.ui.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToProfileFragment
+import com.buddies.missing.ui.fragment.AllMissingPetsFragmentDirections.Companion.actionAllMissingPetsFragmentToMissingPetProfileFragment
+import com.buddies.missing.ui.fragment.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToAllMissingPetsFragment
+import com.buddies.missing.ui.fragment.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToMissingPetProfileFragment
+import com.buddies.missing.ui.fragment.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToNewPetNavGraph
+import com.buddies.missing.ui.fragment.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToProfileFragment
+import com.buddies.missing_profile.ui.MissingPetProfileFragmentDirections.Companion.actionMissingPetProfileFragmentToFullscreenFragment
+import com.buddies.missing_profile.ui.MissingPetProfileFragmentDirections.Companion.actionMissingPetProfileFragmentToGalleryFragment
 import com.buddies.newpet.util.FlowType
 import com.buddies.pet.ui.fragment.PetProfileFragmentDirections.Companion.actionPetProfileFragmentToFullscreenFragment
 import com.buddies.pet.ui.fragment.PetProfileFragmentDirections.Companion.actionPetProfileFragmentToGalleryFragment
@@ -59,6 +67,15 @@ class AppNavigator : BaseNavigator() {
         is MissingFeedToProfile -> actionMissingFeedFragmentToProfileFragment()
         is MissingFeedToNewPetFlow -> actionMissingFeedFragmentToNewPetNavGraph(FlowType.MISSING)
         is MissingFeedToAllMissingPets -> actionMissingFeedFragmentToAllMissingPetsFragment()
+        is MissingFeedToMissingPet -> actionMissingFeedFragmentToMissingPetProfileFragment(petId)
+
+        is AllMissingPetsToMissingPet -> actionAllMissingPetsFragmentToMissingPetProfileFragment(petId)
+
+        is MissingPetToGallery -> actionMissingPetProfileFragmentToGalleryFragment(petId)
+        is MissingPetToFullscreen -> actionMissingPetProfileFragmentToFullscreenFragment(
+            pictureUrl,
+            transitionName,
+            false)
 
         is ProfileToLogin -> actionProfileFragmentToLoginFragment()
         is ProfileToNewPetFlow -> actionProfileFragmentToNewPetFlow(FlowType.TAG)

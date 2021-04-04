@@ -191,7 +191,7 @@
 
     <fragment
         android:id="@+id/missingFeedFragment"
-        android:name="com.buddies.missing.ui.MissingFeedFragment"
+        android:name="com.buddies.missing.ui.fragment.MissingFeedFragment"
         android:label="@string/missing_feed_screen_name"
         tools:layout="@layout/fragment_missing_feed" >
         <action
@@ -222,6 +222,50 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_missingFeedFragment_to_missingPetProfileFragment"
+            app:destination="@id/missingPetProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/allMissingPetsFragment"
+        android:name="com.buddies.missing.ui.fragment.AllMissingPetsFragment"
+        android:label="@string/all_missing_pets_screen_name"
+        tools:layout="@layout/fragment_all_missing_pets">
+        <action
+            android:id="@+id/action_allMissingPetsFragment_to_missingPetProfileFragment"
+            app:destination="@id/missingPetProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/missingPetProfileFragment"
+        android:name="com.buddies.missing_profile.ui.MissingPetProfileFragment"
+        android:label="@string/missing_pet_profile_screen_name"
+        tools:layout="@layout/fragment_missing_pet_profile">
+        <argument
+            android:name="petId"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_missingPetProfileFragment_to_galleryFragment"
+            app:destination="@id/galleryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_missingPetProfileFragment_to_fullscreenFragment"
+            app:destination="@id/fullscreenFragment" />
     </fragment>
 
 </navigation>

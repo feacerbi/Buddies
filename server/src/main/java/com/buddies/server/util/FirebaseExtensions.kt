@@ -61,6 +61,9 @@ fun QuerySnapshot.toTag() = documents[0].run {
 fun DocumentSnapshot.toOwner(ownership: Ownership) =
     Owner(toUser(), ownership.info.category.toOwnershipCategory())
 
+fun DocumentSnapshot.toMissingPet() =
+    MissingPet(id, to(MissingPetInfo::class))
+
 fun QuerySnapshot.toMissingPets() = documents.map { doc ->
     MissingPet(doc.id, doc.to(MissingPetInfo::class))
 }

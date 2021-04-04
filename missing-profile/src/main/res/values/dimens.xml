@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- View -->
+    <dimen name="profile_image_height">300dp</dimen>
+    <dimen name="pet_profile_elevation">8dp</dimen>
+</resources>

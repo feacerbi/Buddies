@@ -1,4 +1,8 @@
 <resources>
+    <!-- Destinations -->
+    <string name="missing_feed_screen_name">Missing Feed Screen</string>
+    <string name="all_missing_pets_screen_name">All Missing Pets Screen</string>
+
     <!-- View-->
     <string name="found_recently_title">Found recently</string>
     <string name="found_near_you_title">Found near you</string>

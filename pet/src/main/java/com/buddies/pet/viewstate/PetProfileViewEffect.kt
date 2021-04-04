@@ -11,7 +11,7 @@ sealed class PetProfileViewEffect : ViewEffect {
     data class ShowBreedsList(val list: List<Breed>?, val animal: Animal) : PetProfileViewEffect()
     data class ShowBottomMessage(
         @StringRes val message: Int,
-        val params: Array<String> = arrayOf()) : PetProfileViewEffect()
+        val params: List<String> = emptyList()) : PetProfileViewEffect()
     data class ShowConfirmDialog(
         @StringRes val message: Int,
         val name: String) : PetProfileViewEffect()

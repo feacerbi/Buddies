@@ -1,4 +1,4 @@
-package com.buddies.missing.ui
+package com.buddies.missing.ui.adapter
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -9,10 +9,11 @@ import com.buddies.common.model.MissingPet
 import com.buddies.common.util.inflater
 import com.buddies.common.util.load
 import com.buddies.missing.databinding.MissingPetVerticalItemBinding
-import com.buddies.missing.ui.MissingPetsPagingAdapter.MissingPetViewHolder
+import com.buddies.missing.ui.adapter.MissingPetsPagingAdapter.MissingPetViewHolder
 
 class MissingPetsPagingAdapter(
-    val lifecycleOwner: LifecycleOwner
+    val lifecycleOwner: LifecycleOwner,
+    val onPetClicked: ((MissingPet) -> Unit)? = null
 ) : PagingDataAdapter<MissingPet, MissingPetViewHolder>(MissingPetDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MissingPetViewHolder =
@@ -35,6 +36,10 @@ class MissingPetsPagingAdapter(
                 petPicture.load(pet.info.photo, lifecycleOwner)
                 petName.text = pet.info.name
                 petInfo.text = pet.info.animal
+
+                root.setOnClickListener {
+                    onPetClicked?.invoke(pet)
+                }
             }
         }
     }
