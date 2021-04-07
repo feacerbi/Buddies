@@ -23,6 +23,8 @@ import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
 import com.buddies.common.ui.bottomsheet.SelectableBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.*
+import com.buddies.contact.model.ContactInfo
+import com.buddies.contact.ui.bottomsheet.ContactInfoBottomSheet
 import com.buddies.missing_profile.R
 import com.buddies.missing_profile.databinding.FragmentMissingPetProfileBinding
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel
@@ -33,10 +35,12 @@ import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.C
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.Refresh
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestAnimals
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestBreeds
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestContactInfo
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.Navigate
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowAnimalsList
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowBottomMessage
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowBreedsList
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowContactInfoBottomSheet
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowError
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -105,6 +109,10 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
         profileAnimalEdit.setOnClickListener {
             perform(RequestAnimals)
         }
+
+        profileReporterEdit.setOnClickListener {
+            perform(RequestContactInfo)
+        }
     }
 
     private fun bindViews() = with (binding) {
@@ -126,6 +134,7 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
                 is ShowAnimalsList -> openAnimalsList(it.list)
                 is ShowBreedsList -> openBreedsList(it.list, it.animal)
                 is ShowBottomMessage -> showMessage(it.message, it.params.toTypedArray())
+                is ShowContactInfoBottomSheet -> openContactInfoBottomSheet(it.info)
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
@@ -170,6 +179,19 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
                     }
                 }
             }
+            .build()
+            .show()
+    }
+
+    private fun openContactInfoBottomSheet(info: List<ContactInfo>?) {
+        val contactInfoBuilder = ContactInfoBottomSheet.Builder(layoutInflater)
+
+        info?.forEach {
+            contactInfoBuilder.field(it)
+        }
+
+        contactInfoBuilder
+            .closeButton()
             .build()
             .show()
     }

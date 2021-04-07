@@ -33,6 +33,14 @@ class MissingPetApi(
             .toUser()
     }
 
+    suspend fun getUser(
+        userId: String
+    ) = runWithResult {
+        usersRepository.getUser(userId)
+            .handleTaskResult()
+            .toUser()
+    }
+
     suspend fun getPet(
         petId: String
     ) = runWithResult {

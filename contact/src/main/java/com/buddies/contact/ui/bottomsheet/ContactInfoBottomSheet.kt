@@ -1,21 +1,14 @@
-package com.buddies.profile.ui.bottomsheet
+package com.buddies.contact.ui.bottomsheet
 
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
-import com.buddies.common.model.ShareInfoType.EMAIL
-import com.buddies.common.model.ShareInfoType.LOCATION
-import com.buddies.common.model.ShareInfoType.NAME
-import com.buddies.common.model.ShareInfoType.PHONE
+import com.buddies.common.model.InfoType.EMAIL
+import com.buddies.common.model.InfoType.LOCATION
+import com.buddies.common.model.InfoType.NAME
+import com.buddies.common.model.InfoType.PHONE
 import com.buddies.common.ui.bottomsheet.BottomSheetFactory
-import com.buddies.profile.R
-import com.buddies.profile.databinding.ContactInfoLayoutBinding
-import com.buddies.profile.model.ContactInfo
-import com.buddies.profile.model.ContactInfoField
-import com.buddies.profile.model.EmailInfoField
-import com.buddies.profile.model.MapInfoField
-import com.buddies.profile.model.NameInfoField
-import com.buddies.profile.model.PhoneInfoField
-import com.buddies.profile.ui.adapter.ContactInfoAdapter
+import com.buddies.contact.R
+import com.buddies.contact.databinding.ContactInfoLayoutBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ContactInfoBottomSheet private constructor(
@@ -33,9 +26,9 @@ class ContactInfoBottomSheet private constructor(
         private val contactView = ContactInfoLayoutBinding.inflate(inflater)
         private val bottomSheet = createBottomSheet(contactView.root)
 
-        private val fields: MutableList<ContactInfoField> = mutableListOf()
+        private val fields: MutableList<com.buddies.contact.model.ContactInfoField> = mutableListOf()
 
-        private val adapter = ContactInfoAdapter()
+        private val adapter = com.buddies.contact.ui.adapter.ContactInfoAdapter()
 
         private val closeButtonDefaultText by lazy {
             contactView.root.context.resources.getString(R.string.close_button)
@@ -50,13 +43,13 @@ class ContactInfoBottomSheet private constructor(
         }.let { this }
 
         fun field(
-            contactInfo: ContactInfo
+            contactInfo: com.buddies.contact.model.ContactInfo
         ): Builder {
-            when (contactInfo.shareInfoType) {
-                NAME -> fields.add(NameInfoField(contactInfo.info))
-                EMAIL -> fields.add(EmailInfoField(contactInfo.info))
-                PHONE -> fields.add(PhoneInfoField(contactInfo.info))
-                LOCATION -> fields.add(MapInfoField(contactInfo.info))
+            when (contactInfo.infoType) {
+                NAME -> fields.add(com.buddies.contact.model.NameInfoField(contactInfo.info))
+                EMAIL -> fields.add(com.buddies.contact.model.EmailInfoField(contactInfo.info))
+                PHONE -> fields.add(com.buddies.contact.model.PhoneInfoField(contactInfo.info))
+                LOCATION -> fields.add(com.buddies.contact.model.MapInfoField(contactInfo.info))
                 else -> { /* Ignore */ }
             }
             return this

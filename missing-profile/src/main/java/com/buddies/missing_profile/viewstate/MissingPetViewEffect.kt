@@ -5,6 +5,7 @@ import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.navigation.Navigator
 import com.buddies.common.viewstate.ViewEffect
+import com.buddies.contact.model.ContactInfo
 
 sealed class MissingPetViewEffect : ViewEffect {
     data class ShowAnimalsList(val list: List<Animal>?) : MissingPetViewEffect()
@@ -12,6 +13,7 @@ sealed class MissingPetViewEffect : ViewEffect {
     data class ShowBottomMessage(
         @StringRes val message: Int,
         val params: List<String> = emptyList()) : MissingPetViewEffect()
+    data class ShowContactInfoBottomSheet(val info: List<ContactInfo>?) : MissingPetViewEffect()
     data class Navigate(val direction: Navigator.NavDirection) : MissingPetViewEffect()
     data class ShowError(val error: Int) : MissingPetViewEffect()
 }

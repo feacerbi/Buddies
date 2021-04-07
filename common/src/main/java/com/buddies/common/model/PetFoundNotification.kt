@@ -18,7 +18,7 @@ data class PetFoundNotification(
     val notificationTimestamp: Calendar,
     val userName: String,
     val pet: Pet,
-    val shareInfo: Map<ShareInfoType, String>
+    val shareInfo: Map<InfoType, String>
 ) : UserNotification(
     notificationId,
     PET_FOUND,

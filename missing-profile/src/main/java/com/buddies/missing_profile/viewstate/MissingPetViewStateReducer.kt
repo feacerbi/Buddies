@@ -14,6 +14,7 @@ sealed class MissingPetViewStateReducer : ViewStateReducer<MissingPetViewState> 
     data class ShowInfo(
         val pet: MissingPet?,
         val animalAndBreed: Pair<Animal, Breed>?,
+        val reporter: User?,
         val currentUser: User?
     ) : MissingPetViewStateReducer() {
         override fun reduce(state: MissingPetViewState) = state.copy(
@@ -23,7 +24,7 @@ sealed class MissingPetViewStateReducer : ViewStateReducer<MissingPetViewState> 
             animalEdit = currentUser?.id == pet?.info?.reporter,
             breed = animalAndBreed?.second?.breedInfo?.name ?: "",
             photo = pet?.info?.photo?.toUri() ?: Uri.EMPTY,
-            reporter = currentUser?.info?.name ?: "",
+            reporter = reporter?.info?.name ?: "",
             toolbarMenu = if (currentUser?.id == pet?.info?.reporter) {
                 R.menu.missing_pet_profile_toolbar_menu
             } else {

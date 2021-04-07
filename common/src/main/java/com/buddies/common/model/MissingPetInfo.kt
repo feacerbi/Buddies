@@ -8,5 +8,6 @@ data class MissingPetInfo(
     val animal: String = "",
     val breed: String = "",
     val reporter: String = "",
+    val reporterInfo: Map<String, String> = emptyMap(),
     val created: Long = Calendar.getInstance().timeInMillis
 )

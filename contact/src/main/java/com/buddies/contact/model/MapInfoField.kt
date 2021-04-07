@@ -1,9 +1,9 @@
-package com.buddies.profile.model
+package com.buddies.contact.model
 
 import android.content.Context
-import com.buddies.common.model.ShareInfoType.LOCATION
+import com.buddies.common.model.InfoType.LOCATION
 import com.buddies.common.util.IntentActionSender
-import com.buddies.profile.R
+import com.buddies.contact.R
 
 class MapInfoField(
     location: String,

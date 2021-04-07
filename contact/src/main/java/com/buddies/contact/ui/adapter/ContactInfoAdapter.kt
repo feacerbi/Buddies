@@ -1,15 +1,17 @@
-package com.buddies.profile.ui.adapter
+package com.buddies.contact.ui.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.util.inflater
-import com.buddies.profile.databinding.ContactInfoItemBinding
-import com.buddies.profile.model.ContactInfoField
-import com.buddies.profile.ui.adapter.ContactInfoAdapter.ContactInfoViewHolder
+import com.buddies.contact.databinding.ContactInfoItemBinding
+import com.buddies.contact.model.ContactInfoField
+import com.buddies.contact.ui.adapter.ContactInfoAdapter.ContactInfoViewHolder
 
-class ContactInfoAdapter : ListAdapter<ContactInfoField, ContactInfoViewHolder>(ContactInfoDiffUtil()) {
+class ContactInfoAdapter : ListAdapter<ContactInfoField, ContactInfoViewHolder>(
+    ContactInfoDiffUtil()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactInfoViewHolder =
         ContactInfoViewHolder(
@@ -41,7 +43,7 @@ class ContactInfoAdapter : ListAdapter<ContactInfoField, ContactInfoViewHolder>(
 
     class ContactInfoDiffUtil : DiffUtil.ItemCallback<ContactInfoField>() {
         override fun areItemsTheSame(oldItem: ContactInfoField, newItem: ContactInfoField) =
-            oldItem.shareInfoType == newItem.shareInfoType
+            oldItem.infoType == newItem.infoType
 
         override fun areContentsTheSame(oldItem: ContactInfoField, newItem: ContactInfoField) =
             oldItem.title == newItem.title

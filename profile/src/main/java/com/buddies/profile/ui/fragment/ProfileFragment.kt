@@ -18,10 +18,10 @@ import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
 import com.buddies.common.util.registerForNonNullActivityResult
+import com.buddies.contact.model.ContactInfo
+import com.buddies.contact.ui.bottomsheet.ContactInfoBottomSheet
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileBinding
-import com.buddies.profile.model.ContactInfo
-import com.buddies.profile.ui.bottomsheet.ContactInfoBottomSheet
 import com.buddies.profile.ui.adapter.ProfileTabsAdapter
 import com.buddies.profile.util.ProfileTabsMediator
 import com.buddies.profile.viewmodel.ProfileViewModel

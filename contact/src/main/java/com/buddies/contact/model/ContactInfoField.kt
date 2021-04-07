@@ -1,11 +1,11 @@
-package com.buddies.profile.model
+package com.buddies.contact.model
 
 import android.content.Context
 import androidx.annotation.DrawableRes
-import com.buddies.common.model.ShareInfoType
+import com.buddies.common.model.InfoType
 
 abstract class ContactInfoField(
-    val shareInfoType: ShareInfoType,
+    val infoType: InfoType,
     val priority: Int,
     val title: String,
     @DrawableRes val icon: Int,

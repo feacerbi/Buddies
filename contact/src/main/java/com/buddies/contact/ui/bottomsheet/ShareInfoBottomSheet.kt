@@ -1,18 +1,13 @@
-package com.buddies.home.ui.bottomsheet
+package com.buddies.contact.ui.bottomsheet
 
-import android.text.InputType
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
-import com.buddies.common.model.ShareInfoType.EMAIL
-import com.buddies.common.model.ShareInfoType.LOCATION
-import com.buddies.common.model.ShareInfoType.NAME
-import com.buddies.common.model.ShareInfoType.PHONE
 import com.buddies.common.ui.bottomsheet.BottomSheetFactory
-import com.buddies.home.R
-import com.buddies.home.databinding.ShareInfoLayoutBinding
-import com.buddies.home.model.ShareInfo
-import com.buddies.home.model.ShareInfoField
-import com.buddies.home.ui.adapter.ShareInfoAdapter
+import com.buddies.contact.R
+import com.buddies.contact.databinding.ShareInfoLayoutBinding
+import com.buddies.contact.model.ShareInfo
+import com.buddies.contact.model.ShareInfoField
+import com.buddies.contact.ui.adapter.ShareInfoAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShareInfoBottomSheet private constructor(
@@ -58,69 +53,38 @@ class ShareInfoBottomSheet private constructor(
 
         fun name(
             name: String = "",
-            checked: Boolean = true,
             hint: Int = R.string.name_hint,
+            checked: Boolean = true,
             validCheck: (ShareInfoField) -> Boolean = defaultValidationCheck
-        ): Builder {
-            fields.add(ShareInfoField(
-                NAME,
-                hint,
-                checked,
-                name,
-                InputType.TYPE_TEXT_FLAG_CAP_WORDS,
-                R.drawable.ic_baseline_person,
-                validCheck))
-            return this
+        ): Builder = apply {
+            fields.add(ShareInfoField.createNameField(name, hint, checked, validCheck))
         }
 
         fun email(
             email: String = "",
-            checked: Boolean = true,
             hint: Int = R.string.email_hint,
+            checked: Boolean = true,
             validCheck: (ShareInfoField) -> Boolean = defaultValidationCheck
-        ): Builder {
-            fields.add(ShareInfoField(
-                EMAIL,
-                hint, checked,
-                email,
-                InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
-                R.drawable.ic_baseline_email,
-                validCheck))
-            return this
+        ): Builder = apply {
+            fields.add(ShareInfoField.createEmailField(email, hint, checked, validCheck))
         }
 
         fun phone(
             phone: String = "",
-            checked: Boolean = true,
             hint: Int = R.string.phone_hint,
+            checked: Boolean = true,
             validCheck: (ShareInfoField) -> Boolean = defaultValidationCheck
-        ): Builder {
-            fields.add(ShareInfoField(
-                PHONE,
-                hint,
-                checked,
-                phone,
-                InputType.TYPE_CLASS_PHONE,
-                R.drawable.ic_baseline_phone,
-                validCheck))
-            return this
+        ): Builder = apply {
+            fields.add(ShareInfoField.cratePhoneField(phone, hint, checked, validCheck))
         }
 
         fun location(
             location: String = "",
-            checked: Boolean = true,
             hint: Int = R.string.location_hint,
+            checked: Boolean = true,
             validCheck: (ShareInfoField) -> Boolean = defaultValidationCheck
-        ): Builder {
-            fields.add(ShareInfoField(
-                LOCATION,
-                hint,
-                checked,
-                location,
-                InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS,
-                R.drawable.ic_baseline_location_on,
-                validCheck))
-            return this
+        ): Builder = apply {
+            fields.add(ShareInfoField.createLocationField(location, hint, checked, validCheck))
         }
 
         fun cancelButton(
@@ -153,7 +117,7 @@ class ShareInfoBottomSheet private constructor(
         }
 
         private fun checkSendConditions(): Boolean {
-            val info = listOf(*adapter.currentList().toTypedArray())
+            val info = adapter.currentList
 
             val infoValid = info
                 .filter { it.checked }
@@ -174,7 +138,7 @@ class ShareInfoBottomSheet private constructor(
         }
 
         fun build(): ShareInfoBottomSheet {
-            adapter.updateItems(fields)
+            adapter.submitList(fields)
             adapter.onCheckedChanged = ::checkButtonConditions
             shareView.fieldsList.adapter = adapter
             return ShareInfoBottomSheet(bottomSheet)

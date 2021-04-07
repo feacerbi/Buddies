@@ -6,7 +6,9 @@ import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.DefaultError
 import com.buddies.common.util.safeLaunch
+import com.buddies.common.util.toInfoType
 import com.buddies.common.viewmodel.StateViewModel
+import com.buddies.contact.model.ContactInfo
 import com.buddies.missing_profile.usecase.MissingPetUseCases
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeAnimal
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeName
@@ -14,9 +16,11 @@ import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.C
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.Refresh
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestAnimals
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestBreeds
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestContactInfo
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowAnimalsList
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowBreedsList
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowContactInfoBottomSheet
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowError
 import com.buddies.missing_profile.viewstate.MissingPetViewState
 import com.buddies.missing_profile.viewstate.MissingPetViewStateReducer.HideLoading
@@ -44,6 +48,7 @@ class MissingPetProfileViewModel(
             is ChangePhoto -> updatePhoto(action.photo)
             is RequestBreeds -> requestBreeds(action.animal)
             is RequestAnimals -> requestAnimals()
+            is RequestContactInfo -> requestContactInfo()
         }
     }
 
@@ -72,8 +77,9 @@ class MissingPetProfileViewModel(
             pet?.info?.animal ?: "",
             pet?.info?.breed ?: ""
         )
+        val reporter = missingPetUseCases.getUser(pet?.info?.reporter ?: "")
         val user = missingPetUseCases.getCurrentUser()
-        updateState(ShowInfo(pet, animalAndBreed, user))
+        updateState(ShowInfo(pet, animalAndBreed, reporter, user))
     }
 
     private fun requestAnimals() = safeLaunch(::showError) {
@@ -90,6 +96,16 @@ class MissingPetProfileViewModel(
         updateEffect(ShowBreedsList(breeds, animal))
     }
 
+    private fun requestContactInfo() = safeLaunch(::showError) {
+        updateState(ShowLoading)
+        val pet = missingPetUseCases.getPet(petId)
+        val contactInfo = pet?.info?.reporterInfo?.map {
+            ContactInfo(it.key.toInfoType(), it.value)
+        }
+        updateState(HideLoading)
+        updateEffect(ShowContactInfoBottomSheet(contactInfo))
+    }
+
     private fun showError(error: DefaultError) {
         updateState(HideLoading)
         updateEffect(ShowError(error.code.message))
@@ -100,6 +116,7 @@ class MissingPetProfileViewModel(
         data class ChangeAnimal(val animal: Animal, val breed: Breed) : Action()
         data class ChangePhoto(val photo: Uri) : Action()
         data class RequestBreeds(val animal: Animal) : Action()
+        object RequestContactInfo : Action()
         object RequestAnimals : Action()
         object Refresh : Action()
     }

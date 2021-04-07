@@ -9,13 +9,6 @@
     <string name="pet_found">This is %s</string>
     <string name="empty_tag_message">Your Tag is empty</string>
     <string name="owners_notified_message">Owners notified!</string>
-    <string name="share_info_dialog_title">Info Sharing</string>
-    <string name="share_info_dialog_content">What kind of information do you want to share with the owners?</string>
-    <string name="name_hint">Name</string>
-    <string name="email_hint">Email</string>
-    <string name="phone_hint">Phone</string>
-    <string name="location_hint">Location</string>
-    <string name="empty_field_error">Empty field</string>
     <string name="pet_status_lost">Lost</string>
     <string name="pet_status_safe">Safe</string>
     <string name="open_profile_button">Open profile</string>

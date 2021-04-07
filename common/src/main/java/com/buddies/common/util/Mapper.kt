@@ -9,19 +9,19 @@ import androidx.annotation.ColorRes
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
 import com.buddies.common.model.ErrorCode
+import com.buddies.common.model.InfoType
+import com.buddies.common.model.InfoType.EMAIL
+import com.buddies.common.model.InfoType.LOCATION
+import com.buddies.common.model.InfoType.NAME
+import com.buddies.common.model.InfoType.PHONE
+import com.buddies.common.model.NotificationType
 import com.buddies.common.model.NotificationType.INVITE
 import com.buddies.common.model.NotificationType.PET_FOUND
-import com.buddies.common.model.NotificationType.UNKNOWN
 import com.buddies.common.model.OwnershipCategory.CARE_TAKER
 import com.buddies.common.model.OwnershipCategory.FAMILY
 import com.buddies.common.model.OwnershipCategory.FRIEND
 import com.buddies.common.model.OwnershipCategory.OWNER
 import com.buddies.common.model.OwnershipCategory.VISITOR
-import com.buddies.common.model.ShareInfoType
-import com.buddies.common.model.ShareInfoType.EMAIL
-import com.buddies.common.model.ShareInfoType.LOCATION
-import com.buddies.common.model.ShareInfoType.NAME
-import com.buddies.common.model.ShareInfoType.PHONE
 import java.util.*
 
 fun Exception.toDefaultError() =
@@ -44,15 +44,15 @@ fun Int.toOwnershipCategory() = when (this) {
 fun Int.toNotificationType() = when (this) {
     INVITE.id -> INVITE
     PET_FOUND.id -> PET_FOUND
-    else -> UNKNOWN
+    else -> NotificationType.UNKNOWN
 }
 
-fun String.toShareInfoType() = when (this) {
+fun String.toInfoType() = when (this) {
     NAME.name.toLowerCase(Locale.getDefault()) -> NAME
     EMAIL.name.toLowerCase(Locale.getDefault()) -> EMAIL
     PHONE.name.toLowerCase(Locale.getDefault()) -> PHONE
     LOCATION.name.toLowerCase(Locale.getDefault()) -> LOCATION
-    else -> ShareInfoType.UNKNOWN
+    else -> InfoType.UNKNOWN
 }
 
 fun String.toUri() = Uri.parse(this)

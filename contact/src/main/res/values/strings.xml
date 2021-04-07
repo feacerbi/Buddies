@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- View-->
+    <string name="share_info_dialog_title">Info Sharing</string>
+    <string name="share_info_dialog_content">What kind of information do you want to share with the owners?</string>
+    <string name="empty_field_error">Empty field</string>
+    <string name="name_hint">Name</string>
+    <string name="email_hint">Email</string>
+    <string name="phone_hint">Phone</string>
+    <string name="location_hint">Location</string>
+    <string name="contact_info_dialog_title">Contact Info</string>
+    <string name="contact_info_dialog_content">This is the information provided by the person who found your pet.</string>
+    <string name="email_action_subject">Lost pet found!</string>
+    <string name="email_action_message">Hey, I found your lost pet, please contact me through this email address.</string>
+</resources>

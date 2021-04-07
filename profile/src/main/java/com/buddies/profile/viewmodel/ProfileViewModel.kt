@@ -15,8 +15,8 @@ import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.configuration.Configuration
 import com.buddies.configuration.Feature.MY_PETS
+import com.buddies.contact.model.ContactInfo
 import com.buddies.profile.usecase.ProfileUseCases
-import com.buddies.profile.util.toContactInfo
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.AcceptNotification
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.AddFavorite
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.ChangeName
@@ -147,7 +147,10 @@ class ProfileViewModel(
     }
 
     private fun handleShowInfoClick(notification: PetFoundNotification) {
-        updateEffect(ShowContactInfoBottomSheet(notification.shareInfo.toContactInfo()))
+        val contactInfo = notification.shareInfo
+            .toList()
+            .map { ContactInfo(it.first, it.second) }
+        updateEffect(ShowContactInfoBottomSheet(contactInfo))
     }
 
     private fun logout() {

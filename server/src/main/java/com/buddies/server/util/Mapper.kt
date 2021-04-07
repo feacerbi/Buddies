@@ -4,8 +4,8 @@ import com.buddies.common.model.InviteNotification
 import com.buddies.common.model.Pet
 import com.buddies.common.model.PetFoundNotification
 import com.buddies.common.model.User
+import com.buddies.common.util.toInfoType
 import com.buddies.common.util.toOwnershipCategory
-import com.buddies.common.util.toShareInfoType
 import com.buddies.server.model.Notification
 import java.util.*
 
@@ -30,5 +30,5 @@ fun Notification.toPetFoundNotification(
     Calendar.getInstance().apply { timeInMillis = info.created },
     sourceUser.info.name,
     pet,
-    info.extra.mapKeys { it.key.toShareInfoType() }
+    info.extra.mapKeys { it.key.toInfoType() }
 )

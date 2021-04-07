@@ -15,10 +15,10 @@ import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.CameraHelper
 import com.buddies.common.util.observe
+import com.buddies.contact.ui.bottomsheet.ShareInfoBottomSheet
 import com.buddies.home.R
 import com.buddies.home.databinding.FragmentHomeBinding
 import com.buddies.home.ui.bottomsheet.ScannedPetBottomSheet
-import com.buddies.home.ui.bottomsheet.ShareInfoBottomSheet
 import com.buddies.home.viewmodel.HomeViewModel
 import com.buddies.home.viewmodel.HomeViewModel.Action
 import com.buddies.home.viewmodel.HomeViewModel.Action.*

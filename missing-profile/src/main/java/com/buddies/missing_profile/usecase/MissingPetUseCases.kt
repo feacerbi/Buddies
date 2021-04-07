@@ -14,6 +14,12 @@ class MissingPetUseCases(
         missingPetApi.getCurrentUser()
     }
 
+    suspend fun getUser(
+        userId: String
+    ) = request {
+        missingPetApi.getUser(userId)
+    }
+
     suspend fun getPet(
         petId: String
     ) = request {

@@ -1,7 +1,7 @@
 package com.buddies.home.usecase
 
 import com.buddies.common.usecase.BaseUseCases
-import com.buddies.home.model.ShareInfo
+import com.buddies.contact.model.ShareInfo
 import com.buddies.server.api.HomeApi
 
 class HomeUseCases(

@@ -1,9 +1,9 @@
-package com.buddies.profile.model
+package com.buddies.contact.model
 
 import android.content.Context
-import com.buddies.common.model.ShareInfoType.PHONE
+import com.buddies.common.model.InfoType.PHONE
 import com.buddies.common.util.IntentActionSender
-import com.buddies.profile.R
+import com.buddies.contact.R
 
 class PhoneInfoField(
     phone: String,

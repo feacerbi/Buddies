@@ -10,8 +10,8 @@ import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.configuration.Configuration
 import com.buddies.configuration.Feature.PET_SCANNER
+import com.buddies.contact.model.ShareInfo
 import com.buddies.home.R
-import com.buddies.home.model.ShareInfo
 import com.buddies.home.usecase.HomeUseCases
 import com.buddies.home.viewmodel.HomeViewModel.Action.AddNewPet
 import com.buddies.home.viewmodel.HomeViewModel.Action.CloseScanner

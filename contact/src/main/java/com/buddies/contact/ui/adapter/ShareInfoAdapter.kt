@@ -1,24 +1,20 @@
-package com.buddies.home.ui.adapter
+package com.buddies.contact.ui.adapter
 
 import android.text.TextWatcher
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.buddies.common.model.InfoType
+import com.buddies.common.model.InfoType.UNKNOWN
 import com.buddies.common.util.inflater
-import com.buddies.home.databinding.ShareInfoItemBinding
-import com.buddies.home.model.ShareInfoField
+import com.buddies.contact.databinding.ShareInfoItemBinding
+import com.buddies.contact.model.ShareInfoField
 
 class ShareInfoAdapter(
     var onCheckedChanged: (List<ShareInfoField>) -> Unit = {}
-) : RecyclerView.Adapter<ShareInfoAdapter.ShareInfoViewHolder>() {
-
-    private val fieldsList: MutableList<ShareInfoField> = mutableListOf()
-
-    fun updateItems(items: List<ShareInfoField>) {
-        fieldsList.clear()
-        fieldsList.addAll(items)
-        notifyDataSetChanged()
-    }
+) : ListAdapter<ShareInfoField, ShareInfoAdapter.ShareInfoViewHolder>(ShareInfoDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShareInfoViewHolder =
         ShareInfoViewHolder(
@@ -26,19 +22,16 @@ class ShareInfoAdapter(
         )
 
     override fun onBindViewHolder(holder: ShareInfoViewHolder, position: Int) {
-        holder.bind(position)
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = fieldsList.size
 
     inner class ShareInfoViewHolder(
         private val binding: ShareInfoItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            position: Int
+            item: ShareInfoField
         ) = with (binding) {
-            val item = fieldsList[position]
 
             checkbox.setOnCheckedChangeListener(null)
             checkbox.isChecked = item.checked
@@ -61,8 +54,8 @@ class ShareInfoAdapter(
             checkbox.setOnCheckedChangeListener { _, checked ->
                 item.checked = checked
                 item.error = null
-                notifyItemChanged(position)
-                onCheckedChanged.invoke(fieldsList)
+                notifyItemChanged(bindingAdapterPosition)
+                onCheckedChanged.invoke(currentList)
             }
 
             input.tag = input.doAfterTextChanged {
@@ -70,15 +63,31 @@ class ShareInfoAdapter(
 
                 if (item.error != null) {
                     item.error = null
-                    notifyItemChanged(position)
+                    notifyItemChanged(bindingAdapterPosition)
                 }
             }
         }
     }
 
-    fun currentList() = fieldsList
-
-    fun createInfoSummary() = fieldsList
+    fun createInfoSummary() = currentList
         .filter { it.checked }
         .map { it.toShareInfo() }
+
+    fun setError(infoType: InfoType, error: String?) {
+        submitList(
+            currentList.map { field ->
+                field.apply {
+                    if (infoType == type || infoType == UNKNOWN) this.error = error
+                }
+            }
+        )
+    }
+
+    class ShareInfoDiffUtil : DiffUtil.ItemCallback<ShareInfoField>() {
+        override fun areItemsTheSame(oldItem: ShareInfoField, newItem: ShareInfoField) =
+            oldItem.type == newItem.type
+
+        override fun areContentsTheSame(oldItem: ShareInfoField, newItem: ShareInfoField) =
+            oldItem == newItem
+    }
 }

@@ -201,8 +201,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:padding="@dimen/margin_large"
                     app:tint="?attr/colorSecondary"
-                    android:visibility="invisible"
-                    android:src="@drawable/ic_edit" />
+                    android:src="@drawable/ic_baseline_info" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

@@ -83,11 +83,7 @@
             app:exitAnim="@android:anim/fade_out"
             app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@anim/slide_out_bottom" >
-            <argument
-                android:name="flowType"
-                app:argType="com.buddies.newpet.util.FlowType"/>
-        </action>
+            app:popExitAnim="@anim/slide_out_bottom" />
         <action
             android:id="@+id/action_profileFragment_to_fullscreenFragment"
             app:destination="@id/fullscreenFragment"
@@ -147,9 +143,6 @@
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@anim/slide_out_bottom" >
             <argument
-                android:name="flowType"
-                app:argType="com.buddies.newpet.util.FlowType"/>
-            <argument
                 android:name="tagValue"
                 app:argType="string"
                 android:defaultValue=""/>
@@ -202,18 +195,6 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_missingFeedFragment_to_new_pet_nav_graph"
-            app:destination="@id/new_pet_nav_graph"
-            app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@android:anim/fade_out"
-            app:launchSingleTop="true"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@anim/slide_out_bottom" >
-            <argument
-                android:name="flowType"
-                app:argType="com.buddies.newpet.util.FlowType"/>
-        </action>
         <action
             android:id="@+id/action_missingFeedFragment_to_allMissingPetsFragment"
             app:destination="@id/allMissingPetsFragment"

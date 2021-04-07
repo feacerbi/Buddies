@@ -239,3 +239,10 @@ fun <I> Fragment.registerForTrueActivityResult(
         }
     }
 }
+
+fun Fragment.getStringOrNull(@StringRes id: Int?): String? =
+    if (id == null) {
+        null
+    } else {
+        getString(id)
+    }
