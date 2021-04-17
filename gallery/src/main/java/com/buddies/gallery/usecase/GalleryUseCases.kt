@@ -1,7 +1,6 @@
 package com.buddies.gallery.usecase
 
 import android.net.Uri
-import androidx.lifecycle.LifecycleOwner
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
@@ -9,13 +8,14 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.buddies.common.usecase.BaseUseCases
-import com.buddies.common.util.observe
 import com.buddies.gallery.data.GalleryUploadWorksDAO
 import com.buddies.gallery.data.model.GalleryUploadWorkEntity
 import com.buddies.gallery.data.model.GalleryUploadWorkEntity.Companion.toGalleryUploadWorkEntity
 import com.buddies.gallery.util.GalleryUploadNotificationHandler
 import com.buddies.gallery.worker.GalleryUploadWorker
 import com.buddies.server.api.PetApi
+import com.google.common.util.concurrent.FutureCallback
+import com.google.common.util.concurrent.Futures
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -23,6 +23,7 @@ import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import java.util.concurrent.Executors
 
 class GalleryUseCases(
     private val petApi: PetApi,
@@ -95,15 +96,27 @@ class GalleryUseCases(
     }
 
     @ExperimentalCoroutinesApi
-    fun getUploadWorkStatus(lifecycleOwner: LifecycleOwner) = callbackFlow {
-        val workInfosFuture = workManager.getWorkInfosForUniqueWorkLiveData(GALLERY_UPLOAD_WORK_NAME)
+    fun getUploadWorkStatus() = callbackFlow<WorkInfo.State> {
 
-        lifecycleOwner.observe(workInfosFuture) {
-            sendBlocking(if (it.size > 0) it[0].state else WorkInfo.State.CANCELLED)
+        val workInfoCallback = object : FutureCallback<List<WorkInfo>> {
+            override fun onSuccess(result: List<WorkInfo>?) {
+                sendBlocking(
+                    if (result == null || result.isEmpty()) {
+                        WorkInfo.State.CANCELLED
+                    } else {
+                        result[0].state
+                    })
+            }
+            override fun onFailure(t: Throwable) {
+                close(t)
+            }
         }
 
-        awaitClose { workInfosFuture.removeObservers(lifecycleOwner) }
-    }.flowOn(Dispatchers.Main)
+        val workInfosFuture = workManager.getWorkInfosForUniqueWork(GALLERY_UPLOAD_WORK_NAME)
+        Futures.addCallback(workInfosFuture, workInfoCallback, Executors.newSingleThreadExecutor())
+
+        awaitClose { workInfosFuture.cancel(true) }
+    }.flowOn(Dispatchers.Default)
 
     companion object {
         private const val GALLERY_UPLOAD_WORK_NAME = "gallery_upload"

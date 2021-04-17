@@ -17,6 +17,7 @@ dependencies {
     implementation project(":home")
     implementation project(":login")
     implementation project(":missing")
+    implementation project(":missing-new")
     implementation project(":missing-profile")
     implementation project(":newpet")
     implementation project(":pet")

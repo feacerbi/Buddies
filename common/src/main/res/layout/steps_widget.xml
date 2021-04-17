@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@id/first_step_tick"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/margin_medium"
-        android:src="@drawable/ic_baseline_loyalty"/>
+        android:src="@drawable/ic_baseline_person"/>
 
     <ImageView
         android:id="@+id/second_step_icon"
@@ -86,7 +86,7 @@
         app:layout_constraintStart_toStartOf="@id/second_step_tick"
         app:layout_constraintEnd_toEndOf="@id/second_step_tick"
         android:layout_marginTop="@dimen/margin_medium"
-        android:src="@drawable/ic_baseline_pets"/>
+        android:src="@drawable/ic_baseline_person"/>
 
     <ImageView
         android:id="@+id/third_step_icon"
@@ -95,6 +95,6 @@
         app:layout_constraintTop_toBottomOf="@id/third_step_tick"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/margin_medium"
-        android:src="@drawable/ic_baseline_assignment"/>
+        android:src="@drawable/ic_baseline_person"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

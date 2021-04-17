@@ -27,16 +27,15 @@ class ShareInfoBottomSheet private constructor(
 
         private val fields: MutableList<ShareInfoField> = mutableListOf()
 
-        private val adapter = ShareInfoAdapter()
+        private val adapter = ShareInfoAdapter { fields, validated ->
+            shareView.confirmButton.isEnabled = fields.any { it.checked } && validated
+        }
 
         private val confirmButtonDefaultText by lazy {
             shareView.root.context.resources.getString(R.string.send_button)
         }
         private val cancelButtonDefaultText by lazy {
             shareView.root.context.resources.getString(R.string.cancel_button)
-        }
-        private val emptyErrorText by lazy {
-            shareView.root.context.resources.getString(R.string.empty_field_error)
         }
 
         private val defaultValidationCheck: (ShareInfoField) -> Boolean = {
@@ -105,41 +104,13 @@ class ShareInfoBottomSheet private constructor(
         ) = with (shareView) {
             confirmButton.text = title
             confirmButton.setOnClickListener {
-                if (checkSendConditions()) {
-                    action.invoke(adapter.createInfoSummary())
-                    bottomSheet.cancel()
-                }
+                action.invoke(adapter.createInfoSummary())
+                bottomSheet.cancel()
             }
         }.let { this }
 
-        private fun checkButtonConditions(fields: List<ShareInfoField>) {
-            shareView.confirmButton.isEnabled = fields.any { it.checked }
-        }
-
-        private fun checkSendConditions(): Boolean {
-            val info = adapter.currentList
-
-            val infoValid = info
-                .filter { it.checked }
-                .all { it.input.isNotBlank() }
-
-            if (infoValid.not()) {
-                runValidationOnEveryField(info)
-                adapter.notifyDataSetChanged()
-            }
-
-            return infoValid
-        }
-
-        private fun runValidationOnEveryField(info: List<ShareInfoField>) {
-            info.forEach {
-                it.error = if (it.validate()) null else emptyErrorText
-            }
-        }
-
         fun build(): ShareInfoBottomSheet {
             adapter.submitList(fields)
-            adapter.onCheckedChanged = ::checkButtonConditions
             shareView.fieldsList.adapter = adapter
             return ShareInfoBottomSheet(bottomSheet)
         }

@@ -22,7 +22,7 @@ interface Navigator {
         data class HomeToNewPetFlow(val tagValue: String) : NavDirection()
 
         object MissingFeedToProfile : NavDirection()
-        object MissingFeedToNewPetFlow : NavDirection()
+        object MissingFeedToNewMissingPetFlow : NavDirection()
         object MissingFeedToAllMissingPets : NavDirection()
         data class MissingFeedToMissingPet(
             val petId: String
@@ -32,7 +32,9 @@ interface Navigator {
             val petId: String
         ) : NavDirection()
 
-        data class MissingPetToGallery(val petId: String) : NavDirection()
+        data class MissingPetToGallery(
+            val petId: String,
+            val editEnabled: Boolean) : NavDirection()
         data class MissingPetToFullscreen(
             val pictureUrl: String,
             val transitionName: String) : NavDirection()
@@ -44,7 +46,9 @@ interface Navigator {
             val pictureUrl: String,
             val transitionName: String) : NavDirection()
 
-        data class PetProfileToGallery(val petId: String) : NavDirection()
+        data class PetProfileToGallery(
+            val petId: String,
+            val editEnabled: Boolean) : NavDirection()
         data class PetProfileToFullscreen(
             val pictureUrl: String,
             val transitionName: String) : NavDirection()

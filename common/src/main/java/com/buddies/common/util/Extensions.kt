@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
@@ -123,6 +124,14 @@ fun Fragment.getQuantityString(
     quantity: Int,
     vararg formatArgs: Any = emptyArray()
 ) = requireContext().resources.getQuantityString(id, quantity, *formatArgs)
+
+fun Fragment.setOnBackPressed(action: () -> Unit) {
+    requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            action.invoke()
+        }
+    })
+}
 
 fun <T> Result<T>.handleResult(
 ) = when (this) {

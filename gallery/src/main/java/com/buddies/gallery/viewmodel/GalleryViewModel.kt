@@ -1,11 +1,6 @@
 package com.buddies.gallery.viewmodel
 
 import android.net.Uri
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
-import androidx.lifecycle.Lifecycle.Event.ON_START
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import com.buddies.common.model.DefaultError
@@ -33,16 +28,14 @@ import kotlin.coroutines.CoroutineContext
 @ExperimentalCoroutinesApi
 class GalleryViewModel(
     private val petId: String,
+    private val editEnabled: Boolean,
     private val galleryUseCases: GalleryUseCases,
     private val dispatcher: CoroutineDispatcher
-) : StateViewModel<GalleryViewState, GalleryViewEffect>(GalleryViewState()), CoroutineScope, LifecycleOwner {
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
+) : StateViewModel<GalleryViewState, GalleryViewEffect>(GalleryViewState()), CoroutineScope {
 
     init {
         fetchGalleryPictures()
         startUploadPicturesWorkStatusFlow()
-        lifecycleRegistry.handleLifecycleEvent(ON_START)
     }
 
     fun perform(action: Action) {
@@ -57,11 +50,11 @@ class GalleryViewModel(
     private fun fetchGalleryPictures() = safeLaunch(::showError) {
         updateState(ShowLoading)
         val galleryPictures = galleryUseCases.getGalleryPictures(petId)
-        updateState(ShowPictures(galleryPictures))
+        updateState(ShowPictures(galleryPictures, editEnabled))
     }
 
     private fun startUploadPicturesWorkStatusFlow() = safeLaunch(::showError) {
-        galleryUseCases.getUploadWorkStatus(this@GalleryViewModel).collectLatest {
+        galleryUseCases.getUploadWorkStatus().collectLatest {
             if (it == WorkInfo.State.SUCCEEDED) fetchGalleryPictures()
         }
     }
@@ -89,11 +82,6 @@ class GalleryViewModel(
         updateEffect(ShowError(error.code.message))
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        lifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
-    }
-
     sealed class Action {
         object RefreshPictures : Action()
         data class AddGalleryPictures(val pictures: List<Uri>) : Action()
@@ -103,6 +91,4 @@ class GalleryViewModel(
 
     override val coroutineContext: CoroutineContext
         get() = viewModelScope.coroutineContext + dispatcher
-
-    override fun getLifecycle(): Lifecycle = lifecycleRegistry
 }

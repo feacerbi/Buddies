@@ -1,4 +1,4 @@
-package com.buddies.newpet.ui.view
+package com.buddies.common.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,8 +8,8 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.END
 import androidx.constraintlayout.widget.ConstraintSet.START
 import androidx.core.content.ContextCompat
-import com.buddies.newpet.R
-import com.buddies.newpet.databinding.StepsWidgetBinding
+import com.buddies.common.R
+import com.buddies.common.databinding.StepsWidgetBinding
 
 class StepsWidget @JvmOverloads constructor(
     context: Context,
@@ -22,6 +22,16 @@ class StepsWidget @JvmOverloads constructor(
     init {
         StepsWidgetBinding.inflate(LayoutInflater.from(context), this, true).apply {
             binding = this
+        }
+    }
+
+    fun setupIcons(
+        icons: List<Int>
+    ) = with (binding) {
+        if (icons.size == 3) {
+            firstStepIcon.setImageResource(icons[0])
+            secondStepIcon.setImageResource(icons[1])
+            thirdStepIcon.setImageResource(icons[2])
         }
     }
 

@@ -16,6 +16,7 @@ import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenMorePets
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenPetProfileFromFeed
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenProfile
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.ReportPet
+import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.RequestFeedPets
 import com.buddies.missing.viewstate.MissingFeedViewEffect.Navigate
 import com.buddies.missing.viewstate.MissingFeedViewEffect.ShowError
 import com.buddies.missing.viewstate.MissingFeedViewEffect.ShowMessage
@@ -43,6 +44,11 @@ class MissingFeedFragment : NavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpViews()
         bindViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        perform(RequestFeedPets)
     }
 
     private fun setUpViews() = with (binding) {

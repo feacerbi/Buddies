@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/new_missing_pet_nav_graph"
+    app:startDestination="@id/newMissingPetInfoFragment" >
+
+    <action
+        android:id="@+id/action_global_finish"
+        app:popUpTo="@id/newMissingPetInfoFragment"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/newMissingPetInfoFragment"
+        android:name="com.buddies.missing_new.ui.fragment.NewMissingPetInfoFragment"
+        android:label="@string/pet_info_name"
+        tools:layout="@layout/fragment_new_missing_pet_info" >
+        <action
+            android:id="@+id/action_newMissingPetInfoFragment_to_newMissingPetChooseAnimalBreedFragment"
+            app:destination="@id/newMissingPetChooseAnimalBreedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newMissingPetChooseAnimalBreedFragment"
+        android:name="com.buddies.missing_new.ui.fragment.NewMissingPetChooseAnimalBreedFragment"
+        android:label="@string/choose_animal_breed_name"
+        tools:layout="@layout/fragment_new_missing_pet_choose_animal_breed" >
+        <action
+            android:id="@+id/action_missingPetChooseAnimalBreedFragment_to_newMissingPetShareInfoFragment"
+            app:destination="@id/newMissingPetShareInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newMissingPetShareInfoFragment"
+        android:name="com.buddies.missing_new.ui.fragment.NewMissingPetShareInfoFragment"
+        android:label="@string/share_info_name"
+        tools:layout="@layout/fragment_share_info">
+        <action
+            android:id="@+id/action_newMissingPetShareInfoFragment_to_newMissingPetAddConfirmationFragment"
+            app:destination="@id/newMissingPetAddConfirmationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newMissingPetAddConfirmationFragment"
+        android:name="com.buddies.missing_new.ui.fragment.NewMissingPetAddConfirmationFragment"
+        android:label="@string/add_confirmation_name"
+        tools:layout="@layout/fragment_add_new_missing_pet_confirmation" />
+
+</navigation>

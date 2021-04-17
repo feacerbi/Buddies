@@ -4,8 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.buddies.common.model.*
+import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToGallery
 import com.buddies.common.util.ActionTimer
 import com.buddies.common.util.safeLaunch
+import com.buddies.common.util.toOwnershipCategory
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.pet.R
 import com.buddies.pet.usecase.PetUseCases
@@ -52,6 +54,7 @@ class PetProfileViewModel(
             is ConfirmLost -> confirmLost(action.name)
             is CancelLost -> cancelLost()
             is ToggleFavorite -> toggleFavorite()
+            is OpenGallery -> openGallery()
         }
     }
 
@@ -123,6 +126,12 @@ class PetProfileViewModel(
         val isPetFavorite = petUseCases.isPetFavorite(petId)
         val tag = petUseCases.getPetTag(pet?.info?.tag ?: "")
         updateState(ShowInfo(pet, animalAndBreed, owners, currentOwnership, isPetFavorite, tag))
+    }
+
+    private fun openGallery() = safeLaunch(::showError) {
+        val currentOwnership = petUseCases.getCurrentUserPetOwnership(petId)
+        val editable = currentOwnership?.category?.toOwnershipCategory()?.access == OwnershipAccess.EDIT_ALL
+        updateEffect(Navigate(PetProfileToGallery(petId, editable)))
     }
 
     private fun openOwnerProfile(owner: Owner) {
@@ -211,6 +220,7 @@ class PetProfileViewModel(
         data class ReportLost(val name: String, val lost: Boolean, val switchChecked: Boolean) : Action()
         data class ConfirmLost(val name: String) : Action()
         data class HandleTag(val tag: Tag?) : Action()
+        object OpenGallery : Action()
         object ToggleFavorite : Action()
         object OpenScanner : Action()
         object CancelLost : Action()

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.DefaultError
+import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToGallery
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.util.toInfoType
 import com.buddies.common.viewmodel.StateViewModel
@@ -13,11 +14,13 @@ import com.buddies.missing_profile.usecase.MissingPetUseCases
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeAnimal
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeName
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangePhoto
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.OpenGallery
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.Refresh
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestAnimals
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestBreeds
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestContactInfo
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.Navigate
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowAnimalsList
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowBreedsList
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowContactInfoBottomSheet
@@ -49,6 +52,7 @@ class MissingPetProfileViewModel(
             is RequestBreeds -> requestBreeds(action.animal)
             is RequestAnimals -> requestAnimals()
             is RequestContactInfo -> requestContactInfo()
+            is OpenGallery -> openGallery()
         }
     }
 
@@ -106,6 +110,13 @@ class MissingPetProfileViewModel(
         updateEffect(ShowContactInfoBottomSheet(contactInfo))
     }
 
+    private fun openGallery() = safeLaunch(::showError) {
+        val pet = missingPetUseCases.getPet(petId)
+        val user = missingPetUseCases.getCurrentUser()
+        val editable = pet?.info?.reporter == user?.id
+        updateEffect(Navigate(MissingPetToGallery(petId, editable)))
+    }
+
     private fun showError(error: DefaultError) {
         updateState(HideLoading)
         updateEffect(ShowError(error.code.message))
@@ -116,6 +127,7 @@ class MissingPetProfileViewModel(
         data class ChangeAnimal(val animal: Animal, val breed: Breed) : Action()
         data class ChangePhoto(val photo: Uri) : Action()
         data class RequestBreeds(val animal: Animal) : Action()
+        object OpenGallery : Action()
         object RequestContactInfo : Action()
         object RequestAnimals : Action()
         object Refresh : Action()

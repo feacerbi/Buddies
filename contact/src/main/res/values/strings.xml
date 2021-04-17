@@ -9,7 +9,7 @@
     <string name="phone_hint">Phone</string>
     <string name="location_hint">Location</string>
     <string name="contact_info_dialog_title">Contact Info</string>
-    <string name="contact_info_dialog_content">This is the information provided by the person who found your pet.</string>
+    <string name="contact_info_dialog_content">This is the information provided by the person who found this pet.</string>
     <string name="email_action_subject">Lost pet found!</string>
     <string name="email_action_message">Hey, I found your lost pet, please contact me through this email address.</string>
 </resources>

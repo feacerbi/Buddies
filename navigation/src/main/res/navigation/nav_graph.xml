@@ -157,6 +157,9 @@
         <argument
             android:name="petId"
             app:argType="string"/>
+        <argument
+            android:name="editEnabled"
+            app:argType="boolean"/>
         <action
             android:id="@+id/action_galleryFragment_to_fullscreenFragment"
             app:destination="@id/fullscreenFragment"
@@ -211,6 +214,14 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_missingFeedFragment_to_newMissingPetNavGraph"
+            app:destination="@id/new_missing_pet_nav_graph"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@android:anim/fade_out"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
 
     <fragment
@@ -248,5 +259,7 @@
             android:id="@+id/action_missingPetProfileFragment_to_fullscreenFragment"
             app:destination="@id/fullscreenFragment" />
     </fragment>
+
+    <include app:graph="@navigation/new_missing_pet_nav_graph" />
 
 </navigation>

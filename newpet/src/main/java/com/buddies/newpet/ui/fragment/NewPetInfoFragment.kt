@@ -11,6 +11,8 @@ import androidx.core.widget.addTextChangedListener
 import com.buddies.common.util.expand
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
+import com.buddies.common.util.setOnBackPressed
+import com.buddies.newpet.R
 import com.buddies.newpet.databinding.FragmentPetInfoBinding
 import com.buddies.newpet.databinding.NewPetHeaderBinding
 import com.buddies.newpet.viewmodel.NewPetViewModel
@@ -19,7 +21,7 @@ import com.buddies.newpet.viewmodel.NewPetViewModel.Action.*
 import com.buddies.newpet.viewstate.NewPetViewEffect.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class PetInfoFragment : NewPetNavigationFragment() {
+class NewPetInfoFragment : NewPetNavigationFragment() {
 
     private lateinit var binding: FragmentPetInfoBinding
     private lateinit var headerBinding: NewPetHeaderBinding
@@ -46,8 +48,10 @@ class PetInfoFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
+        headerBinding.toolbar.title = getString(R.string.new_buddy_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
+        setOnBackPressed { perform(Previous) }
         backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next) }
 
@@ -59,13 +63,12 @@ class PetInfoFragment : NewPetNavigationFragment() {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
-            headerBinding.toolbar.title = getString(it.flowTitle)
-            headerBinding.steps.isVisible = it.showSteps
+            headerBinding.steps.setupIcons(it.stepIcons)
             headerBinding.steps.selectStep(it.step)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
             forwardButton.text = getString(it.forwardButtonText)
-            animalPhoto.load(it.animalPhoto, this@PetInfoFragment) {
+            animalPhoto.load(it.animalPhoto, this@NewPetInfoFragment) {
                 circleTransform = true
             }
             cameraOverlay.isVisible = it.showCameraOverlay

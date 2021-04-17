@@ -1,12 +1,13 @@
 package com.buddies.server.api
 
 import android.net.Uri
-import com.buddies.common.model.MissingPetInfo
+import com.buddies.common.model.DefaultError
+import com.buddies.common.model.DefaultErrorException
+import com.buddies.common.model.ErrorCode.RESULT_NULL
 import com.buddies.common.model.NewPet
 import com.buddies.common.model.OwnershipInfo
 import com.buddies.common.model.PetInfo
 import com.buddies.common.util.generateNewId
-import com.buddies.server.repository.MissingPetsRepository
 import com.buddies.server.repository.OwnershipsRepository
 import com.buddies.server.repository.PetsRepository
 import com.buddies.server.repository.TagsRepository
@@ -16,7 +17,6 @@ import com.buddies.server.util.getDownloadUrl
 class NewPetApi(
     private val usersRepository: UsersRepository,
     private val petsRepository: PetsRepository,
-    private val missingPetsRepository: MissingPetsRepository,
     private val tagsRepository: TagsRepository,
     private val ownershipsRepository: OwnershipsRepository
 ) : BaseApi() {
@@ -26,10 +26,6 @@ class NewPetApi(
         categoryId: Int
     ) = addNewPet(newPet, usersRepository.getCurrentUserId(), categoryId)
 
-    suspend fun addMissingPet(
-        newPet: NewPet
-    ) = addMissingPet(newPet, usersRepository.getCurrentUserId())
-
     private suspend fun addNewPet(
         newPet: NewPet,
         userId: String,
@@ -37,10 +33,20 @@ class NewPetApi(
     ) = runWithResult {
         val newPetId = generateNewId()
 
+        val photo = newPet.photo
+        val tag = newPet.tag
+        val name = newPet.name
+        val animal = newPet.animal
+        val breed = newPet.breed
+
+        if (tag == null || name == null || animal == null || breed == null) {
+                throw DefaultErrorException(DefaultError(RESULT_NULL))
+        }
+
         var downloadUri = ""
 
-        if (newPet.photo != Uri.EMPTY) {
-            val uploadResult = petsRepository.uploadProfileImage(newPetId, newPet.photo)
+        if (photo != null && photo != Uri.EMPTY) {
+            val uploadResult = petsRepository.uploadProfileImage(newPetId, photo)
                 .handleTaskResult()
 
             downloadUri = uploadResult.getDownloadUrl()
@@ -48,13 +54,7 @@ class NewPetApi(
                 .toString()
         }
 
-        val petInfo = PetInfo(
-            newPet.tag,
-            newPet.name,
-            downloadUri,
-            newPet.animal?.id ?: "",
-            newPet.breed?.id ?: ""
-        )
+        val petInfo = PetInfo(tag, name, downloadUri, animal.id, breed.id)
 
         runTransactions(
             petsRepository.addPet(newPetId, petInfo),
@@ -66,36 +66,6 @@ class NewPetApi(
                     categoryId
                 )
             )
-        )
-    }
-
-    private suspend fun addMissingPet(
-        newPet: NewPet,
-        userId: String
-    ) = runWithResult {
-        val newPetId = generateNewId()
-
-        var downloadUri = ""
-
-        if (newPet.photo != Uri.EMPTY) {
-            val uploadResult = missingPetsRepository.uploadProfileImage(newPetId, newPet.photo)
-                .handleTaskResult()
-
-            downloadUri = uploadResult.getDownloadUrl()
-                .handleTaskResult()
-                .toString()
-        }
-
-        val petInfo = MissingPetInfo(
-            newPet.name,
-            downloadUri,
-            newPet.animal?.id ?: "",
-            newPet.breed?.id ?: "",
-            userId
-        )
-
-        runTransactions(
-            missingPetsRepository.addPet(newPetId, petInfo),
         )
     }
 }

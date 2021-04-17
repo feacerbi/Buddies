@@ -1,39 +1,47 @@
-package com.buddies.newpet.ui.fragment
+package com.buddies.missing_new.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
-import com.buddies.newpet.databinding.FragmentChooseAnimalBreedBinding
-import com.buddies.newpet.databinding.NewPetHeaderBinding
-import com.buddies.newpet.ui.adapter.HorizontalAnimalsAdapter
-import com.buddies.newpet.ui.adapter.HorizontalBreedsAdapter
-import com.buddies.newpet.viewmodel.NewPetViewModel
-import com.buddies.newpet.viewmodel.NewPetViewModel.Action
-import com.buddies.newpet.viewmodel.NewPetViewModel.Action.*
-import com.buddies.newpet.viewstate.NewPetViewEffect.*
+import com.buddies.common.util.setOnBackPressed
+import com.buddies.missing_new.R
+import com.buddies.missing_new.databinding.FragmentNewMissingPetChooseAnimalBreedBinding
+import com.buddies.missing_new.databinding.NewMissingPetHeaderBinding
+import com.buddies.missing_new.ui.adapter.HorizontalAnimalsAdapter
+import com.buddies.missing_new.ui.adapter.HorizontalBreedsAdapter
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.ChooseAnimal
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.ChooseBreed
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.CloseFlow
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.Next
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.Previous
+import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.Navigate
+import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.NavigateBack
+import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.ShowBreeds
+import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.ShowError
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class ChooseAnimalBreedFragment : NewPetNavigationFragment() {
+class NewMissingPetChooseAnimalBreedFragment : NewMissingPetNavigationFragment() {
 
-    private lateinit var binding: FragmentChooseAnimalBreedBinding
-    private lateinit var headerBinding: NewPetHeaderBinding
+    private lateinit var binding: FragmentNewMissingPetChooseAnimalBreedBinding
+    private lateinit var headerBinding: NewMissingPetHeaderBinding
 
-    private val viewModel: NewPetViewModel by sharedViewModel()
+    private val viewModel: NewMissingPetViewModel by sharedViewModel()
 
     private val animalsAdapter = HorizontalAnimalsAdapter(
-        this@ChooseAnimalBreedFragment,
+        this@NewMissingPetChooseAnimalBreedFragment,
         emptyList(),
         ::handleAnimalPicked)
 
     private val breedsAdapter = HorizontalBreedsAdapter(
-        this@ChooseAnimalBreedFragment,
+        this@NewMissingPetChooseAnimalBreedFragment,
         emptyList(),
         ::handleBreedPicked)
 
@@ -41,9 +49,9 @@ class ChooseAnimalBreedFragment : NewPetNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentChooseAnimalBreedBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentNewMissingPetChooseAnimalBreedBinding.inflate(layoutInflater, container, false).apply {
         binding = this
-        headerBinding = NewPetHeaderBinding.bind(this.root)
+        headerBinding = NewMissingPetHeaderBinding.bind(this.root)
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,8 +61,10 @@ class ChooseAnimalBreedFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
+        headerBinding.toolbar.title = getString(R.string.report_pet_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
+        setOnBackPressed { perform(Previous) }
         backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next) }
 
@@ -64,8 +74,7 @@ class ChooseAnimalBreedFragment : NewPetNavigationFragment() {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
-            headerBinding.toolbar.title = getString(it.flowTitle)
-            headerBinding.steps.isVisible = it.showSteps
+            headerBinding.steps.setupIcons(it.stepIcons)
             headerBinding.steps.selectStep(it.step)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)

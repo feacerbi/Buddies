@@ -6,7 +6,7 @@ import com.buddies.common.model.DefaultError
 import com.buddies.common.navigation.Navigator.NavDirection.AllMissingPetsToMissingPet
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToAllMissingPets
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToMissingPet
-import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToNewPetFlow
+import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToNewMissingPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToProfile
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
@@ -17,6 +17,7 @@ import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenPetProfileF
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.OpenProfile
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.ReportPet
 import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.RequestAllPets
+import com.buddies.missing.viewmodel.MissingFeedViewModel.Action.RequestFeedPets
 import com.buddies.missing.viewstate.MissingFeedViewEffect
 import com.buddies.missing.viewstate.MissingFeedViewEffect.Navigate
 import com.buddies.missing.viewstate.MissingFeedViewEffect.ShowError
@@ -33,16 +34,13 @@ class MissingFeedViewModel(
     private val dispatcher: CoroutineDispatcher
 ) : StateViewModel<MissingFeedViewState, MissingFeedViewEffect>(MissingFeedViewState()), CoroutineScope {
 
-    init {
-        fetchPetLists()
-    }
-
     fun perform(action: Action) {
         when (action) {
             is OpenProfile -> openProfile()
             is OpenMorePets -> openAllMissingPets()
-            is ReportPet -> openNewPetFlow()
+            is ReportPet -> openNewMissingPetFlow()
             is RequestAllPets -> startPagingMissingPets()
+            is RequestFeedPets -> fetchPetLists()
             is OpenPetProfileFromFeed -> openPetProfileFromFeed(action.petId)
             is OpenPetProfileFromAllPets -> openPetProfileFromAllPets(action.petId)
         }
@@ -72,8 +70,8 @@ class MissingFeedViewModel(
         updateEffect(Navigate(MissingFeedToAllMissingPets))
     }
 
-    private fun openNewPetFlow() {
-        updateEffect(Navigate(MissingFeedToNewPetFlow))
+    private fun openNewMissingPetFlow() {
+        updateEffect(Navigate(MissingFeedToNewMissingPetFlow))
     }
 
     private fun startPagingMissingPets() = safeLaunch(::showError) {
@@ -95,6 +93,7 @@ class MissingFeedViewModel(
         object OpenMorePets : Action()
         object ReportPet : Action()
         object RequestAllPets : Action()
+        object RequestFeedPets : Action()
     }
 
     override val coroutineContext: CoroutineContext

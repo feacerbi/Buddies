@@ -5,40 +5,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.buddies.common.util.CameraHelper
+import com.buddies.common.model.Animal
+import com.buddies.common.model.Breed
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
+import com.buddies.common.util.setOnBackPressed
 import com.buddies.newpet.R
-import com.buddies.newpet.databinding.FragmentTagScanBinding
+import com.buddies.newpet.databinding.FragmentChooseAnimalBreedBinding
 import com.buddies.newpet.databinding.NewPetHeaderBinding
+import com.buddies.newpet.ui.adapter.HorizontalAnimalsAdapter
+import com.buddies.newpet.ui.adapter.HorizontalBreedsAdapter
 import com.buddies.newpet.viewmodel.NewPetViewModel
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.*
 import com.buddies.newpet.viewstate.NewPetViewEffect.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-@FlowPreview
-@ExperimentalCoroutinesApi
-@androidx.camera.core.ExperimentalGetImage
-class TagScanFragment : NewPetNavigationFragment() {
+class NewPetChooseAnimalBreedFragment : NewPetNavigationFragment() {
 
-    private lateinit var binding: FragmentTagScanBinding
+    private lateinit var binding: FragmentChooseAnimalBreedBinding
     private lateinit var headerBinding: NewPetHeaderBinding
 
     private val viewModel: NewPetViewModel by sharedViewModel()
 
-    private val tagValueArg
-        get() = arguments?.getString(getString(R.string.tag_value_arg)) ?: ""
+    private val animalsAdapter = HorizontalAnimalsAdapter(
+        this@NewPetChooseAnimalBreedFragment,
+        emptyList(),
+        ::handleAnimalPicked)
 
-    private val cameraHelper = CameraHelper(this)
+    private val breedsAdapter = HorizontalBreedsAdapter(
+        this@NewPetChooseAnimalBreedFragment,
+        emptyList(),
+        ::handleBreedPicked)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentTagScanBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentChooseAnimalBreedBinding.inflate(layoutInflater, container, false).apply {
         binding = this
         headerBinding = NewPetHeaderBinding.bind(this.root)
     }.root
@@ -50,32 +54,48 @@ class TagScanFragment : NewPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
+        headerBinding.toolbar.title = getString(R.string.new_buddy_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
+        setOnBackPressed { perform(Previous) }
         backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next) }
+
+        animalsList.adapter = animalsAdapter
+        breedsList.adapter = breedsAdapter
     }
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
-            headerBinding.toolbar.title = getString(it.flowTitle)
+            headerBinding.steps.setupIcons(it.stepIcons)
             headerBinding.steps.selectStep(it.step)
-            forwardButton.text = getString(it.forwardButtonText)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
-            scanner.setResultMessage(getString(it.result))
+            forwardButton.text = getString(it.forwardButtonText)
+            animalsAdapter.addItems(it.animalsList)
         }
 
         observe(viewModel.viewEffect) {
             when (it) {
+                is ShowBreeds -> showBreeds(it.breedsList)
+                is NavigateBack -> navigateBack()
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
         }
+    }
 
-        observe(binding.scanner.scan(this@TagScanFragment, cameraHelper, tagValueArg)) {
-            perform(HandleTag(it))
-        }
+    private fun showBreeds(breeds: List<Breed>?) {
+        breedsAdapter.setItems(breeds)
+        binding.breedsList.scheduleLayoutAnimation()
+    }
+
+    private fun handleAnimalPicked(animal: Animal) {
+        perform(ChooseAnimal(animal))
+    }
+
+    private fun handleBreedPicked(breed: Breed) {
+        perform(ChooseBreed(breed))
     }
 
     private fun showMessage(message: Int) {

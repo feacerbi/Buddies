@@ -31,6 +31,9 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    
+    // Guava
+    implementation 'com.google.guava:guava:27.0.1-android'
 
     // Jetpack Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"

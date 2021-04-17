@@ -27,10 +27,4 @@ class NewPetUseCases(
     ) = request {
         newPetApi.addNewPet(newPet, category.id)
     }
-
-    suspend fun addNewMissingPet(
-        newPet: NewPet
-    ) = request {
-        newPetApi.addMissingPet(newPet)
-    }
 }

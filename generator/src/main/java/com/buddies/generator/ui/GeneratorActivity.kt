@@ -14,6 +14,7 @@ import com.buddies.generator.R
 import com.buddies.generator.databinding.ActivityGeneratorBinding
 import com.buddies.generator.viewmodel.GeneratorViewModel
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action
+import com.buddies.generator.viewmodel.GeneratorViewModel.Action.AddToDB
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.CopyToClipboard
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.Generate
 import com.buddies.generator.viewmodel.GeneratorViewModel.Action.GenerateNewValue
@@ -64,7 +65,7 @@ class GeneratorActivity : AppCompatActivity() {
         }
 
         addToDbButton.setOnClickListener {
-            perform(Action.AddToDB)
+            perform(AddToDB)
         }
 
         input.doOnTextChanged { text, _, _, _ ->

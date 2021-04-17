@@ -13,6 +13,7 @@ data class MissingPetViewState(
     val breed: String = "",
     val photo: Uri = Uri.EMPTY,
     val reporter: String = "",
+    val contactInfo: Boolean = false,
     @MenuRes val toolbarMenu: Int = R.menu.empty_menu,
     val loading: Boolean = false
 ) : ViewState

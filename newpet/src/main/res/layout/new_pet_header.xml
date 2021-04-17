@@ -30,7 +30,7 @@
         android:background="?attr/colorSecondary"
         android:elevation="@dimen/new_pet_header_elevation"/>
 
-    <com.buddies.newpet.ui.view.StepsWidget
+    <com.buddies.common.ui.view.StepsWidget
         android:id="@+id/steps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

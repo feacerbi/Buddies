@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToFullscreen
-import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToGallery
 import com.buddies.common.ui.adapter.AnimalsAdapter
 import com.buddies.common.ui.adapter.BreedsAdapter
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
@@ -32,6 +31,7 @@ import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeAnimal
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeName
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangePhoto
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.OpenGallery
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.Refresh
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestAnimals
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestBreeds
@@ -85,7 +85,7 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
                     true
                 }
                 R.id.open_gallery_menu_action -> {
-                    navigate(MissingPetToGallery(petIdArg))
+                    perform(OpenGallery)
                     true
                 }
                 else -> false
@@ -124,6 +124,7 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
             profileNameEdit.isVisible = it.nameEdit
             profileAnimalEdit.isVisible = it.animalEdit
             profileReporterName.text = it.reporter
+            profileReporterEdit.isVisible = it.contactInfo
             toolbar.menu.clear()
             toolbar.inflateMenu(it.toolbarMenu)
             refresh.isRefreshing = it.loading

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="new_missing_pet_header_elevation">8dp</dimen>
+    <dimen name="pet_icon_size">112dp</dimen>
+    <dimen name="pet_icon_max_width">150dp</dimen>
+    <dimen name="add_pet_photo_size">150dp</dimen>
+</resources>

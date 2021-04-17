@@ -4,16 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/new_pet_nav_graph"
-    app:startDestination="@id/startFlowFragment" >
+    app:startDestination="@id/newPetTagScanFragment" >
 
     <action
         android:id="@+id/action_global_finish"
-        app:popUpTo="@id/startFlowFragment"
-        app:popUpToInclusive="true"/>
+        app:popUpTo="@id/newPetTagScanFragment"
+        app:popUpToInclusive="true" />
 
     <fragment
-        android:id="@+id/scanTagFragment"
-        android:name="com.buddies.newpet.ui.fragment.TagScanFragment"
+        android:id="@+id/newPetTagScanFragment"
+        android:name="com.buddies.newpet.ui.fragment.NewPetTagScanFragment"
         android:label="@string/tag_scan_name"
         tools:layout="@layout/fragment_tag_scan" >
         <argument
@@ -21,8 +21,8 @@
             app:argType="string"
             android:defaultValue=""/>
         <action
-            android:id="@+id/action_tagScanFragment_to_chooseAnimalBreedFragment"
-            app:destination="@id/chooseAnimalBreedFragment"
+            android:id="@+id/action_newPetTagScanFragment_to_newPetInfoFragment"
+            app:destination="@id/newPetInfoFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
@@ -31,28 +31,13 @@
     </fragment>
 
     <fragment
-        android:id="@+id/chooseAnimalBreedFragment"
-        android:name="com.buddies.newpet.ui.fragment.ChooseAnimalBreedFragment"
-        android:label="@string/choose_animal_breed_name"
-        tools:layout="@layout/fragment_choose_animal_breed" >
-        <action
-            android:id="@+id/action_chooseAnimalBreedFragment_to_petInfoFragment"
-            app:destination="@id/petInfoFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:launchSingleTop="true"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/petInfoFragment"
-        android:name="com.buddies.newpet.ui.fragment.PetInfoFragment"
-        android:label="@string/add_confirmation_name"
+        android:id="@+id/newPetInfoFragment"
+        android:name="com.buddies.newpet.ui.fragment.NewPetInfoFragment"
+        android:label="@string/pet_info_name"
         tools:layout="@layout/fragment_pet_info" >
         <action
-            android:id="@+id/action_petInfoFragment_to_addConfirmationFragment"
-            app:destination="@id/addConfirmationFragment"
+            android:id="@+id/action_newPetInfoFragment_to_newPetChooseAnimalBreedFragment"
+            app:destination="@id/newPetChooseAnimalBreedFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
@@ -61,43 +46,24 @@
     </fragment>
 
     <fragment
-        android:id="@+id/addConfirmationFragment"
-        android:name="com.buddies.newpet.ui.fragment.AddConfirmationFragment"
+        android:id="@+id/newPetChooseAnimalBreedFragment"
+        android:name="com.buddies.newpet.ui.fragment.NewPetChooseAnimalBreedFragment"
+        android:label="@string/choose_animal_breed_name"
+        tools:layout="@layout/fragment_choose_animal_breed">
+        <action
+            android:id="@+id/action_newPetChooseAnimalBreedFragment_to_newPetAddConfirmationFragment"
+            app:destination="@id/newPetAddConfirmationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newPetAddConfirmationFragment"
+        android:name="com.buddies.newpet.ui.fragment.NewPetAddConfirmationFragment"
         android:label="@string/add_confirmation_name"
         tools:layout="@layout/fragment_add_pet_confirmation" />
-
-    <fragment
-        android:id="@+id/startFlowFragment"
-        android:name="com.buddies.newpet.ui.fragment.StartFlowFragment"
-        android:label="StartFlowFragment" >
-        <argument
-            android:name="flowType"
-            app:argType="com.buddies.newpet.util.FlowType" />
-        <argument
-            android:name="tagValue"
-            app:argType="string"
-            android:defaultValue=""/>
-        <action
-            android:id="@+id/action_startFlowFragment_to_scanTagFragment"
-            app:destination="@id/scanTagFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:launchSingleTop="true"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" >
-            <argument
-                android:name="tagValue"
-                app:argType="string"
-                android:defaultValue=""/>
-        </action>
-        <action
-            android:id="@+id/action_startFlowFragment_to_chooseAnimalBreedFragment"
-            app:destination="@id/chooseAnimalBreedFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:launchSingleTop="true"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-    </fragment>
 
 </navigation>

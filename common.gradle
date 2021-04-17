@@ -33,7 +33,7 @@ ext {
         }
 
         buildFeatures {
-            viewBinding = true
+            viewBinding true
         }
     }
 }

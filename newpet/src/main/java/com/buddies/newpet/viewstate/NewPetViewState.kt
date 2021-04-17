@@ -7,11 +7,11 @@ import com.buddies.common.viewstate.ViewState
 import com.buddies.newpet.R
 
 data class NewPetViewState(
-    @StringRes val flowTitle: Int = R.string.empty,
-    @StringRes val startTitle: Int = R.string.empty,
-    @StringRes val startSubtitle: Int = R.string.empty,
-    val showSteps: Boolean = false,
-    val step: Int = 0,
+    val stepIcons: List<Int> = listOf(
+        R.drawable.ic_baseline_loyalty,
+        R.drawable.ic_baseline_assignment,
+        R.drawable.ic_baseline_pets),
+    val step: Int = 1,
     val forwardButtonExpanded: Boolean = true,
     val forwardButtonEnabled: Boolean = false,
     @StringRes val result: Int = R.string.empty,
@@ -22,6 +22,5 @@ data class NewPetViewState(
     @StringRes val confirmationTitle: Int = R.string.empty,
     val confirmationLoading: Boolean = false,
     val animalName: String = "",
-    val hideAnimalPhoto: Boolean = false,
-    val showBackButton: Boolean = false
+    val hideAnimalPhoto: Boolean = false
 ) : ViewState

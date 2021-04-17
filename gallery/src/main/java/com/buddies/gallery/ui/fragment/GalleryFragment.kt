@@ -50,6 +50,9 @@ class GalleryFragment : NavigationFragment() {
     private val petIdArg
         get() = arguments?.getString(getString(R.string.pet_id_arg)) ?: ""
 
+    private val editEnabled
+        get() = arguments?.getBoolean(getString(R.string.edit_enabled_arg)) ?: false
+
     private val galleryAdapter = GalleryAdapter(this, ::startActionMode, ::navigateToFullscreen)
 
     private val cameraHelper = CameraHelper(this)
@@ -83,17 +86,17 @@ class GalleryFragment : NavigationFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = getViewModel { parametersOf(petIdArg) }
+        viewModel = getViewModel { parametersOf(petIdArg, editEnabled) }
 
         setupViews()
         bindViews()
     }
 
     private fun setupViews() = with (binding) {
+        toolbar.title = getString(R.string.gallery_screen_title)
         toolbar.setNavigationOnClickListener {
             navigateBack()
         }
-        toolbar.inflateMenu(R.menu.gallery_toolbar_menu)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.add_gallery_menu_action -> {
@@ -107,7 +110,6 @@ class GalleryFragment : NavigationFragment() {
                 else -> false
             }
         }
-        toolbar.title = getString(R.string.gallery_screen_title)
 
         picturesGrid.addItemDecoration(GalleryListDecoration())
         picturesGrid.adapter = galleryAdapter
@@ -124,6 +126,8 @@ class GalleryFragment : NavigationFragment() {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
+            toolbar.menu.clear()
+            toolbar.inflateMenu(it.toolbarMenu)
             galleryAdapter.submitList(it.picturesList)
             emptyPictures.isVisible = it.showEmpty
             refresh.isRefreshing = it.showLoading

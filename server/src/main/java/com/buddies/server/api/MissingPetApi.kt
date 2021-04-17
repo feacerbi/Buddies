@@ -4,7 +4,13 @@ import android.net.Uri
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.buddies.common.model.DefaultError
+import com.buddies.common.model.DefaultErrorException
+import com.buddies.common.model.ErrorCode
 import com.buddies.common.model.MissingPet
+import com.buddies.common.model.MissingPetInfo
+import com.buddies.common.model.NewMissingPet
+import com.buddies.common.util.generateNewId
 import com.buddies.server.repository.AnimalsRepository
 import com.buddies.server.repository.BreedsRepository
 import com.buddies.server.repository.MissingPetsRepository
@@ -19,6 +25,7 @@ import com.buddies.server.util.toMissingPets
 import com.buddies.server.util.toUser
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 class MissingPetApi(
     private val usersRepository: UsersRepository,
@@ -32,6 +39,10 @@ class MissingPetApi(
             .handleTaskResult()
             .toUser()
     }
+
+    suspend fun addMissingPet(
+        newPet: NewMissingPet
+    ) = addMissingPet(newPet, usersRepository.getCurrentUserId())
 
     suspend fun getUser(
         userId: String
@@ -144,5 +155,46 @@ class MissingPetApi(
     ) = runWithResult {
         missingPetsRepository.getPetsWithPaging(pageSize, start)
             .handleTaskResult()
+    }
+
+    private suspend fun addMissingPet(
+        newMissingPet: NewMissingPet,
+        userId: String
+    ) = runWithResult {
+        val newPetId = generateNewId()
+
+        val photo = newMissingPet.photo
+        val name = newMissingPet.name
+        val animal = newMissingPet.animal
+        val breed = newMissingPet.breed
+        val contactInfo = newMissingPet.contactInfo
+
+        if (name == null || animal == null || breed == null || contactInfo == null) {
+            throw DefaultErrorException(DefaultError(ErrorCode.RESULT_NULL))
+        }
+
+        var downloadUri = ""
+
+        if (photo != null) {
+            val uploadResult = missingPetsRepository.uploadProfileImage(newPetId, photo)
+                .handleTaskResult()
+
+            downloadUri = uploadResult.getDownloadUrl()
+                .handleTaskResult()
+                .toString()
+        }
+
+        val petInfo = MissingPetInfo(
+            name,
+            downloadUri,
+            animal.id,
+            breed.id,
+            userId,
+            contactInfo.mapKeys { it.key.name.toLowerCase(Locale.getDefault()) }
+        )
+
+        runTransactions(
+            missingPetsRepository.addPet(newPetId, petInfo),
+        )
     }
 }

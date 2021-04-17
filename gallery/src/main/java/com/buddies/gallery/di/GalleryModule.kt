@@ -23,5 +23,5 @@ val galleryModule = module {
     single { get<GalleryUploadWorksDatabase>().worksDao() }
     factory { WorkManager.getInstance(get()) }
     factory { GalleryUseCases(get(), get(), get(), get()) }
-    viewModel { params -> GalleryViewModel(params[0], get(), Dispatchers.Main) }
+    viewModel { params -> GalleryViewModel(params[0], params[1], get(), Dispatchers.Main) }
 }

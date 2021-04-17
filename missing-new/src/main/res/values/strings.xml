@@ -1,0 +1,20 @@
+<resources>
+    <!-- Destinations -->
+    <string name="pet_info_name">Pet Info Screen</string>
+    <string name="choose_animal_breed_name">Choose Animal and Breed Screen</string>
+    <string name="share_info_name">Share Info Screen</string>
+    <string name="add_confirmation_name">Add Confirmation Screen</string>
+
+    <!-- Views -->
+    <string name="report_pet_flow_title">Report Pet Found</string>
+    <string name="report_pet_found_title">Report Pet found</string>
+    <string name="no_name_message">no name</string>
+    <string name="no_animal_and_breed_message">no animal and breed</string>
+    <string name="no_contact_info_message">no contact info</string>
+    <string name="animal_title">Animal</string>
+    <string name="breed_title">Breed</string>
+    <string name="name_hint">Name</string>
+    <string name="reporting_pet_message">Reporting %s as found by you…</string>
+    <string name="pet_reported_message">%s is now in the pets you found!</string>
+    <string name="share_info_title_text">Which kind of information to share</string>
+</resources>

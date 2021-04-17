@@ -200,6 +200,7 @@
                     app:layout_constraintTop_toTopOf="@id/profile_reporter_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:padding="@dimen/margin_large"
+                    android:background="?selectableItemBackgroundBorderless"
                     app:tint="?attr/colorSecondary"
                     android:src="@drawable/ic_baseline_info" />
 

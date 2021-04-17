@@ -14,7 +14,7 @@ data class ShareInfoField(
     val inputType: Int,
     @DrawableRes val icon: Int,
     val validation: ShareInfoField.() -> Boolean,
-    var error: String? = "",
+    var error: String? = null,
 ) {
     fun validate() = validation.invoke(this)
 

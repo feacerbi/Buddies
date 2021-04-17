@@ -10,16 +10,11 @@ import com.buddies.common.model.OwnershipCategory.OWNER
 import com.buddies.common.model.Tag
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
-import com.buddies.newpet.navigation.NewPetNavDirection.AnimalAndBreedToInfo
+import com.buddies.newpet.navigation.NewPetNavDirection.AnimalAndBreedToConfirmation
 import com.buddies.newpet.navigation.NewPetNavDirection.FinishFlow
-import com.buddies.newpet.navigation.NewPetNavDirection.InfoToConfirmation
-import com.buddies.newpet.navigation.NewPetNavDirection.StartToAnimalAndBreed
-import com.buddies.newpet.navigation.NewPetNavDirection.StartToTagScan
-import com.buddies.newpet.navigation.NewPetNavDirection.TagScanToAnimalAndBreed
+import com.buddies.newpet.navigation.NewPetNavDirection.InfoToAnimalAndBreed
+import com.buddies.newpet.navigation.NewPetNavDirection.TagScanToInfo
 import com.buddies.newpet.usecase.NewPetUseCases
-import com.buddies.newpet.util.FlowType
-import com.buddies.newpet.util.FlowType.MISSING
-import com.buddies.newpet.util.FlowType.TAG
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.AddNewPet
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.ChooseAnimal
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.ChooseBreed
@@ -29,8 +24,6 @@ import com.buddies.newpet.viewmodel.NewPetViewModel.Action.InfoInput
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.Next
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.PhotoInput
 import com.buddies.newpet.viewmodel.NewPetViewModel.Action.Previous
-import com.buddies.newpet.viewmodel.NewPetViewModel.Action.StartFlow
-import com.buddies.newpet.viewmodel.NewPetViewModel.Action.StartScanner
 import com.buddies.newpet.viewstate.NewPetViewEffect
 import com.buddies.newpet.viewstate.NewPetViewEffect.Navigate
 import com.buddies.newpet.viewstate.NewPetViewEffect.NavigateBack
@@ -49,7 +42,6 @@ import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowNotAvailable
 import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowPetConfirmation
 import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowPetPhoto
 import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowScan
-import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowStart
 import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowValid
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -59,15 +51,16 @@ class NewPetViewModel(
     private val newPetUseCases: NewPetUseCases
 ) : StateViewModel<NewPetViewState, NewPetViewEffect>(NewPetViewState()), CoroutineScope {
 
-    private var flowType: FlowType? = null
     private val newPet = NewPet()
+
+    init {
+        goToStep1()
+    }
 
     fun perform(action: Action) {
         when (action) {
-            is StartFlow -> startFlow(action.flowType, action.tagValue)
             is Next -> nextStep()
             is Previous -> previousStep()
-            is StartScanner -> startScan()
             is HandleTag -> handleTag(action.tag)
             is ChooseAnimal -> handleChosenAnimal(action.animal)
             is ChooseBreed -> handleChosenBreed(action.breed)
@@ -78,19 +71,8 @@ class NewPetViewModel(
         }
     }
 
-    private fun startFlow(type: FlowType?, tagValue: String) {
-        flowType = type
-        newPet.tag = tagValue
-        updateState(ShowStart(type))
-    }
-
     private fun nextStep() {
         when (viewState.value?.step) {
-            0 -> when (flowType) {
-                TAG -> goToStep1()
-                MISSING -> goToStep2()
-                else -> closeFlow()
-            }
             1 -> goToStep2()
             2 -> goToStep3()
             3 -> addNewPet()
@@ -99,47 +81,35 @@ class NewPetViewModel(
 
     private fun previousStep() {
         when (viewState.value?.step) {
-            1 -> backToStart()
+            1 -> closeFlow()
             2 -> backToStep1()
             3 -> backToStep2()
         }
     }
 
-    private fun backToStart() {
-        updateEffect(NavigateBack)
-    }
-
     private fun goToStep1() {
-        updateEffect(Navigate(StartToTagScan(newPet.tag)))
+        updateState(ShowScan)
     }
 
     private fun backToStep1() {
         updateEffect(NavigateBack)
-        startScan()
+        updateState(ShowScan)
     }
 
     private fun goToStep2() {
-        updateState(ShowAnimalsAndBreeds(flowType))
-        when (flowType) {
-            TAG -> updateEffect(Navigate(TagScanToAnimalAndBreed))
-            MISSING -> updateEffect(Navigate(StartToAnimalAndBreed))
-            else -> closeFlow()
-        }
-        requestAnimals()
+        updateEffect(Navigate(TagScanToInfo))
+        updateState(ShowInfo(newPet.name, newPet.photo))
     }
 
     private fun backToStep2() {
         updateEffect(NavigateBack)
-        requestAnimals()
+        updateState(ShowInfo(newPet.name, newPet.photo))
     }
 
     private fun goToStep3() {
-        updateEffect(Navigate(AnimalAndBreedToInfo))
-        updateState(ShowInfo(flowType))
-    }
-
-    private fun startScan() {
-        updateState(ShowScan)
+        updateEffect(Navigate(InfoToAnimalAndBreed))
+        updateState(ShowAnimalsAndBreeds(newPet.animal, newPet.breed))
+        requestAnimals()
     }
 
     private fun handleTag(tag: Tag?) {
@@ -182,7 +152,7 @@ class NewPetViewModel(
         newPet.name = name
         newPet.age = age.toIntOrNull() ?: 0
 
-        if (newPet.name.length >= 2) {
+        if (newPet.name?.length ?: 0 >= 2) {
             updateState(ShowInfoValidated)
         } else {
             updateState(ShowInvalidInfo)
@@ -195,18 +165,15 @@ class NewPetViewModel(
     }
 
     private fun addNewPet() = safeLaunch(::showError) {
-        updateEffect(Navigate(InfoToConfirmation))
+        updateEffect(Navigate(AnimalAndBreedToConfirmation))
+        updateState(ShowAddingPet(newPet.name))
 
-        updateState(ShowAddingPet(flowType, newPet.name))
-        when (flowType) {
-            TAG -> newPetUseCases.addNewPet(newPet, OWNER)
-            MISSING -> newPetUseCases.addNewMissingPet(newPet)
-        }
+        newPetUseCases.addNewPet(newPet, OWNER)
+
         delay(CONFIRMATION_DELAY)
+        updateState(ShowPetConfirmation)
 
-        updateState(ShowPetConfirmation(flowType))
         delay(CONFIRMATION_DELAY)
-
         closeFlow()
     }
 
@@ -216,16 +183,13 @@ class NewPetViewModel(
 
     private fun showError(error: DefaultError) {
         updateEffect(ShowError(error.code.message))
-        startScan()
     }
 
     sealed class Action {
         object CloseFlow : Action()
-        object StartScanner : Action()
         object Next : Action()
         object Previous : Action()
         object AddNewPet : Action()
-        data class StartFlow(val flowType: FlowType?, val tagValue: String) : Action()
         data class HandleTag(val tag: Tag?) : Action()
         data class ChooseAnimal(val animal: Animal) : Action()
         data class ChooseBreed(val breed: Breed) : Action()

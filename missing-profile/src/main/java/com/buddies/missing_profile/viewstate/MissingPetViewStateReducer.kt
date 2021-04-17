@@ -25,10 +25,11 @@ sealed class MissingPetViewStateReducer : ViewStateReducer<MissingPetViewState> 
             breed = animalAndBreed?.second?.breedInfo?.name ?: "",
             photo = pet?.info?.photo?.toUri() ?: Uri.EMPTY,
             reporter = reporter?.info?.name ?: "",
+            contactInfo = pet?.info?.reporterInfo?.isNotEmpty() ?: false,
             toolbarMenu = if (currentUser?.id == pet?.info?.reporter) {
-                R.menu.missing_pet_profile_toolbar_menu
+                R.menu.missing_pet_profile_toolbar_menu_reporter
             } else {
-                R.menu.empty_menu
+                R.menu.missing_pet_profile_toolbar_menu
             },
             loading = false
         )
