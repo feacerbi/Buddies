@@ -18,8 +18,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/missing_pet_width"
+            android:layout_height="@dimen/missing_pet_height"
             android:scaleType="centerCrop"
             tools:src="@drawable/cat1"/>
 
