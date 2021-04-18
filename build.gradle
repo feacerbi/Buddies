@@ -65,7 +65,7 @@ ext {
     androidMinSdkVersion = 23
     androidBuildToolsVersion = "30.0.3"
     projectVersionCode = 1
-    projectVersionName = "1.0.0"
+    projectVersionName = "0.9.0"
 }
 
 task clean(type: Delete) {

@@ -20,7 +20,9 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
             photo = user?.info?.photo?.toUri() ?: Uri.EMPTY,
             loadingInfo = false,
             showFavorites = myPetsEnabled,
-            showMyPets = myPetsEnabled
+            showNotifications = myPetsEnabled,
+            showMyPets = myPetsEnabled,
+            showTabs = myPetsEnabled
         )
     }
 

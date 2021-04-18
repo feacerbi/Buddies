@@ -17,5 +17,7 @@ data class ProfileViewState(
     val loadingNotifications: Boolean = false,
     val loadingFavorites: Boolean = false,
     val showFavorites: Boolean = false,
-    val showMyPets: Boolean = false
+    val showNotifications: Boolean = false,
+    val showMyPets: Boolean = false,
+    val showTabs: Boolean = false,
 ) : ViewState
