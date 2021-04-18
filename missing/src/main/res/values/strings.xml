@@ -10,4 +10,5 @@
     <string name="all_missing_pets_title">Missing Pets Found</string>
     <string name="show_more_button">Show More</string>
     <string name="missing_page_title">Hello, %s!</string>
+    <string name="empty_missing_pets_found">No missing pets found</string>
 </resources>

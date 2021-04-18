@@ -16,6 +16,8 @@ sealed class MissingFeedViewStateReducer : ViewStateReducer<MissingFeedViewState
             recentPets = mostRecentList ?: listOf(),
             nearPets = nearestList ?: listOf(),
             yourPets = yourList ?: listOf(),
+            showNearYou = nearestList?.isNotEmpty() ?: false,
+            showYour = yourList?.isNotEmpty() ?: false,
             titleName = name?.substringBefore(" ") ?: "",
         )
     }

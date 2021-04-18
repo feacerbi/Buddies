@@ -17,9 +17,11 @@ import com.buddies.profile.viewmodel.ProfileViewModel.Action
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.ChangeName
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.RefreshInfo
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalCoroutinesApi
 class ProfileInfoFragment : NavigationFragment(), CoroutineScope {
 
     private lateinit var binding: FragmentProfileInfoTabBinding

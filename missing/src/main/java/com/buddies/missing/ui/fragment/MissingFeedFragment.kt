@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.buddies.common.model.MissingPet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.observe
@@ -70,6 +71,8 @@ class MissingFeedFragment : NavigationFragment() {
             recentPetsAdapter.submitList(it.recentPets)
             nearPetsAdapter.submitList(it.nearPets)
             yourPetsAdapter.submitList(it.yourPets)
+            nearYouGroup.isVisible = it.showNearYou
+            youFoundGroup.isVisible = it.showYour
             recentsList.scheduleLayoutAnimation()
             nearYouList.scheduleLayoutAnimation()
             youFoundList.scheduleLayoutAnimation()

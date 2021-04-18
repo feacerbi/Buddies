@@ -8,8 +8,7 @@
 
     <action
         android:id="@+id/action_global_finish"
-        app:popUpTo="@id/newMissingPetInfoFragment"
-        app:popUpToInclusive="true" />
+        app:popUpTo="@id/new_missing_pet_nav_graph" />
 
     <fragment
         android:id="@+id/newMissingPetInfoFragment"

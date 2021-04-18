@@ -165,6 +165,18 @@
                 android:layoutAnimation="@anim/layout_slide_in"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/missing_pet_horizontal_item"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/near_you_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="near_you_list_title, near_you_list, more_near_you_button"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/you_found_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="you_found_list_title, you_found_list, more_you_found_button"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
