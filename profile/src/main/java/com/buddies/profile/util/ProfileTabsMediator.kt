@@ -7,20 +7,24 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.buddies.profile.R
+import com.buddies.profile.ui.adapter.ProfileTabsAdapter
 import com.buddies.profile.util.ProfileTabsMediator.TAB.NOTIFICATIONS_TAB
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class ProfileTabsMediator(
     context: Context,
     private val tabLayout: TabLayout,
     private val viewPager2: ViewPager2,
+    private val adapter: ProfileTabsAdapter,
     private var badgeNumber: Int = 0
 ) {
 
     private val strategy = TabLayoutMediator.TabConfigurationStrategy { tab, position ->
         //tab.text = context.resources.getString(TAB.byPosition(position).title)
-        tab.icon = ResourcesCompat.getDrawable(context.resources, TAB.byPosition(position).icon, context.theme)
+        tab.icon = ResourcesCompat.getDrawable(context.resources, TAB.byPosition(position, adapter.showFavoritesTab).icon, context.theme)
         tab.removeBadge()
         if (position == NOTIFICATIONS_TAB.position && badgeNumber > 0) tab.orCreateBadge.apply {
             number = badgeNumber
@@ -48,10 +52,11 @@ class ProfileTabsMediator(
         NOTIFICATIONS_TAB(2, R.string.notifications_tab_title, R.drawable.ic_baseline_notifications);
 
         companion object {
-            fun byPosition(position: Int) = when (position) {
-                INFO_TAB.position -> INFO_TAB
-                FAVORITES_TAB.position -> FAVORITES_TAB
-                NOTIFICATIONS_TAB.position -> NOTIFICATIONS_TAB
+            fun byPosition(position: Int, showFavorites: Boolean) = when {
+                position == INFO_TAB.position -> INFO_TAB
+                position == FAVORITES_TAB.position && showFavorites -> FAVORITES_TAB
+                position == FAVORITES_TAB.position && !showFavorites -> NOTIFICATIONS_TAB
+                position == NOTIFICATIONS_TAB.position -> NOTIFICATIONS_TAB
                 else -> throw IllegalArgumentException("Illegal position $position, out of bounds (max: 1).")
             }
         }

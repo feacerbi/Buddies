@@ -17,13 +17,23 @@ class ProfileTabsAdapter(
     fragment: ProfileFragment
 ) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = TAB.values().size
+    var showFavoritesTab = false
+    set(value) {
+        val changed = field != value
+        field = value
+        if (changed) notifyDataSetChanged()
+    }
 
-    override fun createFragment(position: Int): Fragment =
-        when (position) {
-            INFO_TAB.position -> ProfileInfoFragment()
-            FAVORITES_TAB.position -> ProfileFavoritesFragment()
-            NOTIFICATIONS_TAB.position -> ProfileNotificationsFragment()
-            else -> throw IllegalArgumentException("illegal position $position, out of bounds (max: $itemCount).")
-        }
+    override fun getItemCount(): Int = when (showFavoritesTab) {
+        true -> TAB.values().size
+        false -> TAB.values().size - 1
+    }
+
+    override fun createFragment(position: Int): Fragment = when {
+        position == INFO_TAB.position -> ProfileInfoFragment()
+        position == FAVORITES_TAB.position && showFavoritesTab -> ProfileFavoritesFragment()
+        position == FAVORITES_TAB.position && !showFavoritesTab -> ProfileNotificationsFragment()
+        position == NOTIFICATIONS_TAB.position -> ProfileNotificationsFragment()
+        else -> throw IllegalArgumentException("illegal position $position, out of bounds (max: $itemCount).")
+    }
 }

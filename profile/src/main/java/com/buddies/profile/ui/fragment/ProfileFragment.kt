@@ -40,6 +40,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
 
     private val viewModel: ProfileViewModel by sharedViewModel()
 
+    private lateinit var profileTabsAdapter: ProfileTabsAdapter
     private var tabsMediator: ProfileTabsMediator? = null
     private var expandedWidget = false
 
@@ -80,9 +81,10 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
             }
         }
 
-        pager.adapter = ProfileTabsAdapter(this@ProfileFragment)
+        profileTabsAdapter = ProfileTabsAdapter(this@ProfileFragment)
+        pager.adapter = profileTabsAdapter
 
-        tabsMediator = ProfileTabsMediator(requireContext(), tabs, pager, 0)
+        tabsMediator = ProfileTabsMediator(requireContext(), tabs, pager, profileTabsAdapter, 0)
             .apply { connect() }
 
         myPetsWidget.apply {
@@ -97,6 +99,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
             tabsMediator?.updateBadge(it.notifications.size)
+            profileTabsAdapter.showFavoritesTab = it.showFavorites
             myPetsWidget.isVisible = it.showMyPets
             profilePicture.load(it.photo, this@ProfileFragment)
             profilePicture.setOnClickListener { _ -> navigateToFullscreen(profilePicture, it.photo) }

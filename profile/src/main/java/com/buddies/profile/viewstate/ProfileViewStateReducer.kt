@@ -19,6 +19,7 @@ sealed class ProfileViewStateReducer : ViewStateReducer<ProfileViewState> {
             email = user?.info?.email ?: "",
             photo = user?.info?.photo?.toUri() ?: Uri.EMPTY,
             loadingInfo = false,
+            showFavorites = myPetsEnabled,
             showMyPets = myPetsEnabled
         )
     }

@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import com.buddies.common.util.expand
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
+import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.common.util.setOnBackPressed
 import com.buddies.missing_new.R
 import com.buddies.missing_new.databinding.FragmentNewMissingPetInfoBinding
@@ -30,7 +31,7 @@ class NewMissingPetInfoFragment : NewMissingPetNavigationFragment() {
 
     private val viewModel: NewMissingPetViewModel by sharedViewModel()
 
-    private val galleryPick = registerForActivityResult(ActivityResultContracts.GetContent()) {
+    private val galleryPick = registerForNonNullActivityResult(ActivityResultContracts.GetContent()) {
         perform(PhotoInput(it))
     }
 
@@ -53,8 +54,7 @@ class NewMissingPetInfoFragment : NewMissingPetNavigationFragment() {
         headerBinding.toolbar.title = getString(R.string.report_pet_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
-        setOnBackPressed { perform(Previous) }
-        backButton.setOnClickListener { perform(Previous) }
+        setOnBackPressed { perform(CloseFlow) }
         forwardButton.setOnClickListener { perform(Next) }
 
         nameInputEditText.addTextChangedListener {

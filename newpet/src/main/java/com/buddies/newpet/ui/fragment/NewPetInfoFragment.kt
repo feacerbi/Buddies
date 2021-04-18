@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import com.buddies.common.util.expand
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
+import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.common.util.setOnBackPressed
 import com.buddies.newpet.R
 import com.buddies.newpet.databinding.FragmentPetInfoBinding
@@ -28,7 +29,7 @@ class NewPetInfoFragment : NewPetNavigationFragment() {
 
     private val viewModel: NewPetViewModel by sharedViewModel()
 
-    private val galleryPick = registerForActivityResult(ActivityResultContracts.GetContent()) {
+    private val galleryPick = registerForNonNullActivityResult(ActivityResultContracts.GetContent()) {
         perform(PhotoInput(it))
     }
 
