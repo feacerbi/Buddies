@@ -109,4 +109,8 @@ sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewS
             hideAnimalPhoto = false
         )
     }
+
+    object ResetFlow : NewMissingPetViewStateReducer() {
+        override fun reduce(state: NewMissingPetViewState) = NewMissingPetViewState()
+    }
 }

@@ -76,7 +76,7 @@ data class ShareInfoField(
             hint,
             checked,
             location,
-            InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS,
+            InputType.TYPE_TEXT_FLAG_CAP_WORDS,
             R.drawable.ic_baseline_location_on,
             validCheck
         )

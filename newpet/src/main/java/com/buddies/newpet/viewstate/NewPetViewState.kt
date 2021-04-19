@@ -18,7 +18,7 @@ data class NewPetViewState(
     @StringRes val forwardButtonText: Int = R.string.no_valid_tags_button_message,
     val animalsList: List<Animal> = emptyList(),
     val animalPhoto: Uri = Uri.EMPTY,
-    val showCameraOverlay: Boolean = false,
+    val showCameraOverlay: Boolean = true,
     @StringRes val confirmationTitle: Int = R.string.empty,
     val confirmationLoading: Boolean = false,
     val animalName: String = "",

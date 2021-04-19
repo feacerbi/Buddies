@@ -74,12 +74,22 @@ class MissingPetsRepository {
             .limit(limit)
             .get()
 
-    fun getPetsOrderedByLocation(
-        limit: Long
+    fun getPetsOrderedByLatitude(
+        maxLatitudeRadius: Double,
+        minLatitudeRadius: Double
     ): Task<QuerySnapshot> =
         db.collection(MISSING_PETS_COLLECTION)
-            .orderBy(LOCATION_FIELD)
-            .limit(limit)
+            .whereLessThan(LATITUDE_FIELD, maxLatitudeRadius)
+            .whereGreaterThan(LATITUDE_FIELD, minLatitudeRadius)
+            .get()
+
+    fun getPetsOrderedByLongitude(
+        maxLongitudeRadius: Double,
+        minLongitudeRadius: Double
+    ): Task<QuerySnapshot> =
+        db.collection(MISSING_PETS_COLLECTION)
+            .whereLessThan(LONGITUDE_FIELD, maxLongitudeRadius)
+            .whereGreaterThan(LONGITUDE_FIELD, minLongitudeRadius)
             .get()
 
     fun updateName(
@@ -179,6 +189,8 @@ class MissingPetsRepository {
         private const val PHOTO_FIELD = "photo"
         private const val REPORTER_FIELD = "reporter"
         private const val LOCATION_FIELD = "location"
+        private const val LATITUDE_FIELD = "latitude"
+        private const val LONGITUDE_FIELD = "longitude"
         private const val CREATED_FIELD = "created"
 
         private const val MISSING_PETS_PATH = "missing-pets"

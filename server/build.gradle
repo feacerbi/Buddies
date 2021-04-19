@@ -32,7 +32,7 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
 
     // Play Services
-    implementation "com.google.android.gms:play-services-auth:$gms_playservices_version"
+    implementation "com.google.android.gms:play-services-auth:$gms_playservices_auth_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"

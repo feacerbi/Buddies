@@ -12,5 +12,5 @@ import org.koin.dsl.module
 val newMissingPetModule = module {
     factory<Navigator>(named(NEW_MISSING_PET_NAVIGATOR_NAME)) { NewMissingPetNavigator() }
     factory { NewMissingPetUseCases(get(), get()) }
-    viewModel { NewMissingPetViewModel(get()) }
+    viewModel { NewMissingPetViewModel(get(), get()) }
 }

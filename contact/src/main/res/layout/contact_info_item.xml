@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/contact_title"
         app:layout_constraintBottom_toBottomOf="@id/contact_title"
-        app:layout_constraintEnd_toStartOf="@id/menu"
+        app:layout_constraintEnd_toStartOf="@id/copy"
         android:padding="@dimen/margin_small"
         app:tint="?colorSecondary"
         android:background="?selectableItemBackground"
@@ -48,7 +48,7 @@
         tools:src="@drawable/ic_email"/>
 
     <ImageView
-        android:id="@+id/menu"
+        android:id="@+id/copy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/contact_title"
@@ -58,7 +58,7 @@
         android:layout_marginEnd="@dimen/margin_small"
         app:tint="?colorSecondary"
         android:background="?selectableItemBackground"
-        android:src="@drawable/ic_baseline_more_vert"
+        android:src="@drawable/ic_baseline_content_copy"
         tools:tint="@color/colorSecondary"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

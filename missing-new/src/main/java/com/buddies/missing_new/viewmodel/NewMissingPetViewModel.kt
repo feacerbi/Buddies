@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.DefaultError
+import com.buddies.common.model.InfoType
 import com.buddies.common.model.NewMissingPet
+import com.buddies.common.util.LocationConverter
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.contact.model.ShareInfoField
@@ -29,6 +31,7 @@ import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.NavigateBack
 import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.ShowBreeds
 import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.ShowError
 import com.buddies.missing_new.viewstate.NewMissingPetViewState
+import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ResetFlow
 import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ShowAddingPet
 import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ShowAnimalAndBreedPicked
 import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ShowAnimalPicker
@@ -45,6 +48,7 @@ import kotlinx.coroutines.delay
 import kotlin.coroutines.CoroutineContext
 
 class NewMissingPetViewModel(
+    private val locationConverter: LocationConverter,
     private val newMissingPetUseCases: NewMissingPetUseCases
 ) : StateViewModel<NewMissingPetViewState, NewMissingPetViewEffect>(NewMissingPetViewState()), CoroutineScope {
 
@@ -142,7 +146,7 @@ class NewMissingPetViewModel(
         updateState(ShowPetPhoto(uri))
     }
 
-    private fun verifyCheckedFields(list: List<ShareInfoField>, validated: Boolean) {
+    private fun verifyCheckedFields(list: List<ShareInfoField>, validated: Boolean) = safeLaunch(::showError) {
         if (list.any { it.checked } && validated) {
             newMissingPet.contactInfo = list
                 .filter { it.checked }
@@ -171,10 +175,19 @@ class NewMissingPetViewModel(
         updateState(ShowShareInfo(fields))
     }
 
+    private suspend fun checkAndConvertLocation() {
+        newMissingPet.contactInfo?.entries?.find { it.key == InfoType.LOCATION }?.let {
+            val location = locationConverter.geoPositionFromAddress(it.value)
+            newMissingPet.latitude = location.first
+            newMissingPet.longitude = location.second
+        }
+    }
+
     private fun addNewMissingPet() = safeLaunch(::showError) {
         updateEffect(Navigate(ShareInfoToConfirmation))
         updateState(ShowAddingPet(newMissingPet.name))
 
+        checkAndConvertLocation()
         newMissingPetUseCases.addNewMissingPet(newMissingPet)
 
         delay(CONFIRMATION_DELAY)
@@ -186,6 +199,7 @@ class NewMissingPetViewModel(
 
     private fun closeFlow() {
         updateEffect(Navigate(FinishFlow))
+        updateState(ResetFlow)
     }
 
     private fun showError(error: DefaultError) {

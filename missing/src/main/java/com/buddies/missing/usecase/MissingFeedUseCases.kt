@@ -37,8 +37,8 @@ class MissingFeedUseCases(
         it.mapAnimal()
     }
 
-    suspend fun getNearestPets() = request {
-        missingPetApi.getNearMissingPets(PETS_PREVIEW_LIST_SIZE)
+    suspend fun getNearestPets(location: Pair<Double?, Double?>) = request {
+        missingPetApi.getNearMissingPets(location, PETS_PREVIEW_LIST_SIZE)
     }?.map {
         it.mapAnimal()
     }

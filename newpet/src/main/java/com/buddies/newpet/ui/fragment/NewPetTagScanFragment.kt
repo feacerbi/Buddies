@@ -55,7 +55,6 @@ class NewPetTagScanFragment : NewPetNavigationFragment() {
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
         setOnBackPressed { perform(Previous) }
-        backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next) }
     }
 

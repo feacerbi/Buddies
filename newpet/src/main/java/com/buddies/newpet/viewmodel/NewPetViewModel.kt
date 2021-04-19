@@ -30,6 +30,7 @@ import com.buddies.newpet.viewstate.NewPetViewEffect.NavigateBack
 import com.buddies.newpet.viewstate.NewPetViewEffect.ShowBreeds
 import com.buddies.newpet.viewstate.NewPetViewEffect.ShowError
 import com.buddies.newpet.viewstate.NewPetViewState
+import com.buddies.newpet.viewstate.NewPetViewStateReducer.ResetFlow
 import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowAddingPet
 import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowAnimalAndBreedPicked
 import com.buddies.newpet.viewstate.NewPetViewStateReducer.ShowAnimalPicker
@@ -179,6 +180,7 @@ class NewPetViewModel(
 
     private fun closeFlow() {
         updateEffect(Navigate(FinishFlow))
+        updateState(ResetFlow)
     }
 
     private fun showError(error: DefaultError) {

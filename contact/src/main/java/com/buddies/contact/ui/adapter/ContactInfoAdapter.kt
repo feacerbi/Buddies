@@ -1,5 +1,9 @@
 package com.buddies.contact.ui.adapter
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,9 +13,12 @@ import com.buddies.contact.databinding.ContactInfoItemBinding
 import com.buddies.contact.model.ContactInfoField
 import com.buddies.contact.ui.adapter.ContactInfoAdapter.ContactInfoViewHolder
 
-class ContactInfoAdapter : ListAdapter<ContactInfoField, ContactInfoViewHolder>(
-    ContactInfoDiffUtil()
-) {
+class ContactInfoAdapter(
+    context: Context,
+    val onCopyToClipboard: () -> Unit = {}
+) : ListAdapter<ContactInfoField, ContactInfoViewHolder>(ContactInfoDiffUtil()) {
+
+    private val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactInfoViewHolder =
         ContactInfoViewHolder(
@@ -33,6 +40,11 @@ class ContactInfoAdapter : ListAdapter<ContactInfoField, ContactInfoViewHolder>(
             icon.setImageResource(item.icon)
 
             contactTitle.text = item.title
+
+            copy.setOnClickListener {
+                clipboardManager.setPrimaryClip(ClipData.newPlainText(item.infoType.name, item.title))
+                onCopyToClipboard.invoke()
+            }
 
             action.setImageResource(item.actionIcon)
             action.setOnClickListener {

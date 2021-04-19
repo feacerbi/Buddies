@@ -12,4 +12,5 @@
     <string name="contact_info_dialog_content">This is the information provided by the person who found this pet.</string>
     <string name="email_action_subject">Lost pet found!</string>
     <string name="email_action_message">Hey, I found your lost pet, please contact me through this email address.</string>
+    <string name="copy_to_clipboard_toast">Copied to clipboard</string>
 </resources>

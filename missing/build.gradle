@@ -29,6 +29,9 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
+    // Play Services Location
+    implementation "com.google.android.gms:play-services-location:$gms_playservices_location_version"
+
     // Jetpack Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
 

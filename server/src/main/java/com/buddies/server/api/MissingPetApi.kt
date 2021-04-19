@@ -134,11 +134,33 @@ class MissingPetApi(
     }
 
     suspend fun getNearMissingPets(
-        limit: Int
+        location: Pair<Double?, Double?>,
+        limit: Int,
+        maxDistance: Int = 1
     ) = runWithResult {
-        missingPetsRepository.getPetsOrderedByLocation(limit.toLong())
-            .handleTaskResult()
-            .toMissingPets()
+        val latitude = location.first
+        val longitude = location.second
+
+        if (latitude != null && longitude != null) {
+            val maxLatitude = latitude + maxDistance
+            val minLatitude = latitude - maxDistance
+            val maxLongitude = longitude + maxDistance
+            val minLongitude = longitude - maxDistance
+
+            val petsByLatitude = missingPetsRepository.getPetsOrderedByLatitude(maxLatitude, minLatitude)
+                .handleTaskResult()
+                .toMissingPets()
+
+            val petsByLongitude = missingPetsRepository.getPetsOrderedByLongitude(maxLongitude, minLongitude)
+                .handleTaskResult()
+                .toMissingPets()
+
+            petsByLatitude
+                .filter { petByLat -> petsByLongitude.any { petByLon -> petByLat.id == petByLon.id } }
+                .take(limit)
+        } else {
+            emptyList()
+        }
     }
 
     suspend fun getAnimal(
@@ -190,7 +212,9 @@ class MissingPetApi(
             animal.id,
             breed.id,
             userId,
-            contactInfo.mapKeys { it.key.name.toLowerCase(Locale.getDefault()) }
+            contactInfo.mapKeys { it.key.name.toLowerCase(Locale.getDefault()) },
+            newMissingPet.latitude,
+            newMissingPet.longitude
         )
 
         runTransactions(

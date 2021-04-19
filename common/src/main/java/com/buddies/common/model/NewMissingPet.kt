@@ -7,5 +7,7 @@ data class NewMissingPet(
     var photo: Uri? = null,
     var animal: Animal? = null,
     var breed: Breed? = null,
+    var latitude: Double? = null,
+    var longitude: Double? = null,
     var contactInfo: Map<InfoType, String>? = null
 )

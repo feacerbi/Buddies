@@ -11,7 +11,7 @@ data class MissingFeedViewState(
     val nearPets: List<MissingPet> = listOf(),
     val yourPets: List<MissingPet> = listOf(),
     val showNearYou: Boolean = true,
-    val showYour: Boolean = true,
+    val showYour: Boolean = false,
     val progress: Boolean = false,
     val titleName: String = "",
     @StringRes val title: Int = R.string.missing_page_title,

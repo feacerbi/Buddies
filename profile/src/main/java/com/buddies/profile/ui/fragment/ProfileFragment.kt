@@ -100,6 +100,7 @@ class ProfileFragment : NavigationFragment(), CoroutineScope {
         observe(viewModel.viewState) {
             tabsMediator?.updateBadge(it.notifications.size)
             profileTabsAdapter.showFavoritesTab = it.showFavorites
+            profileTabsAdapter.showNotificationsTab = it.showNotifications
             tabs.isVisible = it.showTabs
             myPetsWidget.isVisible = it.showMyPets
             profilePicture.load(it.photo, this@ProfileFragment)

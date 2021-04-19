@@ -1,6 +1,7 @@
 package com.buddies.contact.ui.bottomsheet
 
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.core.view.isVisible
 import com.buddies.common.model.InfoType.EMAIL
 import com.buddies.common.model.InfoType.LOCATION
@@ -9,6 +10,13 @@ import com.buddies.common.model.InfoType.PHONE
 import com.buddies.common.ui.bottomsheet.BottomSheetFactory
 import com.buddies.contact.R
 import com.buddies.contact.databinding.ContactInfoLayoutBinding
+import com.buddies.contact.model.ContactInfo
+import com.buddies.contact.model.ContactInfoField
+import com.buddies.contact.model.EmailInfoField
+import com.buddies.contact.model.MapInfoField
+import com.buddies.contact.model.NameInfoField
+import com.buddies.contact.model.PhoneInfoField
+import com.buddies.contact.ui.adapter.ContactInfoAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ContactInfoBottomSheet private constructor(
@@ -26,9 +34,15 @@ class ContactInfoBottomSheet private constructor(
         private val contactView = ContactInfoLayoutBinding.inflate(inflater)
         private val bottomSheet = createBottomSheet(contactView.root)
 
-        private val fields: MutableList<com.buddies.contact.model.ContactInfoField> = mutableListOf()
+        private val fields: MutableList<ContactInfoField> = mutableListOf()
 
-        private val adapter = com.buddies.contact.ui.adapter.ContactInfoAdapter()
+        private val adapter = ContactInfoAdapter(contactView.root.context) {
+            Toast.makeText(
+                contactView.root.context,
+                contactView.root.context.getString(R.string.copy_to_clipboard_toast),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
         private val closeButtonDefaultText by lazy {
             contactView.root.context.resources.getString(R.string.close_button)
@@ -43,13 +57,13 @@ class ContactInfoBottomSheet private constructor(
         }.let { this }
 
         fun field(
-            contactInfo: com.buddies.contact.model.ContactInfo
+            contactInfo: ContactInfo
         ): Builder {
             when (contactInfo.infoType) {
-                NAME -> fields.add(com.buddies.contact.model.NameInfoField(contactInfo.info))
-                EMAIL -> fields.add(com.buddies.contact.model.EmailInfoField(contactInfo.info))
-                PHONE -> fields.add(com.buddies.contact.model.PhoneInfoField(contactInfo.info))
-                LOCATION -> fields.add(com.buddies.contact.model.MapInfoField(contactInfo.info))
+                NAME -> fields.add(NameInfoField(contactInfo.info))
+                EMAIL -> fields.add(EmailInfoField(contactInfo.info))
+                PHONE -> fields.add(PhoneInfoField(contactInfo.info))
+                LOCATION -> fields.add(MapInfoField(contactInfo.info))
                 else -> { /* Ignore */ }
             }
             return this
