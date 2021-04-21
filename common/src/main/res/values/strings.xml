@@ -38,6 +38,8 @@
     <string name="delete_button">Delete</string>
     <string name="send_button">Send</string>
     <string name="close_button">Close</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="remove_button">Remove</string>
 
     <!-- Media Source -->
     <string name="gallery_source_description">Pick from gallery</string>

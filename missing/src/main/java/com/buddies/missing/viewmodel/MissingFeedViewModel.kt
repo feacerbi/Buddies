@@ -56,6 +56,7 @@ class MissingFeedViewModel(
         val currentUser = useCases.getCurrentUser()
         val currentUserPets = useCases.getCurrentUserPets()
         val mostRecentPets = useCases.getMostRecentPets()
+        fetchNearestPets()
         updateState(ShowPetLists(currentUser?.info?.name, mostRecentPets, currentUserPets))
     }
 

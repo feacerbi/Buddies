@@ -112,6 +112,25 @@ class MissingPetsRepository {
         photo: String
     ) = updatePetField(petId, PHOTO_FIELD, photo)
 
+    fun updateReporterInfo(
+        petId: String,
+        reporterInfo: Map<String, String>
+    ) = updatePetField(petId, REPORTER_INFO_FIELD, reporterInfo)
+
+    fun updateReturned(
+        petId: String,
+    ) = updatePetField(petId, RETURNED_FIELD, true)
+
+    fun updateLatitude(
+        petId: String,
+        latitude: Double
+    ) = updatePetField(petId, LATITUDE_FIELD, latitude)
+
+    fun updateLongitude(
+        petId: String,
+        longitude: Double
+    ) = updatePetField(petId, LONGITUDE_FIELD, longitude)
+
     private fun updatePetField(
         petId: String,
         petField: String,
@@ -127,7 +146,31 @@ class MissingPetsRepository {
     private fun updatePetField(
         petId: String,
         petField: String,
+        value: Double
+    ): Transaction.() -> Unit = {
+        update(
+            db.collection(MISSING_PETS_COLLECTION).document(petId),
+            petField,
+            value
+        )
+    }
+
+    private fun updatePetField(
+        petId: String,
+        petField: String,
         value: Boolean
+    ): Transaction.() -> Unit = {
+        update(
+            db.collection(MISSING_PETS_COLLECTION).document(petId),
+            petField,
+            value
+        )
+    }
+
+    private fun updatePetField(
+        petId: String,
+        petField: String,
+        value: Map<String, String>
     ): Transaction.() -> Unit = {
         update(
             db.collection(MISSING_PETS_COLLECTION).document(petId),
@@ -188,7 +231,8 @@ class MissingPetsRepository {
         private const val BREED_FIELD = "breed"
         private const val PHOTO_FIELD = "photo"
         private const val REPORTER_FIELD = "reporter"
-        private const val LOCATION_FIELD = "location"
+        private const val REPORTER_INFO_FIELD = "reporterInfo"
+        private const val RETURNED_FIELD = "returned"
         private const val LATITUDE_FIELD = "latitude"
         private const val LONGITUDE_FIELD = "longitude"
         private const val CREATED_FIELD = "created"

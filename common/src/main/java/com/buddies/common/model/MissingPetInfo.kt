@@ -9,7 +9,8 @@ data class MissingPetInfo(
     val breed: String = "",
     val reporter: String = "",
     val reporterInfo: Map<String, String> = emptyMap(),
-    var latitude: Double? = null,
-    var longitude: Double? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val returned: Boolean? = false,
     val created: Long = Calendar.getInstance().timeInMillis
 )

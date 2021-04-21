@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
+import com.buddies.common.model.InfoType
 import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToFullscreen
 import com.buddies.common.ui.adapter.AnimalsAdapter
 import com.buddies.common.ui.adapter.BreedsAdapter
@@ -20,10 +22,12 @@ import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
 import com.buddies.common.ui.bottomsheet.InputBottomSheet
 import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
 import com.buddies.common.ui.bottomsheet.SelectableBottomSheet
+import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.*
 import com.buddies.contact.model.ContactInfo
 import com.buddies.contact.ui.bottomsheet.ContactInfoBottomSheet
+import com.buddies.contact.ui.bottomsheet.ShareInfoBottomSheet
 import com.buddies.missing_profile.R
 import com.buddies.missing_profile.databinding.FragmentMissingPetProfileBinding
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel
@@ -31,17 +35,26 @@ import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeAnimal
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeName
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangePhoto
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ChangeSharedInfo
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ConfirmPetRemoval
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.ConfirmPetReturned
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.OpenGallery
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.PetReturned
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.Refresh
+import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RemovePet
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestAnimals
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestBreeds
 import com.buddies.missing_profile.viewmodel.MissingPetProfileViewModel.Action.RequestContactInfo
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.Navigate
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.NavigateBack
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowAnimalsList
-import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowBottomMessage
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowBreedsList
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowConfirmRemovalBottomSheet
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowConfirmReturnedBottomSheet
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowContactInfoBottomSheet
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowError
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowMessage
+import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowShareInfoBottomSheet
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -88,6 +101,10 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
                     perform(OpenGallery)
                     true
                 }
+                R.id.remove_pet_menu_action -> {
+                    perform(RemovePet)
+                    true
+                }
                 else -> false
             }
         }
@@ -113,6 +130,10 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
         profileReporterEdit.setOnClickListener {
             perform(RequestContactInfo)
         }
+
+        returnedButton.setOnClickListener {
+            perform(PetReturned)
+        }
     }
 
     private fun bindViews() = with (binding) {
@@ -125,6 +146,8 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
             profileAnimalEdit.isVisible = it.animalEdit
             profileReporterName.text = it.reporter
             profileReporterEdit.isVisible = it.contactInfo
+            profileReporterEdit.setImageResource(it.contactInfoIcon)
+            returnedButton.isVisible = it.returnedButton
             toolbar.menu.clear()
             toolbar.inflateMenu(it.toolbarMenu)
             refresh.isRefreshing = it.loading
@@ -134,9 +157,13 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
             when (it) {
                 is ShowAnimalsList -> openAnimalsList(it.list)
                 is ShowBreedsList -> openBreedsList(it.list, it.animal)
-                is ShowBottomMessage -> showMessage(it.message, it.params.toTypedArray())
+                is ShowMessage -> showMessage(it.message, it.params.toTypedArray())
                 is ShowContactInfoBottomSheet -> openContactInfoBottomSheet(it.info)
+                is ShowShareInfoBottomSheet -> openEditShareInfoBottomSheet(it.info)
+                is ShowConfirmRemovalBottomSheet -> openConfirmPetRemovalBottomSheet(it.message, it.petName)
+                is ShowConfirmReturnedBottomSheet -> openConfirmPetReturnedBottomSheet(it.message, it.petName)
                 is Navigate -> navigate(it.direction)
+                is NavigateBack -> navigateBack()
                 is ShowError -> showMessage(it.error)
             }
         }
@@ -179,6 +206,45 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
                         perform(ChangePhoto(uri))
                     }
                 }
+            }
+            .build()
+            .show()
+    }
+
+    private fun openConfirmPetRemovalBottomSheet(@StringRes message: Int, petName: String) {
+        SimpleBottomSheet.Builder(layoutInflater)
+            .title(getString(message, petName))
+            .cancelButton()
+            .confirmButton(getString(R.string.remove_button)) {
+                perform(ConfirmPetRemoval)
+            }
+            .build()
+            .show()
+    }
+
+    private fun openConfirmPetReturnedBottomSheet(@StringRes message: Int, petName: String) {
+        SimpleBottomSheet.Builder(layoutInflater)
+            .title(getString(message, petName))
+            .cancelButton()
+            .confirmButton(getString(R.string.confirm_button)) {
+                perform(ConfirmPetReturned)
+            }
+            .build()
+            .show()
+    }
+
+    private fun openEditShareInfoBottomSheet(info: List<ContactInfo>?) {
+        val emailInfo = info?.firstOrNull { it.infoType == InfoType.EMAIL }
+        val phoneInfo = info?.firstOrNull { it.infoType == InfoType.PHONE }
+        val locationInfo = info?.firstOrNull { it.infoType == InfoType.LOCATION }
+
+        ShareInfoBottomSheet.Builder(layoutInflater)
+            .email(email = emailInfo?.info ?: "", checked = emailInfo != null)
+            .phone(phone = phoneInfo?.info ?: "", checked = phoneInfo != null)
+            .location(location = locationInfo?.info ?: "", checked = locationInfo != null)
+            .cancelButton()
+            .confirmButton {
+                perform(ChangeSharedInfo(it))
             }
             .build()
             .show()

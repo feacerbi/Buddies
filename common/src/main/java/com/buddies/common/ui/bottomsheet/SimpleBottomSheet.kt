@@ -1,6 +1,7 @@
 package com.buddies.common.ui.bottomsheet
 
 import android.view.LayoutInflater
+import androidx.core.view.isVisible
 import com.buddies.common.R
 import com.buddies.common.databinding.SimpleLayoutBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -39,6 +40,7 @@ class SimpleBottomSheet private constructor(
             title: String = cancelButtonDefaultText,
             action: () -> Unit = {}
         ) = with (simpleView) {
+            cancelButton.isVisible = true
             cancelButton.text = title
             cancelButton.setOnClickListener {
                 action.invoke()

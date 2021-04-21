@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.R
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.DefaultErrorException
+import com.buddies.common.model.ErrorCode
 import com.buddies.common.model.ErrorCode.RESULT_NULL
 import com.buddies.common.model.Result
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -152,6 +153,15 @@ suspend fun <T, R> Result<T>.mapResult(
         is Result.Success -> Result.Success(transform(data))
         is Result.Fail -> Result.Fail(error)
     }
+
+fun Result<Boolean>.handleAccessResult() {
+    when (this) {
+        is Result.Success -> if (data == false) throw DefaultErrorException(DefaultError(
+            ErrorCode.ACCESS_DENIED
+        ))
+        is Result.Fail -> throw DefaultErrorException(error)
+    }
+}
 
 fun Calendar.toFormatted(context: Context) = this.timeInMillis.toFormattedDate(context)
 

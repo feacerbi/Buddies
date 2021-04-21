@@ -1,5 +1,6 @@
 package com.buddies.server.util
 
+import com.buddies.common.model.InfoType
 import com.buddies.common.model.InviteNotification
 import com.buddies.common.model.Pet
 import com.buddies.common.model.PetFoundNotification
@@ -32,3 +33,6 @@ fun Notification.toPetFoundNotification(
     pet,
     info.extra.mapKeys { it.key.toInfoType() }
 )
+
+fun Map<InfoType, String>.keysToString() =
+    mapKeys { it.key.name.toLowerCase(Locale.getDefault()) }

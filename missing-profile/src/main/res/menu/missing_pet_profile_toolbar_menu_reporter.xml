@@ -3,15 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/edit_picture_menu_action"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit_picture_menu_title"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/open_gallery_menu_action"
         android:icon="@drawable/ic_baseline_photo_library"
         android:title="@string/open_gallery_menu_title"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/edit_picture_menu_action"
-        android:icon="@drawable/ic_edit"
-        android:title="@string/edit_picture_menu_title"
+        android:id="@+id/remove_pet_menu_action"
+        android:icon="@drawable/ic_baseline_delete"
+        android:title="@string/remove_pet_menu_title"
         app:showAsAction="ifRoom"/>
 
 </menu>

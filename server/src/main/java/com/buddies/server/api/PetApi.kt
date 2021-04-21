@@ -5,17 +5,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.buddies.common.model.Buddy
-import com.buddies.common.model.DefaultError
-import com.buddies.common.model.DefaultErrorException
-import com.buddies.common.model.ErrorCode.ACCESS_DENIED
 import com.buddies.common.model.NotificationType.INVITE
 import com.buddies.common.model.Owner
 import com.buddies.common.model.OwnershipAccess.EDIT_ALL
 import com.buddies.common.model.OwnershipCategory.VISITOR
 import com.buddies.common.model.OwnershipInfo
-import com.buddies.common.model.Result
-import com.buddies.common.model.Result.Fail
-import com.buddies.common.model.Result.Success
+import com.buddies.common.util.handleAccessResult
 import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.model.NotificationInfo
 import com.buddies.server.model.Picture
@@ -236,7 +231,6 @@ class PetApi(
         }.toTypedArray()
 
         petsRepository.deleteGallery(petId)
-            .handleTaskResult()
 
         runTransactions(
             petsRepository.deletePet(petId),
@@ -336,11 +330,4 @@ class PetApi(
 
         ownership?.info?.category?.toOwnershipCategory()?.access == EDIT_ALL
     }.handleAccessResult()
-
-    private fun Result<Boolean>.handleAccessResult() {
-        when (this) {
-            is Success -> if (data == false) throw DefaultErrorException(DefaultError(ACCESS_DENIED))
-            is Fail -> throw DefaultErrorException(error)
-        }
-    }
 }

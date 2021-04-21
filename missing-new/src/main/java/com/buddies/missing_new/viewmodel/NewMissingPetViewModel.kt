@@ -11,6 +11,7 @@ import com.buddies.common.util.LocationConverter
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.contact.model.ShareInfoField
+import com.buddies.contact.util.toContactInfo
 import com.buddies.missing_new.navigation.NewMissingPetNavDirection.AnimalAndBreedToShareInfo
 import com.buddies.missing_new.navigation.NewMissingPetNavDirection.FinishFlow
 import com.buddies.missing_new.navigation.NewMissingPetNavDirection.InfoToAnimalAndBreed
@@ -148,10 +149,7 @@ class NewMissingPetViewModel(
 
     private fun verifyCheckedFields(list: List<ShareInfoField>, validated: Boolean) = safeLaunch(::showError) {
         if (list.any { it.checked } && validated) {
-            newMissingPet.contactInfo = list
-                .filter { it.checked }
-                .map { it.type to it.input }
-                .toMap()
+            newMissingPet.contactInfo = list.toContactInfo()
             updateState(ShowInfoValidated)
         } else {
             updateState(ShowInvalidInfo)

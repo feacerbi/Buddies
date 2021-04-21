@@ -8,5 +8,5 @@ import org.koin.dsl.module
 
 val missingPetModule = module {
     factory { MissingPetUseCases(get(), get()) }
-    viewModel { params -> MissingPetProfileViewModel(params[0], get(), Dispatchers.Main) }
+    viewModel { params -> MissingPetProfileViewModel(params[0], get(), get(), Dispatchers.Main) }
 }

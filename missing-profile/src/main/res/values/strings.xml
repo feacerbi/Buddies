@@ -6,6 +6,7 @@
     <!-- Toolbar Titles -->
     <string name="edit_picture_menu_title">Edit Picture</string>
     <string name="open_gallery_menu_title">Open Gallery</string>
+    <string name="remove_pet_menu_title">Remove Pet</string>
 
     <!-- Views -->
     <string name="info">Info</string>
@@ -14,6 +15,11 @@
     <string name="apply_button">Apply</string>
     <string name="select_animal_title">Select Animal</string>
     <string name="select_breed_title">Select Breed</string>
+    <string name="reporter_title">Reporter</string>
+    <string name="confirm_removal_message">Do really want to remove %s\'s found report?</string>
+    <string name="confirm_returned_message">Do you confirm %s was returned?</string>
+    <string name="remove_confirmed_message">%s\'s report removed</string>
+    <string name="returned_confirmed_message">Good job! %s was marked as returned!</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>
@@ -23,5 +29,4 @@
     <string name="pet_animal_edit_icon_content_description">Pet animal edit icon</string>
     <string name="pet_breed_icon_content_description">Pet breed icon</string>
     <string name="pet_breed_edit_icon_content_description">Pet breed edit icon</string>
-    <string name="reporter_title">Reporter</string>
 </resources>

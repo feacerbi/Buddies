@@ -9,5 +9,6 @@ data class NewMissingPet(
     var breed: Breed? = null,
     var latitude: Double? = null,
     var longitude: Double? = null,
+    var returned: Boolean = false,
     var contactInfo: Map<InfoType, String>? = null
 )
