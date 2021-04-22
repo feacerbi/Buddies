@@ -1,6 +1,7 @@
 package com.buddies.gallery.usecase
 
 import android.net.Uri
+import androidx.lifecycle.asFlow
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
@@ -13,20 +14,15 @@ import com.buddies.gallery.data.model.GalleryUploadWorkEntity
 import com.buddies.gallery.data.model.GalleryUploadWorkEntity.Companion.toGalleryUploadWorkEntity
 import com.buddies.gallery.util.GalleryUploadNotificationHandler
 import com.buddies.gallery.worker.GalleryUploadWorker
-import com.buddies.server.api.PetApi
-import com.google.common.util.concurrent.FutureCallback
-import com.google.common.util.concurrent.Futures
+import com.buddies.server.api.GalleryApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.util.concurrent.Executors
 
 class GalleryUseCases(
-    private val petApi: PetApi,
+    private val galleryApi: GalleryApi,
     private val uploadNotificationHandler: GalleryUploadNotificationHandler,
     private val galleryUploadWorksDAO: GalleryUploadWorksDAO,
     private val workManager: WorkManager
@@ -35,14 +31,14 @@ class GalleryUseCases(
     suspend fun getGalleryPictures(
         petId: String
     ) = request {
-        petApi.getPetGalleryPictures(petId)
+        galleryApi.getPetGalleryPictures(petId)
     }
 
     suspend fun addPictureToGallery(
         petId: String,
         picture: Uri
     ) = request {
-        petApi.addPetGalleryPicture(petId, picture)
+        galleryApi.addPetGalleryPicture(petId, picture)
     }
 
     suspend fun addPicturesToGallery(
@@ -74,7 +70,7 @@ class GalleryUseCases(
         petId: String,
         pictureIds: List<String>
     ) = withContext(Dispatchers.IO) {
-        petApi.deletePetGalleryPictures(petId, pictureIds)
+        galleryApi.deletePetGalleryPictures(petId, pictureIds)
     }
 
     suspend fun cancelUploadWork() {
@@ -95,28 +91,11 @@ class GalleryUseCases(
         galleryUploadWorksDAO.deleteWorks(galleryUploadWorksDAO.getWorks())
     }
 
-    @ExperimentalCoroutinesApi
-    fun getUploadWorkStatus() = callbackFlow<WorkInfo.State> {
-
-        val workInfoCallback = object : FutureCallback<List<WorkInfo>> {
-            override fun onSuccess(result: List<WorkInfo>?) {
-                sendBlocking(
-                    if (result == null || result.isEmpty()) {
-                        WorkInfo.State.CANCELLED
-                    } else {
-                        result[0].state
-                    })
-            }
-            override fun onFailure(t: Throwable) {
-                close(t)
-            }
-        }
-
-        val workInfosFuture = workManager.getWorkInfosForUniqueWork(GALLERY_UPLOAD_WORK_NAME)
-        Futures.addCallback(workInfosFuture, workInfoCallback, Executors.newSingleThreadExecutor())
-
-        awaitClose { workInfosFuture.cancel(true) }
-    }.flowOn(Dispatchers.Default)
+    fun getUploadWorkStatus(): Flow<WorkInfo.State> =
+        workManager.getWorkInfosForUniqueWorkLiveData(GALLERY_UPLOAD_WORK_NAME)
+            .asFlow()
+            .map { if (it.size > 0) it[0].state else WorkInfo.State.CANCELLED }
+            .flowOn(Dispatchers.IO)
 
     companion object {
         private const val GALLERY_UPLOAD_WORK_NAME = "gallery_upload"

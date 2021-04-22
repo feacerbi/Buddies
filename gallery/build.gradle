@@ -36,7 +36,8 @@ dependencies {
     implementation 'com.google.guava:guava:27.0.1-android'
 
     // Jetpack Lifecycle
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$viewmodel_ktx_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // Jetpack Room

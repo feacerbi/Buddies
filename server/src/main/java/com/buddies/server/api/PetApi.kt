@@ -13,9 +13,9 @@ import com.buddies.common.model.OwnershipInfo
 import com.buddies.common.util.handleAccessResult
 import com.buddies.common.util.toOwnershipCategory
 import com.buddies.server.model.NotificationInfo
-import com.buddies.server.model.Picture
 import com.buddies.server.repository.AnimalsRepository
 import com.buddies.server.repository.BreedsRepository
+import com.buddies.server.repository.GalleryRepository
 import com.buddies.server.repository.NotificationsRepository
 import com.buddies.server.repository.OwnershipsRepository
 import com.buddies.server.repository.PetsRepository
@@ -29,7 +29,6 @@ import com.buddies.server.util.toBreed
 import com.buddies.server.util.toOwner
 import com.buddies.server.util.toOwnerships
 import com.buddies.server.util.toPet
-import com.buddies.server.util.toStoragePictures
 import com.buddies.server.util.toTag
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.flow.Flow
@@ -41,6 +40,7 @@ class PetApi(
     private val breedsRepository: BreedsRepository,
     private val ownershipsRepository: OwnershipsRepository,
     private val tagsRepository: TagsRepository,
+    private val galleryRepository: GalleryRepository,
     private val notificationsRepository: NotificationsRepository
 ): BaseApi() {
 
@@ -217,6 +217,7 @@ class PetApi(
         }
     }
 
+    // TODO Add delete pet feature
     suspend fun deletePet(
         petId: String
     ) = runWithResult {
@@ -230,7 +231,7 @@ class PetApi(
             ownershipsRepository.removeOwnership(ownership.id)
         }.toTypedArray()
 
-        petsRepository.deleteGallery(petId)
+        galleryRepository.deleteGallery(petId)
 
         runTransactions(
             petsRepository.deletePet(petId),
@@ -282,41 +283,6 @@ class PetApi(
     ) = runWithResult {
         usersRepository.getUsers(pageSize.toLong(), query, start)
             .handleTaskResult()
-    }
-
-    suspend fun getPetGalleryPictures(
-        petId: String
-    ) = runWithResult {
-        petsRepository.listGalleryPictures(petId)
-            .handleTaskResult()
-            .toStoragePictures()
-            .map {
-                Picture(it.id, it.downloadTask.handleTaskResult())
-            }
-    }
-
-    suspend fun addPetGalleryPicture(
-        petId: String,
-        picture: Uri
-    ) = runWithResult {
-        checkAccess(petId)
-
-        petsRepository.uploadGalleryImage(petId, picture)
-            .handleTaskResult()
-
-        null
-    }
-
-    suspend fun deletePetGalleryPictures(
-        petId: String,
-        pictureIdList: List<String>
-    ) = runWithResult {
-        checkAccess(petId)
-
-        pictureIdList.forEach {
-            petsRepository.deleteGalleryImage(petId, it)
-                .handleNullTaskResult()
-        }
     }
 
     private suspend fun checkAccess(
