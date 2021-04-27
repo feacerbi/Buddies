@@ -53,7 +53,6 @@ class ShareInfoAdapter(
             input.setSelection(input.text?.length ?: 0)
             input.inputType = item.inputType
 
-            inputLayout.isEnabled = item.checked
             inputLayout.hint = binding.root.context.resources.getString(item.hint)
             inputLayout.error = item.error
 

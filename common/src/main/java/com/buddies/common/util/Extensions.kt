@@ -1,5 +1,6 @@
 package com.buddies.common.util
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -14,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultCallback
@@ -34,6 +36,7 @@ import com.buddies.common.model.ErrorCode
 import com.buddies.common.model.ErrorCode.RESULT_NULL
 import com.buddies.common.model.Result
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
@@ -73,6 +76,11 @@ fun Context.newImageFile(): File =
     ).apply {
         deleteOnExit()
     }
+
+fun View.hideKeyboard() {
+    val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+}
 
 fun File.toUri(context: Context): Uri =
     FileProvider.getUriForFile(context, context.getString(R.string.file_provider_authority), this)
@@ -114,7 +122,9 @@ fun CoroutineScope.safeLaunch(
     try {
         block.invoke(this)
     } catch (exception: Exception) {
-        error.invoke(exception.toDefaultError())
+        if (exception !is CancellationException) {
+            error.invoke(exception.toDefaultError())
+        }
     }
 }
 

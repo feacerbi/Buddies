@@ -94,9 +94,7 @@ class GalleryFragment : NavigationFragment() {
 
     private fun setupViews() = with (binding) {
         toolbar.title = getString(R.string.gallery_screen_title)
-        toolbar.setNavigationOnClickListener {
-            navigateBack()
-        }
+        toolbar.setNavigationOnClickListener { navigateBack() }
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.add_gallery_menu_action -> {

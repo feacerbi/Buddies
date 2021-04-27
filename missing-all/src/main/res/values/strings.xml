@@ -1,0 +1,9 @@
+<resources>
+    <!-- Destinations -->
+    <string name="all_missing_pets_screen_name">All Missing Pets Screen</string>
+
+    <!-- View-->
+    <string name="all_missing_pets_title">Missing Pets Found</string>
+    <string name="search_pet_hint">Search Pet…</string>
+    <string name="empty_pets_message">No pets to display</string>
+</resources>

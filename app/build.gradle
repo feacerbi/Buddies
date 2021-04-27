@@ -52,7 +52,8 @@ dependencies {
     implementation project(":gallery")
     implementation project(":home")
     implementation project(":login")
-    implementation project(":missing")
+    implementation project(':missing-all')
+    implementation project(':missing-feed')
     implementation project(":missing-profile")
     implementation project(":missing-new")
     implementation project(":mypets")
@@ -73,6 +74,7 @@ dependencies {
     // AndroidX Core & UI
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$corektx_version"
+    implementation "com.google.android.material:material:$material_version"
 
     // Firebase
     implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")

@@ -2,6 +2,7 @@ package com.buddies.server.repository
 
 import android.net.Uri
 import com.buddies.common.model.MissingPetInfo
+import com.buddies.server.util.generateEndQuery
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -42,12 +43,19 @@ class MissingPetsRepository {
             .get()
 
     fun getPetsWithPaging(
-        pageSize: Int,
+        pageSize: Long,
+        query: String?,
         start: DocumentSnapshot? = null
     ): Task<QuerySnapshot> {
-        val pets = db.collection(MISSING_PETS_COLLECTION)
+        var pets = db.collection(MISSING_PETS_COLLECTION)
             .orderBy(NAME_FIELD)
-            .limit(pageSize.toLong())
+            .limit(pageSize)
+
+        if (query != null && query.isNotEmpty()) {
+            pets = pets
+                .whereGreaterThanOrEqualTo(NAME_FIELD, query)
+                .whereLessThan(NAME_FIELD, generateEndQuery(query))
+        }
 
         val pageQuery = if (start != null) pets.startAfter(start) else pets
 

@@ -155,10 +155,11 @@ class MissingPetApi(
     }
 
     suspend fun getMissingPetsFlowWithPaging(
+        query: String?,
         pageSize: Int = -1
     ): Flow<PagingData<MissingPet>> {
 
-        val missingPetsDataSource = MissingPetsDataSource(::getMissingPetsWithPaging)
+        val missingPetsDataSource = MissingPetsDataSource(query, ::getMissingPetsWithPaging)
 
         return Pager(PagingConfig(if (pageSize != -1) pageSize else DEFAULT_PAGE_SIZE)) {
             missingPetsDataSource
@@ -226,9 +227,10 @@ class MissingPetApi(
 
     private suspend fun getMissingPetsWithPaging(
         pageSize: Int,
+        query: String?,
         start: DocumentSnapshot? = null
     ) = runWithResult {
-        missingPetsRepository.getPetsWithPaging(pageSize, start)
+        missingPetsRepository.getPetsWithPaging(pageSize.toLong(), query, start)
             .handleTaskResult()
     }
 

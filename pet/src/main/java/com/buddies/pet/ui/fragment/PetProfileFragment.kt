@@ -2,6 +2,7 @@ package com.buddies.pet.ui.fragment
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.buddies.common.ui.adapter.BreedsAdapter
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.CAMERA
 import com.buddies.common.ui.adapter.MediaPickerAdapter.MediaSource.GALLERY
 import com.buddies.common.ui.bottomsheet.CustomBottomSheet
+import com.buddies.common.ui.bottomsheet.InputBottomSheet
 import com.buddies.common.ui.bottomsheet.MediaPickerBottomSheet
 import com.buddies.common.ui.bottomsheet.SelectableBottomSheet
 import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
@@ -119,14 +121,14 @@ class PetProfileFragment : NavigationFragment(), CoroutineScope {
         }
 
         profileNameEdit.setOnClickListener {
-//            InputBottomSheet.Builder(layoutInflater)
-//                .hint(getString(R.string.input_dialog_pet_name_hint))
-//                .content(profileName.text.toString())
-//                .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS)
-//                .cancelButton()
-//                .confirmButton(getString(R.string.change_button)) { perform(ChangeName(it)) }
-//                .build()
-//                .show()
+            InputBottomSheet.Builder(layoutInflater)
+                .hint(getString(R.string.input_dialog_pet_name_hint))
+                .content(profileName.text.toString())
+                .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                .cancelButton()
+                .confirmButton(getString(R.string.change_button)) { perform(ChangeName(it)) }
+                .build()
+                .show()
         }
 
         profileAnimalEdit.setOnClickListener {

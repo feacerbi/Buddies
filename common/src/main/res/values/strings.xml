@@ -40,6 +40,7 @@
     <string name="close_button">Close</string>
     <string name="confirm_button">Confirm</string>
     <string name="remove_button">Remove</string>
+    <string name="returned_button">Return</string>
 
     <!-- Media Source -->
     <string name="gallery_source_description">Pick from gallery</string>

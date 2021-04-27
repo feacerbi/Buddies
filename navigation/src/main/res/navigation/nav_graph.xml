@@ -187,7 +187,7 @@
 
     <fragment
         android:id="@+id/missingFeedFragment"
-        android:name="com.buddies.missing.ui.fragment.MissingFeedFragment"
+        android:name="com.buddies.missing_feed.ui.fragment.MissingFeedFragment"
         android:label="@string/missing_feed_screen_name"
         tools:layout="@layout/fragment_missing_feed" >
         <action
@@ -226,7 +226,7 @@
 
     <fragment
         android:id="@+id/allMissingPetsFragment"
-        android:name="com.buddies.missing.ui.fragment.AllMissingPetsFragment"
+        android:name="com.buddies.missing_all.ui.fragment.AllMissingPetsFragment"
         android:label="@string/all_missing_pets_screen_name"
         tools:layout="@layout/fragment_all_missing_pets">
         <action

@@ -97,3 +97,12 @@ fun ListResult.toStoragePictures() = items.map {
 }
 
 fun UploadTask.TaskSnapshot.getDownloadUrl() = storage.downloadUrl
+
+fun generateEndQuery(
+    startQuery: String
+): String {
+    var end = startQuery[startQuery.length - 1]
+    val newEnding = ++end
+
+    return startQuery.dropLast(1) + newEnding
+}

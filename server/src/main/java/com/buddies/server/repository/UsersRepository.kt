@@ -5,6 +5,7 @@ import com.buddies.common.model.FavoriteInfo
 import com.buddies.common.model.User
 import com.buddies.common.model.UserInfo
 import com.buddies.common.util.generateNewId
+import com.buddies.server.util.generateEndQuery
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -138,15 +139,6 @@ class UsersRepository {
             .child(PROFILE_PATH)
             .child(PROFILE_PICTURE_NAME)
             .putFile(photoUri)
-
-    private fun generateEndQuery(
-        startQuery: String
-    ): String {
-        var end = startQuery[startQuery.length - 1]
-        val newEnding = ++end
-
-        return startQuery.dropLast(1) + newEnding
-    }
 
     companion object {
         private const val USERS_COLLECTION = "users"

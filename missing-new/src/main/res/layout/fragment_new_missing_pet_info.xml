@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="@id/animal_photo"
         app:layout_constraintTop_toTopOf="@id/animal_photo"
         app:layout_constraintBottom_toBottomOf="@id/animal_photo"
-        app:tint="?attr/colorSecondary"
+        app:tint="?colorSecondary"
         android:src="@drawable/ic_baseline_add_a_photo" />
 
     <ImageView
@@ -46,10 +46,10 @@
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
-        android:textColorHint="?attr/colorSecondary"
+        android:textColorHint="?colorSecondary"
         android:hint="@string/name_hint"
         app:boxBackgroundColor="@android:color/white"
-        app:endIconTint="?attr/colorSecondary"
+        app:endIconTint="?colorSecondary"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Headline6"
-            android:textColor="?attr/colorSecondary"
+            android:textColor="?colorSecondary"
             android:inputType="textPersonName|textCapWords"
             android:maxLines="1"/>
 
@@ -72,7 +72,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:icon="@drawable/ic_baseline_arrow_forward"
         app:iconTint="@android:color/white"
-        app:backgroundTint="?attr/colorSecondary"
+        app:backgroundTint="?colorSecondary"
         android:textColor="@android:color/white"
         android:text="@string/no_name_message"
         android:enabled="false"/>

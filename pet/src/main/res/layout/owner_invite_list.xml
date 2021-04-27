@@ -76,6 +76,7 @@
         android:hint="@string/invite_owners_hint"
         android:drawableEnd="@drawable/ic_baseline_search"
         android:inputType="textCapWords|textPersonName"
+        android:imeOptions="actionSearch"
         android:maxLines="1"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
