@@ -3,6 +3,7 @@ package com.buddies.mypets.ui.adapter
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,10 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.model.Buddy
 import com.buddies.common.util.inflater
 import com.buddies.common.util.load
-import com.buddies.common.util.show
 import com.buddies.mypets.R
-import com.buddies.mypets.ui.adapter.MyPetsAdapter.MyPetsViewHolder
 import com.buddies.mypets.databinding.PetListItemBinding
+import com.buddies.mypets.ui.adapter.MyPetsAdapter.MyPetsViewHolder
 
 class MyPetsAdapter(
     val owner: LifecycleOwner
@@ -60,14 +60,14 @@ class MyPetsAdapter(
             }
 
             petName.text = buddy.pet.info.name
-            petName.show = isBig
+            petName.isVisible = isBig
 
             ownershipLabel.text =
                 binding.root.context.resources.getString(buddy.ownershipCategory.title)
-            ownershipLabel.show = isBig
+            ownershipLabel.isVisible = isBig
 
-            space1.show = isBig
-            space2.show = isBig
+            space1.isVisible = isBig
+            space2.isVisible = isBig
         }
     }
 

@@ -2,10 +2,16 @@ package com.buddies.server.repository
 
 import android.net.Uri
 import com.buddies.common.model.MissingPetInfo
+import com.buddies.common.util.Sorting
+import com.buddies.common.util.Sorting.LEAST_RECENT
+import com.buddies.common.util.Sorting.MOST_RECENT
+import com.buddies.common.util.Sorting.NAME_AZ
+import com.buddies.common.util.Sorting.NAME_ZA
 import com.buddies.server.util.generateEndQuery
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Query.Direction.ASCENDING
+import com.google.firebase.firestore.Query.Direction.DESCENDING
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Transaction
 import com.google.firebase.firestore.ktx.firestore
@@ -45,14 +51,21 @@ class MissingPetsRepository {
     fun getPetsWithPaging(
         pageSize: Long,
         query: String?,
+        sorting: Sorting,
         start: DocumentSnapshot? = null
     ): Task<QuerySnapshot> {
         var pets = db.collection(MISSING_PETS_COLLECTION)
-            .orderBy(NAME_FIELD)
             .limit(pageSize)
 
-        if (query != null && query.isNotEmpty()) {
-            pets = pets
+        pets = if (query.isNullOrBlank()) {
+            when (sorting) {
+                NAME_AZ -> pets.orderBy(NAME_FIELD, ASCENDING)
+                NAME_ZA -> pets.orderBy(NAME_FIELD, DESCENDING)
+                MOST_RECENT -> pets.orderBy(CREATED_FIELD, DESCENDING)
+                LEAST_RECENT -> pets.orderBy(CREATED_FIELD, ASCENDING)
+            }
+        } else {
+            pets
                 .whereGreaterThanOrEqualTo(NAME_FIELD, query)
                 .whereLessThan(NAME_FIELD, generateEndQuery(query))
         }
@@ -76,7 +89,7 @@ class MissingPetsRepository {
         limit: Long
     ): Task<QuerySnapshot> =
         db.collection(MISSING_PETS_COLLECTION)
-            .orderBy(CREATED_FIELD, Query.Direction.DESCENDING)
+            .orderBy(CREATED_FIELD, DESCENDING)
             .limit(limit)
             .get()
 

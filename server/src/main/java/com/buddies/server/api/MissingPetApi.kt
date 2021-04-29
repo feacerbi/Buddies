@@ -11,6 +11,7 @@ import com.buddies.common.model.InfoType
 import com.buddies.common.model.MissingPet
 import com.buddies.common.model.MissingPetInfo
 import com.buddies.common.model.NewMissingPet
+import com.buddies.common.util.Sorting
 import com.buddies.common.util.generateNewId
 import com.buddies.common.util.handleAccessResult
 import com.buddies.common.util.handleResult
@@ -156,10 +157,16 @@ class MissingPetApi(
 
     suspend fun getMissingPetsFlowWithPaging(
         query: String?,
+        sorting: Sorting,
         pageSize: Int = -1
     ): Flow<PagingData<MissingPet>> {
 
-        val missingPetsDataSource = MissingPetsDataSource(query, ::getMissingPetsWithPaging)
+        val missingPetsDataSource = MissingPetsDataSource(
+            usersRepository.getCurrentUserId(),
+            query,
+            sorting,
+            ::getMissingPetsWithPaging
+        )
 
         return Pager(PagingConfig(if (pageSize != -1) pageSize else DEFAULT_PAGE_SIZE)) {
             missingPetsDataSource
@@ -228,9 +235,10 @@ class MissingPetApi(
     private suspend fun getMissingPetsWithPaging(
         pageSize: Int,
         query: String?,
+        sorting: Sorting,
         start: DocumentSnapshot? = null
     ) = runWithResult {
-        missingPetsRepository.getPetsWithPaging(pageSize.toLong(), query, start)
+        missingPetsRepository.getPetsWithPaging(pageSize.toLong(), query, sorting, start)
             .handleTaskResult()
     }
 

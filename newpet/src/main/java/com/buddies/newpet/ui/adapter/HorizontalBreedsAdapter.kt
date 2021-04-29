@@ -34,7 +34,7 @@ class HorizontalBreedsAdapter(
         notifyDataSetChanged()
     }
 
-    override fun addOnSelectedListener(listener: (Breed) -> Unit) {
+    override fun setOnSelectedListener(listener: (Breed) -> Unit) {
         onBreedChanged = listener
     }
 

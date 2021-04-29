@@ -34,20 +34,49 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/back_button"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/barrier"
             app:layout_constraintTop_toTopOf="parent"
             android:paddingTop="@dimen/margin_medium"
             android:paddingBottom="@dimen/margin_medium"
-            android:paddingEnd="@dimen/margin_medium"
             android:paddingStart="0dp"
+            android:paddingEnd="0dp"
             android:background="@drawable/floating_search_background"
             android:textAppearance="@style/Body1"
             android:hint="@string/search_pet_hint"
-            android:drawableEnd="@drawable/ic_baseline_search"
-            android:drawableTint="?colorSecondary"
             android:inputType="textCapWords|textPersonName"
             android:imeOptions="actionSearch"
             android:maxLines="1"/>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="search_button,clear_button"/>
+
+        <ImageView
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/fab_margin"
+            android:background="?selectableItemBackgroundBorderless"
+            app:tint="?colorSecondary"
+            android:src="@drawable/ic_baseline_search" />
+
+        <ImageView
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/fab_margin"
+            android:background="?selectableItemBackgroundBorderless"
+            app:tint="?colorSecondary"
+            android:visibility="gone"
+            android:src="@drawable/ic_baseline_close" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress"
@@ -97,5 +126,15 @@
         android:background="?attr/colorSurface"
         android:visibility="gone"
         android:text="@string/empty_pets_message"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/sort_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/margin_large"
+        android:tint="?colorSecondary"
+        android:src="@drawable/ic_baseline_sort"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

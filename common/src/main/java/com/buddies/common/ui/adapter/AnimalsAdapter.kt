@@ -27,7 +27,7 @@ class AnimalsAdapter(
 
     fun getSelected() = animalsList.first { it.second }.first
 
-    override fun addOnSelectedListener(listener: (Animal) -> Unit) {
+    override fun setOnSelectedListener(listener: (Animal) -> Unit) {
         onAnimalChanged = listener
     }
 

@@ -3,6 +3,7 @@ package com.buddies.missing_all.usecase
 import androidx.paging.map
 import com.buddies.common.model.MissingPet
 import com.buddies.common.usecase.BaseUseCases
+import com.buddies.common.util.Sorting
 import com.buddies.server.api.MissingPetApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -12,8 +13,8 @@ class AllMissingUseCases(
     private val missingPetApi: MissingPetApi,
 ) : BaseUseCases() {
 
-    suspend fun getAllPetsWithPaging(query: String?) =
-        missingPetApi.getMissingPetsFlowWithPaging(query, PETS_PAGE_SIZE)
+    suspend fun getAllPetsWithPaging(query: String?, sorting: Sorting) =
+        missingPetApi.getMissingPetsFlowWithPaging(query, sorting, PETS_PAGE_SIZE)
             .flowOn(Dispatchers.IO)
             .map {
                 it.map { pet ->

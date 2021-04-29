@@ -29,6 +29,12 @@
     <string name="invite_notification_message">%s is inviting you to be %s of %s.</string>
     <string name="pet_found_notification_message">%s was found by %s!</string>
 
+    <!-- Sorting-->
+    <string name="sorting_most_recent">Most Recent</string>
+    <string name="sorting_least_recent">Least Recent</string>
+    <string name="sorting_name_az">Name A-Z</string>
+    <string name="sorting_name_za">Name Z-A</string>
+
     <!-- View -->
     <string name="empty"> </string>
     <string name="ok_button">OK</string>
@@ -41,6 +47,7 @@
     <string name="confirm_button">Confirm</string>
     <string name="remove_button">Remove</string>
     <string name="returned_button">Return</string>
+    <string name="apply_button">Apply</string>
 
     <!-- Media Source -->
     <string name="gallery_source_description">Pick from gallery</string>

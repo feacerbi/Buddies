@@ -17,9 +17,9 @@
         android:paddingEnd="@dimen/margin_small"
         android:paddingTop="@dimen/margin_medium"
         android:paddingBottom="@dimen/margin_medium"
-        app:boxBackgroundColor="?attr/colorSurface"
-        android:textColorHint="?attr/colorPrimary"
-        app:endIconTint="?attr/colorSecondary"
+        app:boxBackgroundColor="?colorSurface"
+        android:textColorHint="?colorPrimary"
+        app:endIconTint="?colorSecondary"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText

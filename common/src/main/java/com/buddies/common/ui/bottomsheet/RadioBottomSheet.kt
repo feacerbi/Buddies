@@ -1,13 +1,12 @@
 package com.buddies.common.ui.bottomsheet
 
 import android.view.LayoutInflater
-import androidx.recyclerview.widget.RecyclerView
 import com.buddies.common.R
 import com.buddies.common.databinding.SelectableListLayoutBinding
-import com.buddies.common.ui.adapter.SelectableAdapter
+import com.buddies.common.ui.adapter.RadioAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class SelectableBottomSheet private constructor(
+class RadioBottomSheet<T> private constructor(
     private val bottomSheet: BottomSheetDialog
 ) {
 
@@ -15,12 +14,13 @@ class SelectableBottomSheet private constructor(
         bottomSheet.show()
     }
 
-    class Builder(
+    class Builder<T>(
         inflater: LayoutInflater
     ) : BottomSheetFactory() {
 
         private val selectableView = SelectableListLayoutBinding.inflate(inflater)
         private val bottomSheet = createBottomSheet(selectableView.root)
+        private var adapter: RadioAdapter<T>? = null
 
         private val confirmButtonDefaultText by lazy {
             selectableView.root.context.resources.getString(R.string.ok_button)
@@ -33,10 +33,12 @@ class SelectableBottomSheet private constructor(
             listTitle.text = title
         }.let { this }
 
-        fun <T : RecyclerView.ViewHolder, R> adapter(
-            adapter: SelectableAdapter<T, R>
+        fun items(
+            items: List<T>,
+            displayText: (T) -> String = { it.toString() },
+            selected: T? = null
         ) = with (selectableView) {
-            adapter.setOnSelectedListener { changeButton.isEnabled = true }
+            adapter = RadioAdapter(items, displayText, selected)
             list.adapter = adapter
         }.let { this }
 
@@ -53,15 +55,16 @@ class SelectableBottomSheet private constructor(
 
         fun confirmButton(
             title: String = confirmButtonDefaultText,
-            action: () -> Unit = {}
+            action: (T?) -> Unit = {}
         ) = with (selectableView) {
+            changeButton.isEnabled = true
             changeButton.text = title
             changeButton.setOnClickListener {
-                action.invoke()
+                action.invoke(adapter?.getSelectedItem())
                 bottomSheet.cancel()
             }
         }.let { this }
 
-        fun build() = SelectableBottomSheet(bottomSheet)
+        fun build() = RadioBottomSheet<T>(bottomSheet)
     }
 }

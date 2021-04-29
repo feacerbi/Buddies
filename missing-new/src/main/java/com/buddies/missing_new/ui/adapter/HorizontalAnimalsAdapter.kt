@@ -39,7 +39,7 @@ class HorizontalAnimalsAdapter(
         if (notify) notifyDataSetChanged()
     }
 
-    override fun addOnSelectedListener(listener: (Animal) -> Unit) {
+    override fun setOnSelectedListener(listener: (Animal) -> Unit) {
         onAnimalChanged = listener
     }
 

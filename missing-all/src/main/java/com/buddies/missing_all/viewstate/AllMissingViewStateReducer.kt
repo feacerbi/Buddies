@@ -13,4 +13,21 @@ sealed class AllMissingViewStateReducer : ViewStateReducer<AllMissingViewState> 
             allPets = pets
         )
     }
+
+    object ShowSorting : AllMissingViewStateReducer() {
+        override fun reduce(state: AllMissingViewState) = state.copy(
+            showSorting = true,
+            showSearch = true,
+            showClear = false
+        )
+    }
+
+    object HideSorting : AllMissingViewStateReducer() {
+        override fun reduce(state: AllMissingViewState) = state.copy(
+            showSorting = false,
+            showSearch = false,
+            showClear = true
+        )
+    }
+
 }

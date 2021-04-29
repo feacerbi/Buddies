@@ -36,6 +36,7 @@ import com.buddies.common.model.ErrorCode
 import com.buddies.common.model.ErrorCode.RESULT_NULL
 import com.buddies.common.model.Result
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -50,12 +51,6 @@ fun <T> LifecycleOwner.observe(liveData: LiveData<T>, action: (T) -> Unit) {
     liveData.observe(this, { action.invoke(it) })
 }
 
-var View.show: Boolean
-    get() = visibility == View.VISIBLE
-    set(value) {
-        visibility = if (value) View.VISIBLE else View.GONE
-    }
-fun View.hide() { visibility = View.GONE }
 fun View.invisible(apply: Boolean = true) { visibility = if (apply) View.INVISIBLE else View.VISIBLE }
 fun ViewGroup.inflater(): LayoutInflater = LayoutInflater.from(context)
 
@@ -65,6 +60,10 @@ fun RecyclerView.animate(run: Boolean) {
         scheduleLayoutAnimation()
     }
 }
+
+var FloatingActionButton.isDisplayed
+    get() = isShown
+    set(value) { if (value) show() else hide() }
 
 fun Context.getStringOrNull(@StringRes resId: Int?) = resId?.let { getString(resId) }
 
