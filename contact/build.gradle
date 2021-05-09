@@ -15,6 +15,7 @@ dependencies {
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     // AndroidX Core & UI
     implementation "androidx.appcompat:appcompat:$appcompat_version"

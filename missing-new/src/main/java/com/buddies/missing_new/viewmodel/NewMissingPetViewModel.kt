@@ -61,23 +61,23 @@ class NewMissingPetViewModel(
 
     fun perform(action: Action) {
         when (action) {
-            is Next -> nextStep()
+            is Next -> nextStep(action.validated)
             is Previous -> previousStep()
             is ChooseAnimal -> handleChosenAnimal(action.animal)
             is ChooseBreed -> handleChosenBreed(action.breed)
             is InfoInput -> validateInfo(action.name)
             is PhotoInput -> savePhoto(action.photo)
-            is OnFieldsChanged -> verifyCheckedFields(action.list, action.validated)
+            is OnFieldsChanged -> verifyCheckedFields(action.list)
             is AddNewMissingPet -> addNewMissingPet()
             is CloseFlow -> closeFlow()
         }
     }
 
-    private fun nextStep() {
+    private fun nextStep(validated: Boolean) {
         when (viewState.value?.step) {
             1 -> goToStep2()
             2 -> goToStep3()
-            3 -> addNewMissingPet()
+            3 -> if (validated) addNewMissingPet()
         }
     }
 
@@ -147,8 +147,8 @@ class NewMissingPetViewModel(
         updateState(ShowPetPhoto(uri))
     }
 
-    private fun verifyCheckedFields(list: List<ShareInfoField>, validated: Boolean) = safeLaunch(::showError) {
-        if (list.any { it.checked } && validated) {
+    private fun verifyCheckedFields(list: List<ShareInfoField>) = safeLaunch(::showError) {
+        if (list.any { it.checked }) {
             newMissingPet.contactInfo = list.toContactInfo()
             updateState(ShowInfoValidated)
         } else {
@@ -167,7 +167,7 @@ class NewMissingPetViewModel(
         val fields = listOf(
             ShareInfoField.createEmailField(email = userEmail, validCheck = defaultValidationCheck),
             ShareInfoField.cratePhoneField(validCheck = defaultValidationCheck, checked = false),
-            ShareInfoField.createLocationField(validCheck = defaultValidationCheck, checked = false)
+            ShareInfoField.createLocationField(validCheck = defaultValidationCheck, checked = false, locationConverter = locationConverter)
         )
 
         updateState(ShowShareInfo(fields))
@@ -206,14 +206,14 @@ class NewMissingPetViewModel(
 
     sealed class Action {
         object CloseFlow : Action()
-        object Next : Action()
         object Previous : Action()
         object AddNewMissingPet : Action()
+        data class Next(val validated: Boolean) : Action()
         data class ChooseAnimal(val animal: Animal) : Action()
         data class ChooseBreed(val breed: Breed) : Action()
         data class InfoInput(val name: String) : Action()
         data class PhotoInput(val photo: Uri) : Action()
-        data class OnFieldsChanged(val list: List<ShareInfoField>, val validated: Boolean) : Action()
+        data class OnFieldsChanged(val list: List<ShareInfoField>) : Action()
     }
 
     override val coroutineContext: CoroutineContext

@@ -7,12 +7,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class LocationConverter(
-    private val context: Context
+    context: Context
 ) {
+
+    private val coder = Geocoder(context)
 
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun geoPositionFromAddress(address: String) = withContext(Dispatchers.IO) {
-        val coder = Geocoder(context)
 
         val location: Address? = try {
             coder.getFromLocationName(address,1)
@@ -26,4 +27,32 @@ class LocationConverter(
         latitude to longitude
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext")
+    suspend fun getLocationsFromAddress(address: String, maxResults: Int) = withContext(Dispatchers.IO) {
+        try {
+            coder.getFromLocationName(address, maxResults)
+                .map { it.toFormattedString() }
+        } catch (exception: Exception) {
+            emptyList()
+        }
+    }
+
+    @Suppress("BlockingMethodInNonBlockingContext")
+    suspend fun getAddressFromPosition(latitude: Double, longitude: Double) = withContext(Dispatchers.IO) {
+        try {
+            coder.getFromLocation(latitude, longitude, 1).firstOrNull()
+                ?.toFormattedString() ?: ""
+        } catch (exception: Exception) {
+            ""
+        }
+    }
+
+    private fun Address.toFormattedString() =
+        thoroughfare + getStreetNumber(this) + ", " + adminArea + " - " + countryName
+
+    private fun getStreetNumber(address: Address) =
+        when (address.subThoroughfare) {
+            null -> ""
+            else -> " " + address.subThoroughfare
+        }
 }

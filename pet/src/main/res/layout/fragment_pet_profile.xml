@@ -237,33 +237,6 @@
                     android:src="@drawable/ic_baseline_person" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/profile_reporter_name"
-                    style="@style/Body1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/profile_reporter_icon"
-                    app:layout_constraintBottom_toBottomOf="@id/profile_reporter_icon"
-                    app:layout_constraintStart_toEndOf="@id/profile_reporter_icon"
-                    app:layout_constraintEnd_toStartOf="@id/profile_reporter_edit"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_goneMarginEnd="@dimen/margin_medium"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    tools:text="User Name"/>
-
-                <ImageView
-                    android:id="@+id/profile_reporter_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/profile_reporter_icon"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:padding="@dimen/margin_large"
-                    app:tint="?attr/colorSecondary"
-                    android:contentDescription="@string/pet_tag_edit_icon_content_description"
-                    android:visibility="invisible"
-                    android:src="@drawable/ic_edit" />
-
-                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/profile_owners_title"
                     style="@style/Overline"
                     android:layout_width="0dp"

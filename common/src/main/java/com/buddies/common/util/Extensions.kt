@@ -43,6 +43,8 @@ import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 import java.io.File
 import java.util.*
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -111,6 +113,14 @@ fun ImageView.load(
 ) {
     val handler by inject(ImageHandler::class.java)
     handler.load(lifecycleOwner, this, bitmap, options)
+}
+
+@ExperimentalContracts
+fun String?.isNotNullNorBlank(): Boolean {
+    contract {
+        returns(true) implies (this@isNotNullNorBlank != null)
+    }
+    return this != null && isNotBlank()
 }
 
 fun CoroutineScope.safeLaunch(

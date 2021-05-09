@@ -172,6 +172,12 @@
                     tools:listitem="@layout/missing_pet_horizontal_item"/>
 
                 <androidx.constraintlayout.widget.Group
+                    android:id="@+id/recents_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="recents_list_title, recents_list, more_recents_button"/>
+
+                <androidx.constraintlayout.widget.Group
                     android:id="@+id/near_you_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

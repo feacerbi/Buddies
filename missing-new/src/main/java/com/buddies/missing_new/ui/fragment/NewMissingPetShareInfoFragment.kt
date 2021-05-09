@@ -1,12 +1,18 @@
 package com.buddies.missing_new.ui.fragment
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
+import com.buddies.common.util.LocationConverter
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
+import com.buddies.common.util.registerForTrueActivityResult
 import com.buddies.common.util.setOnBackPressed
 import com.buddies.contact.ui.adapter.ShareInfoAdapter
 import com.buddies.missing_new.R
@@ -20,17 +26,34 @@ import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.OnFieldsC
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.Previous
 import com.buddies.missing_new.viewstate.NewMissingPetViewEffect
 import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.Navigate
+import com.google.android.gms.location.LocationServices
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import kotlin.contracts.ExperimentalContracts
 
+@ExperimentalContracts
 class NewMissingPetShareInfoFragment : NewMissingPetNavigationFragment() {
 
     private lateinit var binding: FragmentShareInfoBinding
     private lateinit var headerBinding: NewMissingPetHeaderBinding
 
     private val viewModel: NewMissingPetViewModel by sharedViewModel()
+    private val locationConverter: LocationConverter by inject()
 
-    private val shareInfoAdapter = ShareInfoAdapter { fields, validated ->
-        perform(OnFieldsChanged(fields, validated))
+    @SuppressLint("MissingPermission")
+    private val requestLocationPermission = registerForTrueActivityResult<String>(ActivityResultContracts.RequestPermission()) {
+        LocationServices.getFusedLocationProviderClient(requireActivity()).lastLocation
+            .addOnSuccessListener { location ->
+                shareInfoAdapter.setCurrentLocationField(location)
+            }
+    }
+
+    private val shareInfoAdapter = ShareInfoAdapter(lifecycleScope, locationConverter, ::requestCurrentLocation) {
+            fields -> perform(OnFieldsChanged(fields))
+    }
+
+    private fun requestCurrentLocation() {
+        requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     override fun onCreateView(
@@ -54,7 +77,7 @@ class NewMissingPetShareInfoFragment : NewMissingPetNavigationFragment() {
 
         setOnBackPressed { perform(Previous) }
         backButton.setOnClickListener { perform(Previous) }
-        forwardButton.setOnClickListener { perform(Next) }
+        forwardButton.setOnClickListener { perform(Next(shareInfoAdapter.checkFieldsValid())) }
 
         shareInfoList.adapter = shareInfoAdapter
     }

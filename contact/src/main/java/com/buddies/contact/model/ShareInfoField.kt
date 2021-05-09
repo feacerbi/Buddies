@@ -4,6 +4,7 @@ import android.text.InputType
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.buddies.common.model.InfoType
+import com.buddies.common.util.LocationConverter
 import com.buddies.contact.R
 
 data class ShareInfoField(
@@ -14,6 +15,8 @@ data class ShareInfoField(
     val inputType: Int,
     @DrawableRes val icon: Int,
     val validation: ShareInfoField.() -> Boolean,
+    val isAutocomplete: Boolean = false,
+    val suggestions: suspend (String) -> List<String> = { emptyList() },
     var error: String? = null,
 ) {
     fun validate() = validation.invoke(this)
@@ -70,15 +73,19 @@ data class ShareInfoField(
             location: String = "",
             hint: Int = R.string.location_hint,
             checked: Boolean = true,
-            validCheck: (ShareInfoField) -> Boolean = { true }
+            locationConverter: LocationConverter,
+            validCheck: (ShareInfoField) -> Boolean = { true },
+            maxSuggestions: Int = 5
         ) = ShareInfoField(
             InfoType.LOCATION,
             hint,
             checked,
             location,
-            InputType.TYPE_TEXT_FLAG_CAP_WORDS,
+            InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS,
             R.drawable.ic_baseline_location_on,
-            validCheck
+            validCheck,
+            true,
+            { locationConverter.getLocationsFromAddress(it, maxSuggestions) }
         )
     }
 }

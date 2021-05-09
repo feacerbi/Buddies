@@ -40,6 +40,9 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
+    // Play Services Location
+    implementation "com.google.android.gms:play-services-location:$gms_playservices_location_version"
+
     // Swipe Refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_version"
 

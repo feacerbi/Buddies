@@ -91,6 +91,7 @@ class MissingFeedFragment : NavigationFragment() {
             recentPetsAdapter.submitList(it.recentPets)
             nearPetsAdapter.submitList(it.nearPets)
             yourPetsAdapter.submitList(it.yourPets)
+            recentsGroup.isVisible = it.showRecents
             nearYouGroup.isVisible = it.showNearYou
             youFoundGroup.isVisible = it.showYour
             emptyList.isVisible = it.showEmptyList

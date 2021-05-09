@@ -66,7 +66,7 @@ class NewMissingPetChooseAnimalBreedFragment : NewMissingPetNavigationFragment()
 
         setOnBackPressed { perform(Previous) }
         backButton.setOnClickListener { perform(Previous) }
-        forwardButton.setOnClickListener { perform(Next) }
+        forwardButton.setOnClickListener { perform(Next(validated = true)) }
 
         animalsList.adapter = animalsAdapter
         breedsList.adapter = breedsAdapter

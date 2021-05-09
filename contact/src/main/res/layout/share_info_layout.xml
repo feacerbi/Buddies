@@ -34,6 +34,7 @@
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginEnd="@dimen/margin_medium"
+            android:nestedScrollingEnabled="false"
             android:text="@string/share_info_dialog_content"/>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,11 +1,15 @@
 package com.buddies.home.ui.fragment
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.buddies.common.model.Pet
 import com.buddies.common.model.Tag
@@ -14,7 +18,9 @@ import com.buddies.common.navigation.Navigator.NavDirection.HomeToProfile
 import com.buddies.common.ui.bottomsheet.SimpleBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.CameraHelper
+import com.buddies.common.util.LocationConverter
 import com.buddies.common.util.observe
+import com.buddies.common.util.registerForTrueActivityResult
 import com.buddies.contact.ui.bottomsheet.ShareInfoBottomSheet
 import com.buddies.home.R
 import com.buddies.home.databinding.FragmentHomeBinding
@@ -23,10 +29,14 @@ import com.buddies.home.viewmodel.HomeViewModel
 import com.buddies.home.viewmodel.HomeViewModel.Action
 import com.buddies.home.viewmodel.HomeViewModel.Action.*
 import com.buddies.home.viewstate.HomeViewEffect.*
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.contracts.ExperimentalContracts
 
+@ExperimentalContracts
 @FlowPreview
 @ExperimentalCoroutinesApi
 @androidx.camera.core.ExperimentalGetImage
@@ -35,6 +45,15 @@ class HomeFragment : NavigationFragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by viewModel()
+    private val locationConverter: LocationConverter by inject()
+
+    private var shareInfoBottomSheet: ShareInfoBottomSheet? = null
+
+    @SuppressLint("MissingPermission")
+    val registerLocationPermission = registerForTrueActivityResult(ActivityResultContracts.RequestPermission()) {
+        LocationServices.getFusedLocationProviderClient(requireActivity()).lastLocation
+            .addOnSuccessListener { location -> shareInfoBottomSheet?.setCurrentLocation(location) }
+    }
 
     private var cameraHelper = CameraHelper(this)
 
@@ -136,15 +155,24 @@ class HomeFragment : NavigationFragment() {
     }
 
     private fun showShareInfoBottomSheet(petId: String, userInfo: UserInfo) {
-        ShareInfoBottomSheet.Builder(layoutInflater)
+        shareInfoBottomSheet = ShareInfoBottomSheet.Builder(layoutInflater)
             .name(userInfo.name)
             .email(userInfo.email)
             .phone(checked = false)
-            .location(checked = false)
+            .location(
+                checked = false,
+                coroutineScope = lifecycleScope,
+                locationConverter = locationConverter,
+                currentLocationRequest = {
+                    registerLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+            )
             .cancelButton()
             .confirmButton { perform(SendUserInfo(petId, it)) }
             .build()
-            .show()
+            .apply {
+                show()
+            }
     }
 
     private fun stopScanner() {

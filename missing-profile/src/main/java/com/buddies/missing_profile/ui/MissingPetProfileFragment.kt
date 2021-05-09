@@ -1,5 +1,7 @@
 package com.buddies.missing_profile.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
@@ -7,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
@@ -55,18 +58,33 @@ import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowContactInf
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowError
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowMessage
 import com.buddies.missing_profile.viewstate.MissingPetViewEffect.ShowShareInfoBottomSheet
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.contracts.ExperimentalContracts
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalContracts
 class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
 
     private lateinit var binding: FragmentMissingPetProfileBinding
     private val viewModel: MissingPetProfileViewModel by viewModel { parametersOf(petIdArg) }
+    private val locationConverter: LocationConverter by inject()
+
+    private var shareInfoBottomSheet: ShareInfoBottomSheet? = null
 
     private val petIdArg
         get() = arguments?.getString(getString(R.string.pet_id_arg)) ?: ""
+
+    @SuppressLint("MissingPermission")
+    private val registerLocationPermission = registerForTrueActivityResult(ActivityResultContracts.RequestPermission()) {
+        LocationServices.getFusedLocationProviderClient(requireActivity()).lastLocation
+            .addOnSuccessListener { location ->
+                shareInfoBottomSheet?.setCurrentLocation(location)
+            }
+    }
 
     private val cameraHelper = CameraHelper(this)
     private val galleryPick = registerForNonNullActivityResult(GetContent()) {
@@ -238,16 +256,26 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
         val phoneInfo = info?.firstOrNull { it.infoType == InfoType.PHONE }
         val locationInfo = info?.firstOrNull { it.infoType == InfoType.LOCATION }
 
-        ShareInfoBottomSheet.Builder(layoutInflater)
+        shareInfoBottomSheet = ShareInfoBottomSheet.Builder(layoutInflater)
             .email(email = emailInfo?.info ?: "", checked = emailInfo != null)
             .phone(phone = phoneInfo?.info ?: "", checked = phoneInfo != null)
-            .location(location = locationInfo?.info ?: "", checked = locationInfo != null)
+            .location(
+                location = locationInfo?.info ?: "",
+                checked = locationInfo != null,
+                coroutineScope = lifecycleScope,
+                locationConverter = locationConverter,
+                currentLocationRequest = {
+                    registerLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+            )
             .cancelButton()
             .confirmButton {
                 perform(ChangeSharedInfo(it))
             }
             .build()
-            .show()
+            .apply {
+                show()
+            }
     }
 
     private fun openContactInfoBottomSheet(info: List<ContactInfo>?) {

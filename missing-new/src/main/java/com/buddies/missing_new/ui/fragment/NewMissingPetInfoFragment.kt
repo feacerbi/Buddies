@@ -55,7 +55,7 @@ class NewMissingPetInfoFragment : NewMissingPetNavigationFragment() {
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
         setOnBackPressed { perform(CloseFlow) }
-        forwardButton.setOnClickListener { perform(Next) }
+        forwardButton.setOnClickListener { perform(Next(validated = true)) }
 
         nameInputEditText.addTextChangedListener {
             perform(InfoInput(nameInputEditText.text.toString()))
