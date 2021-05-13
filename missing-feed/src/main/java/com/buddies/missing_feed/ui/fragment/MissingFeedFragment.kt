@@ -22,6 +22,7 @@ import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenMorePets
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenPetProfile
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenProfile
+import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenSettings
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.RegisterNewLocation
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.ReportPet
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.RequestFeedPets
@@ -64,9 +65,11 @@ class MissingFeedFragment : NavigationFragment() {
     override fun onResume() {
         super.onResume()
         perform(RequestFeedPets)
+        requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     private fun setUpViews() = with (binding) {
+        settingsButton.setOnClickListener { perform(OpenSettings) }
         profileButton.setOnClickListener { perform(OpenProfile) }
         reportButton.setOnClickListener { perform(ReportPet) }
 
@@ -80,8 +83,6 @@ class MissingFeedFragment : NavigationFragment() {
 
         refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
         refresh.setOnRefreshListener { perform(RequestFeedPets) }
-
-        requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     private fun bindViews() = with (binding) {

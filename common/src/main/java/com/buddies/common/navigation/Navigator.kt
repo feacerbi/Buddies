@@ -18,12 +18,14 @@ interface Navigator {
         object LoginToMissingFeed : NavDirection()
 
         object HomeToProfile : NavDirection()
+        object HomeToSettings : NavDirection()
         data class HomeToPetProfile(val petId: String) : NavDirection()
         data class HomeToNewPetFlow(val tagValue: String) : NavDirection()
 
         object MissingFeedToProfile : NavDirection()
         object MissingFeedToNewMissingPetFlow : NavDirection()
         object MissingFeedToAllMissingPets : NavDirection()
+        object MissingFeedToSettings : NavDirection()
         data class MissingFeedToMissingPet(
             val petId: String
         ) : NavDirection()

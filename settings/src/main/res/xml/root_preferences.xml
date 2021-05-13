@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/location_header">
+
+        <ListPreference
+            app:defaultValue="1"
+            app:entries="@array/radius_entries"
+            app:entryValues="@array/radius_values"
+            app:key="locationRadius"
+            app:title="@string/radius_title"
+            app:icon="@drawable/ic_baseline_my_location"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/version_header">
+
+        <Preference
+            app:key="versionName"
+            app:title="1.0.0"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

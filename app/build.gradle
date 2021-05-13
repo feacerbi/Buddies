@@ -65,6 +65,7 @@ dependencies {
     implementation project(":scanner")
     implementation project(":security")
     implementation project(":server")
+    implementation project(":settings")
     generatorImplementation project(":generator")
 
     // Kotlin
@@ -83,6 +84,9 @@ dependencies {
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
+
+    // Preference
+    implementation "androidx.preference:preference-ktx:$preference_version"
 
     // Jetpack Startup
     implementation "androidx.startup:startup-runtime:$startup_version"

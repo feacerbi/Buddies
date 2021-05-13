@@ -1,0 +1,16 @@
+<resources>
+    <!-- Radius Preference -->
+    <string-array name="radius_entries">
+        <item>1 Kilometer</item>
+        <item>5 Kilometers</item>
+        <item>10 Kilometers</item>
+        <item>50 Kilometers</item>
+    </string-array>
+
+    <string-array name="radius_values">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>50</item>
+    </string-array>
+</resources>

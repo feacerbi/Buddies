@@ -7,12 +7,14 @@ import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToAllMiss
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToMissingPet
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToNewMissingPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToProfile
+import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToSettings
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.missing_feed.usecase.MissingFeedUseCases
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenMorePets
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenPetProfile
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenProfile
+import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenSettings
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.RegisterNewLocation
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.ReportPet
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.RequestFeedPets
@@ -34,10 +36,11 @@ class MissingFeedViewModel(
     private val dispatcher: CoroutineDispatcher
 ) : StateViewModel<MissingFeedViewState, MissingFeedViewEffect>(MissingFeedViewState()), CoroutineScope {
 
-    var currentLocation: Triple<Double, Double, Float>? = null
+    private var currentLocation: Triple<Double, Double, Float>? = null
 
     fun perform(action: Action) {
         when (action) {
+            is OpenSettings -> openSettings()
             is OpenProfile -> openProfile()
             is OpenMorePets -> openAllMissingPets()
             is ReportPet -> openNewMissingPetFlow()
@@ -86,6 +89,10 @@ class MissingFeedViewModel(
         updateState(ShowNearestPetsList(nearestPets))
     }
 
+    private fun openSettings() {
+        updateEffect(Navigate(MissingFeedToSettings))
+    }
+
     private fun showError(error: DefaultError) {
         updateState(HideLoading)
         updateEffect(ShowError(error.code.message))
@@ -94,6 +101,7 @@ class MissingFeedViewModel(
     sealed class Action {
         data class OpenPetProfile(val petId: String) : Action()
         data class RegisterNewLocation(val location: Location?) : Action()
+        object OpenSettings : Action()
         object OpenProfile : Action()
         object OpenMorePets : Action()
         object ReportPet : Action()

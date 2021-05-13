@@ -75,6 +75,9 @@ class HomeFragment : NavigationFragment() {
         toolbar.setNavigationOnClickListener {
             perform(CloseScanner)
         }
+        settingsButton.setOnClickListener {
+            perform(OpenSettings)
+        }
         profileButton.setOnClickListener {
             navigate(HomeToProfile)
         }

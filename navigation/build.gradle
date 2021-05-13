@@ -23,6 +23,7 @@ dependencies {
     implementation project(":newpet")
     implementation project(":pet")
     implementation project(":profile")
+    implementation project(":settings")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

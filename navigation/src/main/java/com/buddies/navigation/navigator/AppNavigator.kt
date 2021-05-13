@@ -9,12 +9,14 @@ import com.buddies.common.navigation.Navigator.NavDirection.GalleryToFullscreen
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToProfile
+import com.buddies.common.navigation.Navigator.NavDirection.HomeToSettings
 import com.buddies.common.navigation.Navigator.NavDirection.LoginToHome
 import com.buddies.common.navigation.Navigator.NavDirection.LoginToMissingFeed
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToAllMissingPets
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToMissingPet
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToNewMissingPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToProfile
+import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToSettings
 import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToFullscreen
 import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToGallery
 import com.buddies.common.navigation.Navigator.NavDirection.PetProfileToFullscreen
@@ -30,6 +32,7 @@ import com.buddies.gallery.ui.fragment.GalleryFragmentDirections.Companion.actio
 import com.buddies.home.ui.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToNewPetFlow
 import com.buddies.home.ui.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToPetProfileFragment
 import com.buddies.home.ui.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToProfileFragment
+import com.buddies.home.ui.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToSettingsFragment
 import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmentToHomeFragment
 import com.buddies.login.ui.LoginFragmentDirections.Companion.actionLoginFragmentToMissingFeedFragment
 import com.buddies.login.ui.SplashScreenFragmentDirections.Companion.actionSplashScreenFragmentToHomeFragment
@@ -40,6 +43,7 @@ import com.buddies.missing_feed.ui.fragment.MissingFeedFragmentDirections.Compan
 import com.buddies.missing_feed.ui.fragment.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToMissingPetProfileFragment
 import com.buddies.missing_feed.ui.fragment.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToNewMissingPetNavGraph
 import com.buddies.missing_feed.ui.fragment.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToProfileFragment
+import com.buddies.missing_feed.ui.fragment.MissingFeedFragmentDirections.Companion.actionMissingFeedFragmentToSettingsFragment
 import com.buddies.missing_profile.ui.MissingPetProfileFragmentDirections.Companion.actionMissingPetProfileFragmentToFullscreenFragment
 import com.buddies.missing_profile.ui.MissingPetProfileFragmentDirections.Companion.actionMissingPetProfileFragmentToGalleryFragment
 import com.buddies.pet.ui.fragment.PetProfileFragmentDirections.Companion.actionPetProfileFragmentToFullscreenFragment
@@ -60,10 +64,12 @@ class AppNavigator : BaseNavigator() {
         is LoginToMissingFeed -> actionLoginFragmentToMissingFeedFragment()
 
         is HomeToProfile -> actionHomeFragmentToProfileFragment()
+        is HomeToSettings -> actionHomeFragmentToSettingsFragment()
         is HomeToPetProfile -> actionHomeFragmentToPetProfileFragment(petId)
         is HomeToNewPetFlow -> actionHomeFragmentToNewPetFlow(tagValue)
 
         is MissingFeedToProfile -> actionMissingFeedFragmentToProfileFragment()
+        is MissingFeedToSettings -> actionMissingFeedFragmentToSettingsFragment()
         is MissingFeedToNewMissingPetFlow -> actionMissingFeedFragmentToNewMissingPetNavGraph()
         is MissingFeedToAllMissingPets -> actionMissingFeedFragmentToAllMissingPetsFragment()
         is MissingFeedToMissingPet -> actionMissingFeedFragmentToMissingPetProfileFragment(petId)

@@ -31,11 +31,25 @@
         tools:textColor="@color/colorSecondary"/>
 
     <ImageView
+        android:id="@+id/settings_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/profile_button"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:padding="@dimen/margin_medium"
+        android:background="?selectableItemBackground"
+        app:tint="?attr/colorSecondary"
+        android:src="@drawable/ic_baseline_settings"/>
+
+    <ImageView
         android:id="@+id/profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
         android:padding="@dimen/margin_medium"
         android:background="?selectableItemBackground"
         app:tint="?attr/colorSecondary"
@@ -71,8 +85,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/margin_extra_large"
-        app:contentPadding="@dimen/margin_small"
         android:layout_margin="@dimen/margin_medium"
+        app:contentPadding="@dimen/margin_small"
         app:cardElevation="@dimen/margin_small"
         android:foreground="?android:selectableItemBackground">
 

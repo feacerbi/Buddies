@@ -3,9 +3,12 @@ package com.buddies.missing_feed.usecase
 import com.buddies.common.model.MissingPet
 import com.buddies.common.usecase.BaseUseCases
 import com.buddies.server.api.MissingPetApi
+import com.buddies.settings.repository.KeyValueRepository
+import com.buddies.settings.repository.KeyValueRepository.StringKey.LOCATION_RADIUS
 
 class MissingFeedUseCases(
     private val missingPetApi: MissingPetApi,
+    private val keyValueRepository: KeyValueRepository
 ) : BaseUseCases() {
 
     suspend fun getCurrentUser() = request {
@@ -25,7 +28,8 @@ class MissingFeedUseCases(
     }
 
     suspend fun getNearestPets(location: Pair<Double?, Double?>) = request {
-        missingPetApi.getNearMissingPets(location, PETS_PREVIEW_LIST_SIZE)
+        val maxRadius = keyValueRepository.getStringValue(LOCATION_RADIUS).toInt()
+        missingPetApi.getNearMissingPets(location, PETS_PREVIEW_LIST_SIZE, maxRadius)
     }?.map {
         it.mapAnimal()
     }

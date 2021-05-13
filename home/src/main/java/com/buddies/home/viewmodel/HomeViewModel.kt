@@ -6,6 +6,7 @@ import com.buddies.common.model.Tag
 import com.buddies.common.model.UserInfo
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToNewPetFlow
 import com.buddies.common.navigation.Navigator.NavDirection.HomeToPetProfile
+import com.buddies.common.navigation.Navigator.NavDirection.HomeToSettings
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.configuration.Configuration
@@ -18,6 +19,7 @@ import com.buddies.home.viewmodel.HomeViewModel.Action.CloseScanner
 import com.buddies.home.viewmodel.HomeViewModel.Action.HandleTag
 import com.buddies.home.viewmodel.HomeViewModel.Action.NotifyPetFound
 import com.buddies.home.viewmodel.HomeViewModel.Action.OpenPetProfile
+import com.buddies.home.viewmodel.HomeViewModel.Action.OpenSettings
 import com.buddies.home.viewmodel.HomeViewModel.Action.ScanPet
 import com.buddies.home.viewmodel.HomeViewModel.Action.SendUserInfo
 import com.buddies.home.viewstate.HomeViewEffect
@@ -38,7 +40,7 @@ import kotlin.coroutines.CoroutineContext
 
 class HomeViewModel(
     private val homeUseCases: HomeUseCases,
-    private val configuration: Configuration
+    configuration: Configuration
 ) : StateViewModel<HomeViewState, HomeViewEffect>(HomeViewState()), CoroutineScope {
 
     init {
@@ -53,6 +55,7 @@ class HomeViewModel(
             is NotifyPetFound -> requestUserInfo(action.petId)
             is SendUserInfo -> sendUserInfo(action.petId, action.info)
             is AddNewPet -> openNewPetFlow(action.tag)
+            is OpenSettings -> openSettings()
             is CloseScanner -> closeScanner()
         }
     }
@@ -96,6 +99,10 @@ class HomeViewModel(
         updateEffect(Navigate(HomeToNewPetFlow(tag.info.value)))
     }
 
+    private fun openSettings() {
+        updateEffect(Navigate(HomeToSettings))
+    }
+
     private fun closeScanner() {
         updateState(HidePetScanner)
         updateEffect(StopPetScanner)
@@ -115,6 +122,7 @@ class HomeViewModel(
         data class SendUserInfo(val petId: String, val info: List<ShareInfo>) : Action()
         data class NotifyPetFound(val petId: String) : Action()
         data class AddNewPet(val tag: Tag) : Action()
+        object OpenSettings : Action()
         object CloseScanner : Action()
     }
 }

@@ -147,6 +147,15 @@
                 app:argType="string"
                 android:defaultValue=""/>
         </action>
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -222,6 +231,15 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@anim/slide_out_bottom" />
+        <action
+            android:id="@+id/action_missingFeedFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -261,5 +279,10 @@
     </fragment>
 
     <include app:graph="@navigation/new_missing_pet_nav_graph" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.buddies.settings.ui.SettingsFragment"
+        android:label="@string/settings_screen_name" />
 
 </navigation>

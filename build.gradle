@@ -23,6 +23,7 @@ buildscript {
     ext.paging_version = '3.0.0-rc01'
     ext.workmanager_version = '2.5.0'
     ext.room_version = '2.3.0'
+    ext.datastore_version = '1.0.0-beta01'
     ext.viewmodel_ktx_version = '2.3.1'
     ext.security_version = '1.1.0-alpha03'
     ext.startup_version = '1.0.0'

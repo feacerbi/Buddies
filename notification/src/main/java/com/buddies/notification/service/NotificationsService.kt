@@ -3,7 +3,6 @@ package com.buddies.notification.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.buddies.common.model.DefaultError
 import com.buddies.common.model.INVITATION_NOTIFICATION_CHANNEL_ID
 import com.buddies.common.model.PET_FOUND_NOTIFICATION_CHANNEL_ID
 import com.buddies.common.model.UserNotification
@@ -17,7 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -35,11 +33,11 @@ class NotificationsService : Service() {
     override fun onCreate() {
         super.onCreate()
         createRequiredChannels()
-        startListenForUnreadNotifications()
+        startListeningForUnreadNotifications()
     }
 
     @ExperimentalCoroutinesApi
-    private fun startListenForUnreadNotifications() = scope.safeLaunch(::handleError) {
+    private fun startListeningForUnreadNotifications() = scope.safeLaunch {
         notificationsApi.listenForCurrentUserNotifications()
             .flowOn(Dispatchers.IO)
             .map { it.handleResult() }
@@ -84,13 +82,9 @@ class NotificationsService : Service() {
         notificationsApi.markNotificationAsRead(notification.id)
     }
 
-    private fun handleError(error: DefaultError) {
-        // Nothing to do
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        job.cancelChildren()
+        job.cancel()
     }
 
     override fun onBind(intent: Intent): IBinder? = null
