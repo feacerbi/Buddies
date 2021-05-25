@@ -156,12 +156,38 @@
                     android:contentDescription="@string/pet_animal_edit_icon_content_description"
                     android:src="@drawable/ic_edit" />
 
+                <ImageView
+                    android:id="@+id/profile_type_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/profile_animal_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:padding="@dimen/margin_large"
+                    app:tint="@color/iconColorNormal"
+                    android:contentDescription="@string/pet_animal_icon_content_description"
+                    android:src="@drawable/ic_baseline_warning" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_type"
+                    style="@style/Body1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/profile_type_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_type_icon"
+                    app:layout_constraintStart_toEndOf="@id/profile_type_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_goneMarginEnd="@dimen/margin_medium"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Lost"/>
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/profile_reporter_title"
                     style="@style/Overline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/profile_animal_icon"
+                    app:layout_constraintTop_toBottomOf="@id/profile_type_icon"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
@@ -209,7 +235,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/returned_button"
+        android:id="@+id/markAsButton"
         style="@style/ExtendedFloatingActionButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -219,6 +245,6 @@
         app:iconTint="@android:color/white"
         app:backgroundTint="?attr/colorSecondary"
         android:textColor="@android:color/white"
-        android:text="@string/returned_button"/>
+        android:text="@string/mark_as_returned_button_text"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,10 +52,12 @@ class MissingPetsRepository {
         pageSize: Long,
         query: String?,
         sorting: Sorting,
+        missingType: String,
         start: DocumentSnapshot? = null
     ): Task<QuerySnapshot> {
         var pets = db.collection(MISSING_PETS_COLLECTION)
             .limit(pageSize)
+            .whereEqualTo(TYPE_FIELD, missingType)
 
         pets = if (query.isNullOrBlank()) {
             when (sorting) {
@@ -210,6 +212,7 @@ class MissingPetsRepository {
 
     companion object {
         private const val MISSING_PETS_COLLECTION = "missing-pets"
+        private const val TYPE_FIELD = "type"
         private const val NAME_FIELD = "name"
         private const val ANIMAL_FIELD = "animal"
         private const val BREED_FIELD = "breed"

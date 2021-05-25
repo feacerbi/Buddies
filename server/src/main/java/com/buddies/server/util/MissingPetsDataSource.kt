@@ -10,7 +10,8 @@ class MissingPetsDataSource(
     private val reporter: String,
     private val query: String?,
     private val sorting: Sorting,
-    private val request: suspend (Int, String?, Sorting, DocumentSnapshot?) -> Result<QuerySnapshot>
+    private val missingType: String,
+    private val request: suspend (Int, String?, Sorting, String, DocumentSnapshot?) -> Result<QuerySnapshot>
 ) : BaseDataSource<MissingPet>() {
 
     override suspend fun request(
@@ -18,7 +19,7 @@ class MissingPetsDataSource(
         key: DocumentSnapshot?
     ): Pair<QuerySnapshot?, List<MissingPet>?> {
 
-        val response = request.invoke(size, query, sorting, key)
+        val response = request.invoke(size, query, sorting, missingType, key)
             .handleResult()
 
         val pets = response?.toMissingPets()

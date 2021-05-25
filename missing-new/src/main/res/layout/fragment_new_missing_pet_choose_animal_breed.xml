@@ -19,7 +19,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginStart="@dimen/margin_large"
         android:textAlignment="viewStart"
-        android:textColor="?attr/colorSecondary"
+        android:textColor="?colorSecondary"
         android:text="@string/animal_title"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -48,7 +48,7 @@
         android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_large"
         android:textAlignment="viewStart"
-        android:textColor="?attr/colorSecondary"
+        android:textColor="?colorSecondary"
         android:text="@string/breed_title"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -75,7 +75,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:padding="@dimen/fab_margin"
         android:background="?selectableItemBackgroundBorderless"
-        app:tint="?attr/colorSecondary"
+        app:tint="?colorSecondary"
         android:src="@drawable/ic_baseline_arrow_back" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -87,7 +87,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:icon="@drawable/ic_baseline_arrow_forward"
         app:iconTint="@android:color/white"
-        app:backgroundTint="?attr/colorSecondary"
+        app:backgroundTint="?colorSecondary"
         android:textColor="@android:color/white"
         android:text="@string/no_contact_info_message"
         android:enabled="false"/>

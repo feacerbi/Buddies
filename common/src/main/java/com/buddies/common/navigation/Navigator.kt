@@ -24,8 +24,10 @@ interface Navigator {
 
         object MissingFeedToProfile : NavDirection()
         object MissingFeedToNewMissingPetFlow : NavDirection()
-        object MissingFeedToAllMissingPets : NavDirection()
         object MissingFeedToSettings : NavDirection()
+        data class MissingFeedToAllMissingPets(
+            val missingType: String
+        ) : NavDirection()
         data class MissingFeedToMissingPet(
             val petId: String
         ) : NavDirection()

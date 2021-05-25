@@ -17,9 +17,13 @@
     <string name="select_breed_title">Select Breed</string>
     <string name="reporter_title">Reporter</string>
     <string name="confirm_removal_message">Do really want to remove %s\'s found report?</string>
-    <string name="confirm_returned_message">Do you confirm %s was returned?</string>
+    <string name="confirm_returned_message">Do you confirm that %s was returned?</string>
+    <string name="confirm_found_message">Do you confirm that you found %s?</string>
     <string name="remove_confirmed_message">%s\'s report removed</string>
     <string name="returned_confirmed_message">Good job! %s was marked as returned!</string>
+    <string name="found_confirmed_message">That\'s Great! %s was marked as found!</string>
+    <string name="mark_as_returned_button_text">Mark as Returned</string>
+    <string name="mark_as_found_button_text">Mark as Found</string>
 
     <!-- Content Descriptions -->
     <string name="pet_picture_content_description">Pet profile picture</string>

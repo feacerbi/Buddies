@@ -1,13 +1,24 @@
 package com.buddies.missing_new.viewstate
 
 import android.net.Uri
+import androidx.annotation.StringRes
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
+import com.buddies.common.model.MissingType
+import com.buddies.common.model.MissingType.FOUND
+import com.buddies.common.model.MissingType.LOST
 import com.buddies.common.viewstate.ViewStateReducer
 import com.buddies.contact.model.ShareInfoField
 import com.buddies.missing_new.R
 
 sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewState> {
+
+    object ShowTypePicker : NewMissingPetViewStateReducer() {
+        override fun reduce(state: NewMissingPetViewState) = state.copy(
+            step = 0,
+            showBack = false
+        )
+    }
 
     data class ShowAnimalsAndBreeds(
         val animal: Animal?,
@@ -18,6 +29,7 @@ sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewS
             forwardButtonEnabled = animal != null && breed != null,
             forwardButtonExpanded = animal == null || breed == null,
             forwardButtonText = R.string.no_animal_and_breed_message,
+            showBack = true
         )
     }
 
@@ -44,22 +56,35 @@ sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewS
     }
 
     data class ShowInfo(
-        val name: String?,
-        val photoUri: Uri?
+        val photoUri: Uri?,
+        val type: MissingType,
+        val validated: Boolean
     ) : NewMissingPetViewStateReducer() {
         override fun reduce(state: NewMissingPetViewState) = state.copy(
+            flowTitle = when (type) {
+                LOST -> R.string.report_pet_lost_flow_title
+                FOUND -> R.string.report_pet_found_flow_title
+            },
             step = 1,
-            forwardButtonEnabled = name != null && name.isNotBlank(),
-            forwardButtonExpanded = name == null || name.isBlank(),
-            forwardButtonText = R.string.no_name_message,
-            showCameraOverlay = photoUri == null
+            forwardButtonEnabled = validated,
+            forwardButtonExpanded = validated.not(),
+            forwardButtonText = when (type) {
+                FOUND -> R.string.no_photo_message
+                else -> R.string.no_name_and_photo_message
+            },
+            showCameraOverlay = photoUri == null,
+            showName = type == LOST,
+            showBack = true
         )
     }
 
-    object ShowInvalidInfo : NewMissingPetViewStateReducer() {
+    data class ShowInvalidInfo(
+        @StringRes val buttonText: Int
+    ) : NewMissingPetViewStateReducer() {
         override fun reduce(state: NewMissingPetViewState) = state.copy(
             forwardButtonEnabled = false,
-            forwardButtonExpanded = true
+            forwardButtonExpanded = true,
+            forwardButtonText = buttonText
         )
     }
 
@@ -88,6 +113,7 @@ sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewS
             forwardButtonEnabled = true,
             forwardButtonExpanded = false,
             forwardButtonText = R.string.no_contact_info_message,
+            showBack = true
         )
     }
 
@@ -95,10 +121,12 @@ sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewS
         val name: String?
     ) : NewMissingPetViewStateReducer() {
         override fun reduce(state: NewMissingPetViewState) = state.copy(
+            step = 4,
             confirmationTitle = R.string.reporting_pet_message,
             confirmationLoading = true,
             hideAnimalPhoto = true,
-            animalName = name ?: ""
+            animalName = name ?: "",
+            showBack = false
         )
     }
 
@@ -106,7 +134,8 @@ sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewS
         override fun reduce(state: NewMissingPetViewState) = state.copy(
             confirmationTitle = R.string.pet_reported_message,
             confirmationLoading = false,
-            hideAnimalPhoto = false
+            hideAnimalPhoto = false,
+            showBack = false
         )
     }
 

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.paging.LoadState
+import com.buddies.common.model.MissingType
 import com.buddies.common.ui.bottomsheet.RadioBottomSheet
 import com.buddies.common.ui.fragment.NavigationFragment
 import com.buddies.common.util.Sorting
@@ -28,11 +29,15 @@ import com.buddies.missing_all.viewstate.AllMissingViewEffect.ShowError
 import com.buddies.missing_all.viewstate.AllMissingViewEffect.ShowMessage
 import com.buddies.missing_all.viewstate.AllMissingViewEffect.ShowSortingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class AllMissingPetsFragment : NavigationFragment() {
 
+    private val missingType: MissingType
+        get() = MissingType.fromName(arguments?.getString(getString(R.string.missing_type_arg)) ?: "")
+
     private lateinit var binding: FragmentAllMissingPetsBinding
-    private val viewModel: AllMissingViewModel by viewModel()
+    private val viewModel: AllMissingViewModel by viewModel { parametersOf(missingType) }
 
     private val petsAdapter = MissingPetsPagingAdapter(this) {
         perform(OpenPetProfile(it.id))

@@ -149,7 +149,7 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
             perform(RequestContactInfo)
         }
 
-        returnedButton.setOnClickListener {
+        markAsButton.setOnClickListener {
             perform(PetReturned)
         }
     }
@@ -162,10 +162,12 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
             profileAnimal.text = getString(R.string.animal_field, it.animal, it.breed)
             profileNameEdit.isVisible = it.nameEdit
             profileAnimalEdit.isVisible = it.animalEdit
+            profileType.text = getString(it.typeDescription)
             profileReporterName.text = it.reporter
             profileReporterEdit.isVisible = it.contactInfo
             profileReporterEdit.setImageResource(it.contactInfoIcon)
-            returnedButton.isVisible = it.returnedButton
+            markAsButton.isVisible = it.markAsButton
+            markAsButton.text = getString(it.markAsButtonText)
             toolbar.menu.clear()
             toolbar.inflateMenu(it.toolbarMenu)
             refresh.isRefreshing = it.loading

@@ -13,7 +13,6 @@ import com.buddies.common.util.load
 import com.buddies.common.util.observe
 import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.common.util.setOnBackPressed
-import com.buddies.missing_new.R
 import com.buddies.missing_new.databinding.FragmentNewMissingPetInfoBinding
 import com.buddies.missing_new.databinding.NewMissingPetHeaderBinding
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel
@@ -51,14 +50,24 @@ class NewMissingPetInfoFragment : NewMissingPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        headerBinding.toolbar.title = getString(R.string.report_pet_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
-        setOnBackPressed { perform(CloseFlow) }
+        setOnBackPressed { perform(Previous) }
+        backButton.setOnClickListener { perform(Previous) }
         forwardButton.setOnClickListener { perform(Next(validated = true)) }
 
         nameInputEditText.addTextChangedListener {
-            perform(InfoInput(nameInputEditText.text.toString()))
+            perform(InfoInput(
+                nameInputEditText.text.toString(),
+                descriptionInputEditText.text.toString())
+            )
+        }
+
+        descriptionInputEditText.addTextChangedListener {
+            perform(InfoInput(
+                nameInputEditText.text.toString(),
+                descriptionInputEditText.text.toString())
+            )
         }
 
         animalPhoto.setOnClickListener { galleryPick.launch(IMAGE_MIME_TYPE) }
@@ -66,15 +75,18 @@ class NewMissingPetInfoFragment : NewMissingPetNavigationFragment() {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
+            headerBinding.toolbar.title = getString(it.flowTitle)
             headerBinding.steps.setupIcons(it.stepIcons)
             headerBinding.steps.selectStep(it.step)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
             forwardButton.text = getString(it.forwardButtonText)
+            nameInputLayout.isVisible = it.showName
             animalPhoto.load(it.animalPhoto, this@NewMissingPetInfoFragment) {
                 circleTransform = true
             }
             cameraOverlay.isVisible = it.showCameraOverlay
+            backButton.isVisible = it.showBack
         }
 
         observe(viewModel.viewEffect) {

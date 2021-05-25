@@ -17,6 +17,7 @@
         android:background="?attr/colorSecondary"
         android:elevation="@dimen/new_missing_pet_header_elevation"
         app:navigationIcon="@drawable/ic_baseline_close"
+        app:navigationIconTint="@android:color/white"
         app:titleTextColor="@android:color/white" />
 
     <View

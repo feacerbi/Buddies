@@ -71,7 +71,7 @@
         android:paddingBottom="@dimen/margin_tiny"
         android:layout_margin="@dimen/margin_small"
         android:elevation="@dimen/margin_tiny"
-        android:background="@drawable/ownership_label_background"
+        android:background="@drawable/label_background"
         android:textSize="12sp"
         android:textAllCaps="true"
         android:textColor="?colorSecondary"

@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.util.expand
 import com.buddies.common.util.observe
 import com.buddies.common.util.setOnBackPressed
-import com.buddies.missing_new.R
 import com.buddies.missing_new.databinding.FragmentNewMissingPetChooseAnimalBreedBinding
 import com.buddies.missing_new.databinding.NewMissingPetHeaderBinding
 import com.buddies.missing_new.ui.adapter.HorizontalAnimalsAdapter
@@ -61,7 +61,6 @@ class NewMissingPetChooseAnimalBreedFragment : NewMissingPetNavigationFragment()
     }
 
     private fun setUpViews() = with (binding) {
-        headerBinding.toolbar.title = getString(R.string.report_pet_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
         setOnBackPressed { perform(Previous) }
@@ -74,12 +73,14 @@ class NewMissingPetChooseAnimalBreedFragment : NewMissingPetNavigationFragment()
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
+            headerBinding.toolbar.title = getString(it.flowTitle)
             headerBinding.steps.setupIcons(it.stepIcons)
             headerBinding.steps.selectStep(it.step)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
             forwardButton.text = getString(it.forwardButtonText)
             animalsAdapter.addItems(it.animalsList)
+            backButton.isVisible = it.showBack
         }
 
         observe(viewModel.viewEffect) {

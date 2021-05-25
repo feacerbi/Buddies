@@ -3,12 +3,15 @@ package com.buddies.missing_all.viewmodel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.buddies.common.model.DefaultError
+import com.buddies.common.model.MissingType
+import com.buddies.common.model.MissingType.FOUND
+import com.buddies.common.model.MissingType.LOST
 import com.buddies.common.navigation.Navigator.NavDirection.AllMissingPetsToMissingPet
 import com.buddies.common.util.Sorting
 import com.buddies.common.util.Sorting.MOST_RECENT
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
-import com.buddies.missing_all.usecase.AllMissingUseCases
+import com.buddies.missing_all.usecase.AllMissingPetsUseCases
 import com.buddies.missing_all.viewmodel.AllMissingViewModel.Action.ChangeSorting
 import com.buddies.missing_all.viewmodel.AllMissingViewModel.Action.OpenPetProfile
 import com.buddies.missing_all.viewmodel.AllMissingViewModel.Action.RequestSorting
@@ -30,7 +33,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlin.coroutines.CoroutineContext
 
 class AllMissingViewModel(
-    private val useCases: AllMissingUseCases,
+    private val missingType: MissingType,
+    private val useCases: AllMissingPetsUseCases,
     private val dispatcher: CoroutineDispatcher
 ) : StateViewModel<AllMissingViewState, AllMissingViewEffect>(AllMissingViewState()), CoroutineScope {
 
@@ -83,8 +87,13 @@ class AllMissingViewModel(
         sorting: Sorting,
     ) = safeLaunch(::showError) {
         delay(QUERY_DEBOUNCE)
-        useCases.getAllPetsWithPaging(query, sorting)
-            .cachedIn(this)
+
+        val flow = when (missingType) {
+            LOST -> useCases.getAllLostPetsWithPaging(query, sorting)
+            FOUND -> useCases.getAllFoundPetsWithPaging(query, sorting)
+        }
+
+        flow.cachedIn(this)
             .collectLatest {
                 updateState(ShowAllPets(it))
             }

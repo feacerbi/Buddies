@@ -71,7 +71,7 @@ class AppNavigator : BaseNavigator() {
         is MissingFeedToProfile -> actionMissingFeedFragmentToProfileFragment()
         is MissingFeedToSettings -> actionMissingFeedFragmentToSettingsFragment()
         is MissingFeedToNewMissingPetFlow -> actionMissingFeedFragmentToNewMissingPetNavGraph()
-        is MissingFeedToAllMissingPets -> actionMissingFeedFragmentToAllMissingPetsFragment()
+        is MissingFeedToAllMissingPets -> actionMissingFeedFragmentToAllMissingPetsFragment(missingType)
         is MissingFeedToMissingPet -> actionMissingFeedFragmentToMissingPetProfileFragment(petId)
 
         is AllMissingPetsToMissingPet -> actionAllMissingPetsFragmentToMissingPetProfileFragment(petId)

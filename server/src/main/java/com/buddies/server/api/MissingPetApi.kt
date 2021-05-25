@@ -158,6 +158,7 @@ class MissingPetApi(
     suspend fun getMissingPetsFlowWithPaging(
         query: String?,
         sorting: Sorting,
+        missingType: String,
         pageSize: Int = -1
     ): Flow<PagingData<MissingPet>> {
 
@@ -165,6 +166,7 @@ class MissingPetApi(
             usersRepository.getCurrentUserId(),
             query,
             sorting,
+            missingType,
             ::getMissingPetsWithPaging
         )
 
@@ -236,9 +238,10 @@ class MissingPetApi(
         pageSize: Int,
         query: String?,
         sorting: Sorting,
+        missingType: String,
         start: DocumentSnapshot? = null
     ) = runWithResult {
-        missingPetsRepository.getPetsWithPaging(pageSize.toLong(), query, sorting, start)
+        missingPetsRepository.getPetsWithPaging(pageSize.toLong(), query, sorting, missingType, start)
             .handleTaskResult()
     }
 
@@ -248,6 +251,7 @@ class MissingPetApi(
     ) = runWithResult {
         val newPetId = generateNewId()
 
+        val type = newMissingPet.type
         val photo = newMissingPet.photo
         val name = newMissingPet.name
         val animal = newMissingPet.animal
@@ -270,14 +274,16 @@ class MissingPetApi(
         }
 
         val petInfo = MissingPetInfo(
+            type.name,
             name,
             downloadUri,
             animal.id,
             breed.id,
+            newMissingPet.description,
             userId,
             contactInfo.keysToString(),
             newMissingPet.latitude,
-            newMissingPet.longitude
+            newMissingPet.longitude,
         )
 
         runTransactions(

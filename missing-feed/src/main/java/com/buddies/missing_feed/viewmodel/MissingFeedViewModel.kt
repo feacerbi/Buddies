@@ -3,6 +3,8 @@ package com.buddies.missing_feed.viewmodel
 import android.location.Location
 import androidx.lifecycle.viewModelScope
 import com.buddies.common.model.DefaultError
+import com.buddies.common.model.MissingType.FOUND
+import com.buddies.common.model.MissingType.LOST
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToAllMissingPets
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToMissingPet
 import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToNewMissingPetFlow
@@ -11,13 +13,14 @@ import com.buddies.common.navigation.Navigator.NavDirection.MissingFeedToSetting
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.missing_feed.usecase.MissingFeedUseCases
-import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenMorePets
+import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenMoreFoundPets
+import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenMoreLostPets
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenPetProfile
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenProfile
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.OpenSettings
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.RegisterNewLocation
 import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.ReportPet
-import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.RequestFeedPets
+import com.buddies.missing_feed.viewmodel.MissingFeedViewModel.Action.RequestFeed
 import com.buddies.missing_feed.viewstate.MissingFeedViewEffect
 import com.buddies.missing_feed.viewstate.MissingFeedViewEffect.Navigate
 import com.buddies.missing_feed.viewstate.MissingFeedViewEffect.ShowError
@@ -42,9 +45,10 @@ class MissingFeedViewModel(
         when (action) {
             is OpenSettings -> openSettings()
             is OpenProfile -> openProfile()
-            is OpenMorePets -> openAllMissingPets()
+            is OpenMoreLostPets -> openAllLostPets()
+            is OpenMoreFoundPets -> openAllFoundPets()
             is ReportPet -> openNewMissingPetFlow()
-            is RequestFeedPets -> fetchPetLists()
+            is RequestFeed -> fetchPetLists()
             is OpenPetProfile -> openPetProfile(action.petId)
             is RegisterNewLocation -> registerNewLocation(action.location)
         }
@@ -66,8 +70,12 @@ class MissingFeedViewModel(
         updateEffect(Navigate(MissingFeedToMissingPet(petId)))
     }
 
-    private fun openAllMissingPets() {
-        updateEffect(Navigate(MissingFeedToAllMissingPets))
+    private fun openAllLostPets() {
+        updateEffect(Navigate(MissingFeedToAllMissingPets(LOST.name)))
+    }
+
+    private fun openAllFoundPets() {
+        updateEffect(Navigate(MissingFeedToAllMissingPets(FOUND.name)))
     }
 
     private fun openNewMissingPetFlow() {
@@ -103,9 +111,10 @@ class MissingFeedViewModel(
         data class RegisterNewLocation(val location: Location?) : Action()
         object OpenSettings : Action()
         object OpenProfile : Action()
-        object OpenMorePets : Action()
+        object OpenMoreLostPets : Action()
+        object OpenMoreFoundPets : Action()
         object ReportPet : Action()
-        object RequestFeedPets : Action()
+        object RequestFeed : Action()
     }
 
     override val coroutineContext: CoroutineContext

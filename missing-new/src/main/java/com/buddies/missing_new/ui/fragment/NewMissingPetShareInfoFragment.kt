@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.buddies.common.util.LocationConverter
 import com.buddies.common.util.expand
@@ -15,8 +16,7 @@ import com.buddies.common.util.observe
 import com.buddies.common.util.registerForTrueActivityResult
 import com.buddies.common.util.setOnBackPressed
 import com.buddies.contact.ui.adapter.ShareInfoAdapter
-import com.buddies.missing_new.R
-import com.buddies.missing_new.databinding.FragmentShareInfoBinding
+import com.buddies.missing_new.databinding.FragmentNewMissingPetShareInfoBinding
 import com.buddies.missing_new.databinding.NewMissingPetHeaderBinding
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action
@@ -34,7 +34,7 @@ import kotlin.contracts.ExperimentalContracts
 @ExperimentalContracts
 class NewMissingPetShareInfoFragment : NewMissingPetNavigationFragment() {
 
-    private lateinit var binding: FragmentShareInfoBinding
+    private lateinit var binding: FragmentNewMissingPetShareInfoBinding
     private lateinit var headerBinding: NewMissingPetHeaderBinding
 
     private val viewModel: NewMissingPetViewModel by sharedViewModel()
@@ -60,7 +60,7 @@ class NewMissingPetShareInfoFragment : NewMissingPetNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentShareInfoBinding.inflate(inflater, container, false).apply {
+    ): View = FragmentNewMissingPetShareInfoBinding.inflate(inflater, container, false).apply {
         binding = this
         headerBinding = NewMissingPetHeaderBinding.bind(this.root)
     }.root
@@ -72,7 +72,6 @@ class NewMissingPetShareInfoFragment : NewMissingPetNavigationFragment() {
     }
 
     private fun setUpViews() = with (binding) {
-        headerBinding.toolbar.title = getString(R.string.report_pet_flow_title)
         headerBinding.toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
         setOnBackPressed { perform(Previous) }
@@ -84,12 +83,14 @@ class NewMissingPetShareInfoFragment : NewMissingPetNavigationFragment() {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
+            headerBinding.toolbar.title = getString(it.flowTitle)
             headerBinding.steps.setupIcons(it.stepIcons)
             headerBinding.steps.selectStep(it.step)
             shareInfoAdapter.submitList(it.shareInfoFields)
             forwardButton.isEnabled = it.forwardButtonEnabled
             forwardButton.expand(it.forwardButtonExpanded)
             forwardButton.text = getString(it.forwardButtonText)
+            backButton.isVisible = it.showBack
         }
 
         observe(viewModel.viewEffect) {

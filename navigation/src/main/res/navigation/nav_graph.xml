@@ -247,6 +247,9 @@
         android:name="com.buddies.missing_all.ui.fragment.AllMissingPetsFragment"
         android:label="@string/all_missing_pets_screen_name"
         tools:layout="@layout/fragment_all_missing_pets">
+        <argument
+            android:name="missingType"
+            app:argType="string"/>
         <action
             android:id="@+id/action_allMissingPetsFragment_to_missingPetProfileFragment"
             app:destination="@id/missingPetProfileFragment"

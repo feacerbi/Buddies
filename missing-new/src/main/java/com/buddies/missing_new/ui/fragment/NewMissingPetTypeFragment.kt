@@ -1,30 +1,30 @@
 package com.buddies.missing_new.ui.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.transition.TransitionManager
-import com.buddies.common.util.invisible
-import com.buddies.common.util.load
+import com.buddies.common.model.MissingType
 import com.buddies.common.util.observe
 import com.buddies.common.util.setOnBackPressed
 import com.buddies.missing_new.R
-import com.buddies.missing_new.databinding.FragmentNewMissingPetConfirmationBinding
+import com.buddies.missing_new.databinding.FragmentNewMissingPetTypeBinding
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.ChooseType
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.CloseFlow
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.Next
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.Previous
 import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.Navigate
 import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.NavigateBack
 import com.buddies.missing_new.viewstate.NewMissingPetViewEffect.ShowError
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class NewMissingPetAddConfirmationFragment : NewMissingPetNavigationFragment() {
+class NewMissingPetTypeFragment : NewMissingPetNavigationFragment() {
 
-    private lateinit var binding: FragmentNewMissingPetConfirmationBinding
+    private lateinit var binding: FragmentNewMissingPetTypeBinding
 
     private val viewModel: NewMissingPetViewModel by sharedViewModel()
 
@@ -32,7 +32,7 @@ class NewMissingPetAddConfirmationFragment : NewMissingPetNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentNewMissingPetConfirmationBinding.inflate(layoutInflater, container, false).apply {
+    ): View = FragmentNewMissingPetTypeBinding.inflate(layoutInflater, container, false).apply {
         binding = this
     }.root
 
@@ -45,21 +45,22 @@ class NewMissingPetAddConfirmationFragment : NewMissingPetNavigationFragment() {
     private fun setUpViews() = with (binding) {
         toolbar.setNavigationOnClickListener { perform(CloseFlow) }
 
-        setOnBackPressed { perform(Action.Previous) }
-        backButton.setOnClickListener { perform(Action.Previous) }
+        setOnBackPressed { perform(Previous) }
+        forwardButton.setOnClickListener { perform(Next(validated = true)) }
+
+        typeGroup.setOnCheckedChangeListener { _, id ->
+            val type = when (id) {
+                R.id.lost_radio_button -> MissingType.LOST
+                R.id.found_radio_button -> MissingType.FOUND
+                else -> MissingType.LOST
+            }
+
+            perform(ChooseType(type))
+        }
     }
 
-    @SuppressLint("StringFormatInvalid")
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
-            TransitionManager.beginDelayedTransition(root)
-            confirmationTitle.text = getString(it.confirmationTitle, it.animalName)
-            progress.isVisible = it.confirmationLoading
-            animalPhoto.invisible(it.hideAnimalPhoto)
-            animalPhoto.load(it.animalPhoto, this@NewMissingPetAddConfirmationFragment) {
-                circleTransform = true
-                error = R.drawable.ic_baseline_pets
-            }
             backButton.isVisible = it.showBack
         }
 

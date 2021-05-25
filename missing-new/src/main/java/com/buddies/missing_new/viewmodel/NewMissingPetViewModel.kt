@@ -6,20 +6,26 @@ import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.InfoType
+import com.buddies.common.model.MissingType
+import com.buddies.common.model.MissingType.FOUND
+import com.buddies.common.model.MissingType.LOST
 import com.buddies.common.model.NewMissingPet
 import com.buddies.common.util.LocationConverter
 import com.buddies.common.util.safeLaunch
 import com.buddies.common.viewmodel.StateViewModel
 import com.buddies.contact.model.ShareInfoField
 import com.buddies.contact.util.toContactInfo
+import com.buddies.missing_new.R
 import com.buddies.missing_new.navigation.NewMissingPetNavDirection.AnimalAndBreedToShareInfo
 import com.buddies.missing_new.navigation.NewMissingPetNavDirection.FinishFlow
 import com.buddies.missing_new.navigation.NewMissingPetNavDirection.InfoToAnimalAndBreed
 import com.buddies.missing_new.navigation.NewMissingPetNavDirection.ShareInfoToConfirmation
+import com.buddies.missing_new.navigation.NewMissingPetNavDirection.TypeToInfo
 import com.buddies.missing_new.usecase.NewMissingPetUseCases
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.AddNewMissingPet
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.ChooseAnimal
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.ChooseBreed
+import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.ChooseType
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.CloseFlow
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.InfoInput
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.Next
@@ -44,6 +50,7 @@ import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ShowInval
 import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ShowPetConfirmation
 import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ShowPetPhoto
 import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ShowShareInfo
+import com.buddies.missing_new.viewstate.NewMissingPetViewStateReducer.ShowTypePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlin.coroutines.CoroutineContext
@@ -56,16 +63,17 @@ class NewMissingPetViewModel(
     private val newMissingPet = NewMissingPet()
 
     init {
-        goToStep1()
+        goToStep0()
     }
 
     fun perform(action: Action) {
         when (action) {
             is Next -> nextStep(action.validated)
             is Previous -> previousStep()
+            is ChooseType -> handleType(action.type)
             is ChooseAnimal -> handleChosenAnimal(action.animal)
             is ChooseBreed -> handleChosenBreed(action.breed)
-            is InfoInput -> validateInfo(action.name)
+            is InfoInput -> validateInfo(action.name, action.description)
             is PhotoInput -> savePhoto(action.photo)
             is OnFieldsChanged -> verifyCheckedFields(action.list)
             is AddNewMissingPet -> addNewMissingPet()
@@ -75,27 +83,41 @@ class NewMissingPetViewModel(
 
     private fun nextStep(validated: Boolean) {
         when (viewState.value?.step) {
+            0 -> goToStep1()
             1 -> goToStep2()
             2 -> goToStep3()
-            3 -> if (validated) addNewMissingPet()
+            3 -> goToStep4(validated)
         }
     }
 
     private fun previousStep() {
         when (viewState.value?.step) {
-            1 -> closeFlow()
+            0 -> closeFlow()
+            1 -> backToStep0()
             2 -> backToStep1()
             3 -> backToStep2()
+            4 -> closeFlow()
         }
     }
 
+    private fun goToStep0() {
+        updateState(ShowTypePicker)
+    }
+
+    private fun backToStep0() {
+        updateEffect(NavigateBack)
+        updateState(ShowTypePicker)
+    }
+
     private fun goToStep1() {
-        updateState(ShowInfo(newMissingPet.name, newMissingPet.photo))
+        updateEffect(Navigate(TypeToInfo))
+        updateState(ShowInfo(null, newMissingPet.type, false))
+        validateInfo()
     }
 
     private fun backToStep1() {
         updateEffect(NavigateBack)
-        updateState(ShowInfo(newMissingPet.name, newMissingPet.photo))
+        updateState(ShowInfo(newMissingPet.photo, newMissingPet.type, true))
     }
 
     private fun goToStep2() {
@@ -112,6 +134,18 @@ class NewMissingPetViewModel(
     private fun goToStep3() {
         updateEffect(Navigate(AnimalAndBreedToShareInfo))
         createShareInfoFields()
+    }
+
+    private fun goToStep4(validated: Boolean) {
+        if (validated) {
+            updateEffect(Navigate(ShareInfoToConfirmation))
+            updateState(ShowAddingPet(newMissingPet.name))
+            addNewMissingPet()
+        }
+    }
+
+    private fun handleType(type: MissingType) {
+        newMissingPet.type = type
     }
 
     private fun requestAnimals() = safeLaunch(::showError) {
@@ -132,19 +166,34 @@ class NewMissingPetViewModel(
         updateState(ShowAnimalAndBreedPicked)
     }
 
-    private fun validateInfo(name: String) {
+    private fun validateInfo(
+        name: String? = newMissingPet.name,
+        description: String = newMissingPet.description
+    ) {
         newMissingPet.name = name
+        newMissingPet.description = description
 
-        if (newMissingPet.name?.length ?: 0 >= 2) {
-            updateState(ShowInfoValidated)
-        } else {
-            updateState(ShowInvalidInfo)
+        val nameValid = name?.length ?: 0 >= 2
+        val photoValid = newMissingPet.photo != null
+
+        when (newMissingPet.type) {
+            FOUND -> when {
+                photoValid -> updateState(ShowInfoValidated)
+                else -> updateState(ShowInvalidInfo(R.string.no_photo_message))
+            }
+            LOST -> when {
+                nameValid.not() && photoValid.not() -> updateState(ShowInvalidInfo(R.string.no_name_and_photo_message))
+                nameValid && photoValid.not() -> updateState(ShowInvalidInfo(R.string.no_photo_message))
+                nameValid.not() && photoValid -> updateState(ShowInvalidInfo(R.string.no_name_message))
+                else -> updateState(ShowInfoValidated)
+            }
         }
     }
 
     private fun savePhoto(uri: Uri) {
         newMissingPet.photo = uri
         updateState(ShowPetPhoto(uri))
+        validateInfo()
     }
 
     private fun verifyCheckedFields(list: List<ShareInfoField>) = safeLaunch(::showError) {
@@ -152,7 +201,7 @@ class NewMissingPetViewModel(
             newMissingPet.contactInfo = list.toContactInfo()
             updateState(ShowInfoValidated)
         } else {
-            updateState(ShowInvalidInfo)
+            updateState(ShowInvalidInfo(R.string.no_contact_info_message))
         }
     }
 
@@ -182,9 +231,6 @@ class NewMissingPetViewModel(
     }
 
     private fun addNewMissingPet() = safeLaunch(::showError) {
-        updateEffect(Navigate(ShareInfoToConfirmation))
-        updateState(ShowAddingPet(newMissingPet.name))
-
         checkAndConvertLocation()
         newMissingPetUseCases.addNewMissingPet(newMissingPet)
 
@@ -209,9 +255,10 @@ class NewMissingPetViewModel(
         object Previous : Action()
         object AddNewMissingPet : Action()
         data class Next(val validated: Boolean) : Action()
+        data class ChooseType(val type: MissingType) : Action()
         data class ChooseAnimal(val animal: Animal) : Action()
         data class ChooseBreed(val breed: Breed) : Action()
-        data class InfoInput(val name: String) : Action()
+        data class InfoInput(val name: String, val description: String) : Action()
         data class PhotoInput(val photo: Uri) : Action()
         data class OnFieldsChanged(val list: List<ShareInfoField>) : Action()
     }

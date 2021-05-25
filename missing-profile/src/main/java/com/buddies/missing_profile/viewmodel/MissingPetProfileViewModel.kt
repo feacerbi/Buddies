@@ -6,6 +6,7 @@ import com.buddies.common.model.Animal
 import com.buddies.common.model.Breed
 import com.buddies.common.model.DefaultError
 import com.buddies.common.model.InfoType
+import com.buddies.common.model.MissingType.FOUND
 import com.buddies.common.navigation.Navigator.NavDirection.MissingPetToGallery
 import com.buddies.common.util.LocationConverter
 import com.buddies.common.util.safeLaunch
@@ -127,16 +128,26 @@ class MissingPetProfileViewModel(
 
     private fun returnedPet() = safeLaunch(::showError) {
         updateState(ShowLoading)
-        val petName = missingPetUseCases.getPet(petId)?.info?.name ?: ""
-        updateEffect(MissingPetViewEffect.ShowConfirmReturnedBottomSheet(R.string.confirm_returned_message, petName))
+        val pet = missingPetUseCases.getPet(petId)
+        val petName = pet?.info?.name ?: ""
+        val message = when (pet?.info?.type) {
+            FOUND.name -> R.string.confirm_returned_message
+            else -> R.string.confirm_found_message
+        }
+        updateEffect(MissingPetViewEffect.ShowConfirmReturnedBottomSheet(message, petName))
         updateState(HideLoading)
     }
 
     private fun confirmPetReturned() = safeLaunch(::showError) {
         updateState(ShowLoading)
-        val petName = missingPetUseCases.getPet(petId)?.info?.name ?: ""
+        val pet = missingPetUseCases.getPet(petId)
+        val petName = pet?.info?.name ?: ""
+        val message = when (pet?.info?.type) {
+            FOUND.name -> R.string.returned_confirmed_message
+            else -> R.string.found_confirmed_message
+        }
         missingPetUseCases.markPetAsReturned(petId)
-        updateEffect(ShowMessage(R.string.returned_confirmed_message, listOf(petName)))
+        updateEffect(ShowMessage(message, listOf(petName)))
         updateEffect(NavigateBack)
     }
 

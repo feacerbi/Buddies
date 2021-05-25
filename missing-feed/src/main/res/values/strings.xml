@@ -3,11 +3,13 @@
     <string name="missing_feed_screen_name">Missing Feed Screen</string>
 
     <!-- View-->
-    <string name="found_recently_title">Found recently</string>
-    <string name="found_near_you_title">Found near you</string>
-    <string name="pets_you_found_title">Pets you found</string>
-    <string name="show_more_button">Show More</string>
+    <string name="recents_list_title">%s recently</string>
+    <string name="near_you_list_title">%s near you</string>
+    <string name="your_pets_list_title">pets you %s</string>
+    <string name="show_more_button">More</string>
     <string name="missing_page_title">Hello, %s!</string>
     <string name="empty_missing_pets_found">No missing pets found</string>
     <string name="empty_feed_list">No missing pets reported this time. \nWatch out for new reports!</string>
+    <string name="lost_tab_title">Lost</string>
+    <string name="found_tab_title">Found</string>
 </resources>
