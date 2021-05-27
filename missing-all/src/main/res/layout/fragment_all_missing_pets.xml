@@ -42,7 +42,7 @@
             android:paddingEnd="0dp"
             android:background="@drawable/floating_search_background"
             android:textAppearance="@style/Body1"
-            android:hint="@string/search_pet_hint"
+            android:hint="@string/search_lost_pets_hint"
             android:inputType="textCapWords|textPersonName"
             android:imeOptions="actionSearch"
             android:maxLines="1"/>

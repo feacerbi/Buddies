@@ -45,8 +45,10 @@ import com.buddies.missing_profile.viewstate.MissingPetViewStateReducer.ShowInfo
 import com.buddies.missing_profile.viewstate.MissingPetViewStateReducer.ShowLoading
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlin.contracts.ExperimentalContracts
 import kotlin.coroutines.CoroutineContext
 
+@ExperimentalContracts
 class MissingPetProfileViewModel(
     private val petId: String,
     private val locationConverter: LocationConverter,

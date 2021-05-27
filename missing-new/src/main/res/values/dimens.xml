@@ -2,6 +2,7 @@
 <resources>
     <dimen name="new_missing_pet_header_elevation">8dp</dimen>
     <dimen name="pet_icon_size">112dp</dimen>
+    <dimen name="pet_small_icon_size">56dp</dimen>
     <dimen name="pet_icon_max_width">150dp</dimen>
     <dimen name="add_pet_photo_size">150dp</dimen>
     <dimen name="description_min_height">120dp</dimen>

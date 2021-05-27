@@ -4,8 +4,8 @@ import android.net.Uri
 import com.buddies.common.model.MissingType.LOST
 
 data class NewMissingPet(
-    var type: MissingType = LOST,
     var name: String? = null,
+    var type: MissingType = LOST,
     var description: String = "",
     var photo: Uri? = null,
     var animal: Animal? = null,

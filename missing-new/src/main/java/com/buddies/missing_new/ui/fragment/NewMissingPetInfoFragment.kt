@@ -13,6 +13,7 @@ import com.buddies.common.util.load
 import com.buddies.common.util.observe
 import com.buddies.common.util.registerForNonNullActivityResult
 import com.buddies.common.util.setOnBackPressed
+import com.buddies.missing_new.R
 import com.buddies.missing_new.databinding.FragmentNewMissingPetInfoBinding
 import com.buddies.missing_new.databinding.NewMissingPetHeaderBinding
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel
@@ -58,14 +59,14 @@ class NewMissingPetInfoFragment : NewMissingPetNavigationFragment() {
 
         nameInputEditText.addTextChangedListener {
             perform(InfoInput(
-                nameInputEditText.text.toString(),
+                getInputName(),
                 descriptionInputEditText.text.toString())
             )
         }
 
         descriptionInputEditText.addTextChangedListener {
             perform(InfoInput(
-                nameInputEditText.text.toString(),
+                getInputName(),
                 descriptionInputEditText.text.toString())
             )
         }
@@ -95,6 +96,16 @@ class NewMissingPetInfoFragment : NewMissingPetNavigationFragment() {
                 is Navigate -> navigate(it.direction)
                 is ShowError -> showMessage(it.error)
             }
+        }
+    }
+
+    private fun getInputName(): String {
+        val name = binding.nameInputEditText.text.toString()
+
+        return if (name.isBlank()) {
+            getString(R.string.unknown_name)
+        } else {
+            name
         }
     }
 

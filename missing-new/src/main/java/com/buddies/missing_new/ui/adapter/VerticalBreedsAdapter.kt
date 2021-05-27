@@ -9,14 +9,14 @@ import com.buddies.common.ui.adapter.SelectableAdapter
 import com.buddies.common.util.inflater
 import com.buddies.common.util.load
 import com.buddies.missing_new.R
-import com.buddies.missing_new.databinding.AnimalHorizontalListItemBinding
-import com.buddies.missing_new.ui.adapter.HorizontalBreedsAdapter.HorizontalBreedsViewHolder
+import com.buddies.missing_new.databinding.AnimalVerticalListItemBinding
+import com.buddies.missing_new.ui.adapter.VerticalBreedsAdapter.VerticalBreedsViewHolder
 
-class HorizontalBreedsAdapter(
+class VerticalBreedsAdapter(
     private val owner: LifecycleOwner,
     list: List<Breed>? = null,
     private var onBreedChanged: ((Breed) -> Unit)? = null
-) : SelectableAdapter<HorizontalBreedsViewHolder, Breed>() {
+) : SelectableAdapter<VerticalBreedsViewHolder, Breed>() {
 
     private val breedsList = mutableListOf<Pair<Breed, Boolean>>()
 
@@ -38,19 +38,19 @@ class HorizontalBreedsAdapter(
         onBreedChanged = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalBreedsViewHolder =
-        HorizontalBreedsViewHolder(
-            AnimalHorizontalListItemBinding.inflate(parent.inflater(), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VerticalBreedsViewHolder =
+        VerticalBreedsViewHolder(
+            AnimalVerticalListItemBinding.inflate(parent.inflater(), parent, false)
         )
 
     override fun getItemCount(): Int = breedsList.size
 
-    override fun onBindViewHolder(holder: HorizontalBreedsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: VerticalBreedsViewHolder, position: Int) {
         holder.bind(position)
     }
 
-    inner class HorizontalBreedsViewHolder(
-        private val binding: AnimalHorizontalListItemBinding
+    inner class VerticalBreedsViewHolder(
+        private val binding: AnimalVerticalListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(

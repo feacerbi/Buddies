@@ -24,4 +24,5 @@
     <string name="lost_radio_text">Lost</string>
     <string name="found_radio_text">Found</string>
     <string name="new_missing_pet_type_title">Start by choosing if you lost your pet or found one.</string>
+    <string name="unknown_name">Unknown</string>
 </resources>

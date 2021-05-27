@@ -69,8 +69,8 @@ class MissingFeedFragment : NavigationFragment() {
         profileButton.setOnClickListener { perform(OpenProfile) }
         reportButton.setOnClickListener { perform(ReportPet) }
 
-        val startOffset = 120.dpToPx(requireContext())
-        refresh.setProgressViewOffset(false, startOffset, startOffset + refresh.progressViewEndOffset)
+        val startOffset = SWIPE_REFRESH_OFFSET.dpToPx(requireContext())
+        refresh.setProgressViewOffset(true, startOffset, startOffset + refresh.progressViewEndOffset)
         refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
         refresh.setOnRefreshListener { perform(RequestFeed) }
 
@@ -100,5 +100,9 @@ class MissingFeedFragment : NavigationFragment() {
 
     private fun perform(action: Action) {
         viewModel.perform(action)
+    }
+
+    companion object {
+        private const val SWIPE_REFRESH_OFFSET = 105
     }
 }

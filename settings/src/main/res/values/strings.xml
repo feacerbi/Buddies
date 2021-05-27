@@ -7,7 +7,7 @@
     <string name="version_header">App Version</string>
 
     <!-- Radius Preferences -->
-    <string name="radius_title">Search radius</string>
+    <string name="radius_title">Nearby radius</string>
 
     <!-- Version Preferences -->
     <string name="version_title">App version</string>

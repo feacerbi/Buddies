@@ -162,6 +162,8 @@ class MissingPetProfileFragment : NavigationFragment(), CoroutineScope {
             profileAnimal.text = getString(R.string.animal_field, it.animal, it.breed)
             profileNameEdit.isVisible = it.nameEdit
             profileAnimalEdit.isVisible = it.animalEdit
+            profileDescriptionGroup.isVisible = it.showDescription
+            profileDescription.text = it.description
             profileType.text = getString(it.typeDescription)
             profileReporterName.text = it.reporter
             profileReporterEdit.isVisible = it.contactInfo

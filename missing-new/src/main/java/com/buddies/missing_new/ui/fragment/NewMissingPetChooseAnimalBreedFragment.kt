@@ -14,7 +14,7 @@ import com.buddies.common.util.setOnBackPressed
 import com.buddies.missing_new.databinding.FragmentNewMissingPetChooseAnimalBreedBinding
 import com.buddies.missing_new.databinding.NewMissingPetHeaderBinding
 import com.buddies.missing_new.ui.adapter.HorizontalAnimalsAdapter
-import com.buddies.missing_new.ui.adapter.HorizontalBreedsAdapter
+import com.buddies.missing_new.ui.adapter.VerticalBreedsAdapter
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action
 import com.buddies.missing_new.viewmodel.NewMissingPetViewModel.Action.ChooseAnimal
@@ -40,7 +40,7 @@ class NewMissingPetChooseAnimalBreedFragment : NewMissingPetNavigationFragment()
         emptyList(),
         ::handleAnimalPicked)
 
-    private val breedsAdapter = HorizontalBreedsAdapter(
+    private val breedsAdapter = VerticalBreedsAdapter(
         this@NewMissingPetChooseAnimalBreedFragment,
         emptyList(),
         ::handleBreedPicked)

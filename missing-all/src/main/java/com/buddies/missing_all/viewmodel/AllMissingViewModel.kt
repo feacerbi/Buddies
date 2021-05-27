@@ -63,8 +63,9 @@ class AllMissingViewModel(
     private fun queryResults(query: String) {
         if (query != currentQuery) {
             supervisorJob.cancelChildren()
-            startPagingMissingPets(query, currentSorting)
+
             currentQuery = query
+            startPagingMissingPets(query, currentSorting)
 
             if (query.isBlank()) {
                 updateState(ShowSorting)
@@ -95,7 +96,7 @@ class AllMissingViewModel(
 
         flow.cachedIn(this)
             .collectLatest {
-                updateState(ShowAllPets(it))
+                updateState(ShowAllPets(missingType, it))
             }
     }
 

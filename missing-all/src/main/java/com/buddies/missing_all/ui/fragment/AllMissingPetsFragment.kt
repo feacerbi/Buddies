@@ -87,6 +87,7 @@ class AllMissingPetsFragment : NavigationFragment() {
 
     private fun bindViews() = with (binding) {
         observe(viewModel.viewState) {
+            searchBox.hint = getString(it.searchHint)
             petsAdapter.submitData(lifecycle, it.allPets)
             sortButton.isDisplayed = it.showSorting
             searchButton.isVisible = it.showSearch

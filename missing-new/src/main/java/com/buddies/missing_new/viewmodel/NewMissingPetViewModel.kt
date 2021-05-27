@@ -156,7 +156,7 @@ class NewMissingPetViewModel(
 
     private fun handleChosenAnimal(animal: Animal) = safeLaunch(::showError) {
         newMissingPet.animal = animal
-        val breeds = newMissingPetUseCases.getBreedsFromAnimal(animal.id)
+        val breeds = newMissingPetUseCases.getBreedsFromAnimal(animal.id)?.sortedBy { it.breedInfo.name }
         updateState(ShowBreedPicker)
         updateEffect(ShowBreeds(breeds))
     }

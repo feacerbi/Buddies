@@ -19,7 +19,9 @@ import com.buddies.security.di.securityModule
 import com.buddies.server.di.serverModule
 import com.buddies.settings.di.settingsModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.contracts.ExperimentalContracts
 
+@ExperimentalContracts
 @ExperimentalCoroutinesApi
 val baseModules = arrayOf(
     allMissingModule,

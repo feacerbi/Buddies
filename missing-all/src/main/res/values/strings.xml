@@ -7,7 +7,8 @@
 
     <!-- View -->
     <string name="all_missing_pets_title">Missing Pets Found</string>
-    <string name="search_pet_hint">Search Pet…</string>
+    <string name="search_lost_pets_hint">Search lost pets…</string>
+    <string name="search_found_pets_hint">Search found pets…</string>
     <string name="empty_pets_message">No pets to display</string>
     <string name="sorting_dialog_title">Order By</string>
 </resources>

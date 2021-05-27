@@ -8,11 +8,14 @@ import com.buddies.common.model.MissingPet
 import com.buddies.common.model.MissingType
 import com.buddies.common.model.MissingType.FOUND
 import com.buddies.common.model.User
+import com.buddies.common.util.isNotNullNorBlank
 import com.buddies.common.viewstate.ViewStateReducer
 import com.buddies.missing_profile.R
+import kotlin.contracts.ExperimentalContracts
 
 sealed class MissingPetViewStateReducer : ViewStateReducer<MissingPetViewState> {
 
+    @ExperimentalContracts
     data class ShowInfo(
         val pet: MissingPet?,
         val animalAndBreed: Pair<Animal, Breed>?,
@@ -26,6 +29,8 @@ sealed class MissingPetViewStateReducer : ViewStateReducer<MissingPetViewState> 
             animalEdit = currentUser?.id == pet?.info?.reporter,
             breed = animalAndBreed?.second?.breedInfo?.name ?: "",
             photo = pet?.info?.photo?.toUri() ?: Uri.EMPTY,
+            description = pet?.info?.description ?: "",
+            showDescription = pet?.info?.description.isNotNullNorBlank(),
             typeDescription = MissingType.fromName(pet?.info?.type ?: "").description,
             reporter = reporter?.info?.name ?: "",
             markAsButton = currentUser?.id == pet?.info?.reporter,

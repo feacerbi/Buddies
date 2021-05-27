@@ -14,6 +14,8 @@ data class MissingPetViewState(
     val animalEdit: Boolean = false,
     val breed: String = "",
     val photo: Uri = Uri.EMPTY,
+    val description: String = "",
+    val showDescription: Boolean = false,
     val reporter: String = "",
     val markAsButton: Boolean = false,
     @StringRes val markAsButtonText: Int = R.string.empty,
