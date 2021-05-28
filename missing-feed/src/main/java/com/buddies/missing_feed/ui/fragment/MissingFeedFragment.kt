@@ -2,6 +2,7 @@ package com.buddies.missing_feed.ui.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,6 +75,14 @@ class MissingFeedFragment : NavigationFragment() {
         refresh.setColorSchemeResources(R.attr.colorSecondary.toColorId(requireContext()))
         refresh.setOnRefreshListener { perform(RequestFeed) }
 
+        val windowHeight = requireActivity().windowManager.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                it.currentWindowMetrics.bounds.height()
+            } else {
+                it.defaultDisplay.height
+            }
+        }
+        pager.minimumHeight = windowHeight
         pager.adapter = MissingFeedTabsAdapter(this@MissingFeedFragment)
 
         MissingFeedTabsMediator(requireContext(), tabs, pager).connect()
