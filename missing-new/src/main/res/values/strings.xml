@@ -18,8 +18,10 @@
     <string name="breed_title">Breed</string>
     <string name="name_hint">Name</string>
     <string name="description_hint">Description</string>
-    <string name="reporting_pet_message">Reporting %s as found by you…</string>
-    <string name="pet_reported_message">%s is now in the pets you found!</string>
+    <string name="reporting_found_pet_message">Reporting %s as found by you…</string>
+    <string name="found_pet_reported_message">%s is now in the pets you found!</string>
+    <string name="reporting_lost_pet_message">Reporting you lost %s…</string>
+    <string name="lost_pet_reported_message">%s is now in the pets you lost!</string>
     <string name="share_info_title_text">Which kind of information to share</string>
     <string name="lost_radio_text">Lost</string>
     <string name="found_radio_text">Found</string>

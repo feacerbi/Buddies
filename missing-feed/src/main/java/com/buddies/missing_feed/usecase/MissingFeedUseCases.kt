@@ -28,7 +28,7 @@ class MissingFeedUseCases(
     }
 
     suspend fun getNearestPets(location: Pair<Double?, Double?>) = request {
-        val maxRadius = keyValueRepository.getStringValue(LOCATION_RADIUS).toInt()
+        val maxRadius = keyValueRepository.getStringValue(LOCATION_RADIUS).toIntOrNull() ?: DEFAULT_MAX_RADIUS
         missingPetApi.getNearMissingPets(location, PETS_PREVIEW_LIST_SIZE, maxRadius)
     }?.map {
         it.mapAnimal()
@@ -47,5 +47,6 @@ class MissingFeedUseCases(
 
     companion object {
         private const val PETS_PREVIEW_LIST_SIZE = 10
+        private const val DEFAULT_MAX_RADIUS = 1
     }
 }

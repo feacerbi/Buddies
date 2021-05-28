@@ -118,11 +118,15 @@ sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewS
     }
 
     data class ShowAddingPet(
-        val name: String?
+        val name: String?,
+        val type: MissingType
     ) : NewMissingPetViewStateReducer() {
         override fun reduce(state: NewMissingPetViewState) = state.copy(
             step = 4,
-            confirmationTitle = R.string.reporting_pet_message,
+            confirmationTitle = when (type) {
+                LOST -> R.string.reporting_lost_pet_message
+                FOUND -> R.string.reporting_found_pet_message
+            },
             confirmationLoading = true,
             hideAnimalPhoto = true,
             animalName = name ?: "",
@@ -130,9 +134,14 @@ sealed class NewMissingPetViewStateReducer : ViewStateReducer<NewMissingPetViewS
         )
     }
 
-    object ShowPetConfirmation : NewMissingPetViewStateReducer() {
+    data class ShowPetConfirmation(
+        val type: MissingType
+    ) : NewMissingPetViewStateReducer() {
         override fun reduce(state: NewMissingPetViewState) = state.copy(
-            confirmationTitle = R.string.pet_reported_message,
+            confirmationTitle = when (type) {
+                LOST -> R.string.lost_pet_reported_message
+                FOUND -> R.string.found_pet_reported_message
+            },
             confirmationLoading = false,
             hideAnimalPhoto = false,
             showBack = false

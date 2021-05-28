@@ -139,7 +139,7 @@ class NewMissingPetViewModel(
     private fun goToStep4(validated: Boolean) {
         if (validated) {
             updateEffect(Navigate(ShareInfoToConfirmation))
-            updateState(ShowAddingPet(newMissingPet.name))
+            updateState(ShowAddingPet(newMissingPet.name, newMissingPet.type))
             addNewMissingPet()
         }
     }
@@ -235,7 +235,7 @@ class NewMissingPetViewModel(
         newMissingPetUseCases.addNewMissingPet(newMissingPet)
 
         delay(CONFIRMATION_DELAY)
-        updateState(ShowPetConfirmation)
+        updateState(ShowPetConfirmation(newMissingPet.type))
 
         delay(CONFIRMATION_DELAY)
         closeFlow()
