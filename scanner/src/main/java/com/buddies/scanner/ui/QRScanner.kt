@@ -1,7 +1,6 @@
 package com.buddies.scanner.ui
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.camera.view.PreviewView.ScaleType.FILL_CENTER
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -53,11 +52,11 @@ class QRScanner @JvmOverloads constructor(
             attrs, R.styleable.QRScanner, defStyle, 0
         )
 
-        setup(styleAttrs)
+        setup()
         styleAttrs.recycle()
     }
 
-    private fun setup(styleAttrs: TypedArray) = with (binding) {
+    private fun setup() = with (binding) {
         preview.scaleType = FILL_CENTER
     }
 

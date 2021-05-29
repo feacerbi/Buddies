@@ -6,11 +6,12 @@ import android.os.IBinder
 import com.buddies.common.model.INVITATION_NOTIFICATION_CHANNEL_ID
 import com.buddies.common.model.PET_FOUND_NOTIFICATION_CHANNEL_ID
 import com.buddies.common.model.UserNotification
+import com.buddies.common.util.createNotificationChannel
 import com.buddies.common.util.handleResult
 import com.buddies.common.util.safeLaunch
+import com.buddies.common.util.showNotification
+import com.buddies.navigation.ui.SingleActivity
 import com.buddies.notification.R
-import com.buddies.notification.util.createNotificationChannel
-import com.buddies.notification.util.showNotification
 import com.buddies.server.api.NotificationsApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -73,7 +74,7 @@ class NotificationsService : Service() {
         showNotification(
             this@NotificationsService,
             notification.id.hashCode(),
-            notification.build(this@NotificationsService))
+            notification.build(this@NotificationsService, SingleActivity::class.java))
     }
 
     private suspend fun markAsRead(

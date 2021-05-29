@@ -35,4 +35,4 @@ fun Notification.toPetFoundNotification(
 )
 
 fun Map<InfoType, String>.keysToString() =
-    mapKeys { it.key.name.toLowerCase(Locale.getDefault()) }
+    mapKeys { it.key.name.lowercase(Locale.getDefault()) }

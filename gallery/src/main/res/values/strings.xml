@@ -23,6 +23,8 @@
     </plurals>
 
     <!-- Notifications -->
+    <string name="gallery_upload_notification_channel_name">Gallery Upload</string>
+    <string name="gallery_upload_notification_channel_description">Used for notifying upload progress and status of gallery pictures.</string>
     <plurals name="gallery_upload_waiting_notification_content">
         <item quantity="one">Waiting to upload %d picture</item>
         <item quantity="other">Waiting to upload %d pictures</item>

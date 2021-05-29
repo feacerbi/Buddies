@@ -36,8 +36,7 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Koin
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // Swipe Refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_version"

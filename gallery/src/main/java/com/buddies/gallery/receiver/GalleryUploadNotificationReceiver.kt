@@ -9,11 +9,10 @@ import com.buddies.gallery.usecase.GalleryUseCases
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import org.koin.java.KoinJavaComponent.get
 
-class GalleryUploadNotificationReceiver : BroadcastReceiver() {
-
-    private val galleryUseCases = get(GalleryUseCases::class.java)
+class GalleryUploadNotificationReceiver(
+    private val galleryUseCases: GalleryUseCases
+) : BroadcastReceiver() {
 
     private val coroutineScope = CoroutineScope(Job() + Dispatchers.Default)
 

@@ -79,6 +79,7 @@ class MissingFeedFragment : NavigationFragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 it.currentWindowMetrics.bounds.height()
             } else {
+                @Suppress("DEPRECATION")
                 it.defaultDisplay.height
             }
         }

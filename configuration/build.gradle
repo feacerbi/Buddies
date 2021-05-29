@@ -23,7 +23,7 @@ dependencies {
     implementation "androidx.startup:startup-runtime:$startup_version"
 
     // Koin
-    implementation "org.koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"

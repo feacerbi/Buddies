@@ -1,5 +1,6 @@
 package com.buddies.common.model
 
+import android.app.Activity
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
@@ -8,7 +9,6 @@ import android.text.SpannableString
 import androidx.core.app.NotificationCompat
 import com.buddies.common.R
 import com.buddies.common.model.NotificationType.PET_FOUND
-import com.buddies.common.ui.activity.SingleActivity
 import com.buddies.common.util.customTextAppearance
 import java.util.*
 
@@ -35,8 +35,9 @@ data class PetFoundNotification(
             R.style.NotificationMessage_Highlight
         )
 
-    override fun build(
-        context: Context
+    override fun <T : Activity> build(
+        context: Context,
+        targetActivity: Class<T>
     ): Notification =
         NotificationCompat.Builder(context, PET_FOUND_NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.buddies_logo_white)
@@ -45,15 +46,15 @@ data class PetFoundNotification(
                 pet.info.name,
                 userName))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(createPendingIntent(context))
+            .setContentIntent(createPendingIntent(context, targetActivity))
             .setAutoCancel(true)
             .build()
 
-    private fun createIntent(context: Context) =
-        Intent(context, SingleActivity::class.java).apply {
+    private fun <T> createIntent(context: Context, target: Class<T>) =
+        Intent(context, target).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
-    private fun createPendingIntent(context: Context) =
-        PendingIntent.getActivity(context, 0, createIntent(context), 0)
+    private fun <T> createPendingIntent(context: Context, target: Class<T>) =
+        PendingIntent.getActivity(context, 0, createIntent(context, target), 0)
 }

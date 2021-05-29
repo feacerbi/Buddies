@@ -23,7 +23,6 @@
     <string name="invite_owners_hint">Search names</string>
     <string name="invite_owners_empty_list">No search results</string>
     <string name="invite_message">Invitation sent to %s!</string>
-    <string name="pets_empty_message">You don\'t have any pets yet.\n Try adding a new one on the + above</string>
     <string name="report_lost_message">Are you sure you want to report %s as lost?</string>
     <string name="report_lost_dialog_title">Report Lost</string>
     <string name="report_lost_dialog_confirm_button">Report</string>

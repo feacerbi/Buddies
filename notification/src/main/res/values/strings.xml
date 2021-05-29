@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="empty_notifications_list">No notifications</string>
-    <string name="ignore_button">Ignore</string>
-    <string name="accept_button">Accept</string>
-    <string name="dismiss_button">Dismiss</string>
-    <string name="contact_info_button">Contact Info</string>
-
     <!-- Channels -->
     <string name="invitation_notification_channel_name">Invitation</string>
     <string name="invitation_notification_channel_description">Used for inviting other owners.</string>
     <string name="pet_found_notification_channel_name">Pet Found</string>
     <string name="pet_found_notification_channel_description">Used for notifying a lost pet was found.</string>
-    <string name="gallery_upload_notification_channel_name">Gallery Upload</string>
-    <string name="gallery_upload_notification_channel_description">Used for notifying upload progress and status of gallery pictures.</string>
 </resources>

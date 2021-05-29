@@ -6,12 +6,12 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.buddies.common.model.GALLERY_UPLOAD_NOTIFICATION_CHANNEL_ID
+import com.buddies.common.util.createNotificationChannel
 import com.buddies.gallery.R
 import com.buddies.gallery.usecase.GalleryUseCases
 import com.buddies.gallery.util.GalleryUploadNotificationHandler
-import com.buddies.notification.util.createNotificationChannel
-import org.koin.core.KoinComponent
-import org.koin.core.get
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 class GalleryUploadWorker(
     appContext: Context,

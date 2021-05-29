@@ -83,7 +83,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // Koin
-    implementation "org.koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // Preference
     implementation "androidx.preference:preference-ktx:$preference_version"

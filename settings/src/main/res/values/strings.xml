@@ -8,9 +8,12 @@
 
     <!-- Radius Preferences -->
     <string name="radius_title">Nearby radius</string>
+    <string name="radius_preference_key">locationRadius</string>
+    <string name="radius_preference_default_value">1</string>
 
     <!-- Version Preferences -->
     <string name="version_title">App version</string>
+    <string name="version_preference_key">versionName</string>
 
     <!-- Views -->
     <string name="settings_screen_title">Settings</string>

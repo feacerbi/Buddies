@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.buddies.common.ui.fragment.NavigationFragment
+import com.buddies.common.util.HorizontalSeparatorListDecoration
 import com.buddies.common.util.observe
 import com.buddies.common.util.toColorId
-import com.buddies.common.util.HorizontalSeparatorListDecoration
-import com.buddies.notification.ui.NotificationsAdapter
 import com.buddies.profile.R
 import com.buddies.profile.databinding.FragmentProfileNotificationsTabBinding
+import com.buddies.profile.ui.adapter.NotificationsAdapter
 import com.buddies.profile.viewmodel.ProfileViewModel
 import com.buddies.profile.viewmodel.ProfileViewModel.Action
 import com.buddies.profile.viewmodel.ProfileViewModel.Action.*

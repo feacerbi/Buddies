@@ -15,7 +15,6 @@ dependencies {
     implementation project(":configuration")
     implementation project(":contact")
     implementation project(":mypets")
-    implementation project(":notification")
     implementation project(":server")
 
     // Kotlin
@@ -35,8 +34,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // Koin
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // Jetpack Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"

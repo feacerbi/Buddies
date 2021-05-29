@@ -33,7 +33,7 @@ class MyPetsWidget @JvmOverloads constructor(
 
     private val binding: MyPetsWidgetBinding
 
-    private val petUseCases by inject(MyPetsUseCases::class.java)
+    private val petUseCases: MyPetsUseCases by inject(MyPetsUseCases::class.java)
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Main + job)

@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import com.buddies.common.util.capitalize
 import com.buddies.common.util.getStringOrNull
 import com.buddies.common.util.load
 import com.buddies.common.util.observe
@@ -46,7 +47,8 @@ class GeneratorActivity : AppCompatActivity() {
     private fun setupViews() = with (binding) {
         generatorTitle.text = getString(
             R.string.generator_title,
-            BuildConfig.BUILD_TYPE.capitalize(Locale.getDefault()))
+            BuildConfig.BUILD_TYPE.capitalize()
+        )
 
         generateNewTagValueButton.setOnClickListener {
             perform(GenerateNewValue)

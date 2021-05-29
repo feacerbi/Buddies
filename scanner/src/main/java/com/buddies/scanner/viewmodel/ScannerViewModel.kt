@@ -24,14 +24,12 @@ import com.buddies.scanner.viewstate.ScannerViewStateReducer.StartPetScanner
 import com.buddies.scanner.viewstate.ScannerViewStateReducer.StopPetScanner
 import com.buddies.security.encryption.Encrypter
 import kotlinx.coroutines.CoroutineScope
-import org.koin.java.KoinJavaComponent.inject
 import kotlin.coroutines.CoroutineContext
 
 class ScannerViewModel(
-    private val scannerUseCases: ScannerUseCases
+    private val scannerUseCases: ScannerUseCases,
+    private val encrypter: Encrypter
 ) : StateViewModel<ScannerViewState, ScannerViewEffect>(ScannerViewState()), CoroutineScope {
-
-    private val encrypter by inject(Encrypter::class.java)
 
     fun perform(action: Action) {
         when (action) {

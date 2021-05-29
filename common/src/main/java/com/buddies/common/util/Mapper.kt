@@ -48,10 +48,10 @@ fun Int.toNotificationType() = when (this) {
 }
 
 fun String.toInfoType() = when (this) {
-    NAME.name.toLowerCase(Locale.getDefault()) -> NAME
-    EMAIL.name.toLowerCase(Locale.getDefault()) -> EMAIL
-    PHONE.name.toLowerCase(Locale.getDefault()) -> PHONE
-    LOCATION.name.toLowerCase(Locale.getDefault()) -> LOCATION
+    NAME.name.lowercase(Locale.getDefault()) -> NAME
+    EMAIL.name.lowercase(Locale.getDefault()) -> EMAIL
+    PHONE.name.lowercase(Locale.getDefault()) -> PHONE
+    LOCATION.name.lowercase(Locale.getDefault()) -> LOCATION
     else -> InfoType.UNKNOWN
 }
 

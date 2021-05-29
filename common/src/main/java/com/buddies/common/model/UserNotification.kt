@@ -1,5 +1,6 @@
 package com.buddies.common.model
 
+import android.app.Activity
 import android.app.Notification
 import android.content.Context
 import android.text.SpannableString
@@ -12,5 +13,5 @@ abstract class UserNotification(
     val timestamp: Calendar
 ) {
     abstract fun getMessage(context: Context): SpannableString
-    abstract fun build(context: Context): Notification
+    abstract fun <T : Activity> build(context: Context, targetActivity: Class<T>): Notification
 }

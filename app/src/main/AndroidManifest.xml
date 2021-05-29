@@ -30,7 +30,7 @@
         tools:ignore="AllowBackup">
 
         <activity
-            android:name=".common.ui.activity.SingleActivity"
+            android:name=".navigation.ui.SingleActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

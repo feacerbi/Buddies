@@ -93,7 +93,7 @@ fun ImageView.load(
     lifecycleOwner: LifecycleOwner,
     options: RequestOptions.() -> Unit = {}
 ) {
-    val handler by inject(ImageHandler::class.java)
+    val handler: ImageHandler by inject(ImageHandler::class.java)
     handler.load(lifecycleOwner, this, uri, options)
 }
 
@@ -102,7 +102,7 @@ fun ImageView.load(
     lifecycleOwner: LifecycleOwner,
     options: RequestOptions.() -> Unit = {}
 ) {
-    val handler by inject(ImageHandler::class.java)
+    val handler: ImageHandler by inject(ImageHandler::class.java)
     handler.load(lifecycleOwner, this, image, options)
 }
 
@@ -111,7 +111,7 @@ fun ImageView.load(
     lifecycleOwner: LifecycleOwner,
     options: RequestOptions.() -> Unit = {}
 ) {
-    val handler by inject(ImageHandler::class.java)
+    val handler: ImageHandler by inject(ImageHandler::class.java)
     handler.load(lifecycleOwner, this, bitmap, options)
 }
 
@@ -122,6 +122,9 @@ fun String?.isNotNullNorBlank(): Boolean {
     }
     return this != null && isNotBlank()
 }
+
+fun String.capitalize() =
+    replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
 fun CoroutineScope.safeLaunch(
     error: (DefaultError) -> Unit = {},

@@ -2,4 +2,5 @@
 <resources>
     <string name="my_pets_title">My Pets</string>
     <string name="add_new_pet">Add new pet</string>
+    <string name="pets_empty_message">You don\'t have any pets yet.\n Try adding a new one on the + above</string>
 </resources>

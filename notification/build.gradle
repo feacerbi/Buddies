@@ -12,6 +12,7 @@ dependencies {
 
     // Projects
     implementation project(":common")
+    implementation project(":navigation")
     implementation project(":server")
 
     // Kotlin
@@ -31,7 +32,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // Koin
-    implementation "org.koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"

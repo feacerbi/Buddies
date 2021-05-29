@@ -42,8 +42,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:$gms_playservices_location_version"
 
     // Koin
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"

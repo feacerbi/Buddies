@@ -2,5 +2,8 @@
 <resources>
     <!-- View -->
     <dimen name="profile_picture_height">300dp</dimen>
+    <dimen name="owner_icon_size">56dp</dimen>
     <dimen name="notifications_list_bottom_padding">80dp</dimen>
+    <dimen name="notification_owner_icon_size">72dp</dimen>
+    <dimen name="divider_start_margin">108dp</dimen>
 </resources>

@@ -7,7 +7,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.buddies.settings.R
 import com.buddies.settings.repository.KeyValueRepository
-import com.buddies.settings.repository.KeyValueRepository.Companion.VERSION_NAME_KEY
 import com.buddies.settings.repository.KeyValueRepository.StringKey
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -28,7 +27,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     private fun setUpVersionPreference() = lifecycleScope.launch {
         val versionName = keyValueRepository.getStringValue(StringKey.VERSION_NAME)
-        val versionPreference = findPreference<Preference>(VERSION_NAME_KEY)
+        val versionPreference = findPreference<Preference>(getString(R.string.version_preference_key))
         versionPreference?.title = versionName
     }
 }

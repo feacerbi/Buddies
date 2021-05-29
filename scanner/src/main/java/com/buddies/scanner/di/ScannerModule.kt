@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 val scannerModule = module {
     factory { ScannerUseCases(get()) }
-    viewModel { ScannerViewModel(get()) }
+    viewModel { ScannerViewModel(get(), get()) }
 }

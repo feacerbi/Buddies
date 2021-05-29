@@ -43,7 +43,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
 
     // Koin
-    implementation "org.koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // PhotoView
     implementation "com.github.chrisbanes:PhotoView:$photoview_version"

@@ -1,4 +1,4 @@
-package com.buddies.notification.util
+package com.buddies.common.util
 
 import android.app.Notification
 import android.app.NotificationChannel
