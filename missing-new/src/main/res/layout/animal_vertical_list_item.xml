@@ -31,6 +31,7 @@
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginBottom="@dimen/margin_small"
         android:padding="@dimen/icon_border"
+        android:visibility="gone"
         tools:src="@drawable/cat1"/>
 
     <com.google.android.material.textview.MaterialTextView
@@ -42,6 +43,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/animal_icon"
         app:layout_constraintBottom_toBottomOf="@id/animal_icon"
+        app:layout_goneMarginTop="@dimen/margin_medium"
+        app:layout_goneMarginBottom="@dimen/margin_medium"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
         android:maxLines="1"
